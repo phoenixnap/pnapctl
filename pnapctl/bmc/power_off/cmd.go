@@ -3,7 +3,6 @@ package power_off
 import (
 	"bytes"
 	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
@@ -29,8 +28,6 @@ var P_OffCmd = &cobra.Command{
 			fmt.Println("Error: Conflict detected. Server is already powered-off.")
 			panic("409-conflict")
 		}
-
-		os.Exit(0)
 	},
 }
 

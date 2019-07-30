@@ -15,63 +15,56 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func TestPowerOffServer(t *testing.T) {
-	t.Run("Power off server - Success", PowerOffServerSuccess())
-	t.Run("Power off server - Conflict", PowerOffServerConflict())
-}
+func TestPowerOffServerSuccess(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	serverID := "fake_id"
 
-func PowerOffServerSuccess() func(*testing.T) {
-	return func(t *testing.T) {
-		ctrl := gomock.NewController(t)
-		serverID := "fake_id"
+	// Init mock client
+	m := mocks.NewMockWebClient(ctrl)
 
-		// Init mock client
-		m := mocks.NewMockWebClient(ctrl)
-
-		resp := http.Response{
-			StatusCode: 200,
-		}
-
-		client.MainClient = m
-
-		m.
-			EXPECT().
-			PerformPost("servers/"+serverID+"/actions/power-off", bytes.NewBuffer([]byte{})).
-			Return(&resp, nil)
-
-		os.Args = []string{"pnapctl", "bmc", "power-off", serverID}
-		pnapctl.Execute()
+	resp := http.Response{
+		StatusCode: 200,
 	}
+
+	client.MainClient = m
+
+	m.
+		EXPECT().
+		PerformPost("servers/"+serverID+"/actions/power-off", bytes.NewBuffer([]byte{})).
+		Return(&resp, nil)
+
+	os.Args = []string{"pnapctl", "bmc", "power-off", serverID}
+	pnapctl.Execute()
 }
 
-func PowerOffServerConflict() func(*testing.T) {
-	return func(t *testing.T) {
-		defer func() {
-			if r := recover(); r != nil {
-				t.Log("RECOVERED ", r)
-			} else {
-				t.Errorf("The code did not panic - it should have.")
+func TestPowerOffServerConflict(t *testing.T) {
+	defer func() {
+		if r := recover(); r != nil {
+			if r != "409-conflict" {
+				t.Errorf("Panicked with error '%s'. Expected 409-conflict.", r)
 			}
-		}()
-
-		ctrl := gomock.NewController(t)
-		serverID := "fake_id"
-
-		// Init mock client
-		m := mocks.NewMockWebClient(ctrl)
-
-		resp := http.Response{
-			StatusCode: 200,
+		} else {
+			t.Errorf("The code did not panic - it should have.")
 		}
+	}()
 
-		client.MainClient = m
+	ctrl := gomock.NewController(t)
+	serverID := "fake_id"
 
-		m.
-			EXPECT().
-			PerformPost("servers/"+serverID+"/actions/power-off", bytes.NewBuffer([]byte{})).
-			Return(&resp, nil)
+	// Init mock client
+	m := mocks.NewMockWebClient(ctrl)
 
-		os.Args = []string{"pnapctl", "bmc", "power-off", serverID}
-		pnapctl.Execute()
+	resp := http.Response{
+		StatusCode: 409,
 	}
+
+	client.MainClient = m
+
+	m.
+		EXPECT().
+		PerformPost("servers/"+serverID+"/actions/power-off", bytes.NewBuffer([]byte{})).
+		Return(&resp, nil)
+
+	os.Args = []string{"pnapctl", "bmc", "power-off", serverID}
+	pnapctl.Execute()
 }
