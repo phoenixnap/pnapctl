@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/power_off"
+	poweroff "phoenixnap.com/pnap-cli/pnapctl/bmc/power_off"
 )
 
 var BmcCmd = &cobra.Command{
@@ -18,5 +18,5 @@ var BmcCmd = &cobra.Command{
 }
 
 func init() {
-	BmcCmd.AddCommand(power_off.P_OffCmd)
+	BmcCmd.AddCommand(poweroff.P_OffCmd)
 }

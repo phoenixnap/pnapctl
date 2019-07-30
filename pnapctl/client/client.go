@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var MainClient = NewHttpClient("http://localhost:8080/", 10)
+var MainClient = NewHttpClient("https://phoenixnap-non-prod-ph-dev.apigee.net/ingress-temp/api/bmc/v1/", 10)
 
 type WebClient interface {
 	PerformGet(resource string) (*http.Response, error)

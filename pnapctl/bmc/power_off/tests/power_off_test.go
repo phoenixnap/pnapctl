@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"phoenixnap.com/pnap-cli/pnapctl"
+	poweroff "phoenixnap.com/pnap-cli/pnapctl/bmc/power_off"
 
 	"phoenixnap.com/pnap-cli/pnapctl/client"
 	mocks "phoenixnap.com/pnap-cli/pnapctl/mocks"
@@ -38,16 +39,6 @@ func TestPowerOffServerSuccess(t *testing.T) {
 }
 
 func TestPowerOffServerConflict(t *testing.T) {
-	defer func() {
-		if r := recover(); r != nil {
-			if r != "409-conflict" {
-				t.Errorf("Panicked with error '%s'. Expected 409-conflict.", r)
-			}
-		} else {
-			t.Errorf("The code did not panic - it should have.")
-		}
-	}()
-
 	ctrl := gomock.NewController(t)
 	serverID := "fake_id"
 
@@ -67,4 +58,34 @@ func TestPowerOffServerConflict(t *testing.T) {
 
 	os.Args = []string{"pnapctl", "bmc", "power-off", serverID}
 	pnapctl.Execute()
+
+	if poweroff.ErrorCode != "409" {
+		t.Errorf("Expected '409 CONFLICT' error. Instead got %s", poweroff.ErrorCode)
+	}
+}
+
+func TestPowerOffServerNotFound(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	serverID := "fake_id"
+
+	// Init mock client
+	m := mocks.NewMockWebClient(ctrl)
+
+	resp := http.Response{
+		StatusCode: 404,
+	}
+
+	client.MainClient = m
+
+	m.
+		EXPECT().
+		PerformPost("servers/"+serverID+"/actions/power-off", bytes.NewBuffer([]byte{})).
+		Return(&resp, nil)
+
+	os.Args = []string{"pnapctl", "bmc", "power-off", serverID}
+	pnapctl.Execute()
+
+	if poweroff.ErrorCode != "404" {
+		t.Errorf("Expected '404 NOT FOUND' error. Instead got %s", poweroff.ErrorCode)
+	}
 }
