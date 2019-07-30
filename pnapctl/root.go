@@ -19,8 +19,6 @@ var rootCmd = &cobra.Command{
 	},
 }
 
-var Client = NewHttpClient("http://localhost:8080", 10)
-
 // Execute adds all child commands to the root command, setting flags appropriately.
 // Called by main.main(), only needing to happen once.
 func Execute() {

@@ -1,10 +1,12 @@
 package power_off
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnap-cli/pnapctl/client"
 )
 
 var P_OffCmd = &cobra.Command{
@@ -12,7 +14,21 @@ var P_OffCmd = &cobra.Command{
 	Short: "Powers off a specific server.",
 	Long:  "Powers off a specific server.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args[0])
+		if len(args) != 1 {
+			fmt.Println("only 1 argument can be passed for 'power-off':", len(args), "passed")
+			os.Exit(1)
+		}
+
+		var resource = "servers/" + args[0] + "/actions/power-off"
+		var response, err = client.MainClient.PerformPost(resource, bytes.NewBuffer([]byte{}))
+
+		if err != nil {
+			fmt.Println("Error while powering off server:", err)
+			os.Exit(1)
+		}
+
+		fmt.Println(response)
+
 		os.Exit(0)
 	},
 }

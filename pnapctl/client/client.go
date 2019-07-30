@@ -1,10 +1,12 @@
-package pnapctl
+package client
 
 import (
 	"io"
 	"net/http"
 	"time"
 )
+
+var MainClient = NewHttpClient("http://localhost:8080/", 10)
 
 type WebClient interface {
 	PerformGet(resource string) (*http.Response, error)
