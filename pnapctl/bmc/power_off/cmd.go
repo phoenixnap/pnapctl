@@ -16,7 +16,7 @@ var P_OffCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) != 1 {
 			fmt.Println("only 1 argument can be passed for 'power-off':", len(args), "passed")
-			os.Exit(1)
+			panic("not-one-arg")
 		}
 
 		var resource = "servers/" + args[0] + "/actions/power-off"
@@ -24,10 +24,11 @@ var P_OffCmd = &cobra.Command{
 
 		if err != nil {
 			fmt.Println("Error while powering off server:", err)
-			os.Exit(1)
+			panic("power-off-error")
+		} else if response.StatusCode == 409 {
+			fmt.Println("Error: Conflict detected. Server is already powered-off.")
+			panic("409-conflict")
 		}
-
-		fmt.Println(response)
 
 		os.Exit(0)
 	},
