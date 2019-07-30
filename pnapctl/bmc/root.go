@@ -3,8 +3,8 @@ package bmc
 import (
 	"os"
 
-	"ccbill.com/pnap-cli/pnapctl"
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnap-cli/pnapctl"
 )
 
 var bmcCmd = &cobra.Command{
