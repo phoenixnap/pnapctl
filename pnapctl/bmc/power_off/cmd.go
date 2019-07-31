@@ -42,6 +42,10 @@ var P_OffCmd = &cobra.Command{
 		} else if response.StatusCode == 404 {
 			fmt.Println("Error: Server with ID", args[0], "not found.")
 			ErrorCode = "404"
+		} else if response.StatusCode != 200 {
+			fmt.Println("Status:", response.Status)
+		} else {
+			fmt.Println("Shutdown successfully.")
 		}
 	},
 }
