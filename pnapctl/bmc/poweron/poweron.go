@@ -1,4 +1,4 @@
-package poweroff
+package poweron
 
 import (
 	"bytes"

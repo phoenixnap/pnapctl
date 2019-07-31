@@ -8,7 +8,7 @@ import (
 
 	"phoenixnap.com/pnap-cli/pnapctl"
 
-	poweron "phoenixnap.com/pnap-cli/pnapctl/bmc/power_on"
+	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweron"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
 	mocks "phoenixnap.com/pnap-cli/pnapctl/mocks"
 

@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"phoenixnap.com/pnap-cli/pnapctl"
-	poweroff "phoenixnap.com/pnap-cli/pnapctl/bmc/power_off"
 
+	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweroff"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
 	mocks "phoenixnap.com/pnap-cli/pnapctl/mocks"
 

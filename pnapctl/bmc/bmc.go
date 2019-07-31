@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	poweroff "phoenixnap.com/pnap-cli/pnapctl/bmc/power_off"
-	poweron "phoenixnap.com/pnap-cli/pnapctl/bmc/power_on"
+	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweroff"
+	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweron"
 )
 
 var BmcCmd = &cobra.Command{
