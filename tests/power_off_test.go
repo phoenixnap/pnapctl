@@ -89,3 +89,29 @@ func TestPowerOffServerNotFound(t *testing.T) {
 		t.Errorf("Expected '404 NOT FOUND' error. Instead got %s", poweroff.ErrorCode)
 	}
 }
+
+func TestPowerOffServerInternalServerError(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	serverID := "fake_id"
+
+	// Init mock client
+	m := mocks.NewMockWebClient(ctrl)
+
+	resp := http.Response{
+		StatusCode: 500,
+	}
+
+	client.MainClient = m
+
+	m.
+		EXPECT().
+		PerformPost("servers/"+serverID+"/actions/power-off", bytes.NewBuffer([]byte{})).
+		Return(&resp, nil)
+
+	os.Args = []string{"pnapctl", "bmc", "power-off", serverID}
+	pnapctl.Execute()
+
+	if poweroff.ErrorCode != "500" {
+		t.Errorf("Expected '500 INTERNAL SERVER ERROR' error. Instead got %s", poweroff.ErrorCode)
+	}
+}

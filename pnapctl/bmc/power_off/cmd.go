@@ -15,7 +15,7 @@ import (
 // "CLIENT" => Http Client failure error.
 // "409"    => 409 response.
 // "404"    => 404 response.
-var ErrorCode = "OK"
+var ErrorCode = "500"
 
 var P_OffCmd = &cobra.Command{
 	Use:   "power-off",
@@ -42,6 +42,9 @@ var P_OffCmd = &cobra.Command{
 		} else if response.StatusCode == 404 {
 			fmt.Println("Error: Server with ID", args[0], "not found.")
 			ErrorCode = "404"
+		} else if response.StatusCode == 500 {
+			fmt.Println("Error: Internal server error. Please try again later.")
+			ErrorCode = "500"
 		} else if response.StatusCode != 200 {
 			fmt.Println("Status:", response.Status)
 		} else {
