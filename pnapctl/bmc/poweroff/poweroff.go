@@ -48,7 +48,7 @@ var P_OffCmd = &cobra.Command{
 		} else if response.StatusCode != 200 {
 			fmt.Println("Status:", response.Status)
 		} else {
-			fmt.Println("Shutdown successfully.")
+			fmt.Println("Powered off successfully.")
 		}
 	},
 }
