@@ -4,10 +4,10 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/pnapctl"
+	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweroff"
 )
 
-var bmcCmd = &cobra.Command{
+var BmcCmd = &cobra.Command{
 	Use:   "bmc",
 	Short: "Bare Metal Cloud - Short",
 	Long:  "Bare Metal Cloud - Long",
@@ -18,5 +18,5 @@ var bmcCmd = &cobra.Command{
 }
 
 func init() {
-	pnapctl.RootCmd.AddCommand(bmcCmd)
+	BmcCmd.AddCommand(poweroff.P_OffCmd)
 }
