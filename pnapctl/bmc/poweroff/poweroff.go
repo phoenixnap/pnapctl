@@ -45,10 +45,10 @@ var P_OffCmd = &cobra.Command{
 		} else if response.StatusCode == 500 {
 			fmt.Println("Error: Internal server error. Please try again later.")
 			ErrorCode = "500"
-		} else if response.StatusCode != 200 {
-			fmt.Println("Status:", response.Status)
-		} else {
+		} else if response.StatusCode == 200 {
 			fmt.Println("Powered off successfully.")
+		} else {
+			fmt.Println("Status:", response.Status)
 		}
 	},
 }
