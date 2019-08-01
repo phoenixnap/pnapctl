@@ -15,7 +15,8 @@ import (
 // "CLIENT" => Http Client failure error.
 // "409"    => 409 response.
 // "404"    => 404 response.
-var ErrorCode = "500"
+// "??"		=> Others
+var ErrorCode = "OK"
 
 var P_OffCmd = &cobra.Command{
 	Use:   "power-off",
@@ -36,19 +37,25 @@ var P_OffCmd = &cobra.Command{
 			// Generic error with PerformPost
 			fmt.Println("Error while powering off server:", err)
 			ErrorCode = "CLIENT"
-		} else if response.StatusCode == 409 {
+			return
+		}
+
+		switch response.StatusCode {
+		case 409:
 			fmt.Println("Error: Conflict detected. Server is already powered-off.")
 			ErrorCode = "409"
-		} else if response.StatusCode == 404 {
+		case 404:
 			fmt.Println("Error: Server with ID", args[0], "not found.")
 			ErrorCode = "404"
-		} else if response.StatusCode == 500 {
+		case 500:
 			fmt.Println("Error: Internal server error. Please try again later.")
 			ErrorCode = "500"
-		} else if response.StatusCode == 200 {
+		case 200:
 			fmt.Println("Powered off successfully.")
-		} else {
+			ErrorCode = "OK"
+		default:
 			fmt.Println("Status:", response.Status)
+			ErrorCode = "??"
 		}
 	},
 }
