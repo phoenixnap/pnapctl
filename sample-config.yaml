@@ -1,0 +1,9 @@
+# =====================================================
+# Sample yaml config file; Rename and move to ~/pnap.yaml
+# The CLI currently works without a version and can be left commented
+# =====================================================
+
+#apiVersion: v1/
+#apiAuthKey: GJvrCchDbSju6J6Y97wPLWNekJVrGXn2
+hostname: https://phoenixnap-non-prod-ph-dev.apigee.net/ingress-temp/api/bmc/v1/
+timeout_secs: 10
