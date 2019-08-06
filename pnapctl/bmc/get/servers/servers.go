@@ -2,10 +2,15 @@ package servers
 
 import (
 	"fmt"
+	"io/ioutil"
+
+	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/printer"
+	"phoenixnap.com/pnap-cli/pnapctl/client"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/printer"
 )
+
+type Server struct{}
 
 var GetServersCmd = &cobra.Command{
 	Use:   "servers",
@@ -18,8 +23,22 @@ Prints a table of the most important information about the servers.`,
 # List all servers in json format.
 pnapctl get servers -o json`,
 	Run: func(cmd *cobra.Command, args []string) {
-		//do something
-		fmt.Println("The output format is currently:", printer.OutputFormat)
+		response, err := client.MainClient.PerformGet("servers")
+
+		if err != nil {
+			fmt.Println("Error while requesting servers:", err)
+			return
+		}
+
+		body, err := ioutil.ReadAll(response.Body)
+
+		if err != nil {
+			fmt.Println("Error while getting servers:", err)
+			return
+		}
+
+		serverList := []Server{}
+		printer.PrintOutput(body, &serverList)
 	},
 }
 
