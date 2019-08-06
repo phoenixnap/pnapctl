@@ -10,7 +10,27 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type Server struct{}
+type ShortServer struct {
+	ID          string `header:"id"`
+	Status      string `header:"status"`
+	Name        string `header:"name"`
+	Description string `header:"description"`
+}
+
+type LongServer struct {
+	ID          string `header:"id"`
+	Status      string `header:"status"`
+	Name        string `header:"name"`
+	Description string `header:"description"`
+	Os          string `header:"os"`
+	Type        string `header:"type"`
+	Location    string `header:"location"`
+	CPU         string `header:"cpu"`
+	RAM         string `header:"ram"`
+	Storage     string `header:"storage"`
+}
+
+var full bool
 
 var GetServersCmd = &cobra.Command{
 	Use:   "servers",
@@ -37,9 +57,14 @@ pnapctl get servers -o json`,
 			return
 		}
 
-		serverList := []Server{}
-		printer.PrintOutput(body, &serverList)
+		if full {
+			printer.PrintOutput(body, &[]LongServer{})
+		} else {
+			printer.PrintOutput(body, &[]ShortServer{})
+		}
 	},
 }
 
-func init() {}
+func init() {
+	GetServersCmd.PersistentFlags().BoolVar(&full, "full", false, "Shows all server details")
+}
