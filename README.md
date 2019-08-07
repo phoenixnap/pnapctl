@@ -1,6 +1,6 @@
 # pnap-cli
 
-To generate mocks, get [`mockgen`](https://github.com/golang/mock) and follow its instructions.
+To generate mocks, get [`mockgen`](https://github.com/golang/mock). The usual command to write is as follows: `mockgen --source=path/to/source.go --destination path/to/mock.go --package=mocks`
 
 Clone this repository in `~/go/src/phoenixnap.com/`
 
