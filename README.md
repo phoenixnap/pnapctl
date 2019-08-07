@@ -5,3 +5,7 @@ To generate mocks, get [`mockgen`](https://github.com/golang/mock) and follow it
 Clone this repository in `~/go/src/phoenixnap.com/`
 
 To test everything, run `go test ./tests/...`. To colorize the output, download `gotest` from `go get -u github.com/rakyll/gotest`.
+
+## Current folder structure
+
+Every command is its own folder, having a `.go` file that represents it. So, to check `pnapctl bmc get servers`, the directory structure would be `./pnapctl/bmc/get/servers`.
