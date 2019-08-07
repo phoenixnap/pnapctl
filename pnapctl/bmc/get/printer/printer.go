@@ -3,6 +3,7 @@ package printer
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 
@@ -14,24 +15,38 @@ var tblprinter = tableprinter.New(os.Stdout)
 
 var OutputFormat string
 
-func PrintOutput(body []byte, construct interface{}) {
+// PrintOutput prints the construct passed according to the format.
+// The first parameter is only used by the table printer to show how
+// many rows were printed. The second parameter specifies any errors.
+func PrintOutput(body []byte, construct interface{}) (int, error) {
 	fmt.Println("Printing body with the format:", OutputFormat)
 
-	json.Unmarshal(body, &construct)
+	err := json.Unmarshal(body, &construct)
+
+	if err != nil {
+		return 0, err
+	}
 
 	if OutputFormat == "json" {
 		printJSON(body)
+		return -1, nil
 	} else if OutputFormat == "yaml" {
-		printYAML(construct)
+		err := printYAML(construct)
+		return -1, err
 	} else {
 		// default to table
-		printTable(construct)
+		rows := printTable(construct)
+		if rows == -1 {
+			return -1, errors.New("table-print-failed")
+		}
+		return rows, nil
 	}
 }
 
-func printYAML(body interface{}) {
-	b, _ := yaml.Marshal(body)
+func printYAML(body interface{}) error {
+	b, err := yaml.Marshal(body)
 	fmt.Println(string(b))
+	return err
 }
 
 func printJSON(body []byte) {
@@ -40,6 +55,6 @@ func printJSON(body []byte) {
 	fmt.Println(string(dat.Bytes()))
 }
 
-func printTable(body interface{}) {
-	tblprinter.Print(body)
+func printTable(body interface{}) int {
+	return tblprinter.Print(body)
 }

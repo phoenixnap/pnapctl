@@ -1,6 +1,7 @@
 package servers
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 
@@ -42,26 +43,33 @@ Prints a table of the most important information about the servers.`,
 	Example: `
 # List all servers in json format.
 pnapctl get servers -o json`,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		response, err := client.MainClient.PerformGet("servers")
 
 		if err != nil {
 			fmt.Println("Error while requesting servers:", err)
-			return
+			return errors.New("get-fail")
 		}
 
 		body, err := ioutil.ReadAll(response.Body)
 
 		if err != nil {
-			fmt.Println("Error while getting servers:", err)
-			return
+			fmt.Println("Error while reading servers from response:", err)
+			return errors.New("read-fail")
 		}
 
 		if full {
-			printer.PrintOutput(body, &[]LongServer{})
+			err := printer.PrintOutput(body, &[]LongServer{})
 		} else {
-			printer.PrintOutput(body, &[]ShortServer{})
+			err := printer.PrintOutput(body, &[]ShortServer{})
 		}
+
+		if err != nil {
+			fmt.Println("Error while printing output:", err)
+			return err
+		}
+
+		return nil
 	},
 }
 
