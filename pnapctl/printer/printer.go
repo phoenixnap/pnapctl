@@ -11,16 +11,27 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var tblprinter = tableprinter.New(os.Stdout)
-
+var MainPrinter = NewBodyPrinter()
 var OutputFormat string
+
+type Printer interface {
+	PrintOutput(body []byte, construct interface{}) (int, error)
+}
+
+type BodyPrinter struct {
+	tableprinter *tableprinter.Printer
+}
+
+func NewBodyPrinter() Printer {
+	return BodyPrinter{
+		tableprinter: tableprinter.New(os.Stdout),
+	}
+}
 
 // PrintOutput prints the construct passed according to the format.
 // The first parameter is only used by the table printer to show how
 // many rows were printed. The second parameter specifies any errors.
-func PrintOutput(body []byte, construct interface{}) (int, error) {
-	fmt.Println("Printing body with the format:", OutputFormat)
-
+func (m BodyPrinter) PrintOutput(body []byte, construct interface{}) (int, error) {
 	err := json.Unmarshal(body, &construct)
 
 	if err != nil {
@@ -35,7 +46,7 @@ func PrintOutput(body []byte, construct interface{}) (int, error) {
 		return -1, err
 	} else {
 		// default to table
-		rows := printTable(construct)
+		rows := printTable(construct, m.tableprinter)
 		if rows == -1 {
 			return -1, errors.New("table-print-failed")
 		}
@@ -55,6 +66,6 @@ func printJSON(body []byte) {
 	fmt.Println(string(dat.Bytes()))
 }
 
-func printTable(body interface{}) int {
+func printTable(body interface{}, tblprinter *tableprinter.Printer) int {
 	return tblprinter.Print(body)
 }

@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/printer"
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/servers"
+	"phoenixnap.com/pnap-cli/pnapctl/printer"
 )
 
 var GetCmd = &cobra.Command{

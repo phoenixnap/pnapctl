@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/printer"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
+	"phoenixnap.com/pnap-cli/pnapctl/printer"
 
 	"github.com/spf13/cobra"
 )
@@ -59,9 +59,9 @@ pnapctl get servers -o json`,
 		}
 
 		if full {
-			err := printer.PrintOutput(body, &[]LongServer{})
+			_, err = printer.MainPrinter.PrintOutput(body, &[]LongServer{})
 		} else {
-			err := printer.PrintOutput(body, &[]ShortServer{})
+			_, err = printer.MainPrinter.PrintOutput(body, &[]ShortServer{})
 		}
 
 		if err != nil {
