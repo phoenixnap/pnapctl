@@ -5,11 +5,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"phoenixnap.com/pnap-cli/pnapctl"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
 	mocks "phoenixnap.com/pnap-cli/pnapctl/mocks"
 	"phoenixnap.com/pnap-cli/pnapctl/printer"
@@ -57,8 +55,11 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 		PrintOutput(data, &[]servers.ShortServer{}). // should print short server
 		Return(3, nil)
 
-	os.Args = []string{"pnapctl", "bmc", "get", "servers"}
-	pnapctl.Execute()
+	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+
+	if err != nil {
+		test_framework.Error("Expected no error, found:", err)
+	}
 }
 
 func TestGetAllServersLongSuccess(test_framework *testing.T) {
@@ -100,6 +101,12 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 		PrintOutput(data, &[]servers.LongServer{}). // should print short server
 		Return(3, nil)
 
-	os.Args = []string{"pnapctl", "bmc", "get", "servers", "--full"}
-	pnapctl.Execute()
+	// to display full output
+	servers.Full = true
+
+	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+
+	if err != nil {
+		test_framework.Error("Expected no error, found:", err)
+	}
 }

@@ -31,7 +31,7 @@ type LongServer struct {
 	Storage     string `header:"storage"`
 }
 
-var full bool
+var Full bool
 
 var GetServersCmd = &cobra.Command{
 	Use:   "servers",
@@ -58,7 +58,7 @@ pnapctl get servers -o json`,
 			return errors.New("read-fail")
 		}
 
-		if full {
+		if Full {
 			_, err = printer.MainPrinter.PrintOutput(body, &[]LongServer{})
 		} else {
 			_, err = printer.MainPrinter.PrintOutput(body, &[]ShortServer{})
@@ -74,5 +74,5 @@ pnapctl get servers -o json`,
 }
 
 func init() {
-	GetServersCmd.PersistentFlags().BoolVar(&full, "full", false, "Shows all server details")
+	GetServersCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
 }
