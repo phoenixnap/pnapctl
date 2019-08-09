@@ -16,20 +16,20 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func TestPowerOnServerSuccess(t *testing.T) {
-	ctrl := gomock.NewController(t)
+func TestPowerOnServerSuccess(test_framework *testing.T) {
+	ctrl := gomock.NewController(test_framework)
 	serverID := "fake_id"
 
 	// Init mock client
-	m := mocks.NewMockWebClient(ctrl)
+	mock_client := mocks.NewMockWebClient(ctrl)
 
 	resp := http.Response{
 		StatusCode: 200,
 	}
 
-	client.MainClient = m
+	client.MainClient = mock_client
 
-	m.
+	mock_client.
 		EXPECT().
 		PerformPost("servers/"+serverID+"/actions/power-on", bytes.NewBuffer([]byte{})).
 		Return(&resp, nil)
@@ -38,80 +38,77 @@ func TestPowerOnServerSuccess(t *testing.T) {
 	pnapctl.Execute()
 }
 
-func TestPowerOnServerConflict(t *testing.T) {
-	ctrl := gomock.NewController(t)
+func TestPowerOnServerConflict(test_framework *testing.T) {
+	ctrl := gomock.NewController(test_framework)
 	serverID := "fake_id"
 
 	// Init mock client
-	m := mocks.NewMockWebClient(ctrl)
+	mock_client := mocks.NewMockWebClient(ctrl)
 
 	resp := http.Response{
 		StatusCode: 409,
 	}
 
-	client.MainClient = m
+	client.MainClient = mock_client
 
-	m.
+	mock_client.
 		EXPECT().
 		PerformPost("servers/"+serverID+"/actions/power-on", bytes.NewBuffer([]byte{})).
 		Return(&resp, nil)
 
-	os.Args = []string{"pnapctl", "bmc", "power-on", serverID}
-	pnapctl.Execute()
+	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{serverID})
 
-	if poweron.ErrorCode != "409" {
-		t.Errorf("Expected '409 CONFLICT' error. Instead got %s", poweron.ErrorCode)
+	if err.Error() != "409" {
+		test_framework.Errorf("Expected '409 CONFLICT' error. Instead got %s", err.Error())
 	}
 }
 
-func TestPowerOnServerNotFound(t *testing.T) {
-	ctrl := gomock.NewController(t)
+func TestPowerOnServerNotFound(test_framework *testing.T) {
+	ctrl := gomock.NewController(test_framework)
 	serverID := "fake_id"
 
 	// Init mock client
-	m := mocks.NewMockWebClient(ctrl)
+	mock_client := mocks.NewMockWebClient(ctrl)
 
 	resp := http.Response{
 		StatusCode: 404,
 	}
 
-	client.MainClient = m
+	client.MainClient = mock_client
 
-	m.
+	mock_client.
 		EXPECT().
 		PerformPost("servers/"+serverID+"/actions/power-on", bytes.NewBuffer([]byte{})).
 		Return(&resp, nil)
 
-	os.Args = []string{"pnapctl", "bmc", "power-on", serverID}
-	pnapctl.Execute()
+	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{serverID})
 
-	if poweron.ErrorCode != "404" {
-		t.Errorf("Expected '404 NOT FOUND' error. Instead got %s", poweron.ErrorCode)
+	if err.Error() != "404" {
+		test_framework.Errorf("Expected '404 NOT FOUND' error. Instead got %s", err.Error())
 	}
 }
 
-func TestPowerOnServerInternalServerError(t *testing.T) {
-	ctrl := gomock.NewController(t)
+func TestPowerOnServerInternalServerError(test_framework *testing.T) {
+	ctrl := gomock.NewController(test_framework)
 	serverID := "fake_id"
 
 	// Init mock client
-	m := mocks.NewMockWebClient(ctrl)
+	mock_client := mocks.NewMockWebClient(ctrl)
 
 	resp := http.Response{
 		StatusCode: 500,
 	}
 
-	client.MainClient = m
+	client.MainClient = mock_client
 
-	m.
+	mock_client.
 		EXPECT().
 		PerformPost("servers/"+serverID+"/actions/power-on", bytes.NewBuffer([]byte{})).
 		Return(&resp, nil)
 
-	os.Args = []string{"pnapctl", "bmc", "power-on", serverID}
-	pnapctl.Execute()
+	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{serverID})
 
-	if poweron.ErrorCode != "500" {
-		t.Errorf("Expected '500 INTERNAL SERVER ERROR' error. Instead got %s", poweron.ErrorCode)
+	if err.Error() != "500" {
+		test_framework.Errorf("Expected '500 INTERNAL SERVER ERROR' error. Instead got %s", err.Error())
 	}
 }
