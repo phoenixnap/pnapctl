@@ -39,7 +39,8 @@ var GetServersCmd = &cobra.Command{
 	Long: `
 Retrieve one or more servers.
 
-Prints a table of the most important information about the servers.`,
+Prints the most important information about the servers.
+The format they are printed in is a table by default.`,
 	Example: `
 # List all servers in json format.
 pnapctl get servers -o json`,
