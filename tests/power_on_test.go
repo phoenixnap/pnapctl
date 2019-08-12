@@ -17,30 +17,22 @@ const url = "servers/" + serverID + "/actions/power-on"
 
 func TestPowerOnServerSuccess(test_framework *testing.T) {
 	// Init mock client
-	mock_client := mocks.NewMockWebClient(ctrl)
+	PrepareMockClient(test_framework).
+		PerformPost(url, body).
+		Return(WithResponse(200, nil), nil)
 
-	resp := http.Response{
-		StatusCode: 200,
+	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{serverID})
+
+	if err != nil {
+		test_framework.Errorf("Expected no error. Instead got %s", err.Error())
 	}
 }
 
 func TestPowerOnServerConflict(test_framework *testing.T) {
-	ctrl := gomock.NewController(test_framework)
-	serverID := "fake_id"
-
-	// Init mock client
-	mock_client := mocks.NewMockWebClient(ctrl)
-
-	resp := http.Response{
-		StatusCode: 409,
-	}
-
-	client.MainClient = mock_client
-
-	mock_client.
-		EXPECT().
-		PerformPost("servers/"+serverID+"/actions/power-on", bytes.NewBuffer([]byte{})).
-		Return(&resp, nil)
+	// init mock client
+	PrepareMockClient(test_framework).
+		PerformPost(url, body).
+		Return(WithResponse(409, nil), nil)
 
 	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{serverID})
 
@@ -50,22 +42,10 @@ func TestPowerOnServerConflict(test_framework *testing.T) {
 }
 
 func TestPowerOnServerNotFound(test_framework *testing.T) {
-	ctrl := gomock.NewController(test_framework)
-	serverID := "fake_id"
-
-	// Init mock client
-	mock_client := mocks.NewMockWebClient(ctrl)
-
-	resp := http.Response{
-		StatusCode: 404,
-	}
-
-	client.MainClient = mock_client
-
-	mock_client.
-		EXPECT().
-		PerformPost("servers/"+serverID+"/actions/power-on", bytes.NewBuffer([]byte{})).
-		Return(&resp, nil)
+	// init
+	PrepareMockClient(test_framework).
+		PerformPost(url, body).
+		Return(WithResponse(404, nil), nil)
 
 	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{serverID})
 
@@ -75,22 +55,9 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 }
 
 func TestPowerOnServerInternalServerError(test_framework *testing.T) {
-	ctrl := gomock.NewController(test_framework)
-	serverID := "fake_id"
-
-	// Init mock client
-	mock_client := mocks.NewMockWebClient(ctrl)
-
-	resp := http.Response{
-		StatusCode: 500,
-	}
-
-	client.MainClient = mock_client
-
-	mock_client.
-		EXPECT().
-		PerformPost("servers/"+serverID+"/actions/power-on", bytes.NewBuffer([]byte{})).
-		Return(&resp, nil)
+	PrepareMockClient(test_framework).
+		PerformPost(url, body).
+		Return(WithResponse(500, nil), nil)
 
 	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{serverID})
 
