@@ -3,10 +3,7 @@ package tests
 import (
 	"bytes"
 	"net/http"
-	"os"
 	"testing"
-
-	"phoenixnap.com/pnap-cli/pnapctl"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweron"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
@@ -34,8 +31,10 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 		PerformPost("servers/"+serverID+"/actions/power-on", bytes.NewBuffer([]byte{})).
 		Return(&resp, nil)
 
-	os.Args = []string{"pnapctl", "bmc", "power-on", serverID}
-	pnapctl.Execute()
+	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{serverID})
+	if err != nil {
+		test_framework.Errorf("Error detected: %s", err)
+	}
 }
 
 func TestPowerOnServerConflict(test_framework *testing.T) {
