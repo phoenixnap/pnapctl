@@ -10,6 +10,11 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/mocks"
 )
 
+var Body io.Writer
+var URL string
+
+const SERVERID = "mock_id"
+
 func PrepareMockClient(test_framework *testing.T) *mocks.MockWebClientMockRecorder {
 	ctrl := gomock.NewController(test_framework)
 	mockClient := mocks.NewMockWebClient(ctrl)
