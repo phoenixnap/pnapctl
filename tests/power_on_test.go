@@ -7,7 +7,6 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweron"
-	// "phoenixnap.com/pnap-cli/pnapctl/mocks"
 )
 
 func TestPowerOnSetup(t *testing.T) {
@@ -16,7 +15,7 @@ func TestPowerOnSetup(t *testing.T) {
 }
 
 func TestPowerOnServerSuccess(test_framework *testing.T) {
-	// Init mock client
+	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
 		Return(WithResponse(200, nil), nil)
@@ -29,7 +28,7 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 }
 
 func TestPowerOnServerConflict(test_framework *testing.T) {
-	// init mock client
+	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
 		Return(WithResponse(409, nil), nil)
@@ -42,7 +41,7 @@ func TestPowerOnServerConflict(test_framework *testing.T) {
 }
 
 func TestPowerOnServerNotFound(test_framework *testing.T) {
-	// init
+	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
 		Return(WithResponse(404, nil), nil)
@@ -55,6 +54,7 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 }
 
 func TestPowerOnServerInternalServerError(test_framework *testing.T) {
+	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
 		Return(WithResponse(500, nil), nil)

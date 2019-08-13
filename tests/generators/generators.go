@@ -16,6 +16,14 @@ func randSeq(n int) string {
 	return string(b)
 }
 
+func GenerateServers(n int) []servers.LongServer {
+	var serverlist []servers.LongServer
+	for i := 0; i < n; i++ {
+		serverlist = append(serverlist, GenerateServer())
+	}
+	return serverlist
+}
+
 func GenerateServer() servers.LongServer {
 	return servers.LongServer{
 		ID:          randSeq(10),

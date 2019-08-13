@@ -1,7 +1,10 @@
 package mockhelp
 
 import (
+	"bytes"
+	"encoding/json"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"testing"
 
@@ -29,4 +32,10 @@ func WithResponse(status int, body io.ReadCloser) *http.Response {
 		StatusCode: status,
 		Body:       body,
 	}
+}
+
+func WithBody(body interface{}) io.ReadCloser {
+	data, _ := json.Marshal(body)
+
+	return ioutil.NopCloser(bytes.NewBuffer(data))
 }
