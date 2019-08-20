@@ -6,7 +6,8 @@
 2. Clone this repository in `$GOPATH/src/phoenixnap.com`. *(`$GOPATH` is normally `~/go/src`)*
 3. Go into the `pnap-cli` folder.
 4. Run `go get` to get all dependencies.
-5. Run `go build` to build, or `go run main.go` to run.
+5. Get [`gomock`](https://github.com/golang/mock)
+6. Run `go build` to build, or `go run main.go` to run.
 
 The executable generated will have the same name as the folder. This means that `go build` in this repository with its default name will produce an executable called `pnap-cli`. To change its name, use `go build -o <name>`
 
@@ -14,7 +15,7 @@ The executable generated will have the same name as the folder. This means that 
 
 ## Mocks
 
-To generate mocks, get [`mockgen`](https://github.com/golang/mock) and follow its instructions.
+To generate mocks, get [`mockgen`](https://github.com/golang/mock), the mock generation tool by `gomock`.
 
 Note that *only interfaces can be mocked.* An example can be seen in [`Client`](./pnapctl/client/client.go), and [`Printer`](./pnapctl/printer/printer.go).
 
