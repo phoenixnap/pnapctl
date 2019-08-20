@@ -6,7 +6,9 @@
 2. Clone this repository in `$GOPATH/src/phoenixnap.com`. *(`$GOPATH` is normally `~/go/src`)*
 3. Go into the `pnap-cli` folder.
 4. Run `go get` to get all dependencies.
-5. Run `go build` to build, or `go run` to run.
+5. Run `go build` to build, or `go run main.go` to run.
+
+The executable generated will have the same name as the folder. This means that `go build` in this repository with its default name will produce an executable called `pnap-cli`. To change its name, use `go build -o <name>`
 
 **Note:** To run all tests, run `go test ./tests/...`. If you'd like a colourised output *(success as green, fail as red)* get `gotest` using `go get -u github.com/rakyll/gotest` and run `gotest ./tests/...` instead.
 
