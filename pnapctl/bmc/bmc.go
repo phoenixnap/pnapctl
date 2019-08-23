@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/get"
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweroff"
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweron"
+	"phoenixnap.com/pnap-cli/pnapctl/bmc/shutdown"
 )
 
 var BmcCmd = &cobra.Command{
@@ -23,4 +24,5 @@ func init() {
 	BmcCmd.AddCommand(poweroff.P_OffCmd)
 	BmcCmd.AddCommand(get.GetCmd)
 	BmcCmd.AddCommand(poweron.P_OnCmd)
+	BmcCmd.AddCommand(shutdown.ShutdownCmd)
 }
