@@ -34,8 +34,9 @@ type LongServer struct {
 var Full bool
 
 var GetServersCmd = &cobra.Command{
-	Use:   "servers",
-	Short: "Retrieve one or more servers.",
+	Use:     "servers",
+	Short:   "Retrieve one or more servers.",
+	Aliases: []string{"server"},
 	Long: `
 Retrieve one or more servers.
 
