@@ -45,33 +45,69 @@ The format they are printed in is a table by default.`,
 # List all servers in json format.
 pnapctl get servers -o json`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		response, err := client.MainClient.PerformGet("servers")
-
-		if err != nil {
-			fmt.Println("Error while requesting servers:", err)
-			return errors.New("get-fail")
+		if len(args) == 1 {
+			return getServer(args[0])
 		}
-
-		body, err := ioutil.ReadAll(response.Body)
-
-		if err != nil {
-			fmt.Println("Error while reading servers from response:", err)
-			return errors.New("read-fail")
-		}
-
-		if Full {
-			_, err = printer.MainPrinter.PrintOutput(body, &[]LongServer{})
-		} else {
-			_, err = printer.MainPrinter.PrintOutput(body, &[]ShortServer{})
-		}
-
-		if err != nil {
-			fmt.Println("Error while printing output:", err)
-			return err
-		}
-
-		return nil
+		return getAllServers()
 	},
+}
+
+func getServer(serverID string) error {
+	response, err := client.MainClient.PerformGet("servers/" + serverID)
+
+	if err != nil {
+		fmt.Println("Error while requesting a server:", err)
+		return errors.New("get-fail")
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+
+	if err != nil {
+		fmt.Println("Error while reading server from response:", err)
+		return errors.New("read-fail")
+	}
+
+	if Full {
+		_, err = printer.MainPrinter.PrintOutput(body, &LongServer{})
+	} else {
+		_, err = printer.MainPrinter.PrintOutput(body, &ShortServer{})
+	}
+
+	if err != nil {
+		fmt.Println("Error while printing output:", err)
+		return err
+	}
+
+	return nil
+}
+
+func getAllServers() error {
+	response, err := client.MainClient.PerformGet("servers")
+
+	if err != nil {
+		fmt.Println("Error while requesting servers:", err)
+		return errors.New("get-fail")
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+
+	if err != nil {
+		fmt.Println("Error while reading servers from response:", err)
+		return errors.New("read-fail")
+	}
+
+	if Full {
+		_, err = printer.MainPrinter.PrintOutput(body, &[]LongServer{})
+	} else {
+		_, err = printer.MainPrinter.PrintOutput(body, &[]ShortServer{})
+	}
+
+	if err != nil {
+		fmt.Println("Error while printing output:", err)
+		return err
+	}
+
+	return nil
 }
 
 func init() {
