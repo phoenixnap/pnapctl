@@ -32,22 +32,30 @@ type LongServer struct {
 }
 
 var Full bool
+var ID string
 
 var GetServersCmd = &cobra.Command{
-	Use:     "servers",
-	Short:   "Retrieve one or more servers.",
-	Aliases: []string{"server"},
+	Use:           "servers",
+	Short:         "Retrieve one or all servers.",
+	Aliases:       []string{"server"},
+	SilenceErrors: true,
+	SilenceUsage:  true,
 	Long: `
-Retrieve one or more servers.
+Retrieve one or all servers.
 
 Prints the most important information about the servers.
-The format they are printed in is a table by default.`,
+The format they are printed in is a table by default.
+
+To print a single server, an ID needs to be passed as an argument.`,
 	Example: `
 # List all servers in json format.
-pnapctl get servers -o json`,
+pnapctl get servers -o json
+
+# List a single server in yaml format.
+pnapctl get servers --id=NDIid939dfkoDd -o yaml`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if len(args) == 1 {
-			return getServer(args[0])
+		if ID != "" {
+			return getServer(ID)
 		}
 		return getAllServers()
 	},
@@ -59,6 +67,11 @@ func getServer(serverID string) error {
 	if err != nil {
 		fmt.Println("Error while requesting a server:", err)
 		return errors.New("get-fail")
+	}
+
+	if response.StatusCode == 404 {
+		fmt.Println("A server with the ID", ID, "does not exist.")
+		return errors.New("404")
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
@@ -113,4 +126,5 @@ func getAllServers() error {
 
 func init() {
 	GetServersCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
+	GetServersCmd.PersistentFlags().StringVar(&ID, "id", "", "The ID of the server to retrieve")
 }
