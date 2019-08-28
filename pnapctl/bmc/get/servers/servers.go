@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 
 	"phoenixnap.com/pnap-cli/pnapctl/client"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	"phoenixnap.com/pnap-cli/pnapctl/printer"
 
 	"github.com/spf13/cobra"
@@ -50,6 +51,8 @@ pnapctl get servers -o json`,
 		if err != nil {
 			fmt.Println("Error while requesting servers:", err)
 			return errors.New("get-fail")
+		} else if response.StatusCode != 200 {
+			return ctlerrors.Result().UseResponse(response)
 		}
 
 		body, err := ioutil.ReadAll(response.Body)

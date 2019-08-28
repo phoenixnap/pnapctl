@@ -44,21 +44,6 @@ func (b BMCError) String() string {
 	}
 }
 
-func TryUnmarshal(body []byte, construct *interface{}) error {
-	err := json.Unmarshal(body, &construct)
-
-	if err == nil {
-		return nil
-	}
-
-	err_b := json.Unmarshal(body, &BMCError{})
-	if err_b != nil {
-		return errors.New("body-is-error")
-	} else {
-		return err
-	}
-}
-
 func (r result) UseResponse(response *http.Response) error {
 	statusCode := response.StatusCode
 
@@ -79,6 +64,6 @@ func (r result) UseResponse(response *http.Response) error {
 	bmcErr := BMCError{}
 	json.Unmarshal(body, &bmcErr)
 
-	fmt.Println(bmcErr)
+	fmt.Println("Error:", bmcErr)
 	return errors.New(string(statusCode))
 }

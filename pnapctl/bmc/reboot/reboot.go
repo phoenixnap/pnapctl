@@ -7,6 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
 var RebootCmd = &cobra.Command{
@@ -29,25 +30,10 @@ var RebootCmd = &cobra.Command{
 			return errors.New("client-fail")
 		}
 
-		switch response.StatusCode {
-		case 409:
-			fmt.Println("Error: Conflict detected. Server can't be rebooted as it is powered off.")
-			return errors.New("409")
-		case 404:
-			fmt.Println("Error: Server with ID", args[0], "not found.")
-			return errors.New("404")
-		case 500:
-			fmt.Println("Error: Internal server error. Please try again later.")
-			return errors.New("500")
-		case 200:
-			fmt.Println("Rebooted successfully.")
-			return nil
-		default:
-			fmt.Println("Status:", response.Status)
-			return errors.New("p-off-generic")
-		}
-
-		return nil
+		return ctlerrors.Result().
+			IfOk("Rebooted successfully").
+			IfNotFound("Error: Server with ID " + args[0] + " not found.").
+			UseResponse(response)
 	},
 }
 
