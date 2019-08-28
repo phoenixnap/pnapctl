@@ -43,7 +43,7 @@ var GetServersCmd = &cobra.Command{
 	Long: `
 Retrieve one or all servers.
 
-Prints the most important information about the servers.
+Prints brief or detailed information about the servers.
 The format they are printed in is a table by default.
 
 To print a single server, an ID needs to be passed as an argument.`,
