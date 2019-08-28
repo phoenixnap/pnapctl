@@ -55,14 +55,22 @@ func (r result) UseResponse(response *http.Response) error {
 		return errors.New("404")
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
-
-	if err != nil {
+	if response.Body == nil {
 		return errors.New("no-body-and-not-400-or-200")
 	}
 
+	body, err := ioutil.ReadAll(response.Body)
+
+	if err != nil {
+		return err
+	}
+
 	bmcErr := BMCError{}
-	json.Unmarshal(body, &bmcErr)
+	err = json.Unmarshal(body, &bmcErr)
+
+	if err != nil {
+		return err
+	}
 
 	fmt.Println("Error:", bmcErr)
 	return errors.New(string(statusCode))
