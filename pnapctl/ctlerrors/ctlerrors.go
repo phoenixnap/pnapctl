@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -73,5 +74,5 @@ func (r result) UseResponse(response *http.Response) error {
 	}
 
 	fmt.Println("Error:", bmcErr)
-	return errors.New(string(statusCode))
+	return errors.New(strconv.Itoa(statusCode))
 }

@@ -7,6 +7,7 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweron"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
 func TestPowerOnSetup(t *testing.T) {
@@ -27,19 +28,6 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 	}
 }
 
-func TestPowerOnServerConflict(test_framework *testing.T) {
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(409, nil), nil)
-
-	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{SERVERID})
-
-	if err.Error() != "409" {
-		test_framework.Errorf("Expected '409 CONFLICT' error. Instead got %s", err.Error())
-	}
-}
-
 func TestPowerOnServerNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
@@ -53,11 +41,16 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 	}
 }
 
-func TestPowerOnServerInternalServerError(test_framework *testing.T) {
+func TestPowerOnServerError(test_framework *testing.T) {
+	bmcErr := ctlerrors.BMCError{
+		Message:          "Something went wrong!",
+		ValidationErrors: []string{},
+	}
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(500, nil), nil)
+		Return(WithResponse(500, WithBody(bmcErr)), nil)
 
 	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{SERVERID})
 
