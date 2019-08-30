@@ -10,9 +10,11 @@ import (
 )
 
 var P_OnCmd = &cobra.Command{
-	Use:   "power-on",
-	Short: "Powers on a specific server.",
-	Long:  "Powers on a specific server.",
+	Use:           "power-on",
+	Short:         "Powers on a specific server.",
+	Long:          "Powers on a specific server.",
+	SilenceUsage:  true,
+	SilenceErrors: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// If more than one argument is passed, report error and panic.
 		if len(args) != 1 {
