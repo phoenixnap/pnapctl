@@ -8,6 +8,7 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweroff"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
 func TestPowerOffSetup(t *testing.T) {
@@ -30,19 +31,6 @@ func TestPowerOffServerSuccess(test_framework *testing.T) {
 	}
 }
 
-func TestPowerOffServerConflict(test_framework *testing.T) {
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(409, nil), nil)
-
-	// Run command
-	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
-	if err.Error() != "409" {
-		test_framework.Errorf("Expected '409 CONFLICT' error. Instead got %s", err)
-	}
-}
-
 func TestPowerOffServerNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
@@ -56,11 +44,16 @@ func TestPowerOffServerNotFound(test_framework *testing.T) {
 	}
 }
 
-func TestPowerOffServerInternalServerError(test_framework *testing.T) {
+func TestPowerOffServerError(test_framework *testing.T) {
+	bmcErr := ctlerrors.BMCError{
+		Message:          "Something went wrong!",
+		ValidationErrors: []string{},
+	}
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(500, nil), nil)
+		Return(WithResponse(500, WithBody(bmcErr)), nil)
 
 	// Run command
 	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})

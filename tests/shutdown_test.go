@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/shutdown"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 )
 
@@ -27,19 +28,6 @@ func TestShutdownServerSuccess(test_framework *testing.T) {
 	}
 }
 
-func TestShutdownServerConflict(test_framework *testing.T) {
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(409, nil), nil)
-
-	// Run command
-	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
-	if err.Error() != "409" {
-		test_framework.Errorf("Expected '409 CONFLICT' error. Instead got %s", err)
-	}
-}
-
 func TestShutdownServerNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
@@ -54,10 +42,14 @@ func TestShutdownServerNotFound(test_framework *testing.T) {
 }
 
 func TestShutdownServerInternalServerError(test_framework *testing.T) {
+	bmcErr := ctlerrors.BMCError{
+		Message:          "Something went wrong!",
+		ValidationErrors: []string{},
+	}
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(500, nil), nil)
+		Return(WithResponse(500, WithBody(bmcErr)), nil)
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})

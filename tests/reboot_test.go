@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/reboot"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 )
 
@@ -58,23 +59,15 @@ func TestRebootServerNotFoundFail(test_framework *testing.T) {
 	}
 }
 
-func TestRebootServerConflictFail(test_framework *testing.T) {
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(409, nil), nil)
-
-	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
-	if err.Error() != "409" {
-		test_framework.Errorf("Error: Expected conflict error, found %s", err)
-	}
-}
-
 func TestRebootServerInternalServerErrorFail(test_framework *testing.T) {
+	bmcErr := ctlerrors.BMCError{
+		Message:          "Something went wrong!",
+		ValidationErrors: []string{},
+	}
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(500, nil), nil)
+		Return(WithResponse(500, WithBody(bmcErr)), nil)
 
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 	if err.Error() != "500" {
