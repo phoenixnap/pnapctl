@@ -41,7 +41,7 @@ func TestShutdownServerNotFound(test_framework *testing.T) {
 	}
 }
 
-func TestShutdownServerInternalServerError(test_framework *testing.T) {
+func TestShutdownServerError(test_framework *testing.T) {
 	bmcErr := ctlerrors.BMCError{
 		Message:          "Something went wrong!",
 		ValidationErrors: []string{},

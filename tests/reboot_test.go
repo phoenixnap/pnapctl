@@ -59,7 +59,7 @@ func TestRebootServerNotFoundFail(test_framework *testing.T) {
 	}
 }
 
-func TestRebootServerInternalServerErrorFail(test_framework *testing.T) {
+func TestRebootServerErrorFail(test_framework *testing.T) {
 	bmcErr := ctlerrors.BMCError{
 		Message:          "Something went wrong!",
 		ValidationErrors: []string{},
