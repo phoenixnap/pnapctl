@@ -76,6 +76,16 @@ func getServer(serverID string) error {
 		return errors.New("404")
 	}
 
+	err = ctlerrors.
+		Result().
+		IfOk("").
+		IfNotFound("A server with the ID " + ID + " does not exist.").
+		UseResponse(response)
+
+	if err != nil {
+		return err
+	}
+
 	return performServerGetRequest(response.Body, false)
 }
 
@@ -85,6 +95,12 @@ func getAllServers() error {
 	if err != nil {
 		fmt.Println("Error while requesting servers:", err)
 		return errors.New("get-fail")
+	}
+
+	err = ctlerrors.Result().IfOk("").UseResponse(response)
+
+	if err != nil {
+		return err
 	}
 
 	return performServerGetRequest(response.Body, true)
