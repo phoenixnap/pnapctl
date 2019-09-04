@@ -3,6 +3,7 @@ package servers
 import (
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 
 	"phoenixnap.com/pnap-cli/pnapctl/client"
@@ -74,25 +75,7 @@ func getServer(serverID string) error {
 		return errors.New("404")
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
-
-	if err != nil {
-		fmt.Println("Error while reading server from response:", err)
-		return errors.New("read-fail")
-	}
-
-	if Full {
-		_, err = printer.MainPrinter.PrintOutput(body, &LongServer{})
-	} else {
-		_, err = printer.MainPrinter.PrintOutput(body, &ShortServer{})
-	}
-
-	if err != nil {
-		fmt.Println("Error while printing output:", err)
-		return err
-	}
-
-	return nil
+	return performServerGetRequest(response.Body, false)
 }
 
 func getAllServers() error {
@@ -103,17 +86,37 @@ func getAllServers() error {
 		return errors.New("get-fail")
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	return performServerGetRequest(response.Body, true)
+}
+
+func performServerGetRequest(responseBody io.Reader, multiple bool) error {
+	body, err := ioutil.ReadAll(responseBody)
+
+	var resourcename string
+
+	if multiple {
+		resourcename = "servers"
+	} else {
+		resourcename = "server"
+	}
 
 	if err != nil {
-		fmt.Println("Error while reading servers from response:", err)
+		fmt.Println("Error while reading", resourcename, "from response:", err)
 		return errors.New("read-fail")
 	}
 
 	if Full {
-		_, err = printer.MainPrinter.PrintOutput(body, &[]LongServer{})
+		if multiple {
+			_, err = printer.MainPrinter.PrintOutput(body, &[]LongServer{})
+		} else {
+			_, err = printer.MainPrinter.PrintOutput(body, &LongServer{})
+		}
 	} else {
-		_, err = printer.MainPrinter.PrintOutput(body, &[]ShortServer{})
+		if multiple {
+			_, err = printer.MainPrinter.PrintOutput(body, &[]ShortServer{})
+		} else {
+			_, err = printer.MainPrinter.PrintOutput(body, &ShortServer{})
+		}
 	}
 
 	if err != nil {
