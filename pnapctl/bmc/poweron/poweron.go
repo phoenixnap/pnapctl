@@ -2,8 +2,6 @@ package poweron
 
 import (
 	"bytes"
-	"errors"
-	"fmt"
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
@@ -11,16 +9,14 @@ import (
 )
 
 var P_OnCmd = &cobra.Command{
-	Use:           "power-on",
-	Short:         "Powers on a specific server.",
-	Long:          "Powers on a specific server.",
-	SilenceUsage:  true,
-	SilenceErrors: true,
+	Use:          "power-on",
+	Short:        "Powers on a specific server.",
+	Long:         "Powers on a specific server.",
+	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// If more than one argument is passed, report error and panic.
 		if len(args) != 1 {
-			fmt.Println("only 1 argument can be passed for 'power-on':", len(args), "passed")
-			return errors.New("args")
+			return ctlerrors.InvalidNumberOfArgs(1, len(args), "power-on")
 		}
 
 		var resource = "servers/" + args[0] + "/actions/power-on"
@@ -28,8 +24,7 @@ var P_OnCmd = &cobra.Command{
 
 		if err != nil {
 			// Generic error with PerformPost
-			fmt.Println("Error while powering on server:", err)
-			return errors.New("client-fail")
+			return ctlerrors.PowerOnServerGenericError(err)
 		}
 
 		return ctlerrors.Result().

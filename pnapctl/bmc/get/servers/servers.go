@@ -1,8 +1,6 @@
 package servers
 
 import (
-	"errors"
-	"fmt"
 	"io"
 	"io/ioutil"
 
@@ -37,11 +35,10 @@ var Full bool
 var ID string
 
 var GetServersCmd = &cobra.Command{
-	Use:           "servers",
-	Short:         "Retrieve one or all servers.",
-	Aliases:       []string{"server"},
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Use:          "servers",
+	Short:        "Retrieve one or all servers.",
+	Aliases:      []string{"server"},
+	SilenceUsage: true,
 	Long: `
 Retrieve one or all servers.
 
@@ -67,13 +64,7 @@ func getServer(serverID string) error {
 	response, err := client.MainClient.PerformGet("servers/" + serverID)
 
 	if err != nil {
-		fmt.Println("Error while requesting a server:", err)
-		return errors.New("get-fail")
-	}
-
-	if response.StatusCode == 404 {
-		fmt.Println("A server with the ID", ID, "does not exist.")
-		return errors.New("404")
+		return ctlerrors.GetServerGenericError(err)
 	}
 
 	err = ctlerrors.
@@ -93,8 +84,7 @@ func getAllServers() error {
 	response, err := client.MainClient.PerformGet("servers")
 
 	if err != nil {
-		fmt.Println("Error while requesting servers:", err)
-		return errors.New("get-fail")
+		return ctlerrors.GetServersGenericError(err)
 	}
 
 	err = ctlerrors.Result().IfOk("").UseResponse(response)
@@ -109,17 +99,8 @@ func getAllServers() error {
 func performServerGetRequest(responseBody io.Reader, multiple bool) error {
 	body, err := ioutil.ReadAll(responseBody)
 
-	var resourcename string
-
-	if multiple {
-		resourcename = "servers"
-	} else {
-		resourcename = "server"
-	}
-
 	if err != nil {
-		fmt.Println("Error while reading", resourcename, "from response:", err)
-		return errors.New("read-fail")
+		return ctlerrors.ResponseBodyReadError(err)
 	}
 
 	if Full {
@@ -137,8 +118,7 @@ func performServerGetRequest(responseBody io.Reader, multiple bool) error {
 	}
 
 	if err != nil {
-		fmt.Println("Error while printing output:", err)
-		return err
+		return ctlerrors.PrinterError(err)
 	}
 
 	return nil

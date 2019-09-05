@@ -1,12 +1,13 @@
 package tests
 
 import (
-	"errors"
 	"testing"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/servers"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
+	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
 func TestGetAllSetup(test_framework *testing.T) {
@@ -27,9 +28,8 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
-	if err != nil {
-		test_framework.Error("Expected no error, found:", err)
-	}
+	// Assertions
+	testutil.AssertNoError(test_framework, err)
 }
 
 func TestGetAllServersLongSuccess(test_framework *testing.T) {
@@ -49,9 +49,8 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
-	if err != nil {
-		test_framework.Error("Expected no error, found:", err)
-	}
+	// Assertions
+	testutil.AssertNoError(test_framework, err)
 }
 
 func TestGetAllServersClientFailure(test_framework *testing.T) {
@@ -61,19 +60,22 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformGet(URL).
-		Return(WithResponse(200, WithBody(serverlist)), errors.New("client-fail"))
+		Return(WithResponse(200, WithBody(serverlist)), testutil.TestError)
 
 	// to display full output
 	servers.Full = true
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
-	if err.Error() != "get-fail" {
-		test_framework.Error("Expected client failure error, found:", err)
-	}
+	// Expected error
+	expectedErr := ctlerrors.GetServersGenericError(testutil.TestError)
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
+	// generate servers
 	serverlist := generators.GenerateServers(3)
 
 	// Mocking
@@ -83,14 +85,16 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(WithData(serverlist), &[]servers.LongServer{}).
-		Return(3, errors.New("oops"))
+		Return(3, testutil.TestError)
 
 	// to display full output
 	servers.Full = true
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
-	if err.Error() != "oops" {
-		test_framework.Error("Expected printer failure error, found:", err)
-	}
+	// Expected error
+	expectedErr := ctlerrors.PrinterError(testutil.TestError)
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }

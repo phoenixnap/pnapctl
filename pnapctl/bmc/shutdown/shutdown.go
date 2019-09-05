@@ -2,8 +2,6 @@ package shutdown
 
 import (
 	"bytes"
-	"errors"
-	"fmt"
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
@@ -11,15 +9,13 @@ import (
 )
 
 var ShutdownCmd = &cobra.Command{
-	Use:           "shutdown",
-	Short:         "Shuts down a specific server.",
-	Long:          "Shuts down a specific server.",
-	SilenceUsage:  true,
-	SilenceErrors: true,
+	Use:          "shutdown",
+	Short:        "Shuts down a specific server.",
+	Long:         "Shuts down a specific server.",
+	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) != 1 {
-			fmt.Println("Only 1 argument can be passed for 'shutdown' :", len(args), "passed")
-			return errors.New("args")
+			return ctlerrors.InvalidNumberOfArgs(1, len(args), "shutdown")
 		}
 
 		var resource = "servers/" + args[0] + "/actions/shutdown"
@@ -27,8 +23,7 @@ var ShutdownCmd = &cobra.Command{
 
 		if err != nil {
 			// Generic error with PerformPost
-			fmt.Println("Error while shutting down server:", err)
-			return errors.New("client-fail")
+			return ctlerrors.ShutdownServerGenericError(err)
 		}
 
 		return ctlerrors.Result().
