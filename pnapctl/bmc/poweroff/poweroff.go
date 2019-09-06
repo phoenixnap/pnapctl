@@ -24,10 +24,10 @@ var P_OffCmd = &cobra.Command{
 
 		if err != nil {
 			// Generic error with PerformPost
-			return ctlerrors.PowerOffServerGenericError(err)
+			return ctlerrors.GenericFailedRequestError("power-off")
 		}
 
-		return ctlerrors.Result().
+		return ctlerrors.Result("power-off").
 			IfOk("Powered off successfully.").
 			IfNotFound("Error: Server with ID " + args[0] + " not found").
 			UseResponse(response)

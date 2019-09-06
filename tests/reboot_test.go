@@ -48,7 +48,7 @@ func TestRebootServerClientFail(test_framework *testing.T) {
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.RebootServerGenericError(testutil.TestError)
+	expectedErr := ctlerrors.GenericFailedRequestError("reboot")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

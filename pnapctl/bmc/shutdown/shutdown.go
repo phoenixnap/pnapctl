@@ -23,10 +23,10 @@ var ShutdownCmd = &cobra.Command{
 
 		if err != nil {
 			// Generic error with PerformPost
-			return ctlerrors.ShutdownServerGenericError(err)
+			return ctlerrors.GenericFailedRequestError("shutdown")
 		}
 
-		return ctlerrors.Result().
+		return ctlerrors.Result("shutdown").
 			IfOk("Shutdown successfully.").
 			IfNotFound("Error: Server with ID " + args[0] + " not found.").
 			UseResponse(response)

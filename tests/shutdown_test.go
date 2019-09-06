@@ -82,7 +82,7 @@ func TestShutdownServerClientFailure(test_framework *testing.T) {
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.ShutdownServerGenericError(testutil.TestError)
+	expectedErr := ctlerrors.GenericFailedRequestError("shutdown")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

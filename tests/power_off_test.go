@@ -85,7 +85,7 @@ func TestPowerOffServerClientFailure(test_framework *testing.T) {
 	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.PowerOffServerGenericError(testutil.TestError)
+	expectedErr := ctlerrors.GenericFailedRequestError("power-off")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

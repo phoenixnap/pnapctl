@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"errors"
 	"testing"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/servers"
@@ -68,7 +69,7 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GetServersGenericError(testutil.TestError)
+	expectedErr := ctlerrors.GenericFailedRequestError("get servers")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -85,16 +86,13 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(WithData(serverlist), &[]servers.LongServer{}).
-		Return(3, testutil.TestError)
+		Return(3, errors.New(testutil.PrinterUnmarshalErrorMsg))
 
 	// to display full output
 	servers.Full = true
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
-	// Expected error
-	expectedErr := ctlerrors.PrinterError(testutil.TestError)
-
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	testutil.AssertErrorCode(test_framework, err, ctlerrors.Errormap[testutil.PrinterUnmarshalErrorMsg])
 }

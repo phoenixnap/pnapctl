@@ -9,6 +9,38 @@ import (
 	"strings"
 )
 
+/*	A map of error codes.
+	Each errorcode has the structure XXYY,
+		where XX refers to an error category,
+		  and YY refers to a specific case.
+
+	If YY is 00, then the error is generalized.
+	YY can also be categorized, for example currently:
+		00 : General
+		01 : In ctlerrors
+		02 : In printer
+*/
+var Errormap = map[string]string{
+	// Reading Body Failure errors: 01XX
+	"ResponseBodyReadFailure": "0100",
+
+	// Expected Body errors: 02XX
+	"ExpectedBodyInResponse":      "0200",
+	"ExpectedBodyInErrorResponse": "0201",
+
+	// Unmarshalling errors: 03XX
+	"Unmarshalling":          "0300",
+	"UnmarshallingErrorBody": "0301",
+	"UnmarshallingInPrinter": "0302",
+
+	// Marshalling errors: 04XX
+	"Marshalling":          "0400",
+	"MarshallingInPrinter": "0402",
+
+	// Miscellaneous errors: 99XX
+	"TablePrinterFailure": "9901",
+}
+
 /* Error functions.
    To use for declaring/constructing errors. */
 
@@ -31,47 +63,32 @@ func InvalidNumberOfArgs(expected int, actual int, commandName string) error {
 	return errors.New(sb.String())
 }
 
-// Represents a failure to read the response body.
-func ResponseBodyReadError(err error) error {
-	return errors.New("Error while reading body from response: " + err.Error())
-}
-
-// Represents an error from the Printer.
-func PrinterError(err error) error {
-	return errors.New("Error while printing output: " + err.Error())
-}
-
-// An error triggered when a body was expected, yet nothing was found.
-func ExpectedBodyError(statusCode int) error {
-	return errors.New("Expected a body to be in the response - no body was found. Status code: " + string(statusCode))
-}
-
-// Represents an error that occurred during Unmarshalling
-func UnmarshallingError(resource string, err error) error {
-	return errors.New("Couldn't unmarshal JSON response into '" + resource + "':" + err.Error())
-}
-
 // A generic error used for generic cases.
-func GenericError(message string, err error) error {
-	return errors.New(message + ": " + err.Error())
+func GenericSuccessfulRequestError(errorcase string, command string) error {
+	code, exists := Errormap[errorcase]
+
+	var errorcode string
+
+	if exists {
+		errorcode = "[CODE : " + code + "]"
+	} else {
+		errorcode = "[CODE : 9999]"
+	}
+
+	return errors.New("Command '" + command + "' has been performed, but something went wrong. " + errorcode)
 }
 
-/* Generic error constants.
-   A generic error function for each command. */
-
-var GetServerGenericError = func(err error) error { return GenericError("Error while retrieving server", err) }
-var GetServersGenericError = func(err error) error { return GenericError("Error while retrieving servers", err) }
-var PowerOnServerGenericError = func(err error) error { return GenericError("Error while powering on server", err) }
-var PowerOffServerGenericError = func(err error) error { return GenericError("Error while powering off server", err) }
-var ShutdownServerGenericError = func(err error) error { return GenericError("Error while shutting down server", err) }
-var RebootServerGenericError = func(err error) error { return GenericError("Error while rebooting server", err) }
+func GenericFailedRequestError(command string) error {
+	return errors.New("Command '" + command + "' could not be performed. Please try again later.")
+}
 
 /* Error handling.
    Structs and functions/methods for error handling. */
 
 type result struct {
-	Msg200 string
-	Msg404 string
+	Msg200      string
+	Msg404      string
+	CommandName string
 }
 
 type BMCError struct {
@@ -79,10 +96,11 @@ type BMCError struct {
 	ValidationErrors []string
 }
 
-func Result() result {
+func Result(commandName string) result {
 	return result{
-		Msg200: "",
-		Msg404: "404 NOT FOUND",
+		Msg200:      "",
+		Msg404:      "404 NOT FOUND",
+		CommandName: commandName,
 	}
 }
 
@@ -115,20 +133,20 @@ func (r result) UseResponse(response *http.Response) error {
 	}
 
 	if response.Body == nil {
-		return ExpectedBodyError(statusCode)
+		return GenericSuccessfulRequestError(r.CommandName, "ExpectedBodyInErrorResponse")
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 
 	if err != nil {
-		return ResponseBodyReadError(err)
+		return GenericSuccessfulRequestError(r.CommandName, "ResponseBodyReadFailure")
 	}
 
 	bmcErr := BMCError{}
 	err = json.Unmarshal(body, &bmcErr)
 
 	if err != nil {
-		return UnmarshallingError("BMCError", err)
+		return GenericSuccessfulRequestError(r.CommandName, "UnmarshallingErrorBody")
 	}
 
 	return errors.New(bmcErr.String())

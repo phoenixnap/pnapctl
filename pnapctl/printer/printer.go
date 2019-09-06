@@ -9,7 +9,6 @@ import (
 
 	"github.com/landoop/tableprinter"
 	"gopkg.in/yaml.v2"
-	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
 // The main printer used by the application.
@@ -40,12 +39,12 @@ func (m BodyPrinter) PrintOutput(body []byte, construct interface{}) (int, error
 	err := json.Unmarshal(body, &construct)
 
 	if err != nil {
-		return 0, ctlerrors.UnmarshallingError("construct", err)
+		return 0, err
 	}
 
 	if OutputFormat == "json" {
 		printJSON(body)
-		return -1, nil
+		return -1, errors.New("UnmarshallingInPrinter")
 	} else if OutputFormat == "yaml" {
 		err := printYAML(construct)
 		return -1, err
@@ -53,7 +52,7 @@ func (m BodyPrinter) PrintOutput(body []byte, construct interface{}) (int, error
 		// default to table
 		rows := printTable(construct, m.tableprinter)
 		if rows == -1 {
-			return -1, errors.New("Table printing failed")
+			return -1, errors.New("TablePrinterFailure")
 		}
 		return rows, nil
 	}
@@ -63,7 +62,12 @@ func (m BodyPrinter) PrintOutput(body []byte, construct interface{}) (int, error
 func printYAML(body interface{}) error {
 	b, err := yaml.Marshal(body)
 	fmt.Println(string(b))
-	return err
+
+	if err != nil {
+		return errors.New("MarshallingInPrinter")
+	} else {
+		return nil
+	}
 }
 
 // Attempts to print in JSON via formatting a byte array.

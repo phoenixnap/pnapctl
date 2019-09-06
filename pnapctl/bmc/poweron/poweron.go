@@ -24,10 +24,10 @@ var P_OnCmd = &cobra.Command{
 
 		if err != nil {
 			// Generic error with PerformPost
-			return ctlerrors.PowerOnServerGenericError(err)
+			return ctlerrors.GenericFailedRequestError("power-on")
 		}
 
-		return ctlerrors.Result().
+		return ctlerrors.Result("power-on").
 			IfOk("Powered on successfully.").
 			IfNotFound("Error: Server with ID " + args[0] + " not found").
 			UseResponse(response)

@@ -64,11 +64,11 @@ func getServer(serverID string) error {
 	response, err := client.MainClient.PerformGet("servers/" + serverID)
 
 	if err != nil {
-		return ctlerrors.GetServerGenericError(err)
+		return ctlerrors.GenericFailedRequestError("get server")
 	}
 
 	err = ctlerrors.
-		Result().
+		Result("get server").
 		IfOk("").
 		IfNotFound("A server with the ID " + ID + " does not exist.").
 		UseResponse(response)
@@ -84,10 +84,13 @@ func getAllServers() error {
 	response, err := client.MainClient.PerformGet("servers")
 
 	if err != nil {
-		return ctlerrors.GetServersGenericError(err)
+		return ctlerrors.GenericFailedRequestError("get servers")
 	}
 
-	err = ctlerrors.Result().IfOk("").UseResponse(response)
+	err = ctlerrors.
+		Result("get servers").
+		IfOk("").
+		UseResponse(response)
 
 	if err != nil {
 		return err
@@ -100,7 +103,7 @@ func performServerGetRequest(responseBody io.Reader, multiple bool) error {
 	body, err := ioutil.ReadAll(responseBody)
 
 	if err != nil {
-		return ctlerrors.ResponseBodyReadError(err)
+		return ctlerrors.GenericSuccessfulRequestError("ResponseBodyReadFailure", "get server")
 	}
 
 	if Full {
@@ -118,7 +121,7 @@ func performServerGetRequest(responseBody io.Reader, multiple bool) error {
 	}
 
 	if err != nil {
-		return ctlerrors.PrinterError(err)
+		return ctlerrors.GenericSuccessfulRequestError(err.Error(), "get server")
 	}
 
 	return nil
