@@ -54,17 +54,15 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 }
 
 func TestGetServerClientFailure(test_framework *testing.T) {
-	server := generators.GenerateServer()
-
 	PrepareMockClient(test_framework).
 		PerformGet(URL).
-		Return(WithResponse(200, WithBody(server)), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	servers.ID = SERVERID
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError("get server")
+	expectedErr := ctlerrors.GenericFailedRequestError("get servers")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -79,12 +77,12 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(WithData(server), &servers.ShortServer{}).
-		Return(1, errors.New(testutil.PrinterUnmarshalErrorMsg))
+		Return(-1, errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	servers.ID = SERVERID
 	servers.Full = false
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
 	// Assertions
-	testutil.AssertErrorCode(test_framework, err, ctlerrors.Errormap[testutil.PrinterUnmarshalErrorMsg])
+	testutil.AssertErrorCode(test_framework, err, ctlerrors.UnmarshallingInPrinter)
 }

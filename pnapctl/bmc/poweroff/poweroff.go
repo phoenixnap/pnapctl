@@ -8,6 +8,8 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
+const commandName = "power-off"
+
 var P_OffCmd = &cobra.Command{
 	Use:          "power-off",
 	Short:        "Powers off a specific server.",
@@ -16,7 +18,7 @@ var P_OffCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// If more than one argument is passed, report error and panic.
 		if len(args) != 1 {
-			return ctlerrors.InvalidNumberOfArgs(1, len(args), "power-off")
+			return ctlerrors.InvalidNumberOfArgs(1, len(args), commandName)
 		}
 
 		var resource = "servers/" + args[0] + "/actions/power-off"
@@ -24,10 +26,10 @@ var P_OffCmd = &cobra.Command{
 
 		if err != nil {
 			// Generic error with PerformPost
-			return ctlerrors.GenericFailedRequestError("power-off")
+			return ctlerrors.GenericFailedRequestError(commandName)
 		}
 
-		return ctlerrors.Result("power-off").
+		return ctlerrors.Result(commandName).
 			IfOk("Powered off successfully.").
 			IfNotFound("Error: Server with ID " + args[0] + " not found").
 			UseResponse(response)

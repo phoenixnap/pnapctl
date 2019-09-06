@@ -31,6 +31,8 @@ type LongServer struct {
 	Storage     string `header:"storage"`
 }
 
+const commandName string = "get servers"
+
 var Full bool
 var ID string
 
@@ -64,12 +66,11 @@ func getServer(serverID string) error {
 	response, err := client.MainClient.PerformGet("servers/" + serverID)
 
 	if err != nil {
-		return ctlerrors.GenericFailedRequestError("get server")
+		return ctlerrors.GenericFailedRequestError(commandName)
 	}
 
 	err = ctlerrors.
-		Result("get server").
-		IfOk("").
+		Result(commandName).
 		IfNotFound("A server with the ID " + ID + " does not exist.").
 		UseResponse(response)
 
@@ -77,33 +78,32 @@ func getServer(serverID string) error {
 		return err
 	}
 
-	return performServerGetRequest(response.Body, false)
+	return printGetServerResponse(response.Body, false)
 }
 
 func getAllServers() error {
 	response, err := client.MainClient.PerformGet("servers")
 
 	if err != nil {
-		return ctlerrors.GenericFailedRequestError("get servers")
+		return ctlerrors.GenericFailedRequestError(commandName)
 	}
 
 	err = ctlerrors.
-		Result("get servers").
-		IfOk("").
+		Result(commandName).
 		UseResponse(response)
 
 	if err != nil {
 		return err
 	}
 
-	return performServerGetRequest(response.Body, true)
+	return printGetServerResponse(response.Body, true)
 }
 
-func performServerGetRequest(responseBody io.Reader, multiple bool) error {
+func printGetServerResponse(responseBody io.Reader, multiple bool) error {
 	body, err := ioutil.ReadAll(responseBody)
 
 	if err != nil {
-		return ctlerrors.GenericSuccessfulRequestError("ResponseBodyReadFailure", "get server")
+		return ctlerrors.GenericSuccessfulRequestError(ctlerrors.ResponseBodyReadFailure, commandName)
 	}
 
 	if Full {
@@ -120,8 +120,9 @@ func performServerGetRequest(responseBody io.Reader, multiple bool) error {
 		}
 	}
 
+	// This err is the one outputted within the PrintOutput
 	if err != nil {
-		return ctlerrors.GenericSuccessfulRequestError(err.Error(), "get server")
+		return ctlerrors.GenericSuccessfulRequestError(err.Error(), commandName)
 	}
 
 	return nil

@@ -8,6 +8,8 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
+const commandName string = "reboot"
+
 var RebootCmd = &cobra.Command{
 	Use:          "reboot",
 	Short:        "Reboots a specific server.",
@@ -15,17 +17,17 @@ var RebootCmd = &cobra.Command{
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) != 1 {
-			return ctlerrors.InvalidNumberOfArgs(1, len(args), "reboot")
+			return ctlerrors.InvalidNumberOfArgs(1, len(args), commandName)
 		}
 
 		resource := "servers/" + args[0] + "/actions/reboot"
 		response, err := client.MainClient.PerformPost(resource, bytes.NewBuffer([]byte{}))
 
 		if err != nil {
-			return ctlerrors.GenericFailedRequestError("reboot")
+			return ctlerrors.GenericFailedRequestError(commandName)
 		}
 
-		return ctlerrors.Result("reboot").
+		return ctlerrors.Result(commandName).
 			IfOk("Rebooted successfully").
 			IfNotFound("Error: Server with ID " + args[0] + " not found.").
 			UseResponse(response)

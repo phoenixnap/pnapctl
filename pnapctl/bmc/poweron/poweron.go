@@ -8,6 +8,8 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
+const commandName string = "power-on"
+
 var P_OnCmd = &cobra.Command{
 	Use:          "power-on",
 	Short:        "Powers on a specific server.",
@@ -16,7 +18,7 @@ var P_OnCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// If more than one argument is passed, report error and panic.
 		if len(args) != 1 {
-			return ctlerrors.InvalidNumberOfArgs(1, len(args), "power-on")
+			return ctlerrors.InvalidNumberOfArgs(1, len(args), commandName)
 		}
 
 		var resource = "servers/" + args[0] + "/actions/power-on"
@@ -24,10 +26,10 @@ var P_OnCmd = &cobra.Command{
 
 		if err != nil {
 			// Generic error with PerformPost
-			return ctlerrors.GenericFailedRequestError("power-on")
+			return ctlerrors.GenericFailedRequestError(commandName)
 		}
 
-		return ctlerrors.Result("power-on").
+		return ctlerrors.Result(commandName).
 			IfOk("Powered on successfully.").
 			IfNotFound("Error: Server with ID " + args[0] + " not found").
 			UseResponse(response)
