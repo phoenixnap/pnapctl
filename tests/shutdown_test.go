@@ -6,7 +6,9 @@ import (
 	"testing"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/shutdown"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
+	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
 func TestShutdownSetup(t *testing.T) {
@@ -22,22 +24,9 @@ func TestShutdownServerSuccess(test_framework *testing.T) {
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
-	if err != nil {
-		test_framework.Errorf("Error detected: %s", err)
-	}
-}
 
-func TestShutdownServerConflict(test_framework *testing.T) {
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(409, nil), nil)
-
-	// Run command
-	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
-	if err.Error() != "409" {
-		test_framework.Errorf("Expected '409 CONFLICT' error. Instead got %s", err)
-	}
+	// Assertions
+	testutil.AssertNoError(test_framework, err)
 }
 
 func TestShutdownServerNotFound(test_framework *testing.T) {
@@ -48,41 +37,42 @@ func TestShutdownServerNotFound(test_framework *testing.T) {
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
-	if err.Error() != "404" {
-		test_framework.Errorf("Expected '404 NOT FOUND' error. Instead got %s", err)
-	}
+
+	// Expected error
+	expectedErr := errors.New("Server with ID " + SERVERID + " not found.")
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
-func TestShutdownServerInternalServerError(test_framework *testing.T) {
+func TestShutdownServerError(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(500, nil), nil)
+		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
-	if err.Error() != "500" {
-		test_framework.Errorf("Expected '500 INTERNAL SERVER ERROR' error. Instead got %s", err)
-	}
-}
 
-func TestShutdownServerTooManyArgs(test_framework *testing.T) {
-	// Run command
-	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID, "BONUS"})
-	if err.Error() != "args" {
-		test_framework.Errorf("Expected 'args' error. Instead got %s", err)
-	}
+	// Expected error
+	expectedErr := errors.New(testutil.GenericBMCError.Message)
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
 func TestShutdownServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(200, nil), errors.New("oops"))
+		Return(WithResponse(200, nil), testutil.TestError)
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
-	if err.Error() != "client-fail" {
-		test_framework.Errorf("Expected 'client failure' error. Instead got %s", err)
-	}
+
+	// Expected error
+	expectedErr := ctlerrors.GenericFailedRequestError("shutdown")
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }

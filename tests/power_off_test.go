@@ -6,8 +6,10 @@ import (
 	"testing"
 
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
+	"phoenixnap.com/pnap-cli/tests/testutil"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweroff"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
 func TestPowerOffSetup(t *testing.T) {
@@ -25,22 +27,9 @@ func TestPowerOffServerSuccess(test_framework *testing.T) {
 
 	// Run command
 	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
-	if err != nil {
-		test_framework.Errorf("Error detected: %s", err)
-	}
-}
 
-func TestPowerOffServerConflict(test_framework *testing.T) {
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(409, nil), nil)
-
-	// Run command
-	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
-	if err.Error() != "409" {
-		test_framework.Errorf("Expected '409 CONFLICT' error. Instead got %s", err)
-	}
+	// Assertions
+	testutil.AssertNoError(test_framework, err)
 }
 
 func TestPowerOffServerNotFound(test_framework *testing.T) {
@@ -51,41 +40,42 @@ func TestPowerOffServerNotFound(test_framework *testing.T) {
 
 	// Run command
 	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
-	if err.Error() != "404" {
-		test_framework.Errorf("Expected '404 NOT FOUND' error. Instead got %s", err)
-	}
+
+	// Expected error
+	expectedErr := errors.New("Server with ID " + SERVERID + " not found")
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
-func TestPowerOffServerInternalServerError(test_framework *testing.T) {
+func TestPowerOffServerError(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(500, nil), nil)
+		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
-	if err.Error() != "500" {
-		test_framework.Errorf("Expected '500 INTERNAL SERVER ERROR' error. Instead got %s", err)
-	}
-}
 
-func TestPowerOffServerTooManyArgs(test_framework *testing.T) {
-	// Run command
-	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID, "extra"})
-	if err.Error() != "args" {
-		test_framework.Errorf("Expected 'too many args' error. Instead got %s", err)
-	}
+	// Expected error
+	expectedErr := errors.New(testutil.GenericBMCError.Message)
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
 func TestPowerOffServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(404, nil), errors.New("misc"))
+		Return(WithResponse(404, nil), testutil.TestError)
 
 	// Run command
 	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
-	if err.Error() != "client-fail" {
-		test_framework.Errorf("Expected 'client failure' error. Instead got %s", err)
-	}
+
+	// Expected error
+	expectedErr := ctlerrors.GenericFailedRequestError("power-off")
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }

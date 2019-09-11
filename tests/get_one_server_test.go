@@ -5,8 +5,10 @@ import (
 	"testing"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/servers"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
+	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
 func TestGetServerSetup(test_framework *testing.T) {
@@ -25,11 +27,11 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 		Return(1, nil)
 
 	servers.ID = SERVERID
+	servers.Full = false
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
-	if err != nil {
-		test_framework.Error("Expected no error, found:", err)
-	}
+	// Assertions
+	testutil.AssertNoError(test_framework, err)
 }
 
 func TestGetServerLongSuccess(test_framework *testing.T) {
@@ -40,16 +42,15 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 		Return(WithResponse(200, WithBody(server)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(WithData(server), &servers.ShortServer{}).
+		PrintOutput(WithData(server), &servers.LongServer{}).
 		Return(1, nil)
 
 	servers.ID = SERVERID
 	servers.Full = true
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
-	if err != nil {
-		test_framework.Error("Expected no error, found:", err)
-	}
+	// Assertions
+	testutil.AssertNoError(test_framework, err)
 }
 
 func TestGetServerClientFailure(test_framework *testing.T) {
@@ -57,14 +58,16 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 
 	PrepareMockClient(test_framework).
 		PerformGet(URL).
-		Return(WithResponse(200, WithBody(server)), errors.New("client-fail"))
+		Return(WithResponse(200, WithBody(server)), testutil.TestError)
 
 	servers.ID = SERVERID
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
-	if err.Error() != "get-fail" {
-		test_framework.Error("Expected client failure error, found:", err)
-	}
+	// Expected error
+	expectedErr := ctlerrors.GenericFailedRequestError("get server")
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
@@ -76,12 +79,12 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(WithData(server), &servers.ShortServer{}).
-		Return(1, errors.New("printer-not-connected?"))
+		Return(1, errors.New(testutil.PrinterUnmarshalErrorMsg))
 
 	servers.ID = SERVERID
+	servers.Full = false
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
-	if err.Error() != "printer-not-connected?" {
-		test_framework.Error("Expected no error, found:", err)
-	}
+	// Assertions
+	testutil.AssertErrorCode(test_framework, err, ctlerrors.Errormap[testutil.PrinterUnmarshalErrorMsg])
 }

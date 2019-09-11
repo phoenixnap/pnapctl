@@ -6,7 +6,9 @@ import (
 	"testing"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/reboot"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
+	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
 func TestRebootSetup(t *testing.T) {
@@ -22,28 +24,24 @@ func TestRebootServerSuccess(test_framework *testing.T) {
 
 	// Run command
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
-	if err != nil {
-		test_framework.Errorf("Error detected: %s", err)
-	}
-}
 
-func TestRebootServerArgFail(test_framework *testing.T) {
-	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID, "extra"})
-	if err.Error() != "args" {
-		test_framework.Errorf("Expected invalid args error - found %s", err)
-	}
+	// Assertions
+	testutil.AssertNoError(test_framework, err)
 }
 
 func TestRebootServerClientFail(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(200, nil), errors.New("oops"))
+		Return(WithResponse(200, nil), testutil.TestError)
 
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
-	if err.Error() != "client-fail" {
-		test_framework.Errorf("Error: Expected client failure error, found %s", err)
-	}
+
+	// Expected error
+	expectedErr := ctlerrors.GenericFailedRequestError("reboot")
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
 func TestRebootServerNotFoundFail(test_framework *testing.T) {
@@ -53,31 +51,25 @@ func TestRebootServerNotFoundFail(test_framework *testing.T) {
 		Return(WithResponse(404, nil), nil)
 
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
-	if err.Error() != "404" {
-		test_framework.Errorf("Error: not found error, found %s", err)
-	}
+
+	// Expected error
+	expectedErr := errors.New("Server with ID " + SERVERID + " not found.")
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
-func TestRebootServerConflictFail(test_framework *testing.T) {
+func TestRebootServerErrorFail(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(409, nil), nil)
+		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
-	if err.Error() != "409" {
-		test_framework.Errorf("Error: Expected conflict error, found %s", err)
-	}
-}
 
-func TestRebootServerInternalServerErrorFail(test_framework *testing.T) {
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(500, nil), nil)
+	// Expected error
+	expectedErr := errors.New(testutil.GenericBMCError.Message)
 
-	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
-	if err.Error() != "500" {
-		test_framework.Errorf("Error: Expected internal server error, found %s", err)
-	}
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
