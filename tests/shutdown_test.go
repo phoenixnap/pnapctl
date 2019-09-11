@@ -39,7 +39,7 @@ func TestShutdownServerNotFound(test_framework *testing.T) {
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := errors.New("Error: Server with ID " + SERVERID + " not found.")
+	expectedErr := errors.New("Server with ID " + SERVERID + " not found.")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -56,17 +56,6 @@ func TestShutdownServerError(test_framework *testing.T) {
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
-}
-
-func TestShutdownServerTooManyArgs(test_framework *testing.T) {
-	// Run command
-	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID, "BONUS"})
-
-	// Expected error
-	expectedErr := ctlerrors.InvalidNumberOfArgs(1, 2, "shutdown")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

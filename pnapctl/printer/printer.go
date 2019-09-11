@@ -40,12 +40,12 @@ func (m BodyPrinter) PrintOutput(body []byte, construct interface{}) (int, error
 	err := json.Unmarshal(body, &construct)
 
 	if err != nil {
-		return 0, errors.New(ctlerrors.UnmarshallingInPrinter)
+		return -1, errors.New(ctlerrors.UnmarshallingInPrinter)
 	}
 
 	if OutputFormat == "json" {
 		printJSON(body)
-		return -1, nil
+		return 0, nil
 	} else if OutputFormat == "yaml" {
 		err := printYAML(construct)
 		return -1, err

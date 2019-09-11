@@ -42,7 +42,7 @@ func TestPowerOffServerNotFound(test_framework *testing.T) {
 	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := errors.New("Error: Server with ID " + SERVERID + " not found")
+	expectedErr := errors.New("Server with ID " + SERVERID + " not found")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -59,17 +59,6 @@ func TestPowerOffServerError(test_framework *testing.T) {
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
-}
-
-func TestPowerOffServerTooManyArgs(test_framework *testing.T) {
-	// Run command
-	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID, "extra"})
-
-	// Expected error
-	expectedErr := ctlerrors.InvalidNumberOfArgs(1, 2, "power-off")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

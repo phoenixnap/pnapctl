@@ -9,6 +9,13 @@ import (
 	"strings"
 )
 
+/* Client side errors. */
+
+// FileNotExistError represents a file that does not exist
+func FileNotExistError(filename string) error {
+	return errors.New("The file '" + filename + "' does not exist.")
+}
+
 /*	A map of error codes.
 	Each errorcode has the structure XXYY,
 		where XX refers to an error category,
@@ -37,6 +44,10 @@ const (
 	Marshalling          = "0400"
 	MarshallingInPrinter = "0402"
 
+	// File related errors:
+	File        = "0500"
+	FileReading = "0503"
+
 	// Miscellaneous errors: 99XX
 	TablePrinterFailure = "9901"
 )
@@ -44,27 +55,8 @@ const (
 /* Error functions.
    To use for declaring/constructing errors. */
 
-// Represents an invalid number of arguments passed to a command.
-func InvalidNumberOfArgs(expected int, actual int, commandName string) error {
-	var sb strings.Builder
-	sb.WriteString("Only ")
-	sb.WriteString(string(expected))
-	sb.WriteString(" argument")
-
-	if expected != 1 {
-		sb.WriteString("s")
-	}
-
-	sb.WriteString(" can be passed for '")
-	sb.WriteString(commandName)
-	sb.WriteString("': ")
-	sb.WriteString(string(actual))
-	sb.WriteString(" passed.")
-	return errors.New(sb.String())
-}
-
 // A generic error used for generic cases.
-func GenericSuccessfulRequestError(errorCode string, command string) error {
+func GenericNonRequestError(errorCode string, command string) error {
 	return errors.New("Command '" + command + "' has been performed, but something went wrong. Error code: " + errorCode)
 }
 
@@ -75,15 +67,15 @@ func GenericFailedRequestError(command string) error {
 /* Error handling.
    Structs and functions/methods for error handling. */
 
+type BMCError struct {
+	Message          string
+	ValidationErrors []string
+}
+
 type result struct {
 	Msg200      string
 	Msg404      string
 	CommandName string
-}
-
-type BMCError struct {
-	Message          string
-	ValidationErrors []string
 }
 
 func Result(commandName string) result {
@@ -123,20 +115,20 @@ func (r result) UseResponse(response *http.Response) error {
 	}
 
 	if response.Body == nil {
-		return GenericSuccessfulRequestError(r.CommandName, ExpectedBodyInErrorResponse)
+		return GenericNonRequestError(r.CommandName, ExpectedBodyInErrorResponse)
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 
 	if err != nil {
-		return GenericSuccessfulRequestError(r.CommandName, ResponseBodyReadFailure)
+		return GenericNonRequestError(r.CommandName, ResponseBodyReadFailure)
 	}
 
 	bmcErr := BMCError{}
 	err = json.Unmarshal(body, &bmcErr)
 
 	if err != nil {
-		return GenericSuccessfulRequestError(r.CommandName, UnmarshallingErrorBody)
+		return GenericNonRequestError(r.CommandName, UnmarshallingErrorBody)
 	}
 
 	return errors.New(bmcErr.String())

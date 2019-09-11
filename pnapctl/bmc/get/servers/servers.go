@@ -41,6 +41,7 @@ var GetServersCmd = &cobra.Command{
 	Short:        "Retrieve one or all servers.",
 	Aliases:      []string{"server"},
 	SilenceUsage: true,
+	Args:         cobra.ExactArgs(0),
 	Long: `
 Retrieve one or all servers.
 
@@ -50,10 +51,10 @@ The format they are printed in is a table by default.
 To print a single server, an ID needs to be passed as an argument.`,
 	Example: `
 # List all servers in json format.
-pnapctl get servers -o json
+pnapctl bmc get servers -o json
 
 # List a single server in yaml format.
-pnapctl get servers --id=NDIid939dfkoDd -o yaml`,
+pnapctl bmc get servers --id=NDIid939dfkoDd -o yaml`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if ID != "" {
 			return getServer(ID)
@@ -71,6 +72,7 @@ func getServer(serverID string) error {
 
 	err = ctlerrors.
 		Result(commandName).
+		IfOk("").
 		IfNotFound("A server with the ID " + ID + " does not exist.").
 		UseResponse(response)
 
@@ -90,6 +92,15 @@ func getAllServers() error {
 
 	err = ctlerrors.
 		Result(commandName).
+		IfOk("").
+		UseResponse(response)
+
+	if err != nil {
+		return err
+	}
+
+	err = ctlerrors.
+		Result(commandName).
 		UseResponse(response)
 
 	if err != nil {
@@ -103,7 +114,7 @@ func printGetServerResponse(responseBody io.Reader, multiple bool) error {
 	body, err := ioutil.ReadAll(responseBody)
 
 	if err != nil {
-		return ctlerrors.GenericSuccessfulRequestError(ctlerrors.ResponseBodyReadFailure, commandName)
+		return ctlerrors.GenericNonRequestError(ctlerrors.ResponseBodyReadFailure, commandName)
 	}
 
 	if Full {
@@ -122,7 +133,7 @@ func printGetServerResponse(responseBody io.Reader, multiple bool) error {
 
 	// This err is the one outputted within the PrintOutput
 	if err != nil {
-		return ctlerrors.GenericSuccessfulRequestError(err.Error(), commandName)
+		return ctlerrors.GenericNonRequestError(err.Error(), commandName)
 	}
 
 	return nil

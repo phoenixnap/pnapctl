@@ -29,16 +29,6 @@ func TestRebootServerSuccess(test_framework *testing.T) {
 	testutil.AssertNoError(test_framework, err)
 }
 
-func TestRebootServerArgFail(test_framework *testing.T) {
-	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID, "extra"})
-
-	// Expected error
-	expectedErr := ctlerrors.InvalidNumberOfArgs(1, 2, "reboot")
-
-	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
-}
-
 func TestRebootServerClientFail(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
@@ -63,7 +53,7 @@ func TestRebootServerNotFoundFail(test_framework *testing.T) {
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := errors.New("Error: Server with ID " + SERVERID + " not found.")
+	expectedErr := errors.New("Server with ID " + SERVERID + " not found.")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

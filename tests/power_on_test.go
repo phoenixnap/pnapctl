@@ -37,7 +37,7 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := errors.New("Error: Server with ID " + SERVERID + " not found")
+	expectedErr := errors.New("Server with ID " + SERVERID + " not found")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
