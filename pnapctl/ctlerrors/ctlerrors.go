@@ -60,6 +60,7 @@ func GenericNonRequestError(errorCode string, command string) error {
 	return errors.New("Command '" + command + "' has been performed, but something went wrong. Error code: " + errorCode)
 }
 
+// GenericFailedRequestError represents an error with performing a request.
 func GenericFailedRequestError(command string) error {
 	return errors.New("Command '" + command + "' could not be performed. Please try again later.")
 }

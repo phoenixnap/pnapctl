@@ -99,14 +99,6 @@ func getAllServers() error {
 		return err
 	}
 
-	err = ctlerrors.
-		Result(commandName).
-		UseResponse(response)
-
-	if err != nil {
-		return err
-	}
-
 	return printGetServerResponse(response.Body, true)
 }
 
