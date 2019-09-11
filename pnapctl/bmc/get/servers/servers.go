@@ -1,12 +1,11 @@
 package servers
 
 import (
-	"errors"
-	"fmt"
 	"io"
 	"io/ioutil"
 
 	"phoenixnap.com/pnap-cli/pnapctl/client"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	"phoenixnap.com/pnap-cli/pnapctl/printer"
 
 	"github.com/spf13/cobra"
@@ -36,11 +35,11 @@ var Full bool
 var ID string
 
 var GetServersCmd = &cobra.Command{
-	Use:           "servers",
-	Short:         "Retrieve one or all servers.",
-	Aliases:       []string{"server"},
-	SilenceErrors: true,
-	SilenceUsage:  true,
+	Use:          "servers",
+	Short:        "Retrieve one or all servers.",
+	Aliases:      []string{"server"},
+	SilenceUsage: true,
+	Args:         cobra.ExactArgs(0),
 	Long: `
 Retrieve one or all servers.
 
@@ -50,10 +49,10 @@ The format they are printed in is a table by default.
 To print a single server, an ID needs to be passed as an argument.`,
 	Example: `
 # List all servers in json format.
-pnapctl get servers -o json
+pnapctl bmc get servers -o json
 
 # List a single server in yaml format.
-pnapctl get servers --id=NDIid939dfkoDd -o yaml`,
+pnapctl bmc get servers --id=NDIid939dfkoDd -o yaml`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if ID != "" {
 			return getServer(ID)
@@ -66,13 +65,17 @@ func getServer(serverID string) error {
 	response, err := client.MainClient.PerformGet("servers/" + serverID)
 
 	if err != nil {
-		fmt.Println("Error while requesting a server:", err)
-		return errors.New("get-fail")
+		return ctlerrors.GenericFailedRequestError("get server")
 	}
 
-	if response.StatusCode == 404 {
-		fmt.Println("A server with the ID", ID, "does not exist.")
-		return errors.New("404")
+	err = ctlerrors.
+		Result("get server").
+		IfOk("").
+		IfNotFound("A server with the ID " + ID + " does not exist.").
+		UseResponse(response)
+
+	if err != nil {
+		return err
 	}
 
 	return performServerGetRequest(response.Body, false)
@@ -82,8 +85,16 @@ func getAllServers() error {
 	response, err := client.MainClient.PerformGet("servers")
 
 	if err != nil {
-		fmt.Println("Error while requesting servers:", err)
-		return errors.New("get-fail")
+		return ctlerrors.GenericFailedRequestError("get servers")
+	}
+
+	err = ctlerrors.
+		Result("get servers").
+		IfOk("").
+		UseResponse(response)
+
+	if err != nil {
+		return err
 	}
 
 	return performServerGetRequest(response.Body, true)
@@ -92,17 +103,8 @@ func getAllServers() error {
 func performServerGetRequest(responseBody io.Reader, multiple bool) error {
 	body, err := ioutil.ReadAll(responseBody)
 
-	var resourcename string
-
-	if multiple {
-		resourcename = "servers"
-	} else {
-		resourcename = "server"
-	}
-
 	if err != nil {
-		fmt.Println("Error while reading", resourcename, "from response:", err)
-		return errors.New("read-fail")
+		return ctlerrors.GenericNonRequestError("ResponseBodyReadFailure", "get server")
 	}
 
 	if Full {
@@ -120,8 +122,7 @@ func performServerGetRequest(responseBody io.Reader, multiple bool) error {
 	}
 
 	if err != nil {
-		fmt.Println("Error while printing output:", err)
-		return err
+		return ctlerrors.GenericNonRequestError(err.Error(), "get server")
 	}
 
 	return nil
