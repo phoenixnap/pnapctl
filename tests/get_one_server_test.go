@@ -56,7 +56,7 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 func TestGetServerClientFailure(test_framework *testing.T) {
 	PrepareMockClient(test_framework).
 		PerformGet(URL).
-		Return(WithResponse(nil, WithBody(server)), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	servers.ID = SERVERID
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})

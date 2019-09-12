@@ -111,15 +111,15 @@ func printGetServerResponse(responseBody io.Reader, multiple bool) error {
 
 	if Full {
 		if multiple {
-			_, err = printer.MainPrinter.PrintOutput(body, &[]LongServer{})
+			err = printer.MainPrinter.PrintOutput(body, &[]LongServer{})
 		} else {
-			_, err = printer.MainPrinter.PrintOutput(body, &LongServer{})
+			err = printer.MainPrinter.PrintOutput(body, &LongServer{})
 		}
 	} else {
 		if multiple {
-			_, err = printer.MainPrinter.PrintOutput(body, &[]ShortServer{})
+			err = printer.MainPrinter.PrintOutput(body, &[]ShortServer{})
 		} else {
-			_, err = printer.MainPrinter.PrintOutput(body, &ShortServer{})
+			err = printer.MainPrinter.PrintOutput(body, &ShortServer{})
 		}
 	}
 
