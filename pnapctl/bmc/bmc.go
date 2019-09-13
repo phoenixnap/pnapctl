@@ -3,6 +3,8 @@ package bmc
 import (
 	"os"
 
+	"phoenixnap.com/pnap-cli/pnapctl/bmc/reset"
+
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/get"
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweroff"
@@ -25,4 +27,5 @@ func init() {
 	BmcCmd.AddCommand(get.GetCmd)
 	BmcCmd.AddCommand(poweron.P_OnCmd)
 	BmcCmd.AddCommand(shutdown.ShutdownCmd)
+	BmcCmd.AddCommand(reset.ResetCmd)
 }

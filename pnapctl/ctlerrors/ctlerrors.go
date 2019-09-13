@@ -36,9 +36,10 @@ var Errormap = map[string]string{
 	"ExpectedBodyInErrorResponse": "0201",
 
 	// Unmarshalling errors: 03XX
-	"Unmarshalling":          "0300",
-	"UnmarshallingErrorBody": "0301",
-	"UnmarshallingInPrinter": "0302",
+	"Unmarshalling":                "0300",
+	"UnmarshallingErrorBody":       "0301",
+	"UnmarshallingInPrinter":       "0302",
+	"UnmarshallingInFileProcessor": "0303",
 
 	// Marshalling errors: 04XX
 	"Marshalling":          "0400",
@@ -50,6 +51,7 @@ var Errormap = map[string]string{
 
 	// Miscellaneous errors: 99XX
 	"TablePrinterFailure": "9901",
+	"UnknownErrorCode":    "9999",
 }
 
 /* Error functions.
@@ -65,7 +67,7 @@ func GenericNonRequestError(errorcase string, command string) error {
 	if exists {
 		errorcode = "[CODE : " + code + "]"
 	} else {
-		errorcode = "[CODE : 9999]"
+		errorcode = "[CODE : " + Errormap["UnknownErrorCode"] + "]"
 	}
 
 	return errors.New("Command '" + command + "' has been performed, but something went wrong. " + errorcode)
