@@ -129,20 +129,20 @@ func (r result) UseResponse(response *http.Response) error {
 	}
 
 	if response.Body == nil {
-		return GenericNonRequestError(r.CommandName, "ExpectedBodyInErrorResponse")
+		return GenericNonRequestError("ExpectedBodyInErrorResponse", r.CommandName)
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 
 	if err != nil {
-		return GenericNonRequestError(r.CommandName, "ResponseBodyReadFailure")
+		return GenericNonRequestError("ResponseBodyReadFailure", r.CommandName)
 	}
 
 	bmcErr := BMCError{}
 	err = json.Unmarshal(body, &bmcErr)
 
 	if err != nil {
-		return GenericNonRequestError(r.CommandName, "UnmarshallingErrorBody")
+		return GenericNonRequestError("UnmarshallingErrorBody", r.CommandName)
 	}
 
 	return errors.New(bmcErr.String())
