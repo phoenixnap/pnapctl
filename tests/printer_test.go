@@ -19,6 +19,11 @@ type ExampleStruct1 struct {
 
 var input []byte
 
+// Setup
+func TestMain(m *testing.M) {
+	printer.MainPrinter = printer.NewBodyPrinter()
+}
+
 func TestPrintOutputUnmarshalError(test_framework *testing.T) {
 	input := []byte("test input")
 

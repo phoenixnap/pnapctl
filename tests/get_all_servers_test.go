@@ -25,7 +25,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(WithData(serverlist), &[]servers.ShortServer{}).
-		Return(3, nil)
+		Return(nil)
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
@@ -43,7 +43,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(WithData(serverlist), &[]servers.LongServer{}).
-		Return(3, nil)
+		Return(nil)
 
 	// to display full output
 	servers.Full = true
@@ -83,7 +83,7 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(WithData(serverlist), &[]servers.LongServer{}).
-		Return(-1, errors.New(ctlerrors.UnmarshallingInPrinter))
+		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	// to display full output
 	servers.Full = true

@@ -34,8 +34,7 @@ func NewBodyPrinter() Printer {
 }
 
 // PrintOutput prints the construct passed according to the format.
-// The first output parameter is only used by the table printer to show how
-// many rows were printed. The second output parameter specifies any errors.
+// The output parameter specifies whether any errors were encountered during printing
 func (m BodyPrinter) PrintOutput(body []byte, construct interface{}) error {
 	err := json.Unmarshal(body, &construct)
 
@@ -49,11 +48,7 @@ func (m BodyPrinter) PrintOutput(body []byte, construct interface{}) error {
 		return printYAML(construct)
 	} else {
 		// default to table
-		rows := printTable(construct, m.Tableprinter)
-		if rows == -1 {
-			return errors.New(ctlerrors.TablePrinterFailure)
-		}
-		return nil
+		return printTable(construct, m.Tableprinter)
 	}
 }
 
@@ -80,6 +75,12 @@ func printYAML(body interface{}) error {
 }
 
 // Attempts to print the struct as a table.
-func printTable(body interface{}, tblprinter *tableprinter.Printer) int {
-	return tblprinter.Print(body)
+func printTable(body interface{}, tblprinter *tableprinter.Printer) error {
+	rows := tblprinter.Print(body)
+
+	if rows == -1 {
+		return errors.New(ctlerrors.TablePrinterFailure)
+	}
+
+	return nil
 }

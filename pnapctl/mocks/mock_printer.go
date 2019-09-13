@@ -37,7 +37,13 @@ func (m *MockPrinter) EXPECT() *MockPrinterMockRecorder {
 func (m *MockPrinter) PrintOutput(body []byte, construct interface{}) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PrintOutput", body, construct)
-	return ret[0].(error)
+	retError := ret[0]
+
+	if retError == nil {
+		return nil
+	} else {
+		return retError.(error)
+	}
 }
 
 // PrintOutput indicates an expected call of PrintOutput
