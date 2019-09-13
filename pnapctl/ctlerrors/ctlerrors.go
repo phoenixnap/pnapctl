@@ -36,9 +36,10 @@ const (
 	ExpectedBodyInErrorResponse = "0201"
 
 	// Unmarshalling errors: 03XX
-	Unmarshalling          = "0300"
-	UnmarshallingErrorBody = "0301"
-	UnmarshallingInPrinter = "0302"
+	Unmarshalling                = "0300"
+	UnmarshallingErrorBody       = "0301"
+	UnmarshallingInPrinter       = "0302"
+	UnmarshallingInFileProcessor = "0303"
 
 	// Marshalling errors: 04XX
 	Marshalling          = "0400"
