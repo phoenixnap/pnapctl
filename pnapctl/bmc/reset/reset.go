@@ -24,6 +24,8 @@ type ServerReset struct {
 // Filename is the filename from which to retrieve a complex object
 var Filename string
 
+var commandName = "reset"
+
 // ResetCmd is the command for resetting a server.
 var ResetCmd = &cobra.Command{
 	Use:          "reset",
@@ -51,7 +53,7 @@ sshKeys:
 		if files.IsNotExist(err) {
 			return ctlerrors.FileNotExistError(Filename)
 		} else if err != nil {
-			return ctlerrors.GenericNonRequestError(err.Error(), "reset")
+			return ctlerrors.GenericNonRequestError(err.Error(), commandName)
 		}
 
 		// Marshal file into JSON using the struct
@@ -60,17 +62,17 @@ sshKeys:
 		structbyte, err := files.UnmarshalToJson(data, &serverReset)
 
 		if err != nil {
-			return ctlerrors.GenericNonRequestError(err.Error(), "reset")
+			return ctlerrors.GenericNonRequestError(err.Error(), commandName)
 		}
 
 		response, err := client.MainClient.PerformPost(resource, bytes.NewBuffer(structbyte))
 
 		if err != nil {
 			// Generic error with PerformPost
-			return ctlerrors.GenericFailedRequestError("reset")
+			return ctlerrors.GenericFailedRequestError(commandName)
 		}
 
-		return ctlerrors.Result("reset").
+		return ctlerrors.Result(commandName).
 			IfOk("Server reset request sent successfully.").
 			IfNotFound("Server with ID " + args[0] + " not found").
 			UseResponse(response)

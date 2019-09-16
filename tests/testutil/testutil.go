@@ -11,15 +11,6 @@ import (
 // A generic test error.
 var TestError = errors.New("TEST ERROR")
 
-// An example of an error returned by the printer
-const PrinterUnmarshalErrorMsg = "UnmarshallingInPrinter"
-
-// An example of an error returned by the file processor.
-const FileProcessorUnmarshalErrorMsg = "UnmarshallingInFileProcessor"
-
-// Error returned by file processor when reading file.
-var FileReadingError = errors.New("FileReading")
-
 // A fake Error response from the server.
 var GenericBMCError = ctlerrors.BMCError{
 	Message:          "Something went wrong!",

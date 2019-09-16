@@ -8,6 +8,8 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
+const commandName = "shutdown"
+
 var ShutdownCmd = &cobra.Command{
 	Use:          "shutdown",
 	Short:        "Shuts down a specific server.",
@@ -20,10 +22,10 @@ var ShutdownCmd = &cobra.Command{
 
 		if err != nil {
 			// Generic error with PerformPost
-			return ctlerrors.GenericFailedRequestError("shutdown")
+			return ctlerrors.GenericFailedRequestError(commandName)
 		}
 
-		return ctlerrors.Result("shutdown").
+		return ctlerrors.Result(commandName).
 			IfOk("Shutdown successfully.").
 			IfNotFound("Server with ID " + args[0] + " not found.").
 			UseResponse(response)

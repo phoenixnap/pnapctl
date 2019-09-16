@@ -9,6 +9,7 @@ import (
 
 	"github.com/landoop/tableprinter"
 	"gopkg.in/yaml.v2"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
 // The main printer used by the application.
@@ -19,65 +20,67 @@ var MainPrinter = NewBodyPrinter()
 var OutputFormat string
 
 type Printer interface {
-	PrintOutput(body []byte, construct interface{}) (int, error)
+	PrintOutput(body []byte, construct interface{}) error
 }
 
 type BodyPrinter struct {
-	tableprinter *tableprinter.Printer
+	Tableprinter *tableprinter.Printer
 }
 
 func NewBodyPrinter() Printer {
 	return BodyPrinter{
-		tableprinter: tableprinter.New(os.Stdout),
+		Tableprinter: tableprinter.New(os.Stdout),
 	}
 }
 
 // PrintOutput prints the construct passed according to the format.
-// The first parameter is only used by the table printer to show how
-// many rows were printed. The second parameter specifies any errors.
-func (m BodyPrinter) PrintOutput(body []byte, construct interface{}) (int, error) {
+// The output parameter specifies whether any errors were encountered during printing
+func (m BodyPrinter) PrintOutput(body []byte, construct interface{}) error {
 	err := json.Unmarshal(body, &construct)
 
 	if err != nil {
-		return -1, errors.New("UnmarshallingInPrinter")
+		return errors.New(ctlerrors.UnmarshallingInPrinter)
 	}
 
 	if OutputFormat == "json" {
-		printJSON(body)
-		return 0, nil
+		return printJSON(body)
 	} else if OutputFormat == "yaml" {
-		err := printYAML(construct)
-		return -1, err
+		return printYAML(construct)
 	} else {
 		// default to table
-		rows := printTable(construct, m.tableprinter)
-		if rows == -1 {
-			return -1, errors.New("TablePrinterFailure")
-		}
-		return rows, nil
+		return printTable(construct, m.Tableprinter)
 	}
+}
+
+// Attempts to print in JSON via formatting a byte array.
+func printJSON(body []byte) error {
+	var dat bytes.Buffer
+	json.Indent(&dat, body, "", "    ")
+	fmt.Println(string(dat.Bytes()))
+
+	return nil
 }
 
 // Attempts to print in YAML via marshalling.
 func printYAML(body interface{}) error {
 	b, err := yaml.Marshal(body)
-	fmt.Println(string(b))
 
 	if err != nil {
-		return errors.New("MarshallingInPrinter")
-	} else {
-		return nil
+		return errors.New(ctlerrors.MarshallingInPrinter)
 	}
-}
 
-// Attempts to print in JSON via formatting a byte array.
-func printJSON(body []byte) {
-	var dat bytes.Buffer
-	json.Indent(&dat, body, "", "    ")
-	fmt.Println(string(dat.Bytes()))
+	fmt.Println(string(b))
+
+	return nil
 }
 
 // Attempts to print the struct as a table.
-func printTable(body interface{}, tblprinter *tableprinter.Printer) int {
-	return tblprinter.Print(body)
+func printTable(body interface{}, tblprinter *tableprinter.Printer) error {
+	rows := tblprinter.Print(body)
+
+	if rows == -1 {
+		return errors.New(ctlerrors.TablePrinterFailure)
+	}
+
+	return nil
 }

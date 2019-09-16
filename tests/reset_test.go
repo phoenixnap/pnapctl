@@ -123,7 +123,7 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError(testutil.FileProcessorUnmarshalErrorMsg, "reset")
+	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, "reset")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -175,7 +175,7 @@ func TestResetServerFileReadingFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(nil, testutil.FileReadingError).
+		Return(nil, errors.New("FileReading")).
 		Times(1)
 
 	// Run command

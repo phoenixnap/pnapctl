@@ -140,7 +140,7 @@ func TestDeployServerUnmarshallingFailure(test_framework *testing.T) {
 	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError(testutil.FileProcessorUnmarshalErrorMsg, "deploy")
+	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, "deploy")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -155,7 +155,7 @@ func TestDeployServerFileReadingFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(nil, testutil.FileReadingError).
+		Return(nil, ctlerrors.FileReading).
 		Times(1)
 
 	// Run command

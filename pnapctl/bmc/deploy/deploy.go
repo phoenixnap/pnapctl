@@ -31,6 +31,8 @@ type ServerCreate struct {
 // Filename is the filename from which to retrieve a complex object
 var Filename string
 
+var commandName = "deploy"
+
 // DeployCmd is the command for deploying a server.
 var DeployCmd = &cobra.Command{
 	Use:          "deploy",
@@ -63,7 +65,7 @@ sshKeys:
 		if files.IsNotExist(err) {
 			return ctlerrors.FileNotExistError(Filename)
 		} else if err != nil {
-			return ctlerrors.GenericNonRequestError(err.Error(), "deploy")
+			return ctlerrors.GenericNonRequestError(err.Error(), commandName)
 		}
 
 		// Marshal file into JSON using the struct
@@ -72,7 +74,7 @@ sshKeys:
 		structbyte, err := files.UnmarshalToJson(data, &serverCreate)
 
 		if err != nil {
-			return ctlerrors.GenericNonRequestError(err.Error(), "deploy")
+			return ctlerrors.GenericNonRequestError(err.Error(), commandName)
 		}
 
 		// Deploy the server
@@ -80,10 +82,10 @@ sshKeys:
 
 		if err != nil {
 			// Generic error with PerformPost
-			return ctlerrors.GenericFailedRequestError("deploy")
+			return ctlerrors.GenericFailedRequestError(commandName)
 		}
 
-		err = ctlerrors.Result("deploy").
+		err = ctlerrors.Result(commandName).
 			IfOk(`Request to create server is accepted. Within 5 minutes it will be deployed.`).
 			UseResponse(response)
 
@@ -95,7 +97,7 @@ sshKeys:
 		body, err := ioutil.ReadAll(response.Body)
 
 		if err != nil {
-			ctlerrors.GenericNonRequestError("ResponseBodyReadFailure", "deploy")
+			ctlerrors.GenericNonRequestError("ResponseBodyReadFailure", commandName)
 		}
 
 		// Unmarshal body into a Server

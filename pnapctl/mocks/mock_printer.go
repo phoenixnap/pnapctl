@@ -5,8 +5,9 @@
 package mocks
 
 import (
-	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
+
+	gomock "github.com/golang/mock/gomock"
 )
 
 // MockPrinter is a mock of Printer interface
@@ -33,12 +34,16 @@ func (m *MockPrinter) EXPECT() *MockPrinterMockRecorder {
 }
 
 // PrintOutput mocks base method
-func (m *MockPrinter) PrintOutput(body []byte, construct interface{}) (int, error) {
+func (m *MockPrinter) PrintOutput(body []byte, construct interface{}) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PrintOutput", body, construct)
-	ret0, _ := ret[0].(int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	retError := ret[0]
+
+	if retError == nil {
+		return nil
+	} else {
+		return retError.(error)
+	}
 }
 
 // PrintOutput indicates an expected call of PrintOutput

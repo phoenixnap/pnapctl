@@ -31,6 +31,8 @@ type LongServer struct {
 	Storage     string `header:"storage"`
 }
 
+const commandName string = "get servers"
+
 var Full bool
 var ID string
 
@@ -65,11 +67,11 @@ func getServer(serverID string) error {
 	response, err := client.MainClient.PerformGet("servers/" + serverID)
 
 	if err != nil {
-		return ctlerrors.GenericFailedRequestError("get server")
+		return ctlerrors.GenericFailedRequestError(commandName)
 	}
 
 	err = ctlerrors.
-		Result("get server").
+		Result(commandName).
 		IfOk("").
 		IfNotFound("A server with the ID " + ID + " does not exist.").
 		UseResponse(response)
@@ -78,18 +80,18 @@ func getServer(serverID string) error {
 		return err
 	}
 
-	return performServerGetRequest(response.Body, false)
+	return printGetServerResponse(response.Body, false)
 }
 
 func getAllServers() error {
 	response, err := client.MainClient.PerformGet("servers")
 
 	if err != nil {
-		return ctlerrors.GenericFailedRequestError("get servers")
+		return ctlerrors.GenericFailedRequestError(commandName)
 	}
 
 	err = ctlerrors.
-		Result("get servers").
+		Result(commandName).
 		IfOk("").
 		UseResponse(response)
 
@@ -97,32 +99,33 @@ func getAllServers() error {
 		return err
 	}
 
-	return performServerGetRequest(response.Body, true)
+	return printGetServerResponse(response.Body, true)
 }
 
-func performServerGetRequest(responseBody io.Reader, multiple bool) error {
+func printGetServerResponse(responseBody io.Reader, multiple bool) error {
 	body, err := ioutil.ReadAll(responseBody)
 
 	if err != nil {
-		return ctlerrors.GenericNonRequestError("ResponseBodyReadFailure", "get server")
+		return ctlerrors.GenericNonRequestError(ctlerrors.ResponseBodyReadFailure, commandName)
 	}
 
 	if Full {
 		if multiple {
-			_, err = printer.MainPrinter.PrintOutput(body, &[]LongServer{})
+			err = printer.MainPrinter.PrintOutput(body, &[]LongServer{})
 		} else {
-			_, err = printer.MainPrinter.PrintOutput(body, &LongServer{})
+			err = printer.MainPrinter.PrintOutput(body, &LongServer{})
 		}
 	} else {
 		if multiple {
-			_, err = printer.MainPrinter.PrintOutput(body, &[]ShortServer{})
+			err = printer.MainPrinter.PrintOutput(body, &[]ShortServer{})
 		} else {
-			_, err = printer.MainPrinter.PrintOutput(body, &ShortServer{})
+			err = printer.MainPrinter.PrintOutput(body, &ShortServer{})
 		}
 	}
 
+	// This err is the one outputted within the PrintOutput
 	if err != nil {
-		return ctlerrors.GenericNonRequestError(err.Error(), "get server")
+		return ctlerrors.GenericNonRequestError(err.Error(), commandName)
 	}
 
 	return nil
