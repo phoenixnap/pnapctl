@@ -65,7 +65,7 @@ sshKeys:
 			return ctlerrors.GenericNonRequestError(err.Error(), commandName)
 		}
 
-		response, err := client.MainClient.PerformPost(resource, bytes.NewBuffer(structbyte))
+		response, err := client.PerformPost(resource, bytes.NewBuffer(structbyte))
 
 		if err != nil {
 			// Generic error with PerformPost

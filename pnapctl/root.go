@@ -1,6 +1,7 @@
 package pnapctl
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 
+	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnap-cli/pnapctl/bmc"
 
 	"github.com/spf13/cobra"
@@ -68,8 +70,21 @@ func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
+	// TODO: add error handling if client credentials are empty
 	if err := viper.ReadInConfig(); err == nil {
-		client.MainClient = client.NewHttpClient(viper.GetString("hostname"), viper.GetInt("timeout_secs"))
+		config := clientcredentials.Config{
+			ClientID:     viper.GetString("clientId"),
+			ClientSecret: viper.GetString("clientSecret"),
+			Scopes:       []string{"bmc"},
+			TokenURL:     "https://kc.allbyvmself.com:8443/auth/realms/BMC/protocol/openid-connect/token",
+		}
+
+		httpClient := config.Client(context.Background())
+
+		client.MainClient = httpClient
+		client.BaseURL = viper.GetString("hostname")
+
+		// client.MainClient = client.NewHttpClient(viper.GetString("hostname"), viper.GetInt("timeout_secs"), viper.GetString("apiAuthKey"))
 
 	} else {
 		fmt.Println("Error reading config file:", err)

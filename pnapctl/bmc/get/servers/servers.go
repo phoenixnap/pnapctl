@@ -64,7 +64,7 @@ pnapctl bmc get servers --id=NDIid939dfkoDd -o yaml`,
 }
 
 func getServer(serverID string) error {
-	response, err := client.MainClient.PerformGet("servers/" + serverID)
+	response, err := client.PerformGet("servers/" + serverID)
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(commandName)
@@ -84,7 +84,7 @@ func getServer(serverID string) error {
 }
 
 func getAllServers() error {
-	response, err := client.MainClient.PerformGet("servers")
+	response, err := client.PerformGet("servers")
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(commandName)

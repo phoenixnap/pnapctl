@@ -3,8 +3,9 @@
 # The CLI currently works without a version and can be left commented
 # =====================================================
 
-#apiVersion: v1/
-#apiAuthKey: GJvrCchDbSju6J6Y97wPLWNekJVrGXn2
+# Authentication
+clientId:
+clientSecret:
 
 # Dev environment
 hostname: https://phoenixnap-non-prod-ph-dev.apigee.net/api/bmc/v1/

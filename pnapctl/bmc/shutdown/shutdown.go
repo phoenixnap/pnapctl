@@ -18,7 +18,7 @@ var ShutdownCmd = &cobra.Command{
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var resource = "servers/" + args[0] + "/actions/shutdown"
-		var response, err = client.MainClient.PerformPost(resource, bytes.NewBuffer([]byte{}))
+		var response, err = client.PerformPost(resource, bytes.NewBuffer([]byte{}))
 
 		if err != nil {
 			// Generic error with PerformPost
