@@ -16,17 +16,25 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cfgFile string
+// The following const/vars act as our internal property file
+const (
+	hostname = "https://phoenixnap-non-prod-ph-dev.apigee.net/api/bmc/v1/"
+	tokenURL = "https://kc.allbyvmself.com:8443/auth/realms/BMC/protocol/openid-connect/token"
+)
 
-var rootCmd = &cobra.Command{
-	Use:   "pnapctl",
-	Short: "Short Desc",
-	Long:  "Longer Desc",
-	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Help()
-		os.Exit(0)
-	},
-}
+var (
+	scopes  = []string{"bmc"}
+	rootCmd = &cobra.Command{
+		Use:   "pnapctl",
+		Short: "Short Desc",
+		Long:  "Longer Desc",
+		Run: func(cmd *cobra.Command, args []string) {
+			cmd.Help()
+			os.Exit(0)
+		},
+	}
+	cfgFile string
+)
 
 // Execute adds all child commands to the root command, setting flags appropriately.
 // Called by main.main(), only needing to happen once.
@@ -44,10 +52,6 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default \"$HOME/.pnap.yaml\")")
 
 	cobra.OnInitialize(initConfig)
-
-	// fmt.Println(viper.GetString("hostname"))
-	// fmt.Println(viper.InConfig("hostname"))
-	// fmt.Println(viper.InConfig("timeout_secs"))
 }
 
 func initConfig() {
@@ -75,17 +79,14 @@ func initConfig() {
 		config := clientcredentials.Config{
 			ClientID:     viper.GetString("clientId"),
 			ClientSecret: viper.GetString("clientSecret"),
-			Scopes:       []string{"bmc"},
-			TokenURL:     "https://kc.allbyvmself.com:8443/auth/realms/BMC/protocol/openid-connect/token",
+			Scopes:       scopes,
+			TokenURL:     tokenURL,
 		}
 
 		httpClient := config.Client(context.Background())
 
 		client.MainClient = httpClient
-		client.BaseURL = viper.GetString("hostname")
-
-		// client.MainClient = client.NewHttpClient(viper.GetString("hostname"), viper.GetInt("timeout_secs"), viper.GetString("apiAuthKey"))
-
+		client.BaseURL = hostname
 	} else {
 		fmt.Println("Error reading config file:", err)
 		os.Exit(1)
