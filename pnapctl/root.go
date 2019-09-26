@@ -18,7 +18,7 @@ import (
 
 // The following const/vars act as our internal property file
 const (
-	hostname = "https://phoenixnap-non-prod-ph-dev.apigee.net/api/bmc/v1/"
+	hostname = "https://phoenixnap-non-prod-ph-dev.apigee.net/api/bmc/v0/"
 	tokenURL = "https://kc.allbyvmself.com:8443/auth/realms/BMC/protocol/openid-connect/token"
 )
 
