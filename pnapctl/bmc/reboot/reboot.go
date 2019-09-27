@@ -18,7 +18,7 @@ var RebootCmd = &cobra.Command{
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		resource := "servers/" + args[0] + "/actions/reboot"
-		response, err := client.PerformPost(resource, bytes.NewBuffer([]byte{}))
+		response, err := client.MainClient.PerformPost(resource, bytes.NewBuffer([]byte{}))
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(commandName)

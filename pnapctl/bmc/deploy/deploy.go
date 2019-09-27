@@ -78,7 +78,7 @@ sshKeys:
 		}
 
 		// Deploy the server
-		response, err := client.PerformPost("servers", bytes.NewBuffer(structbyte))
+		response, err := client.MainClient.PerformPost("servers", bytes.NewBuffer(structbyte))
 
 		if err != nil {
 			// Generic error with PerformPost

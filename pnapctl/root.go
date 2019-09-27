@@ -1,7 +1,6 @@
 package pnapctl
 
 import (
-	"context"
 	"fmt"
 	"os"
 
@@ -10,31 +9,22 @@ import (
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 
-	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnap-cli/pnapctl/bmc"
 
 	"github.com/spf13/cobra"
 )
 
-// The following const/vars act as our internal property file
-const (
-	hostname = "https://phoenixnap-non-prod-ph-dev.apigee.net/api/bmc/v0/"
-	tokenURL = "https://kc.allbyvmself.com:8443/auth/realms/BMC/protocol/openid-connect/token"
-)
+var cfgFile string
 
-var (
-	scopes  = []string{"bmc"}
-	rootCmd = &cobra.Command{
-		Use:   "pnapctl",
-		Short: "Short Desc",
-		Long:  "Longer Desc",
-		Run: func(cmd *cobra.Command, args []string) {
-			cmd.Help()
-			os.Exit(0)
-		},
-	}
-	cfgFile string
-)
+var rootCmd = &cobra.Command{
+	Use:   "pnapctl",
+	Short: "Short Desc",
+	Long:  "Longer Desc",
+	Run: func(cmd *cobra.Command, args []string) {
+		cmd.Help()
+		os.Exit(0)
+	},
+}
 
 // Execute adds all child commands to the root command, setting flags appropriately.
 // Called by main.main(), only needing to happen once.
@@ -74,21 +64,13 @@ func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
-	// TODO: add error handling if client credentials are empty
-	if err := viper.ReadInConfig(); err == nil {
-		config := clientcredentials.Config{
-			ClientID:     viper.GetString("clientId"),
-			ClientSecret: viper.GetString("clientSecret"),
-			Scopes:       scopes,
-			TokenURL:     tokenURL,
-		}
-
-		httpClient := config.Client(context.Background())
-
-		client.MainClient = httpClient
-		client.BaseURL = hostname
-	} else {
+	if err := viper.ReadInConfig(); err != nil {
 		fmt.Println("Error reading config file:", err)
 		os.Exit(1)
+	} else if viper.GetString("clientId") == "" || viper.GetString("clientSecret") == "" {
+		fmt.Println("Client ID and Client Secret in config file should not be empty")
+		os.Exit(1)
+	} else {
+		client.MainClient = client.NewHttpClient(viper.GetString("clientId"), viper.GetString("clientSecret"))
 	}
 }
