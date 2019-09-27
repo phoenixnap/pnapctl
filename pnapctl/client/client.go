@@ -9,19 +9,23 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/configuration"
 )
 
+// MainClient is the main WebClient used to perform requests.
+// Overwrite this variable to change the client used.
+var MainClient WebClient
+
 // WebClient is the interface used to represent a Client that performs requests.
 type WebClient interface {
 	PerformGet(resource string) (*http.Response, error)
 	PerformPost(resource string, body io.Reader) (*http.Response, error)
 }
 
-// HTTPClient represents a struct containing an HTTP client and the baseURL
+// HTTPClient is a Client that performs HTTP requests.
 type HTTPClient struct {
 	client  *http.Client
 	baseURL string
 }
 
-// NewHTTPClient creates a new instance of the HTTPClient struct using a client which performs the client credentials grant before a request
+// NewHTTPClient creates a new HTTPClient
 func NewHTTPClient(clientID string, clientSecret string) WebClient {
 	config := clientcredentials.Config{
 		ClientID:     clientID,
@@ -36,10 +40,6 @@ func NewHTTPClient(clientID string, clientSecret string) WebClient {
 		baseURL: configuration.Hostname,
 	}
 }
-
-// MainClient is the main WebClient used to perform requests.
-// Overwrite this variable to change the client used.
-var MainClient WebClient
 
 // PerformGet performs a Get request
 func (m HTTPClient) PerformGet(resource string) (*http.Response, error) {
