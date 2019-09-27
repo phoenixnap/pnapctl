@@ -15,23 +15,25 @@ type WebClient interface {
 	PerformPost(resource string, body io.Reader) (*http.Response, error)
 }
 
-type HttpClient struct {
+// HTTPClient represents a struct containing an HTTP client and the baseURL
+type HTTPClient struct {
 	client  *http.Client
-	baseurl string
+	baseURL string
 }
 
-func NewHttpClient(clientId string, clientSecret string) WebClient {
+// NewHTTPClient creates a new instance of the HTTPClient struct using a client which performs the client credentials grant before a request
+func NewHTTPClient(clientID string, clientSecret string) WebClient {
 	config := clientcredentials.Config{
-		ClientID:     clientId,
+		ClientID:     clientID,
 		ClientSecret: clientSecret,
 		TokenURL:     configuration.TokenURL,
 	}
 
 	httpClient := config.Client(context.Background())
 
-	return HttpClient{
+	return HTTPClient{
 		client:  httpClient,
-		baseurl: configuration.Hostname,
+		baseURL: configuration.Hostname,
 	}
 }
 
@@ -40,15 +42,15 @@ func NewHttpClient(clientId string, clientSecret string) WebClient {
 var MainClient WebClient
 
 // PerformGet performs a Get request
-func (m HttpClient) PerformGet(resource string) (*http.Response, error) {
-	return m.client.Get(m.buildURI(m.baseurl, resource))
+func (m HTTPClient) PerformGet(resource string) (*http.Response, error) {
+	return m.client.Get(m.buildURI(resource))
 }
 
 // PerformPost performs a Post request
-func (m HttpClient) PerformPost(resource string, body io.Reader) (*http.Response, error) {
-	return m.client.Post(m.buildURI(m.baseurl, resource), "application/json", body)
+func (m HTTPClient) PerformPost(resource string, body io.Reader) (*http.Response, error) {
+	return m.client.Post(m.buildURI(resource), "application/json", body)
 }
 
-func (m HttpClient) buildURI(baseURL string, resource string) string {
-	return baseURL + resource
+func (m HTTPClient) buildURI(resource string) string {
+	return m.baseURL + resource
 }
