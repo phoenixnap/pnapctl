@@ -42,10 +42,6 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default \"$HOME/.pnap.yaml\")")
 
 	cobra.OnInitialize(initConfig)
-
-	// fmt.Println(viper.GetString("hostname"))
-	// fmt.Println(viper.InConfig("hostname"))
-	// fmt.Println(viper.InConfig("timeout_secs"))
 }
 
 func initConfig() {
@@ -68,11 +64,13 @@ func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		client.MainClient = client.NewHttpClient(viper.GetString("hostname"), viper.GetInt("timeout_secs"))
-
-	} else {
+	if err := viper.ReadInConfig(); err != nil {
 		fmt.Println("Error reading config file:", err)
 		os.Exit(1)
+	} else if viper.GetString("clientId") == "" || viper.GetString("clientSecret") == "" {
+		fmt.Println("Client ID and Client Secret in config file should not be empty")
+		os.Exit(1)
+	} else {
+		client.MainClient = client.NewHTTPClient(viper.GetString("clientId"), viper.GetString("clientSecret"))
 	}
 }
