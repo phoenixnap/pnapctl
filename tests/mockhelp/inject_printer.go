@@ -1,7 +1,6 @@
 package mockhelp
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -16,9 +15,4 @@ func PrepareMockPrinter(test_framework *testing.T) *mocks.MockPrinterMockRecorde
 	printer.MainPrinter = mockPrinter
 
 	return mockPrinter.EXPECT()
-}
-
-func WithData(body interface{}) interface{} {
-	data, _ := json.Marshal(body)
-	return data
 }

@@ -1,6 +1,8 @@
 package servers
 
 import (
+	"encoding/json"
+	"errors"
 	"io"
 	"io/ioutil"
 
@@ -111,15 +113,31 @@ func printGetServerResponse(responseBody io.Reader, multiple bool) error {
 
 	if Full {
 		if multiple {
-			err = printer.MainPrinter.PrintOutput(body, &[]LongServer{})
+			construct := &[]LongServer{}
+			err = unmarshall(body, construct)
+			if err == nil {
+				err = printer.MainPrinter.PrintOutput(construct, len(*construct) == 0)
+			}
 		} else {
-			err = printer.MainPrinter.PrintOutput(body, &LongServer{})
+			construct := &LongServer{}
+			err = unmarshall(body, construct)
+			if err == nil {
+				err = printer.MainPrinter.PrintOutput(construct, false)
+			}
 		}
 	} else {
 		if multiple {
-			err = printer.MainPrinter.PrintOutput(body, &[]ShortServer{})
+			construct := &[]ShortServer{}
+			err = unmarshall(body, construct)
+			if err == nil {
+				err = printer.MainPrinter.PrintOutput(construct, len(*construct) == 0)
+			}
 		} else {
-			err = printer.MainPrinter.PrintOutput(body, &ShortServer{})
+			construct := &ShortServer{}
+			err = unmarshall(body, construct)
+			if err == nil {
+				err = printer.MainPrinter.PrintOutput(construct, false)
+			}
 		}
 	}
 
@@ -128,6 +146,15 @@ func printGetServerResponse(responseBody io.Reader, multiple bool) error {
 		return ctlerrors.GenericNonRequestError(err.Error(), commandName)
 	}
 
+	return nil
+}
+
+// unmarshall will unmarshall a Json byte stream into the provided construct.
+func unmarshall(body []byte, construct interface{}) error {
+	err := json.Unmarshal(body, &construct)
+	if err != nil {
+		return errors.New(ctlerrors.UnmarshallingErrorBody)
+	}
 	return nil
 }
 

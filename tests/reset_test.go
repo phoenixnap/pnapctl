@@ -15,11 +15,13 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 )
 
-func TestResetSetup(t *testing.T) {
+func resetSetup() {
 	URL = "servers/" + SERVERID + "/actions/reset"
 }
 
 func TestResetServerSuccessYAML(test_framework *testing.T) {
+	resetSetup()
+
 	// Setup
 	serverReset := reset.ServerReset{
 		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
@@ -54,6 +56,8 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 }
 
 func TestResetServerSuccessJSON(test_framework *testing.T) {
+	resetSetup()
+
 	// Setup
 	serverReset := reset.ServerReset{
 		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
@@ -84,13 +88,15 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 }
 
 func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
+	resetSetup()
+
 	// Setup
 	reset.Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, errors.New("FileDoesNotExist")).
+		Return(nil, errors.New(ctlerrors.FileDoesNotExist)).
 		Times(1)
 
 	// Run command
@@ -105,6 +111,8 @@ func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
 }
 
 func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
+	resetSetup()
+
 	// Invalid contents of the file
 	// filecontents := make([]byte, 10)
 	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
@@ -130,6 +138,8 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 }
 
 func TestResetServerNotFoundFailure(test_framework *testing.T) {
+	resetSetup()
+
 	// Setup
 	serverReset := reset.ServerReset{
 		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
@@ -167,6 +177,8 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 }
 
 func TestResetServerFileReadingFailure(test_framework *testing.T) {
+	resetSetup()
+
 	// Setup
 	reset.Filename = FILENAME
 
@@ -175,20 +187,22 @@ func TestResetServerFileReadingFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(nil, errors.New("FileReading")).
+		Return(nil, errors.New(ctlerrors.FileReading)).
 		Times(1)
 
 	// Run command
 	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError("FileReading", "reset")
+	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.FileReading, "reset")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
 func TestResetServerBackendErrorFailure(test_framework *testing.T) {
+	resetSetup()
+
 	// Setup
 	serverReset := reset.ServerReset{
 		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
@@ -226,6 +240,8 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 }
 
 func TestResetServerClientFailure(test_framework *testing.T) {
+	resetSetup()
+
 	// Setup
 	serverReset := reset.ServerReset{
 		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},

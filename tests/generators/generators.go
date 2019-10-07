@@ -38,3 +38,22 @@ func GenerateServer() servers.LongServer {
 		Storage:     randSeq(10),
 	}
 }
+
+// ConvertLongToShortServers will convert a slice of long servers to a short servers
+func ConvertLongToShortServers(long_servers []servers.LongServer) []servers.ShortServer {
+	var serverlist []servers.ShortServer
+	for i := 0; i < len(long_servers); i++ {
+		serverlist = append(serverlist, ConvertLongToShortServer(long_servers[i]))
+	}
+	return serverlist
+}
+
+// ConvertLongToShortServer will convert a single long server to a short server
+func ConvertLongToShortServer(long_server servers.LongServer) servers.ShortServer {
+	return servers.ShortServer{
+		ID:          long_server.ID,
+		Status:      long_server.Status,
+		Name:        long_server.Name,
+		Description: long_server.Description,
+	}
+}

@@ -12,7 +12,7 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
-func TestPowerOffSetup(t *testing.T) {
+func powerOffSetup() {
 	Body = bytes.NewBuffer([]byte{})
 	URL = "servers/" + SERVERID + "/actions/power-off"
 }
@@ -20,6 +20,8 @@ func TestPowerOffSetup(t *testing.T) {
 // Each test needs to have a name like `TestXXX`
 // They also need a parameter of `*testing.T`
 func TestPowerOffServerSuccess(test_framework *testing.T) {
+	powerOffSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
@@ -33,6 +35,8 @@ func TestPowerOffServerSuccess(test_framework *testing.T) {
 }
 
 func TestPowerOffServerNotFound(test_framework *testing.T) {
+	powerOffSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
@@ -49,6 +53,8 @@ func TestPowerOffServerNotFound(test_framework *testing.T) {
 }
 
 func TestPowerOffServerError(test_framework *testing.T) {
+	powerOffSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
@@ -65,6 +71,8 @@ func TestPowerOffServerError(test_framework *testing.T) {
 }
 
 func TestPowerOffServerClientFailure(test_framework *testing.T) {
+	powerOffSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).

@@ -97,7 +97,7 @@ sshKeys:
 		body, err := ioutil.ReadAll(response.Body)
 
 		if err != nil {
-			ctlerrors.GenericNonRequestError("ResponseBodyReadFailure", commandName)
+			ctlerrors.GenericNonRequestError(ctlerrors.ResponseBodyReadFailure, commandName)
 		}
 
 		// Unmarshal body into a Server

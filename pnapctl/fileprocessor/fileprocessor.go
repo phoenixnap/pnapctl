@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"gopkg.in/yaml.v2"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
 // MainFileProcessor is the main instance of FileProcessor that is used by the main code.
@@ -30,18 +31,18 @@ func (RealFileProcessor) ReadFile(filename string) ([]byte, error) {
 
 	if err != nil {
 		if os.IsNotExist(err) {
-			return nil, errors.New("FileDoesNotExist")
+			return nil, errors.New(ctlerrors.FileDoesNotExist)
 		} else {
-			return nil, errors.New("FileReading")
+			return nil, errors.New(ctlerrors.FileReading)
 		}
 	}
 
 	return file, nil
 }
 
-// IsNotExist checks whether an error is "FileDoesNotExist"
+// IsNotExist checks whether an error is FileDoesNotExist
 func IsNotExist(err error) bool {
-	return err != nil && err.Error() == "FileDoesNotExist"
+	return err != nil && err.Error() == ctlerrors.FileDoesNotExist
 }
 
 // ReadFile is a shortcut function to using `MainFileProcessor` all the time.
@@ -58,7 +59,7 @@ func unmarshal(data []byte, construct interface{}) error {
 		err = yaml.Unmarshal(data, construct)
 
 		if err != nil {
-			return errors.New("UnmarshallingInFileProcessor")
+			return errors.New(ctlerrors.UnmarshallingInFileProcessor)
 		}
 	}
 	return nil

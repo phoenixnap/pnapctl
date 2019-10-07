@@ -62,7 +62,7 @@ sshKeys:
 		structbyte, err := files.UnmarshalToJson(data, &serverReset)
 
 		if err != nil {
-			return ctlerrors.GenericNonRequestError(err.Error(), commandName)
+			return ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, commandName)
 		}
 
 		response, err := client.MainClient.PerformPost(resource, bytes.NewBuffer(structbyte))
