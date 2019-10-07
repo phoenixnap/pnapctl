@@ -11,19 +11,22 @@ import (
 	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
-func TestGetServerSetup(test_framework *testing.T) {
+func getOneServerSetup() {
 	URL = "servers/" + SERVERID
 }
 
 func TestGetServerShortSuccess(test_framework *testing.T) {
+	getOneServerSetup()
+
 	server := generators.GenerateServer()
 
 	PrepareMockClient(test_framework).
 		PerformGet(URL).
 		Return(WithResponse(200, WithBody(server)), nil)
 
+	shortServer := generators.ConvertLongToShortServer(server)
 	PrepareMockPrinter(test_framework).
-		PrintOutput(WithData(server), &servers.ShortServer{}).
+		PrintOutput(&shortServer, false).
 		Return(nil)
 
 	servers.ID = SERVERID
@@ -35,6 +38,8 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetServerLongSuccess(test_framework *testing.T) {
+	getOneServerSetup()
+
 	server := generators.GenerateServer()
 
 	PrepareMockClient(test_framework).
@@ -42,7 +47,7 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 		Return(WithResponse(200, WithBody(server)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(WithData(server), &servers.LongServer{}).
+		PrintOutput(&server, false).
 		Return(nil)
 
 	servers.ID = SERVERID
@@ -54,6 +59,8 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 }
 
 func TestGetServerClientFailure(test_framework *testing.T) {
+	getOneServerSetup()
+
 	PrepareMockClient(test_framework).
 		PerformGet(URL).
 		Return(nil, testutil.TestError)
@@ -69,14 +76,17 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
+	getOneServerSetup()
+
 	server := generators.GenerateServer()
 
 	PrepareMockClient(test_framework).
 		PerformGet(URL).
 		Return(WithResponse(200, WithBody(server)), nil)
 
+	shortServer := generators.ConvertLongToShortServer(server)
 	PrepareMockPrinter(test_framework).
-		PrintOutput(WithData(server), &servers.ShortServer{}).
+		PrintOutput(&shortServer, false).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	servers.ID = SERVERID

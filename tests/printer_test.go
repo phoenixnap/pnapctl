@@ -2,12 +2,10 @@ package tests
 
 import (
 	"bytes"
-	"encoding/json"
-	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/landoop/tableprinter"
-	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	"phoenixnap.com/pnap-cli/pnapctl/printer"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 )
@@ -20,48 +18,41 @@ type ExampleStruct1 struct {
 var input []byte
 
 // Setup
-func TestMain(m *testing.M) {
+func printerSetup() {
 	printer.MainPrinter = printer.NewBodyPrinter()
 }
 
-func TestPrintOutputUnmarshalError(test_framework *testing.T) {
-	input := []byte("test input")
-
-	errPO := printer.MainPrinter.PrintOutput(input, &ExampleStruct1{})
-
-	expectedErr := errors.New(ctlerrors.UnmarshallingInPrinter)
-
-	testutil.AssertEqual(test_framework, expectedErr.Error(), errPO.Error())
-}
-
-func ExamplePrintOutputUnmarshalError() {
-	input := []byte("test input")
-
-	printer.MainPrinter.PrintOutput(input, &ExampleStruct1{})
-
-	// Output:
-}
-
 func TestPrintOutputJsonFormat(test_framework *testing.T) {
+	printerSetup()
 	printer.OutputFormat = "json"
 
-	inputStruct := ExampleStruct1{ID: "123", Status: "OK"}
+	testCases := []struct {
+		name    string
+		input   interface{}
+		isEmpty bool
+	}{
+		{"Single Element", ExampleStruct1{ID: "123", Status: "OK"}, false},
+		{"List", []ExampleStruct1{{ID: "123", Status: "OK"}, {ID: "456", Status: "FINE"}}, false},
+		{"Empty List", []ExampleStruct1{}, true},
+	}
 
-	input, _ = json.Marshal(inputStruct)
+	for _, tc := range testCases {
+		test_framework.Run(fmt.Sprintf("%s", tc.name), func(test_framework *testing.T) {
+			outputError := printer.MainPrinter.PrintOutput(&tc.input, tc.isEmpty)
 
-	outputError := printer.MainPrinter.PrintOutput(input, &ExampleStruct1{})
-
-	testutil.AssertEqual(test_framework, nil, outputError)
+			testutil.AssertEqual(test_framework, nil, outputError)
+		})
+	}
 }
 
 func ExamplePrintOutputJsonFormat() {
+	printerSetup()
+
 	printer.OutputFormat = "json"
 
 	inputStruct := ExampleStruct1{ID: "123", Status: "OK"}
 
-	input, _ = json.Marshal(inputStruct)
-
-	printer.MainPrinter.PrintOutput(input, &ExampleStruct1{})
+	printer.MainPrinter.PrintOutput(inputStruct, false)
 
 	// Output: {
 	//     "ID": "123",
@@ -70,52 +61,88 @@ func ExamplePrintOutputJsonFormat() {
 }
 
 func TestPrintOutputYamlFormat(test_framework *testing.T) {
+	printerSetup()
 	printer.OutputFormat = "yaml"
 
-	inputStruct := ExampleStruct1{ID: "123", Status: "OK"}
+	testCases := []struct {
+		name    string
+		input   interface{}
+		isEmpty bool
+	}{
+		{"Single Element", ExampleStruct1{ID: "123", Status: "OK"}, false},
+		{"List", []ExampleStruct1{{ID: "123", Status: "OK"}, {ID: "456", Status: "FINE"}}, false},
+		{"Empty List", []ExampleStruct1{}, true},
+	}
 
-	input, _ = json.Marshal(inputStruct)
+	for _, tc := range testCases {
+		test_framework.Run(fmt.Sprintf("%s", tc.name), func(test_framework *testing.T) {
+			outputError := printer.MainPrinter.PrintOutput(tc.input, tc.isEmpty)
 
-	outputError := printer.MainPrinter.PrintOutput(input, &ExampleStruct1{})
-
-	testutil.AssertEqual(test_framework, nil, outputError)
+			testutil.AssertEqual(test_framework, nil, outputError)
+		})
+	}
 }
 
 func ExamplePrintOutputYamlFormat() {
+	printerSetup()
+
 	printer.OutputFormat = "yaml"
 
 	inputStruct := ExampleStruct1{ID: "123", Status: "OK"}
 
-	input, _ = json.Marshal(inputStruct)
-
-	printer.MainPrinter.PrintOutput(input, &ExampleStruct1{})
+	printer.MainPrinter.PrintOutput(inputStruct, false)
 
 	// Output: id: "123"
 	// status: OK
 }
 
 func TestPrintOutputTableFormat(test_framework *testing.T) {
+	printerSetup()
 	printer.OutputFormat = ""
 
-	// Overwriting table printer buffer since it uses a different buffer which we can't check via Example
-	customTablePrinterBuffer := new(bytes.Buffer)
-	printer.MainPrinter = printer.BodyPrinter{
-		Tableprinter: tableprinter.New(customTablePrinterBuffer),
+	testCases := []struct {
+		name     string
+		input    interface{}
+		isEmpty  bool
+		expected string
+	}{
+		{"Single Element", ExampleStruct1{ID: "123", Status: "OK"}, false, `  ID    STATUS  
+ ----- -------- 
+  123   OK      
+`},
+		{"List", []ExampleStruct1{{ID: "123", Status: "OK"}, {ID: "456", Status: "FINE"}}, false, `  ID    STATUS  
+ ----- -------- 
+  123   OK      
+  456   FINE    
+`},
+		{"Empty", []ExampleStruct1{}, true, ``}, // no output to the table printer. we may still have fmt output
 	}
 
-	inputStruct := ExampleStruct1{ID: "123", Status: "OK"}
+	for _, tc := range testCases {
+		test_framework.Run(fmt.Sprintf("%s", tc.name), func(test_framework *testing.T) {
+			// Overwriting table printer buffer since it uses a different buffer which we can't check via Example
+			customTablePrinterBuffer := new(bytes.Buffer)
+			printer.MainPrinter = printer.BodyPrinter{
+				Tableprinter: tableprinter.New(customTablePrinterBuffer),
+			}
 
-	input, _ = json.Marshal(inputStruct)
+			outputError := printer.MainPrinter.PrintOutput(tc.input, tc.isEmpty)
 
-	outputError := printer.MainPrinter.PrintOutput(input, &ExampleStruct1{})
+			testutil.AssertEqual(test_framework, nil, outputError)
 
-	testutil.AssertEqual(test_framework, nil, outputError)
+			// asserting the custom buffer printed something
+			outputText := string(customTablePrinterBuffer.Bytes())
 
-	// asserting the custom buffer printed something
-	outputText := string(customTablePrinterBuffer.Bytes())
-	outputTextLength := len(outputText)
-
-	if outputTextLength == 0 {
-		test_framework.Error("Table printer did not print anything")
+			testutil.AssertEqual(test_framework, tc.expected, outputText)
+		})
 	}
+}
+
+func ExamplePrintOutputTableFormatEmpty() {
+	printerSetup()
+	printer.OutputFormat = ""
+
+	printer.MainPrinter.PrintOutput([]ExampleStruct1{}, true)
+
+	// Output: No data found
 }

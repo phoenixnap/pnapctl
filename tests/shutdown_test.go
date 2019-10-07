@@ -11,12 +11,14 @@ import (
 	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
-func TestShutdownSetup(t *testing.T) {
+func shutdownSetup() {
 	Body = bytes.NewBuffer([]byte{})
 	URL = "servers/" + SERVERID + "/actions/shutdown"
 }
 
 func TestShutdownServerSuccess(test_framework *testing.T) {
+	shutdownSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
@@ -30,6 +32,8 @@ func TestShutdownServerSuccess(test_framework *testing.T) {
 }
 
 func TestShutdownServerNotFound(test_framework *testing.T) {
+	shutdownSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
@@ -46,6 +50,8 @@ func TestShutdownServerNotFound(test_framework *testing.T) {
 }
 
 func TestShutdownServerError(test_framework *testing.T) {
+	shutdownSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
@@ -62,6 +68,8 @@ func TestShutdownServerError(test_framework *testing.T) {
 }
 
 func TestShutdownServerClientFailure(test_framework *testing.T) {
+	shutdownSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).

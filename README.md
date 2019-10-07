@@ -3,16 +3,27 @@
 ## Setup
 
 1. Get [`go`](https://golang.org/) and install
-2. Clone this repository in `$GOPATH/src/phoenixnap.com`. *(`$GOPATH` is normally `~/go/src`)*
+2. Clone this repository in `$GOPATH/phoenixnap.com`. *(`$GOPATH` is normally `~/go/src`)*
 3. Go into the `pnap-cli` folder.
 4. Run `go get` to get all dependencies.
-5. Get [`gomock`](https://github.com/golang/mock)
+5. Install [`gomock`](https://github.com/golang/mock):
+    - go get github.com/golang/mock/mockgen
+    - go get github.com/golang/mock/gomock
+    - go install github.com/golang/mock/mockgen
 6. Move the `sample-config.yaml` file to `$HOME/pnap.yaml` and add your client credentials (ID and secret)
 7. Run `go build` to build, or `go run main.go` to run.
 
 The executable generated will have the same name as the folder. This means that `go build` in this repository with its default name will produce an executable called `pnap-cli`. To change its name, use `go build -o <name>`
 
-**Note:** To run all tests, run `go test ./tests/...`. If you'd like a colourised output *(success as green, fail as red)* get `gotest` using `go get -u github.com/rakyll/gotest` and run `gotest ./tests/...` instead.
+## Running Tests
+
+If you'd like a colourised output *(success as green, fail as red)* get `gotest` using `go get -u github.com/rakyll/gotest` and run `gotest ./tests/...` instead.
+
+* `go test ./tests/...` -> run all tests
+* `go test ./tests/... -v` -> run all tests with verbose output
+* `go test ./tests/deploy_test.go` -> run all tests in `deploy_test.go` file
+* `go test ./tests/deploy_test.go -run TestDeployServerSuccessYAML` -> run all tests in`deploy_test.go` that match the regex `TestDeployServerSuccessYAML`
+
 
 ## Mocks
 

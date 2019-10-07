@@ -11,12 +11,14 @@ import (
 	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
-func TestRebootSetup(t *testing.T) {
+func rebootSetup() {
 	Body = bytes.NewBuffer([]byte{})
 	URL = "servers/" + SERVERID + "/actions/reboot"
 }
 
 func TestRebootServerSuccess(test_framework *testing.T) {
+	rebootSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
@@ -30,6 +32,8 @@ func TestRebootServerSuccess(test_framework *testing.T) {
 }
 
 func TestRebootServerClientFail(test_framework *testing.T) {
+	rebootSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
@@ -45,6 +49,8 @@ func TestRebootServerClientFail(test_framework *testing.T) {
 }
 
 func TestRebootServerNotFoundFail(test_framework *testing.T) {
+	rebootSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
@@ -60,6 +66,8 @@ func TestRebootServerNotFoundFail(test_framework *testing.T) {
 }
 
 func TestRebootServerErrorFail(test_framework *testing.T) {
+	rebootSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).

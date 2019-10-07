@@ -46,8 +46,9 @@ const (
 	MarshallingInPrinter = "0402"
 
 	// File related errors:
-	File        = "0500"
-	FileReading = "0503"
+	File             = "0500"
+	FileReading      = "0503"
+	FileDoesNotExist = "0504"
 
 	// Miscellaneous errors: 99XX
 	TablePrinterFailure = "9901"

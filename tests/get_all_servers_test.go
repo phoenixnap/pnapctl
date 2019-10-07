@@ -1,7 +1,9 @@
 package tests
 
 import (
+	"bytes"
 	"errors"
+	"io/ioutil"
 	"testing"
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/servers"
@@ -11,11 +13,29 @@ import (
 	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
-func TestGetAllSetup(test_framework *testing.T) {
+func getAllServersSetup() {
 	URL = "servers"
 }
 
+func TestGetAllServersUnmarshallingError(test_framework *testing.T) {
+	getAllServersSetup()
+
+	// Mocking
+	PrepareMockClient(test_framework).
+		PerformGet(URL).
+		Return(WithResponse(200, ioutil.NopCloser(bytes.NewBuffer([]byte{0, 5}))), nil)
+
+	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+
+	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingErrorBody, "get servers")
+
+	// Assertions
+	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+}
+
 func TestGetAllServersShortSuccess(test_framework *testing.T) {
+	getAllServersSetup()
+
 	serverlist := generators.GenerateServers(3)
 
 	// Mocking
@@ -23,8 +43,9 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 		PerformGet(URL).
 		Return(WithResponse(200, WithBody(serverlist)), nil)
 
+	shortServer := generators.ConvertLongToShortServers(serverlist)
 	PrepareMockPrinter(test_framework).
-		PrintOutput(WithData(serverlist), &[]servers.ShortServer{}).
+		PrintOutput(&shortServer, false).
 		Return(nil)
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
@@ -34,6 +55,8 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllServersLongSuccess(test_framework *testing.T) {
+	getAllServersSetup()
+
 	serverlist := generators.GenerateServers(3)
 
 	// Mocking
@@ -42,7 +65,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 		Return(WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(WithData(serverlist), &[]servers.LongServer{}).
+		PrintOutput(&serverlist, false).
 		Return(nil)
 
 	// to display full output
@@ -55,6 +78,8 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllServersClientFailure(test_framework *testing.T) {
+	getAllServersSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformGet(URL).
@@ -73,6 +98,8 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
+	getAllServersSetup()
+
 	// generate servers
 	serverlist := generators.GenerateServers(3)
 
@@ -82,7 +109,7 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 		Return(WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(WithData(serverlist), &[]servers.LongServer{}).
+		PrintOutput(&serverlist, false).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	// to display full output

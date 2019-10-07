@@ -18,11 +18,12 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 )
 
-func TestDeploySetup(t *testing.T) {
+func deploySetup() {
 	URL = "servers"
 }
-
 func TestDeployServerSuccessYAML(test_framework *testing.T) {
+	deploySetup()
+
 	// Setup
 	serverCreate := deploy.ServerCreate{
 		Name:        "name",
@@ -54,7 +55,6 @@ func TestDeployServerSuccessYAML(test_framework *testing.T) {
 		ReadFile(FILENAME).
 		Return(yamlmarshal, nil).
 		Times(1)
-
 	// Run command
 	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
 
@@ -63,6 +63,8 @@ func TestDeployServerSuccessYAML(test_framework *testing.T) {
 }
 
 func TestDeployServerSuccessJSON(test_framework *testing.T) {
+	deploySetup()
+
 	// Setup
 	server := generators.GenerateServer()
 
@@ -101,13 +103,15 @@ func TestDeployServerSuccessJSON(test_framework *testing.T) {
 }
 
 func TestDeployServerFileNotFoundFailure(test_framework *testing.T) {
+	deploySetup()
+
 	// Setup
 	deploy.Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, errors.New("FileDoesNotExist")).
+		Return(nil, errors.New(ctlerrors.FileDoesNotExist)).
 		Times(1)
 
 	// Run command
@@ -122,6 +126,8 @@ func TestDeployServerFileNotFoundFailure(test_framework *testing.T) {
 }
 
 func TestDeployServerUnmarshallingFailure(test_framework *testing.T) {
+	deploySetup()
+
 	// Invalid contents of the file
 	// filecontents := make([]byte, 10)
 	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
@@ -147,6 +153,8 @@ func TestDeployServerUnmarshallingFailure(test_framework *testing.T) {
 }
 
 func TestDeployServerFileReadingFailure(test_framework *testing.T) {
+	deploySetup()
+
 	// Setup
 	deploy.Filename = FILENAME
 
@@ -155,20 +163,22 @@ func TestDeployServerFileReadingFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.FileReading).
+		Return(nil, errors.New(ctlerrors.FileReading)).
 		Times(1)
 
 	// Run command
 	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError("FileReading", "deploy")
+	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.FileReading, "deploy")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
 func TestDeployServerBackendErrorFailure(test_framework *testing.T) {
+	deploySetup()
+
 	// Setup
 	serverCreate := deploy.ServerCreate{
 		Name:        "name",
@@ -212,6 +222,8 @@ func TestDeployServerBackendErrorFailure(test_framework *testing.T) {
 }
 
 func TestDeployServerClientFailure(test_framework *testing.T) {
+	deploySetup()
+
 	// Setup
 	serverCreate := deploy.ServerCreate{
 		Name:        "name",

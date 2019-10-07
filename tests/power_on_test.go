@@ -11,12 +11,14 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweron"
 )
 
-func TestPowerOnSetup(t *testing.T) {
+func powerOnSetup() {
 	Body = bytes.NewBuffer([]byte{})
 	URL = "servers/" + SERVERID + "/actions/power-on"
 }
 
 func TestPowerOnServerSuccess(test_framework *testing.T) {
+	powerOnSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
@@ -29,6 +31,8 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 }
 
 func TestPowerOnServerNotFound(test_framework *testing.T) {
+	powerOnSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
@@ -44,6 +48,8 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 }
 
 func TestPowerOnServerError(test_framework *testing.T) {
+	powerOnSetup()
+
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
