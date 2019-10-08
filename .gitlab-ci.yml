@@ -1,0 +1,66 @@
+image: docker:latest
+services:
+  - docker:dind
+  
+variables:
+  PACKAGE_PATH: /go/src/phoenixnap.com/pnap-cli
+
+stages:  
+  - test
+  - build
+
+# A hack to make Golang-in-Gitlab happy
+.anchors:
+  - &inject-gopath
+      mkdir -p $(dirname ${PACKAGE_PATH})
+      && ln -s ${CI_PROJECT_DIR} ${PACKAGE_PATH}
+      && cd ${PACKAGE_PATH}      
+  
+test:
+  stage: test   
+  image: golang:1.13.1-alpine3.10  
+  cache:
+    key: godep
+    paths:
+      - .cache
+  before_script:
+    - apk add --no-cache curl git
+    - *inject-gopath
+    - go get 
+    - go get "github.com/golang/mock/mockgen"
+    - go get -u "github.com/jstemmer/go-junit-report"
+  script:
+    #-vet-off is required due to failures in using gcc 
+    - go test ./... -v -vet=off 2>&1 | go-junit-report > report.xml                 
+  after_script:
+    #copy over $GOPATH directory to a local cache dir. This will be cached. Necessary since 
+    #GL doesn't cache dirs outside the CI_PROJECT_DIR path
+    - mkdir -p .cache && cp -R $GOPATH .cache
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml  
+
+
+build:
+  stage: build    
+  image: golang:1.13.1-alpine3.10    
+  cache:
+    key: godep
+    paths:
+      - .cache
+    #only pull dependencies - this will not be push-pull 
+    policy: pull
+  before_script:
+    - apk add --no-cache curl git
+    - *inject-gopath        
+    - cp -R .cache/go/* $GOPATH        
+    - go get "github.com/mitchellh/gox"
+    - go get "github.com/inconshreveable/mousetrap"
+  script:        
+    - gox
+  artifacts:
+    when: on_success
+    paths:
+    - ./${CI_PROJECT_NAME}_*
+    
