@@ -10,6 +10,7 @@ import (
 
 // A generic test error.
 var TestError = errors.New("TEST ERROR")
+var TestKeycloakError = ctlerrors.Error{Msg: "Failed to resolved provided credentials", Cause: TestError}
 
 // A fake Error response from the server.
 var GenericBMCError = ctlerrors.BMCError{

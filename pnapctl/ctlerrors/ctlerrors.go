@@ -9,13 +9,6 @@ import (
 	"strings"
 )
 
-/* Client side errors. */
-
-// FileNotExistError represents a file that does not exist
-func FileNotExistError(filename string) error {
-	return errors.New("The file '" + filename + "' does not exist.")
-}
-
 /*	A map of error codes.
 	Each errorcode has the structure XXYY,
 		where XX refers to an error category,
@@ -57,18 +50,39 @@ const (
 /* Error functions.
    To use for declaring/constructing errors. */
 
+// FileNotExistError represents a file that does not exist
+func FileNotExistError(filename string) error {
+	return errors.New("The file '" + filename + "' does not exist.")
+}
+
 // A generic error used for generic cases.
 func GenericNonRequestError(errorCode string, command string) error {
 	return errors.New("Command '" + command + "' has been performed, but something went wrong. Error code: " + errorCode)
 }
 
 // GenericFailedRequestError represents an error with performing a request.
-func GenericFailedRequestError(command string) error {
-	return errors.New("Command '" + command + "' could not be performed. Please try again later.")
+// Requires the error that caused this issue and the command name being executed
+func GenericFailedRequestError(err error, commandName string) error {
+	if e, isCtlError := err.(Error); isCtlError {
+		return e
+	} else {
+		return errors.New("Command '" + commandName + "' could not be performed. Please try again later.")
+	}
 }
 
 /* Error handling.
    Structs and functions/methods for error handling. */
+
+// Error is an error that has been processed by ctlerrors.go and
+// is ready to be shown to the user if so desired
+type Error struct {
+	Msg   string
+	Cause error
+}
+
+func (e Error) Error() string {
+	return e.Msg
+}
 
 type BMCError struct {
 	Message          string

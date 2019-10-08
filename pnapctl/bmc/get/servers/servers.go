@@ -69,7 +69,7 @@ func getServer(serverID string) error {
 	response, err := client.MainClient.PerformGet("servers/" + serverID)
 
 	if err != nil {
-		return ctlerrors.GenericFailedRequestError(commandName)
+		return ctlerrors.GenericFailedRequestError(err, commandName)
 	}
 
 	err = ctlerrors.
@@ -89,7 +89,7 @@ func getAllServers() error {
 	response, err := client.MainClient.PerformGet("servers")
 
 	if err != nil {
-		return ctlerrors.GenericFailedRequestError(commandName)
+		return ctlerrors.GenericFailedRequestError(err, commandName)
 	}
 
 	err = ctlerrors.

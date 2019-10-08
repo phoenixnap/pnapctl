@@ -4,9 +4,11 @@ import (
 	"context"
 	"io"
 	"net/http"
+	"net/url"
 
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnap-cli/pnapctl/configuration"
+	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
 // MainClient is the main WebClient used to perform requests.
@@ -41,14 +43,32 @@ func NewHTTPClient(clientID string, clientSecret string) WebClient {
 	}
 }
 
-// PerformGet performs a Get request
+// PerformGet performs a Get request and check for auth errors
 func (m HTTPClient) PerformGet(resource string) (*http.Response, error) {
-	return m.client.Get(m.buildURI(resource))
+	return executeRequest(func() (*http.Response, error) {
+		return m.client.Get(m.buildURI(resource))
+	})
 }
 
-// PerformPost performs a Post request
+// PerformPost performs a Post request and check for auth errors
 func (m HTTPClient) PerformPost(resource string, body io.Reader) (*http.Response, error) {
-	return m.client.Post(m.buildURI(resource), "application/json", body)
+	return executeRequest(func() (*http.Response, error) {
+		return m.client.Post(m.buildURI(resource), "application/json", body)
+	})
+}
+
+// executeRequest will perform the http request provided and return the result
+// with the error decorated accordingly IF it is an auth error
+func executeRequest(f func() (*http.Response, error)) (*http.Response, error) {
+	response, err := f()
+
+	if e, isUrlError := err.(*url.Error); isUrlError {
+		// If there is an error it must have happened while resolving token
+		// Errors frome the actual request should be represented in the body
+		return response, ctlerrors.Error{Msg: "Failed to resolved provided credentials", Cause: e}
+	}
+
+	return response, err
 }
 
 func (m HTTPClient) buildURI(resource string) string {

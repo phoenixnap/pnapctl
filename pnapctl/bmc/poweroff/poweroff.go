@@ -21,8 +21,7 @@ var P_OffCmd = &cobra.Command{
 		var response, err = client.MainClient.PerformPost(resource, bytes.NewBuffer([]byte{}))
 
 		if err != nil {
-			// Generic error with PerformPost
-			return ctlerrors.GenericFailedRequestError(commandName)
+			return ctlerrors.GenericFailedRequestError(err, commandName)
 		}
 
 		return ctlerrors.Result(commandName).

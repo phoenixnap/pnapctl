@@ -260,8 +260,50 @@ func TestDeployServerClientFailure(test_framework *testing.T) {
 	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError("deploy")
+	expectedErr := ctlerrors.GenericFailedRequestError(nil, "deploy")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+}
+
+func TestDeployServerKeycloakFailure(test_framework *testing.T) {
+	deploySetup()
+
+	// Setup
+	serverCreate := deploy.ServerCreate{
+		Name:        "name",
+		Description: "description",
+		Public:      true,
+		Os:          "os",
+		TYPE:        "type",
+		Location:    "Location",
+		SSHKeys:     []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
+	}
+
+	// Assumed contents of the file.
+	yamlmarshal, _ := yaml.Marshal(serverCreate)
+
+	// What the server should receive.
+	jsonmarshal, _ := json.Marshal(serverCreate)
+
+	deploy.Filename = FILENAME
+
+	// Mocking
+	PrepareMockClient(test_framework).
+		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
+		Return(nil, testutil.TestKeycloakError).
+		Times(1)
+
+	mockFileProcessor := PrepareMockFileProcessor(test_framework)
+
+	mockFileProcessor.
+		ReadFile(FILENAME).
+		Return(yamlmarshal, nil).
+		Times(1)
+
+	// Run command
+	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
+
+	// Assertions
+	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
 }

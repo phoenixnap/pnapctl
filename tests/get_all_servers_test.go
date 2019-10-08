@@ -91,10 +91,27 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError("get servers")
+	expectedErr := ctlerrors.GenericFailedRequestError(nil, "get servers")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+}
+
+func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
+	getAllServersSetup()
+
+	// Mocking
+	PrepareMockClient(test_framework).
+		PerformGet(URL).
+		Return(nil, testutil.TestKeycloakError)
+
+	// to display full output
+	servers.Full = true
+
+	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+
+	// Assertions
+	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
