@@ -82,8 +82,23 @@ func TestPowerOffServerClientFailure(test_framework *testing.T) {
 	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError("power-off")
+	expectedErr := ctlerrors.GenericFailedRequestError(nil, "power-off")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+}
+
+func TestPowerOffServerKeycloakFailure(test_framework *testing.T) {
+	powerOffSetup()
+
+	// Mocking
+	PrepareMockClient(test_framework).
+		PerformPost(URL, Body).
+		Return(nil, testutil.TestKeycloakError)
+
+	// Run command
+	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
+
+	// Assertions
+	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
 }

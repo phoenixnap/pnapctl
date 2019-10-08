@@ -272,8 +272,44 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError("reset")
+	expectedErr := ctlerrors.GenericFailedRequestError(nil, "reset")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+}
+
+func TestResetServerKeycloakFailure(test_framework *testing.T) {
+	resetSetup()
+
+	// Setup
+	serverReset := reset.ServerReset{
+		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
+	}
+
+	// Assumed contents of the file.
+	yamlmarshal, _ := yaml.Marshal(serverReset)
+
+	// What the server should receive.
+	jsonmarshal, _ := json.Marshal(serverReset)
+
+	reset.Filename = FILENAME
+
+	// Mocking
+	PrepareMockClient(test_framework).
+		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
+		Return(nil, testutil.TestKeycloakError).
+		Times(1)
+
+	mockFileProcessor := PrepareMockFileProcessor(test_framework)
+
+	mockFileProcessor.
+		ReadFile(FILENAME).
+		Return(yamlmarshal, nil).
+		Times(1)
+
+	// Run command
+	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
+
+	// Assertions
+	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
 }

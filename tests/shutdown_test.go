@@ -79,8 +79,23 @@ func TestShutdownServerClientFailure(test_framework *testing.T) {
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError("shutdown")
+	expectedErr := ctlerrors.GenericFailedRequestError(nil, "shutdown")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+}
+
+func TestShutdownServerKeycloakFailure(test_framework *testing.T) {
+	shutdownSetup()
+
+	// Mocking
+	PrepareMockClient(test_framework).
+		PerformPost(URL, Body).
+		Return(nil, testutil.TestKeycloakError)
+
+	// Run command
+	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
+
+	// Assertions
+	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
 }

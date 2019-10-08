@@ -42,10 +42,24 @@ func TestRebootServerClientFail(test_framework *testing.T) {
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError("reboot")
+	expectedErr := ctlerrors.GenericFailedRequestError(nil, "reboot")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+}
+
+func TestRebootServerKeycloakFailure(test_framework *testing.T) {
+	rebootSetup()
+
+	// Mocking
+	PrepareMockClient(test_framework).
+		PerformPost(URL, Body).
+		Return(nil, testutil.TestKeycloakError)
+
+	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
+
+	// Assertions
+	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestRebootServerNotFoundFail(test_framework *testing.T) {

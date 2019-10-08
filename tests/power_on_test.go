@@ -63,3 +63,18 @@ func TestPowerOnServerError(test_framework *testing.T) {
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
+
+func TestPowerOnServerKeycloakFailure(test_framework *testing.T) {
+	powerOnSetup()
+
+	// Mocking
+	PrepareMockClient(test_framework).
+		PerformPost(URL, Body).
+		Return(nil, testutil.TestKeycloakError)
+
+	// Run command
+	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{SERVERID})
+
+	// Assertions
+	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
+}

@@ -21,7 +21,7 @@ var RebootCmd = &cobra.Command{
 		response, err := client.MainClient.PerformPost(resource, bytes.NewBuffer([]byte{}))
 
 		if err != nil {
-			return ctlerrors.GenericFailedRequestError(commandName)
+			return ctlerrors.GenericFailedRequestError(err, commandName)
 		}
 
 		return ctlerrors.Result(commandName).
