@@ -39,7 +39,7 @@ func init() {
 	// add flags here when needed
 	rootCmd.AddCommand(bmc.BmcCmd)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default \"$HOME/.pnap.yaml\")")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default \"$HOME/pnap.yaml\")")
 
 	cobra.OnInitialize(initConfig)
 }

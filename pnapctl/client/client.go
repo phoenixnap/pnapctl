@@ -19,6 +19,7 @@ var MainClient WebClient
 type WebClient interface {
 	PerformGet(resource string) (*http.Response, error)
 	PerformPost(resource string, body io.Reader) (*http.Response, error)
+	PerformDelete(resource string) (*http.Response, error)
 }
 
 // HTTPClient is a Client that performs HTTP requests.
@@ -47,6 +48,18 @@ func NewHTTPClient(clientID string, clientSecret string) WebClient {
 func (m HTTPClient) PerformGet(resource string) (*http.Response, error) {
 	return executeRequest(func() (*http.Response, error) {
 		return m.client.Get(m.buildURI(resource))
+	})
+}
+
+// PerformDelete performs a Delete request and check for auth errors
+func (m HTTPClient) PerformDelete(resource string) (*http.Response, error) {
+	return executeRequest(func() (*http.Response, error) {
+		req, err := http.NewRequest("DELETE", m.buildURI(resource), nil)
+		// replicating Get/Post error handling
+		if err != nil {
+			return nil, err
+		}
+		return m.client.Do(req)
 	})
 }
 

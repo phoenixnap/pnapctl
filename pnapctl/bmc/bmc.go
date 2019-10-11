@@ -3,6 +3,7 @@ package bmc
 import (
 	"os"
 
+	"phoenixnap.com/pnap-cli/pnapctl/bmc/delete"
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/deploy"
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/reset"
 
@@ -30,4 +31,5 @@ func init() {
 	BmcCmd.AddCommand(shutdown.ShutdownCmd)
 	BmcCmd.AddCommand(reset.ResetCmd)
 	BmcCmd.AddCommand(deploy.DeployCmd)
+	BmcCmd.AddCommand(delete.DeleteCmd)
 }
