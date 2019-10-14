@@ -5,6 +5,7 @@ import (
 
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/delete"
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/deploy"
+	"phoenixnap.com/pnap-cli/pnapctl/bmc/reboot"
 	"phoenixnap.com/pnap-cli/pnapctl/bmc/reset"
 
 	"github.com/spf13/cobra"
@@ -32,4 +33,5 @@ func init() {
 	BmcCmd.AddCommand(reset.ResetCmd)
 	BmcCmd.AddCommand(deploy.DeployCmd)
 	BmcCmd.AddCommand(delete.DeleteCmd)
+	BmcCmd.AddCommand(reboot.RebootCmd)
 }
