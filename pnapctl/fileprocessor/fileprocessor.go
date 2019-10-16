@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 
 	"gopkg.in/yaml.v2"
@@ -82,11 +83,20 @@ func UnmarshalToJson(data []byte, construct interface{}) ([]byte, error) {
 // ExpandPath expands the path sent using the shell. Cross-compatible.
 func ExpandPath(path *string) {
 	// Uses echo to let shell expand the path
-	cmd := exec.Command("sh", "-c", fmt.Sprintf("''echo %s''", *path))
+	var cmd *exec.Cmd
+	var endlineChar string
+
+	if runtime.GOOS == "windows" {
+		endlineChar = "\r\n"
+		cmd = exec.Command("cmd", "/c", fmt.Sprintf("echo %s", *path))
+	} else {
+		endlineChar = "\n"
+		cmd = exec.Command("sh", "-c", fmt.Sprintf("''echo %s''", *path))
+	}
 
 	// Captures output of echo
 	byteoutput, _ := cmd.Output()
 
 	// Sets path to output - removing trailing newline.
-	*path = strings.TrimSuffix(string(byteoutput), "\n")
+	*path = strings.TrimSuffix(string(byteoutput), endlineChar)
 }
