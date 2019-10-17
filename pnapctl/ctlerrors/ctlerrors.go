@@ -148,5 +148,9 @@ func (r result) UseResponse(response *http.Response) error {
 		return GenericNonRequestError(UnmarshallingErrorBody, r.CommandName)
 	}
 
+	if len(bmcErr.String()) == 0 {
+		return GenericFailedRequestError(errors.New("Unknown Error"), r.CommandName)
+	}
+
 	return errors.New(bmcErr.String())
 }
