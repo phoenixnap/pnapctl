@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/shutdown"
+	shutdown "phoenixnap.com/pnap-cli/pnapctl/commands/shutdown/server"
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
@@ -79,7 +79,7 @@ func TestShutdownServerClientFailure(test_framework *testing.T) {
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(nil, "shutdown")
+	expectedErr := ctlerrors.GenericFailedRequestError(nil, "shutdown server")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

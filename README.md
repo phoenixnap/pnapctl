@@ -21,8 +21,8 @@ If you'd like a colourised output *(success as green, fail as red)* get `gotest`
 
 * `go test ./tests/...` -> run all tests
 * `go test ./tests/... -v` -> run all tests with verbose output
-* `go test ./tests/deploy_test.go` -> run all tests in `deploy_test.go` file
-* `go test ./tests/deploy_test.go -run TestDeployServerSuccessYAML` -> run all tests in`deploy_test.go` that match the regex `TestDeployServerSuccessYAML`
+* `go test ./tests/create_test.go` -> run all tests in `create_test.go` file
+* `go test ./tests/create_test.go -run TestCreateServerSuccessYAML` -> run all tests in`create_test.go` that match the regex `TestCreateServerSuccessYAML`
 
 
 ## Mocks
@@ -36,10 +36,10 @@ Mocks must be placed in the `pnapctl/mocks` directory. They also need to have a 
 `mockgen --source=pnapctl/printer/printer.go --destination=pnapctl/mocks/mock_printer.go --package=mocks`
 
 ## Configuration
-Details can be passed using a config file. This file can be passed as an argument, or can be read if placed in `~/pnap.yaml`. An example of this file is in `sample-config.yaml`. In order to currently test the application, this `yaml` file can be used by using the following command: `pnapctl bmc --config=sample-config.yaml ...` or simply copying/symlinking the file to your home directory.
+Details can be passed using a config file. This file can be passed as an argument, or can be read if placed in `~/pnap.yaml`. An example of this file is in `sample-config.yaml`. In order to currently test the application, this `yaml` file can be used by using the following command: `pnapctl --config=sample-config.yaml ...` or simply copying/symlinking the file to your home directory.
 
 ## Current folder structure
 
-Every command is its own folder, having a `.go` file that represents it. So, to check `pnapctl bmc get servers`, the directory structure would be `./pnapctl/bmc/get/servers`.
+Every command is its own folder, having a `.go` file that represents it. So, to check `pnapctl get servers`, the directory structure would be `./pnapctl/commands/get/servers`.
 
 

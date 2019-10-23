@@ -1,15 +1,22 @@
-package pnapctl
+package commands
 
 import (
 	"fmt"
 	"os"
 
 	"phoenixnap.com/pnap-cli/pnapctl/client"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/create"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/delete"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/get"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/poweroff"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/poweron"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/reboot"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/reset"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/shutdown"
+	"phoenixnap.com/pnap-cli/pnapctl/fileprocessor"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
-
-	"phoenixnap.com/pnap-cli/pnapctl/bmc"
 
 	"github.com/spf13/cobra"
 )
@@ -18,8 +25,10 @@ var cfgFile string
 
 var rootCmd = &cobra.Command{
 	Use:   "pnapctl",
-	Short: "Short Desc",
-	Long:  "Longer Desc",
+	Short: "pnapctl creates new and manages existing bare metal servers.",
+	Long: `pnapctl creates new and manages existing bare metal servers provided by the PhoenixNAP Bare Metal Cloud service.
+
+Find More information at: INSERT_LINK_HERE`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 		os.Exit(0)
@@ -37,7 +46,14 @@ func Execute() {
 
 func init() {
 	// add flags here when needed
-	rootCmd.AddCommand(bmc.BmcCmd)
+	rootCmd.AddCommand(get.GetCmd)
+	rootCmd.AddCommand(create.CreateCmd)
+	rootCmd.AddCommand(reset.ResetCmd)
+	rootCmd.AddCommand(delete.DeleteCmd)
+	rootCmd.AddCommand(poweroff.PowerOffCmd)
+	rootCmd.AddCommand(poweron.PowerOnCmd)
+	rootCmd.AddCommand(shutdown.ShutdownCmd)
+	rootCmd.AddCommand(reboot.RebootCmd)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default \"$HOME/pnap.yaml\")")
 
@@ -47,6 +63,7 @@ func init() {
 func initConfig() {
 	if cfgFile != "" {
 		// Use config file from the flag
+		fileprocessor.ExpandPath(&cfgFile)
 		viper.SetConfigFile(cfgFile)
 	} else {
 		// Find home directory
@@ -56,7 +73,7 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name "pnap" (withou extension)
+		// Search config in home directory with name "pnap" (without extension)
 		viper.AddConfigPath(home)
 		viper.SetConfigName("pnap")
 	}

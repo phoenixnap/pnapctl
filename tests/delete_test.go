@@ -6,7 +6,7 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/delete"
+	delete "phoenixnap.com/pnap-cli/pnapctl/commands/delete/server"
 )
 
 func deleteSetup() {
@@ -22,7 +22,7 @@ func TestDeleteServerSuccess(test_framework *testing.T) {
 		Return(WithResponse(200, nil), nil)
 
 	// Run command
-	err := delete.DeleteCmd.RunE(delete.DeleteCmd, []string{SERVERID})
+	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertNoError(test_framework, err)
@@ -37,7 +37,7 @@ func TestDeleteServerNotFound(test_framework *testing.T) {
 		Return(WithResponse(404, nil), nil)
 
 	// Run command
-	err := delete.DeleteCmd.RunE(delete.DeleteCmd, []string{SERVERID})
+	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertEqual(test_framework, "Server with ID "+SERVERID+" not found", err.Error())
@@ -52,7 +52,7 @@ func TestDeleteServerError(test_framework *testing.T) {
 		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
-	err := delete.DeleteCmd.RunE(delete.DeleteCmd, []string{SERVERID})
+	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
@@ -67,10 +67,10 @@ func TestDeleteServerClientFailure(test_framework *testing.T) {
 		Return(WithResponse(404, nil), testutil.TestError)
 
 	// Run command
-	err := delete.DeleteCmd.RunE(delete.DeleteCmd, []string{SERVERID})
+	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, "Command 'delete' could not be performed. Please try again later.", err.Error())
+	testutil.AssertEqual(test_framework, "Command 'delete server' could not be performed. Please try again later.", err.Error())
 }
 
 func TestDeleteServerKeycloakFailure(test_framework *testing.T) {
@@ -82,7 +82,7 @@ func TestDeleteServerKeycloakFailure(test_framework *testing.T) {
 		Return(nil, testutil.TestKeycloakError)
 
 	// Run command
-	err := delete.DeleteCmd.RunE(delete.DeleteCmd, []string{SERVERID})
+	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)

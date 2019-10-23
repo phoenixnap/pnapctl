@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/reboot"
+	reboot "phoenixnap.com/pnap-cli/pnapctl/commands/reboot/server"
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
@@ -42,7 +42,7 @@ func TestRebootServerClientFail(test_framework *testing.T) {
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(nil, "reboot")
+	expectedErr := ctlerrors.GenericFailedRequestError(nil, "reboot server")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

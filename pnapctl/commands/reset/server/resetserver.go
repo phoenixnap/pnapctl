@@ -1,4 +1,4 @@
-package reset
+package server
 
 import (
 	"bytes"
@@ -24,21 +24,19 @@ type ServerReset struct {
 // Filename is the filename from which to retrieve a complex object
 var Filename string
 
-var commandName = "reset"
+var commandName = "reset server"
 
-// ResetCmd is the command for resetting a server.
-var ResetCmd = &cobra.Command{
-	Use:          "reset",
-	Short:        "Resets a specific server.",
+// ResetServerCmd is the command for resetting a server.
+var ResetServerCmd = &cobra.Command{
+	Use:   "server SERVER_ID",
+	Short: "Resets a specific server.",
+	Long: `Formats the device storage and re-installs the operating system.
+Since SSH keys are not stored, they need to be passed as parameters within a YAML or JSON file.`,
 	Args:         cobra.ExactArgs(1),
+	Aliases:      []string{"srv"},
 	SilenceUsage: true,
-	Long: `
-Resets a server.
-
-Requires a file (yaml or json) containing the required information to reset the server.`,
-	Example: `
-# Reset a server
-pnapctl bmc reset NDIid939dfkoDd --file=keys.yaml
+	Example: `# Reset a server
+pnapctl reset server 5da891e90ab0c59bd28e34ad --filename keys.yaml
 
 # keys.yaml
 sshKeys:
@@ -79,6 +77,6 @@ sshKeys:
 }
 
 func init() {
-	ResetCmd.Flags().StringVar(&Filename, "file", "", "File containing required information for reset")
-	cobra.MarkFlagRequired(ResetCmd.Flags(), "file")
+	ResetServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for reset")
+	ResetServerCmd.MarkFlagRequired("filename")
 }

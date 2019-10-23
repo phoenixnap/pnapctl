@@ -8,7 +8,7 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweron"
+	poweron "phoenixnap.com/pnap-cli/pnapctl/commands/poweron/server"
 )
 
 func powerOnSetup() {
@@ -24,7 +24,7 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 		PerformPost(URL, Body).
 		Return(WithResponse(200, nil), nil)
 
-	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{SERVERID})
+	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertNoError(test_framework, err)
@@ -38,7 +38,7 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 		PerformPost(URL, Body).
 		Return(WithResponse(404, nil), nil)
 
-	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{SERVERID})
+	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := errors.New("Server with ID " + SERVERID + " not found")
@@ -55,7 +55,7 @@ func TestPowerOnServerError(test_framework *testing.T) {
 		PerformPost(URL, Body).
 		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
-	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{SERVERID})
+	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
@@ -73,7 +73,7 @@ func TestPowerOnServerKeycloakFailure(test_framework *testing.T) {
 		Return(nil, testutil.TestKeycloakError)
 
 	// Run command
-	err := poweron.P_OnCmd.RunE(poweron.P_OnCmd, []string{SERVERID})
+	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)

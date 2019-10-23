@@ -8,7 +8,7 @@ import (
 
 	"phoenixnap.com/pnap-cli/tests/generators"
 
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/deploy"
+	create "phoenixnap.com/pnap-cli/pnapctl/commands/create/server"
 
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 
@@ -18,14 +18,14 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 )
 
-func deploySetup() {
+func createSetup() {
 	URL = "servers"
 }
-func TestDeployServerSuccessYAML(test_framework *testing.T) {
-	deploySetup()
+func TestCreateServerSuccessYAML(test_framework *testing.T) {
+	createSetup()
 
 	// Setup
-	serverCreate := deploy.ServerCreate{
+	serverCreate := create.ServerCreate{
 		Name:        "name",
 		Description: "description",
 		Public:      true,
@@ -41,7 +41,7 @@ func TestDeployServerSuccessYAML(test_framework *testing.T) {
 	// What the server should receive.
 	jsonmarshal, _ := json.Marshal(serverCreate)
 
-	deploy.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	PrepareMockClient(test_framework).
@@ -56,19 +56,19 @@ func TestDeployServerSuccessYAML(test_framework *testing.T) {
 		Return(yamlmarshal, nil).
 		Times(1)
 	// Run command
-	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
+	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Assertions
 	testutil.AssertNoError(test_framework, err)
 }
 
-func TestDeployServerSuccessJSON(test_framework *testing.T) {
-	deploySetup()
+func TestCreateServerSuccessJSON(test_framework *testing.T) {
+	createSetup()
 
 	// Setup
 	server := generators.GenerateServer()
 
-	serverCreate := deploy.ServerCreate{
+	serverCreate := create.ServerCreate{
 		Name:        "name",
 		Description: "description",
 		Public:      true,
@@ -81,7 +81,7 @@ func TestDeployServerSuccessJSON(test_framework *testing.T) {
 	// What will be sent to the server, and the assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverCreate)
 
-	deploy.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	PrepareMockClient(test_framework).
@@ -96,17 +96,17 @@ func TestDeployServerSuccessJSON(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
+	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Assertions
 	testutil.AssertNoError(test_framework, err)
 }
 
-func TestDeployServerFileNotFoundFailure(test_framework *testing.T) {
-	deploySetup()
+func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
+	createSetup()
 
 	// Setup
-	deploy.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
@@ -115,7 +115,7 @@ func TestDeployServerFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
+	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Expected command
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
@@ -125,14 +125,14 @@ func TestDeployServerFileNotFoundFailure(test_framework *testing.T) {
 
 }
 
-func TestDeployServerUnmarshallingFailure(test_framework *testing.T) {
-	deploySetup()
+func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
+	createSetup()
 
 	// Invalid contents of the file
 	// filecontents := make([]byte, 10)
 	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
 
-	deploy.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -143,20 +143,20 @@ func TestDeployServerUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
+	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, "deploy")
+	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, "create server")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
-func TestDeployServerFileReadingFailure(test_framework *testing.T) {
-	deploySetup()
+func TestCreateServerFileReadingFailure(test_framework *testing.T) {
+	createSetup()
 
 	// Setup
-	deploy.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -167,20 +167,20 @@ func TestDeployServerFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
+	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.FileReading, "deploy")
+	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.FileReading, "create server")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
-func TestDeployServerBackendErrorFailure(test_framework *testing.T) {
-	deploySetup()
+func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
+	createSetup()
 
 	// Setup
-	serverCreate := deploy.ServerCreate{
+	serverCreate := create.ServerCreate{
 		Name:        "name",
 		Description: "description",
 		Public:      true,
@@ -196,7 +196,7 @@ func TestDeployServerBackendErrorFailure(test_framework *testing.T) {
 	// What the server should receive.
 	jsonmarshal, _ := json.Marshal(serverCreate)
 
-	deploy.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	PrepareMockClient(test_framework).
@@ -212,7 +212,7 @@ func TestDeployServerBackendErrorFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
+	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
@@ -221,11 +221,11 @@ func TestDeployServerBackendErrorFailure(test_framework *testing.T) {
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
-func TestDeployServerClientFailure(test_framework *testing.T) {
-	deploySetup()
+func TestCreateServerClientFailure(test_framework *testing.T) {
+	createSetup()
 
 	// Setup
-	serverCreate := deploy.ServerCreate{
+	serverCreate := create.ServerCreate{
 		Name:        "name",
 		Description: "description",
 		Public:      true,
@@ -241,7 +241,7 @@ func TestDeployServerClientFailure(test_framework *testing.T) {
 	// What the server should receive.
 	jsonmarshal, _ := json.Marshal(serverCreate)
 
-	deploy.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	PrepareMockClient(test_framework).
@@ -257,20 +257,20 @@ func TestDeployServerClientFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
+	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(nil, "deploy")
+	expectedErr := ctlerrors.GenericFailedRequestError(nil, "create server")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
 }
 
-func TestDeployServerKeycloakFailure(test_framework *testing.T) {
-	deploySetup()
+func TestCreateServerKeycloakFailure(test_framework *testing.T) {
+	createSetup()
 
 	// Setup
-	serverCreate := deploy.ServerCreate{
+	serverCreate := create.ServerCreate{
 		Name:        "name",
 		Description: "description",
 		Public:      true,
@@ -286,7 +286,7 @@ func TestDeployServerKeycloakFailure(test_framework *testing.T) {
 	// What the server should receive.
 	jsonmarshal, _ := json.Marshal(serverCreate)
 
-	deploy.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	PrepareMockClient(test_framework).
@@ -302,7 +302,7 @@ func TestDeployServerKeycloakFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := deploy.DeployCmd.RunE(deploy.DeployCmd, []string{})
+	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Assertions
 	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)

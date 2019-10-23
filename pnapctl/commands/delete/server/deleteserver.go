@@ -1,4 +1,4 @@
-package delete
+package server
 
 import (
 	"github.com/spf13/cobra"
@@ -6,13 +6,15 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
-const commandName = "delete"
+const commandName = "delete server"
 
-var DeleteCmd = &cobra.Command{
-	Use:          "delete",
+var DeleteServerCmd = &cobra.Command{
+	Use:          "server SERVER_ID",
 	Short:        "Deletes a specific server.",
 	Long:         "Deletes a specific server.",
+	Example:      `pnapctl delete server 5da891e90ab0c59bd28e34ad`,
 	Args:         cobra.ExactArgs(1),
+	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var resource = "servers/" + args[0]

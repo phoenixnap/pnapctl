@@ -1,4 +1,4 @@
-package shutdown
+package server
 
 import (
 	"bytes"
@@ -8,13 +8,15 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
-const commandName = "shutdown"
+const commandName = "shutdown server"
 
 var ShutdownCmd = &cobra.Command{
-	Use:          "shutdown",
-	Short:        "Shuts down a specific server.",
-	Long:         "Shuts down a specific server.",
+	Use:          "server SERVER_ID",
+	Short:        "Perform a soft shutdown on a specific server.",
+	Long:         "Perform a soft shutdown on a specific server.",
+	Example:      "pnapctl shutdown server 5da891e90ab0c59bd28e34ad",
 	Args:         cobra.ExactArgs(1),
+	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var resource = "servers/" + args[0] + "/actions/shutdown"

@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnap-cli/pnapctl/configuration"
@@ -75,9 +76,9 @@ func (m HTTPClient) PerformPost(resource string, body io.Reader) (*http.Response
 func executeRequest(f func() (*http.Response, error)) (*http.Response, error) {
 	response, err := f()
 
-	if e, isUrlError := err.(*url.Error); isUrlError {
-		// If there is an error it must have happened while resolving token
-		// Errors frome the actual request should be represented in the body
+	if e, isUrlError := err.(*url.Error); isUrlError && strings.Contains(err.Error(), "oauth2: cannot fetch token") {
+		//Timeout If there is an error it must have happened while resolving token
+		// ErrorURLs frome the actual request should be represented in the body
 		return response, ctlerrors.Error{Msg: "Failed to resolved provided credentials", Cause: e}
 	}
 

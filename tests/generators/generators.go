@@ -3,7 +3,7 @@ package generators
 import (
 	"math/rand"
 
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/servers"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/get/servers"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
