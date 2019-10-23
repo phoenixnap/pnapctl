@@ -125,7 +125,9 @@ func (r result) UseResponse(response *http.Response) error {
 	statusCode := response.StatusCode
 
 	if statusCode == 200 {
-		fmt.Println(r.Msg200)
+		if r.Msg200 != "" {
+			fmt.Println(r.Msg200)
+		}
 		return nil
 	} else if statusCode == 404 {
 		return errors.New(r.Msg404)

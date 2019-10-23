@@ -2,15 +2,12 @@ package server
 
 import (
 	"bytes"
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
-	"phoenixnap.com/pnap-cli/pnapctl/commands/get/servers"
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	files "phoenixnap.com/pnap-cli/pnapctl/fileprocessor"
+	"phoenixnap.com/pnap-cli/pnapctl/printer"
 )
 
 // Performs a Post request with a body containing a ServerCreate struct
@@ -32,6 +29,8 @@ type ServerCreate struct {
 var Filename string
 
 var commandName = "create server"
+
+var Full bool
 
 // CreateServerCmd is the command for creating a server.
 var CreateServerCmd = &cobra.Command{
@@ -57,8 +56,6 @@ sshKeys:
   - "dkleDileD93lD8a3L"
   - "dkleEILDD93lD8a3L"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cmd.Help()
-
 		files.ExpandPath(&Filename)
 
 		data, err := files.ReadFile(Filename)
@@ -86,33 +83,19 @@ sshKeys:
 		}
 
 		err = ctlerrors.Result(commandName).
-			IfOk(`Request to create server is accepted. Within 5 minutes it will be deployed.`).
 			UseResponse(response)
 
 		if err != nil {
 			return err
 		}
 
-		// Read in the body in the response
-		body, err := ioutil.ReadAll(response.Body)
-
-		if err != nil {
-			ctlerrors.GenericNonRequestError(ctlerrors.ResponseBodyReadFailure, commandName)
-		}
-
-		// Unmarshal body into a Server
-		var server servers.ShortServer
-
-		json.Unmarshal(body, &server)
-
-		// Print out the new ID
-		fmt.Println("Server created with ID \"" + server.ID + "\"")
-
-		return nil
+		return printer.PrintServerResponse(response.Body, false, Full, commandName)
 	},
 }
 
 func init() {
+	CreateServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
+	CreateServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 	CreateServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
 	CreateServerCmd.MarkFlagRequired("filename")
 }

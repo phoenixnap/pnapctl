@@ -1,37 +1,12 @@
 package servers
 
 import (
-	"encoding/json"
-	"errors"
-	"io"
-	"io/ioutil"
-
 	"phoenixnap.com/pnap-cli/pnapctl/client"
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	"phoenixnap.com/pnap-cli/pnapctl/printer"
 
 	"github.com/spf13/cobra"
 )
-
-type ShortServer struct {
-	ID          string `header:"id"`
-	Status      string `header:"status"`
-	Name        string `header:"name"`
-	Description string `header:"description"`
-}
-
-type LongServer struct {
-	ID          string `header:"id"`
-	Status      string `header:"status"`
-	Name        string `header:"name"`
-	Description string `header:"description"`
-	Os          string `header:"os"`
-	Type        string `header:"type"`
-	Location    string `header:"location"`
-	CPU         string `header:"cpu"`
-	RAM         string `header:"ram"`
-	Storage     string `header:"storage"`
-}
 
 const commandName string = "get servers"
 
@@ -82,7 +57,7 @@ func getServer(serverID string) error {
 		return err
 	}
 
-	return printGetServerResponse(response.Body, false)
+	return printer.PrintServerResponse(response.Body, false, Full, commandName)
 }
 
 func getAllServers() error {
@@ -94,68 +69,13 @@ func getAllServers() error {
 
 	err = ctlerrors.
 		Result(commandName).
-		IfOk("").
 		UseResponse(response)
 
 	if err != nil {
 		return err
 	}
 
-	return printGetServerResponse(response.Body, true)
-}
-
-func printGetServerResponse(responseBody io.Reader, multiple bool) error {
-	body, err := ioutil.ReadAll(responseBody)
-
-	if err != nil {
-		return ctlerrors.GenericNonRequestError(ctlerrors.ResponseBodyReadFailure, commandName)
-	}
-
-	if Full {
-		if multiple {
-			construct := &[]LongServer{}
-			err = unmarshall(body, construct)
-			if err == nil {
-				err = printer.MainPrinter.PrintOutput(construct, len(*construct) == 0)
-			}
-		} else {
-			construct := &LongServer{}
-			err = unmarshall(body, construct)
-			if err == nil {
-				err = printer.MainPrinter.PrintOutput(construct, false)
-			}
-		}
-	} else {
-		if multiple {
-			construct := &[]ShortServer{}
-			err = unmarshall(body, construct)
-			if err == nil {
-				err = printer.MainPrinter.PrintOutput(construct, len(*construct) == 0)
-			}
-		} else {
-			construct := &ShortServer{}
-			err = unmarshall(body, construct)
-			if err == nil {
-				err = printer.MainPrinter.PrintOutput(construct, false)
-			}
-		}
-	}
-
-	// This err is the one outputted within the PrintOutput
-	if err != nil {
-		return ctlerrors.GenericNonRequestError(err.Error(), commandName)
-	}
-
-	return nil
-}
-
-// unmarshall will unmarshall a Json byte stream into the provided construct.
-func unmarshall(body []byte, construct interface{}) error {
-	err := json.Unmarshal(body, &construct)
-	if err != nil {
-		return errors.New(ctlerrors.UnmarshallingErrorBody)
-	}
-	return nil
+	return printer.PrintServerResponse(response.Body, true, Full, commandName)
 }
 
 func init() {
