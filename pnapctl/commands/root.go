@@ -55,12 +55,17 @@ func init() {
 	rootCmd.AddCommand(shutdown.ShutdownCmd)
 	rootCmd.AddCommand(reboot.RebootCmd)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default \"$HOME/pnap.yaml\")")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
 
 	cobra.OnInitialize(initConfig)
 }
 
 func initConfig() {
+	envHome := os.Getenv("PNAPCTL_HOME")
+	if envHome != "" && cfgFile == "" {
+		cfgFile = envHome
+	}
+
 	if cfgFile != "" {
 		// Use config file from the flag
 		fileprocessor.ExpandPath(&cfgFile)
@@ -77,8 +82,6 @@ func initConfig() {
 		viper.AddConfigPath(home)
 		viper.SetConfigName("pnap")
 	}
-
-	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err != nil {
