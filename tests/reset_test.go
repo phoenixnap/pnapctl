@@ -11,7 +11,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/reset"
+	reset "phoenixnap.com/pnap-cli/pnapctl/commands/reset/server"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 )
 
@@ -49,7 +49,7 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
+	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertNoError(test_framework, err)
@@ -81,7 +81,7 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
+	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertNoError(test_framework, err)
@@ -100,7 +100,7 @@ func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
+	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Expected command
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
@@ -128,10 +128,10 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
+	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, "reset")
+	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, "reset server")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -167,7 +167,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
+	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := errors.New("Server with ID " + SERVERID + " not found")
@@ -191,10 +191,10 @@ func TestResetServerFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
+	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.FileReading, "reset")
+	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.FileReading, "reset server")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -230,7 +230,7 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
+	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
@@ -269,10 +269,10 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
+	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(nil, "reset")
+	expectedErr := ctlerrors.GenericFailedRequestError(nil, "reset server")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -308,7 +308,7 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetCmd.RunE(reset.ResetCmd, []string{SERVERID})
+	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)

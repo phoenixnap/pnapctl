@@ -1,4 +1,4 @@
-package deploy
+package server
 
 import (
 	"bytes"
@@ -7,8 +7,8 @@ import (
 	"io/ioutil"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/servers"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/get/servers"
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	files "phoenixnap.com/pnap-cli/pnapctl/fileprocessor"
 )
@@ -17,7 +17,7 @@ import (
 // 		Receives a 200, 400, 500
 
 // ServerCreate is the struct used as the body of the request
-// to deploy a new server.
+// to create a new server.
 type ServerCreate struct {
 	Name        string   `json:"name" yaml:"name"`
 	Description string   `json:"description" yaml:"description"`
@@ -31,33 +31,34 @@ type ServerCreate struct {
 // Filename is the filename from which to retrieve a complex object
 var Filename string
 
-var commandName = "deploy"
+var commandName = "create server"
 
-// DeployCmd is the command for deploying a server.
-var DeployCmd = &cobra.Command{
-	Use:          "deploy",
-	Short:        "Deploys a new server.",
+// CreateServerCmd is the command for creating a server.
+var CreateServerCmd = &cobra.Command{
+	Use:          "server",
+	Short:        "Creates a new server.",
 	Args:         cobra.ExactArgs(0),
+	Aliases:      []string{"srv"},
 	SilenceUsage: true,
-	Long: `
-Deploys a new server.
+	Long: `Creates a new server.
 
-Requires a file (yaml or json) containing the required information to reset the server.`,
-	Example: `
-# Deploy a server
-pnapctl bmc deploy --file=server.yaml
+Requires a file (yaml or json) containing the information needed to create the server.`,
+	Example: `# create a new server as describes in server.yaml
+pnapctl create server --filename ~/server.yaml
 
 # server.yaml
-name: "DeployedServer"
-description: "A description"
+name: "new-server"
+description: "New server description"
 public: true
 os: "ubuntu/bionic"
-type: "s1-medium"
+type: "s1.c1.tiny"
 location: "PHX"
 sshKeys:
   - "dkleDileD93lD8a3L"
   - "dkleEILDD93lD8a3L"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		cmd.Help()
+
 		files.ExpandPath(&Filename)
 
 		data, err := files.ReadFile(Filename)
@@ -77,7 +78,7 @@ sshKeys:
 			return ctlerrors.GenericNonRequestError(err.Error(), commandName)
 		}
 
-		// Deploy the server
+		// Create the server
 		response, err := client.MainClient.PerformPost("servers", bytes.NewBuffer(structbyte))
 
 		if err != nil {
@@ -112,6 +113,6 @@ sshKeys:
 }
 
 func init() {
-	DeployCmd.Flags().StringVar(&Filename, "file", "", "File containing required information for deployment")
-	cobra.MarkFlagRequired(DeployCmd.Flags(), "file")
+	CreateServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	CreateServerCmd.MarkFlagRequired("filename")
 }

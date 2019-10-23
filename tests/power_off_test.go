@@ -8,7 +8,7 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/poweroff"
+	poweroff "phoenixnap.com/pnap-cli/pnapctl/commands/poweroff/server"
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
@@ -28,7 +28,7 @@ func TestPowerOffServerSuccess(test_framework *testing.T) {
 		Return(WithResponse(200, nil), nil)
 
 	// Run command
-	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
+	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertNoError(test_framework, err)
@@ -43,7 +43,7 @@ func TestPowerOffServerNotFound(test_framework *testing.T) {
 		Return(WithResponse(404, nil), nil)
 
 	// Run command
-	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
+	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := errors.New("Server with ID " + SERVERID + " not found")
@@ -61,7 +61,7 @@ func TestPowerOffServerError(test_framework *testing.T) {
 		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
-	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
+	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
@@ -79,10 +79,10 @@ func TestPowerOffServerClientFailure(test_framework *testing.T) {
 		Return(WithResponse(404, nil), testutil.TestError)
 
 	// Run command
-	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
+	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(nil, "power-off")
+	expectedErr := ctlerrors.GenericFailedRequestError(nil, "power-off server")
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -97,7 +97,7 @@ func TestPowerOffServerKeycloakFailure(test_framework *testing.T) {
 		Return(nil, testutil.TestKeycloakError)
 
 	// Run command
-	err := poweroff.P_OffCmd.RunE(poweroff.P_OffCmd, []string{SERVERID})
+	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)

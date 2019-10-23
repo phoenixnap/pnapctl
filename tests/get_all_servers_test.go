@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/servers"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/get/servers"
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"

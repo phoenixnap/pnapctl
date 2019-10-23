@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"phoenixnap.com/pnap-cli/pnapctl/bmc/get/servers"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/get/servers"
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
@@ -29,9 +29,8 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 		PrintOutput(&shortServer, false).
 		Return(nil)
 
-	servers.ID = SERVERID
 	servers.Full = false
-	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertNoError(test_framework, err)
@@ -50,9 +49,8 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 		PrintOutput(&server, false).
 		Return(nil)
 
-	servers.ID = SERVERID
 	servers.Full = true
-	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertNoError(test_framework, err)
@@ -65,8 +63,7 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 		PerformGet(URL).
 		Return(nil, testutil.TestError)
 
-	servers.ID = SERVERID
-	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := ctlerrors.GenericFailedRequestError(nil, "get servers")
@@ -82,8 +79,7 @@ func TestGetServerKeycloakFailure(test_framework *testing.T) {
 		PerformGet(URL).
 		Return(nil, testutil.TestKeycloakError)
 
-	servers.ID = SERVERID
-	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
@@ -103,9 +99,8 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 		PrintOutput(&shortServer, false).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
-	servers.ID = SERVERID
 	servers.Full = false
-	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
 	// Assertions
 	testutil.AssertErrorCode(test_framework, err, ctlerrors.UnmarshallingInPrinter)

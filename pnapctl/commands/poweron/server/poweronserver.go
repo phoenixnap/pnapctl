@@ -1,4 +1,4 @@
-package poweron
+package server
 
 import (
 	"bytes"
@@ -8,13 +8,15 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
-const commandName string = "power-on"
+const commandName string = "power-on server"
 
-var P_OnCmd = &cobra.Command{
-	Use:          "power-on",
+var PowerOnServerCmd = &cobra.Command{
+	Use:          "server SERVER_ID",
 	Short:        "Powers on a specific server.",
 	Long:         "Powers on a specific server.",
+	Example:      `pnapctl power-on server 5da891e90ab0c59bd28e34ad`,
 	Args:         cobra.ExactArgs(1),
+	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var resource = "servers/" + args[0] + "/actions/power-on"

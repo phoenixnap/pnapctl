@@ -1,4 +1,4 @@
-package reboot
+package server
 
 import (
 	"bytes"
@@ -8,13 +8,15 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
-const commandName string = "reboot"
+const commandName string = "reboot server"
 
 var RebootCmd = &cobra.Command{
-	Use:          "reboot",
-	Short:        "Reboots a specific server.",
-	Long:         "Reboots a specific server.",
+	Use:          "server SERVER_ID",
+	Short:        "Perform a soft reboot on a specific server.",
+	Long:         "Perform a soft reboot on a specific server.",
+	Example:      "pnapctl reboot server 5da891e90ab0c59bd28e34ad",
 	Args:         cobra.ExactArgs(1),
+	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		resource := "servers/" + args[0] + "/actions/reboot"
