@@ -35,6 +35,7 @@ func NewHTTPClient(clientID string, clientSecret string) WebClient {
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
 		TokenURL:     configuration.TokenURL,
+		Scopes:       []string{"bmc", "bmc.read"},
 	}
 
 	httpClient := config.Client(context.Background())
