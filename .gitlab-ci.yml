@@ -58,7 +58,9 @@ build:
     - go get "github.com/mitchellh/gox"
     - go get "github.com/inconshreveable/mousetrap"
   script:        
-    - gox
+    - gox -osarch="linux/amd64 windows/amd64"
+    - mv pnap-cli_linux_amd64 pnapctl
+    - mv pnap-cli_windows_amd64.exe pnapctl.exe
   artifacts:
     when: on_success
     paths:
