@@ -9,8 +9,8 @@ import (
 
 var DeleteCmd = &cobra.Command{
 	Use:   "delete",
-	Short: "Delete resource.",
-	Long:  `Delete resource.`,
+	Short: "Delete a resource.",
+	Long:  `Delete a resource.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 		os.Exit(0)

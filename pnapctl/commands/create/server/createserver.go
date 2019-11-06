@@ -35,14 +35,14 @@ var Full bool
 // CreateServerCmd is the command for creating a server.
 var CreateServerCmd = &cobra.Command{
 	Use:          "server",
-	Short:        "Creates a new server.",
+	Short:        "Create a new server.",
 	Args:         cobra.ExactArgs(0),
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
-	Long: `Creates a new server.
+	Long: `Create a new server.
 
 Requires a file (yaml or json) containing the information needed to create the server.`,
-	Example: `# create a new server as describes in server.yaml
+	Example: `# create a new server as described in server.yaml
 pnapctl create server --filename ~/server.yaml
 
 # server.yaml
