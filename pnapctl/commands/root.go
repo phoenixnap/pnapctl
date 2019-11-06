@@ -26,7 +26,7 @@ var cfgFile string
 var rootCmd = &cobra.Command{
 	Use:   "pnapctl",
 	Short: "pnapctl creates new and manages existing bare metal servers.",
-	Long: `pnapctl creates new and manages existing bare metal servers provided by the PhoenixNAP Bare Metal Cloud service.
+	Long: `pnapctl creates new and manages existing bare metal servers provided by the phoenixNAP Bare Metal Cloud service.
 
 Find More information at: INSERT_LINK_HERE`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -55,7 +55,7 @@ func init() {
 	rootCmd.AddCommand(shutdown.ShutdownCmd)
 	rootCmd.AddCommand(reboot.RebootCmd)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
 
 	cobra.OnInitialize(initConfig)
 }
