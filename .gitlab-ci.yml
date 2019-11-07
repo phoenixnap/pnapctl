@@ -44,8 +44,8 @@ test:
 
 build:
   stage: build
-  only:
-    - master
+  # only:
+  #   - master
   image: golang:1.13.1-alpine3.10    
   cache:
     key: godep
@@ -54,7 +54,7 @@ build:
     #only pull dependencies - this will not be push-pull 
     policy: pull
   before_script:
-    - apk add --no-cache curl git
+    - apk add --no-cache curl git zip
     - *inject-gopath        
     - cp -R .cache/go/* $GOPATH        
     - go get "github.com/mitchellh/gox"
