@@ -4,6 +4,7 @@ services:
   
 variables:
   PACKAGE_PATH: /go/src/phoenixnap.com/pnap-cli
+  CLI_NAME: pnapctl
 
 stages:  
   - test
@@ -61,12 +62,13 @@ build:
     - go get "github.com/inconshreveable/mousetrap"
   script:        
     - gox -osarch="linux/amd64 windows/amd64"
-    - mv pnap-cli_linux_amd64 pnapctl
-    - tar -czf pnapctl.tar.gz pnapctl
-    - mv pnap-cli_windows_amd64.exe pnapctl.exe
-    - zip pnapctl.zip pnapctl.exe
+    - mv pnap-cli_linux_amd64 ${CLI_NAME}
+    - tar -czf ${CLI_NAME}.tar.gz ${CLI_NAME}
+    - mv pnap-cli_windows_amd64.exe ${CLI_NAME}.exe
+    - zip ${CLI_NAME}.zip ${CLI_NAME}.exe
   artifacts:
     when: on_success
     paths:
-    - ./${CI_PROJECT_NAME}_*
+    - ./${CLI_NAME}.exe
+    - ./${CLI_NAME}.tar.gz
     
