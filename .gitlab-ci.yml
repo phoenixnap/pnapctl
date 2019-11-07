@@ -60,7 +60,9 @@ build:
   script:        
     - gox -osarch="linux/amd64 windows/amd64"
     - mv pnap-cli_linux_amd64 pnapctl
+    - tar -czf pnapctl.tar.gz pnapctl
     - mv pnap-cli_windows_amd64.exe pnapctl.exe
+    - zip pnapctl.zip pnapctl.exe
   artifacts:
     when: on_success
     paths:
