@@ -3,7 +3,6 @@ package ctlerrors
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -45,7 +44,6 @@ const (
 
 	// Miscellaneous errors: 99XX
 	TablePrinterFailure = "9901"
-	IncorrectURL        = "9902"
 )
 
 /* Error functions.
@@ -90,30 +88,6 @@ type BMCError struct {
 	ValidationErrors []string
 }
 
-type result struct {
-	Msg200      string
-	Msg404      string
-	CommandName string
-}
-
-func Result(commandName string) result {
-	return result{
-		Msg200:      "",
-		Msg404:      "The request could not be performed. Error Code:" + IncorrectURL,
-		CommandName: commandName,
-	}
-}
-
-func (r result) IfOk(message string) result {
-	r.Msg200 = message
-	return r
-}
-
-func (r result) IfNotFound(message string) result {
-	r.Msg404 = message
-	return r
-}
-
 func (b BMCError) String() string {
 	if len(b.ValidationErrors) == 0 {
 		return b.Message
@@ -122,37 +96,33 @@ func (b BMCError) String() string {
 	}
 }
 
-func (r result) UseResponse(response *http.Response) error {
+// GenerateErrorIfNot200 returns an error if the response code is not 200.
+// Ideally we want to use the response returned to us by the server but we return ageneric error if
+// (i) there is no body
+// (ii) The body can't be read (GO error)
+// (iii) we can't deserialize the response
+func GenerateErrorIfNot200(response *http.Response, commandName string) error {
 	statusCode := response.StatusCode
 
 	if statusCode == 200 {
-		if r.Msg200 != "" {
-			fmt.Println(r.Msg200)
-		}
 		return nil
-	} else if statusCode == 404 {
-		return errors.New(r.Msg404)
 	}
 
 	if response.Body == nil {
-		return GenericNonRequestError(ExpectedBodyInErrorResponse, r.CommandName)
+		return GenericNonRequestError(ExpectedBodyInErrorResponse, commandName)
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 
 	if err != nil {
-		return GenericNonRequestError(ResponseBodyReadFailure, r.CommandName)
+		return GenericNonRequestError(ResponseBodyReadFailure, commandName)
 	}
 
 	bmcErr := BMCError{}
 	err = json.Unmarshal(body, &bmcErr)
 
-	if err != nil {
-		return GenericNonRequestError(UnmarshallingErrorBody, r.CommandName)
-	}
-
-	if len(bmcErr.String()) == 0 {
-		return GenericFailedRequestError(errors.New("Unknown Error"), r.CommandName)
+	if err != nil || len(bmcErr.String()) == 0 {
+		return GenericNonRequestError(UnmarshallingErrorBody, commandName)
 	}
 
 	return errors.New(bmcErr.String())

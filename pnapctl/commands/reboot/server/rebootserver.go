@@ -26,10 +26,7 @@ var RebootCmd = &cobra.Command{
 			return ctlerrors.GenericFailedRequestError(err, commandName)
 		}
 
-		return ctlerrors.Result(commandName).
-			IfOk("Rebooted successfully").
-			IfNotFound("Server with ID " + args[0] + " not found.").
-			UseResponse(response)
+		return ctlerrors.GenerateErrorIfNot200(response, commandName)
 	},
 }
 

@@ -47,11 +47,7 @@ func getServer(serverID string) error {
 		return ctlerrors.GenericFailedRequestError(err, commandName)
 	}
 
-	err = ctlerrors.
-		Result(commandName).
-		IfOk("").
-		IfNotFound("A server with the ID " + ID + " does not exist.").
-		UseResponse(response)
+	err = ctlerrors.GenerateErrorIfNot200(response, commandName)
 
 	if err != nil {
 		return err
@@ -67,9 +63,7 @@ func getAllServers() error {
 		return ctlerrors.GenericFailedRequestError(err, commandName)
 	}
 
-	err = ctlerrors.
-		Result(commandName).
-		UseResponse(response)
+	err = ctlerrors.GenerateErrorIfNot200(response, commandName)
 
 	if err != nil {
 		return err

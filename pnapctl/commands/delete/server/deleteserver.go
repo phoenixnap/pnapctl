@@ -24,9 +24,6 @@ var DeleteServerCmd = &cobra.Command{
 			return ctlerrors.GenericFailedRequestError(err, commandName)
 		}
 
-		return ctlerrors.Result(commandName).
-			IfOk("Deleted successfully.").
-			IfNotFound("Server with ID " + args[0] + " not found").
-			UseResponse(response)
+		return ctlerrors.GenerateErrorIfNot200(response, commandName)
 	},
 }

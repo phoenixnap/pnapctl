@@ -40,8 +40,8 @@ pnapctl reset server 5da891e90ab0c59bd28e34ad --filename keys.yaml
 
 # keys.yaml
 sshKeys:
-	- "dkleDileD93lD8a3L"
-	- "dkleEILDD93lD8a3L"`,
+	- "ssh-rsa AAAAB3Nz...Fi9wrf+M7Q== test1@test"
+	- "ssh-rsa AAAAB3Nz...dsWno-sa7nqt test2@test"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		files.ExpandPath(&Filename)
 		var resource = "servers/" + args[0] + "/actions/reset"
@@ -69,10 +69,7 @@ sshKeys:
 			return ctlerrors.GenericFailedRequestError(err, commandName)
 		}
 
-		return ctlerrors.Result(commandName).
-			IfOk("Server reset request sent successfully.").
-			IfNotFound("Server with ID " + args[0] + " not found").
-			UseResponse(response)
+		return ctlerrors.GenerateErrorIfNot200(response, commandName)
 	},
 }
 

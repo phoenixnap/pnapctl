@@ -53,8 +53,8 @@ os: "ubuntu/bionic"
 type: "s1.c1.tiny"
 location: "PHX"
 sshKeys:
-  - "dkleDileD93lD8a3L"
-  - "dkleEILDD93lD8a3L"`,
+  - "ssh-rsa AAAAB3Nz...Fi9wrf+M7Q== test1@test"
+  - "ssh-rsa AAAAB3Nz...dsWno-sa7nqt test2@test"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		files.ExpandPath(&Filename)
 
@@ -82,8 +82,7 @@ sshKeys:
 			return ctlerrors.GenericFailedRequestError(err, commandName)
 		}
 
-		err = ctlerrors.Result(commandName).
-			UseResponse(response)
+		err = ctlerrors.GenerateErrorIfNot200(response, commandName)
 
 		if err != nil {
 			return err
