@@ -45,6 +45,7 @@ const (
 
 	// Miscellaneous errors: 99XX
 	TablePrinterFailure = "9901"
+	IncorrectURL        = "9902"
 )
 
 /* Error functions.
@@ -98,7 +99,7 @@ type result struct {
 func Result(commandName string) result {
 	return result{
 		Msg200:      "",
-		Msg404:      "404 NOT FOUND",
+		Msg404:      "The request could not be performed. Error Code:" + IncorrectURL,
 		CommandName: commandName,
 	}
 }
