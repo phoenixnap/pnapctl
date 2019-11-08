@@ -71,7 +71,6 @@ build:
     when: on_success
     paths:
       - ./${CLI_NAME}.zip
-      - ./${CLI_NAME}.exe
       - ./${CLI_NAME}.tar.gz
 
 portal-deploy:
