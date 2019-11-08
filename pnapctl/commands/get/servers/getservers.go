@@ -34,42 +34,28 @@ pnapctl get servers NDIid939dfkoDd -o yaml --full`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
 			ID = args[0]
-			return getServer(ID)
+			return getServers(ID)
 		}
-		return getAllServers()
+		return getServers("")
 	},
 }
 
-func getServer(serverID string) error {
-	response, err := client.MainClient.PerformGet("servers/" + serverID)
+func getServers(serverID string) error {
+	path := "servers"
 
-	if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName)
+	if serverID != "" {
+		path = path + "/" + serverID
 	}
 
-	err = ctlerrors.GenerateErrorIfNot200(response, commandName)
+	response, err := client.MainClient.PerformGet(path)
 
-	if err != nil {
-		return err
+	if response == nil {
+		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.IncorrectRequestStructure)
+	} else if response.StatusCode == 200 {
+		return printer.PrintServerResponse(response.Body, serverID == "", Full, commandName)
+	} else {
+		return ctlerrors.HandleResponseError(response, commandName)
 	}
-
-	return printer.PrintServerResponse(response.Body, false, Full, commandName)
-}
-
-func getAllServers() error {
-	response, err := client.MainClient.PerformGet("servers")
-
-	if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName)
-	}
-
-	err = ctlerrors.GenerateErrorIfNot200(response, commandName)
-
-	if err != nil {
-		return err
-	}
-
-	return printer.PrintServerResponse(response.Body, true, Full, commandName)
 }
 
 func init() {

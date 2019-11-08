@@ -2,7 +2,10 @@ package client
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -70,6 +73,39 @@ func (m HTTPClient) PerformPost(resource string, body io.Reader) (*http.Response
 	return executeRequest(func() (*http.Response, error) {
 		return m.client.Post(m.buildURI(resource), "application/json", body)
 	})
+}
+
+// ResponseBody represents the format of the expected body returned from the server. it may have additional fields but we only care about the Result
+type ResponseBody struct {
+	Result string
+}
+
+// HandleClientResponse determines whether
+// (i) request was executed at all, if not return a generic error
+// (ii) request was executed sucesfully, if so unmarshall response, print it and don't return an error
+// (iii) request was executed unsucesfully, if so attempt to use the return body to output an error
+func HandleClientResponse(response *http.Response, err error, commandName string) error {
+	if response == nil {
+		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.IncorrectRequestStructure)
+	} else if response.StatusCode == 200 {
+		body, err := ioutil.ReadAll(response.Body)
+
+		if err != nil {
+			return ctlerrors.GenericNonRequestError(ctlerrors.ResponseBodyReadFailure, commandName)
+		}
+
+		responseBody := ResponseBody{}
+		err = json.Unmarshal(body, &responseBody)
+
+		if err != nil {
+			return ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingResponseBody, commandName)
+		}
+
+		fmt.Println(responseBody.Result)
+		return nil
+	} else {
+		return ctlerrors.HandleResponseError(response, commandName)
+	}
 }
 
 // executeRequest will perform the http request provided and return the result

@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
-	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
 const commandName string = "power-on server"
@@ -22,11 +21,7 @@ var PowerOnServerCmd = &cobra.Command{
 		var resource = "servers/" + args[0] + "/actions/power-on"
 		var response, err = client.MainClient.PerformPost(resource, bytes.NewBuffer([]byte{}))
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName)
-		}
-
-		return ctlerrors.GenerateErrorIfNot200(response, commandName)
+		return client.HandleClientResponse(response, err, commandName)
 	},
 }
 

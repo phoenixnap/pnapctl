@@ -65,11 +65,7 @@ sshKeys:
 
 		response, err := client.MainClient.PerformPost(resource, bytes.NewBuffer(structbyte))
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName)
-		}
-
-		return ctlerrors.GenerateErrorIfNot200(response, commandName)
+		return client.HandleClientResponse(response, err, commandName, true)
 	},
 }
 

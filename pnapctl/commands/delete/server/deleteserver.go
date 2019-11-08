@@ -3,7 +3,6 @@ package server
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
-	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 )
 
 const commandName = "delete server"
@@ -20,10 +19,6 @@ var DeleteServerCmd = &cobra.Command{
 		var resource = "servers/" + args[0]
 		var response, err = client.MainClient.PerformDelete(resource)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName)
-		}
-
-		return ctlerrors.GenerateErrorIfNot200(response, commandName)
+		return client.HandleClientResponse(response, err, commandName)
 	},
 }

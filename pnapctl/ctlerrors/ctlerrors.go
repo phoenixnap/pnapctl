@@ -32,6 +32,7 @@ const (
 	UnmarshallingErrorBody       = "0301"
 	UnmarshallingInPrinter       = "0302"
 	UnmarshallingInFileProcessor = "0303"
+	UnmarshallingResponseBody    = "0304"
 
 	// Marshalling errors: 04XX
 	Marshalling          = "0400"
@@ -43,7 +44,8 @@ const (
 	FileDoesNotExist = "0504"
 
 	// Miscellaneous errors: 99XX
-	TablePrinterFailure = "9901"
+	TablePrinterFailure       = "9901"
+	IncorrectRequestStructure = "9902"
 )
 
 /* Error functions.
@@ -59,14 +61,14 @@ func GenericNonRequestError(errorCode string, command string) error {
 	return errors.New("Command '" + command + "' has been performed, but something went wrong. Error code: " + errorCode)
 }
 
-// GenericFailedRequestError represents an error with performing a request.
-// Requires the error that caused this issue and the command name being executed
-func GenericFailedRequestError(err error, commandName string) error {
+// GenericFailedRequestError is used when an error occurs before the request has been executed.
+// Requires the error that caused this issue, the command name being executed and a potential error code
+func GenericFailedRequestError(err error, commandName string, errorCode string) error {
 	if e, isCtlError := err.(Error); isCtlError {
 		return e
-	} else {
-		return errors.New("Command '" + commandName + "' could not be performed. Please try again later.")
 	}
+
+	return errors.New("Command '" + commandName + "' could not be performed. Error code: " + errorCode)
 }
 
 /* Error handling.
@@ -96,15 +98,14 @@ func (b BMCError) String() string {
 	}
 }
 
-// GenerateErrorIfNot200 returns an error if the response code is not 200.
-// Ideally we want to use the response returned to us by the server but we return ageneric error if
-// (i) there is no body
-// (ii) The body can't be read (GO error)
-// (iii) we can't deserialize the response
-func GenerateErrorIfNot200(response *http.Response, commandName string) error {
-	statusCode := response.StatusCode
-
-	if statusCode == 200 {
+// HandleResponseError handles responses where the response is not 200.
+// Ideally we want to use the response returned to us by the server but we return a generic error if
+// (i) There is no response body (command executed but no body returned)
+// (ii) The response body can't be read (probably GO error)
+// (iii) we can't deserialize the response (probably a server error)
+func HandleResponseError(response *http.Response, commandName string) error {
+	if response != nil && response.StatusCode == 200 {
+		// Technically we should never enter here. If we do, something went wrong previously.
 		return nil
 	}
 

@@ -19,22 +19,29 @@ var GenericBMCError = ctlerrors.BMCError{
 }
 
 // Asserting that two things are equal.
-func AssertEqual(test_framework *testing.T, expected interface{}, actual interface{}) {
+func AssertEqual(testFramework *testing.T, expected interface{}, actual interface{}) {
 	if expected != actual {
-		test_framework.Error("\nExpected: '", expected, "'\nActual:   '", actual, "'")
+		testFramework.Error("\nExpected: '", expected, "'\nActual:   '", actual, "'")
+	}
+}
+
+// AssertStringContains checks whether testString contains a particular string subset
+func AssertStringContains(testFramework *testing.T, testString string, contains string) {
+	if !strings.Contains(testString, contains) {
+		testFramework.Error("\n", testString, " does not contain ", contains)
 	}
 }
 
 // Asserting that no error was found.
-func AssertNoError(test_framework *testing.T, err error) {
+func AssertNoError(testFramework *testing.T, err error) {
 	if err != nil {
-		test_framework.Error("Expected no error, found: '", err, "'")
+		testFramework.Error("Expected no error, found: '", err, "'")
 	}
 }
 
 // Asserting that an error has a specific errorcode.
-func AssertErrorCode(test_framework *testing.T, err error, code string) {
+func AssertErrorCode(testFramework *testing.T, err error, code string) {
 	if !strings.Contains(err.Error(), code) {
-		test_framework.Error("Errorcodes do not match. \nError: '", err, "'\nCode expected: '", code, "'")
+		testFramework.Error("Errorcodes do not match. \nError: '", err, "'\nCode expected: '", code, "'")
 	}
 }
