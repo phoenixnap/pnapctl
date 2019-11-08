@@ -9,6 +9,7 @@ variables:
 stages:  
   - test
   - build
+  - dev-portal-deploy
 
 # A hack to make Golang-in-Gitlab happy
 .anchors:
@@ -45,8 +46,8 @@ test:
 
 build:
   stage: build
-  only:
-    - master
+#  only:
+#    - master
   image: golang:1.13.1-alpine3.10    
   cache:
     key: godep
@@ -66,9 +67,15 @@ build:
     - tar -czf ${CLI_NAME}.tar.gz ${CLI_NAME}
     - mv pnap-cli_windows_amd64.exe ${CLI_NAME}.exe
     - zip ${CLI_NAME}.zip ${CLI_NAME}.exe
-  artifacts:
-    when: on_success
-    paths:
-    - ./${CLI_NAME}.exe
-    - ./${CLI_NAME}.tar.gz
-    
+
+portal-deploy:
+  image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:96c9ce6b
+  stage: dev-portal-deploy
+  #  only:
+  #    - master
+  script:
+    - /automation/upload_single_asset.py --file ./${CLI_NAME}.exe --portal $APIGEE_PORTAL --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+    - /automation/upload_single_asset.py --file ./${CLI_NAME}.tar.gz --portal $APIGEE_PORTAL --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+
+
+
