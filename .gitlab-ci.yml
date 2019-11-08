@@ -71,11 +71,15 @@ build:
 portal-deploy:
   image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:96c9ce6b
   stage: dev-portal-deploy
+  environment:
+    name: dev
   #  only:
   #    - master
   script:
-    - /automation/upload_single_asset.py --file ./${CLI_NAME}.exe --portal $APIGEE_PORTAL --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
-    - /automation/upload_single_asset.py --file ./${CLI_NAME}.tar.gz --portal $APIGEE_PORTAL --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+    - ls
+    - pwd
+    - /automation/upload_single_asset.py --file ${CLI_NAME}.exe --portal $APIGEE_PORTAL --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+    - /automation/upload_single_asset.py --file ${CLI_NAME}.tar.gz --portal $APIGEE_PORTAL --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
 
 
 
