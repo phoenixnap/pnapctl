@@ -9,8 +9,8 @@ import (
 
 var RebootCmd = &cobra.Command{
 	Use:   "reboot",
-	Short: "Perform a soft reboot on resource.",
-	Long:  `Perform a soft reboot on resource.`,
+	Short: "Perform a soft reboot on a resource.",
+	Long:  `Perform a soft reboot on a resource.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 		os.Exit(0)

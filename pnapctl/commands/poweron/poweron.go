@@ -9,8 +9,8 @@ import (
 
 var PowerOnCmd = &cobra.Command{
 	Use:   "power-on",
-	Short: "Power on resource.",
-	Long:  `Power on resource.`,
+	Short: "Power on a resource.",
+	Long:  `Power on a resource.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 		os.Exit(0)

@@ -9,8 +9,8 @@ import (
 
 var CreateCmd = &cobra.Command{
 	Use:   "create",
-	Short: "Create resource.",
-	Long:  `Create resource.`,
+	Short: "Create a resource.",
+	Long:  `Create a resource.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 		os.Exit(0)
