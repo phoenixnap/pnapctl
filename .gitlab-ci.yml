@@ -46,8 +46,8 @@ test:
 
 build:
   stage: build
-#  only:
-#    - master
+  only:
+    - master
   image: golang:1.13.1-alpine3.10
   cache:
     key: godep
@@ -75,12 +75,12 @@ build:
       - ./${CLI_NAME}.tar.gz
 
 portal-deploy:
-  image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:96c9ce6b
+  image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:0.0.5
   stage: dev-portal-deploy
   environment:
     name: dev
-  #  only:
-  #    - master
+  only:
+    - master
   script:
     - ls
     - pwd
