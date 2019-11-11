@@ -65,7 +65,7 @@ sshKeys:
 
 		response, err := client.MainClient.PerformPost(resource, bytes.NewBuffer(structbyte))
 
-		return client.HandleClientResponse(response, err, commandName, true)
+		return client.HandleClientResponse(response, err, commandName)
 	},
 }
 
