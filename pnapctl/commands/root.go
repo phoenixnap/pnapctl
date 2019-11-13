@@ -19,6 +19,7 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnap-cli/pnapctl/configuration"
 )
 
 var cfgFile string
@@ -28,7 +29,7 @@ var rootCmd = &cobra.Command{
 	Short: "pnapctl creates new and manages existing bare metal servers.",
 	Long: `pnapctl creates new and manages existing bare metal servers provided by the phoenixNAP Bare Metal Cloud service.
 
-Find More information at: INSERT_LINK_HERE`,
+Find More information at: ` + configuration.KnowledgeBaseURL,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 		os.Exit(0)
