@@ -14,7 +14,7 @@ import (
 )
 
 func getAllServersSetup() {
-	URL = "servers"
+	URL = "servers/"
 }
 
 func TestGetAllServersUnmarshallingError(test_framework *testing.T) {
