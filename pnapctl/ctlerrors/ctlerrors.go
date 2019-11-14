@@ -44,8 +44,9 @@ const (
 	FileDoesNotExist = "0504"
 
 	// Miscellaneous errors: 99XX
-	TablePrinterFailure       = "9901"
-	IncorrectRequestStructure = "9902"
+	TablePrinterFailure = "9901"
+	// The error below typically happens either if there is a bug in the client or if the request body is incorrect
+	ErrorSendingRequest = "9902"
 )
 
 /* Error functions.

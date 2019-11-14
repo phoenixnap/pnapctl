@@ -79,7 +79,7 @@ sshKeys:
 		response, err := client.MainClient.PerformPost("servers", bytes.NewBuffer(structbyte))
 
 		if response == nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.IncorrectRequestStructure)
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 		} else if response.StatusCode == 200 {
 			return printer.PrintServerResponse(response.Body, false, Full, commandName)
 		} else {

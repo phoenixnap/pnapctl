@@ -260,7 +260,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "create server", ctlerrors.IncorrectRequestStructure)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "create server", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

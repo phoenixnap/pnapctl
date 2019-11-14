@@ -41,16 +41,12 @@ pnapctl get servers NDIid939dfkoDd -o yaml --full`,
 }
 
 func getServers(serverID string) error {
-	path := "servers"
-
-	if serverID != "" {
-		path = path + "/" + serverID
-	}
+	path := "servers/" + serverID
 
 	response, err := client.MainClient.PerformGet(path)
 
 	if response == nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.IncorrectRequestStructure)
+		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 	} else if response.StatusCode == 200 {
 		return printer.PrintServerResponse(response.Body, serverID == "", Full, commandName)
 	} else {

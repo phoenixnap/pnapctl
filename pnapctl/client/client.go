@@ -86,7 +86,7 @@ type ResponseBody struct {
 // (iii) request was executed unsucesfully, if so attempt to use the return body to output an error
 func HandleClientResponse(response *http.Response, err error, commandName string) error {
 	if response == nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.IncorrectRequestStructure)
+		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 	} else if response.StatusCode == 200 {
 		body, err := ioutil.ReadAll(response.Body)
 
