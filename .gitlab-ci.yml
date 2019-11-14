@@ -4,10 +4,12 @@ services:
   
 variables:
   PACKAGE_PATH: /go/src/phoenixnap.com/pnap-cli
+  CLI_NAME: pnapctl
 
 stages:  
   - test
   - build
+  - dev-portal-deploy
 
 # A hack to make Golang-in-Gitlab happy
 .anchors:
@@ -39,28 +41,50 @@ test:
   artifacts:
     when: always
     reports:
-      junit: report.xml  
+      junit: report.xml
 
 
 build:
-  stage: build    
-  image: golang:1.13.1-alpine3.10    
+  stage: build
+  only:
+    - master
+  image: golang:1.13.1-alpine3.10
   cache:
     key: godep
     paths:
       - .cache
-    #only pull dependencies - this will not be push-pull 
+    #only pull dependencies - this will not be push-pull
     policy: pull
   before_script:
-    - apk add --no-cache curl git
-    - *inject-gopath        
-    - cp -R .cache/go/* $GOPATH        
+    - apk add --no-cache curl git zip
+    - *inject-gopath
+    - cp -R .cache/go/* $GOPATH
     - go get "github.com/mitchellh/gox"
     - go get "github.com/inconshreveable/mousetrap"
-  script:        
-    - gox
+  script:
+    - gox -osarch="linux/amd64 windows/amd64"
+    - mv pnap-cli_linux_amd64 ${CLI_NAME}
+    - tar -czf ${CLI_NAME}.tar.gz ${CLI_NAME}
+    - mv pnap-cli_windows_amd64.exe ${CLI_NAME}.exe
+    - zip ${CLI_NAME}.zip ${CLI_NAME}.exe
   artifacts:
     when: on_success
     paths:
-    - ./${CI_PROJECT_NAME}_*
-    
+      - ./${CLI_NAME}.zip
+      - ./${CLI_NAME}.tar.gz
+
+portal-deploy:
+  image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:0.0.5
+  stage: dev-portal-deploy
+  environment:
+    name: dev
+  only:
+    - master
+  script:
+    - ls
+    - pwd
+    - /automation/upload_single_asset.py --file ${CLI_NAME}.zip --portal $APIGEE_PORTAL --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+    - /automation/upload_single_asset.py --file ${CLI_NAME}.tar.gz --portal $APIGEE_PORTAL --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+
+
+
