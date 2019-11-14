@@ -246,7 +246,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(500, nil), testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -260,7 +260,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(nil, "create server")
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "create server", ctlerrors.IncorrectRequestStructure)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

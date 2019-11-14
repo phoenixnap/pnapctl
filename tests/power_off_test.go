@@ -5,6 +5,8 @@ import (
 	"errors"
 	"testing"
 
+	"phoenixnap.com/pnap-cli/pnapctl/client"
+
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
@@ -25,7 +27,7 @@ func TestPowerOffServerSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(200, nil), nil)
+		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil)
 
 	// Run command
 	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
@@ -40,16 +42,13 @@ func TestPowerOffServerNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(404, nil), nil)
+		Return(WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
 
-	// Expected error
-	expectedErr := errors.New("Server with ID " + SERVERID + " not found")
-
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
 func TestPowerOffServerError(test_framework *testing.T) {
@@ -76,13 +75,13 @@ func TestPowerOffServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(404, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(nil, "power-off server")
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "power-off server", ctlerrors.IncorrectRequestStructure)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

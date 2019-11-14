@@ -6,6 +6,7 @@ import (
 	"errors"
 	"testing"
 
+	"phoenixnap.com/pnap-cli/pnapctl/client"
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 
 	"gopkg.in/yaml.v2"
@@ -38,7 +39,7 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(200, nil), nil).
+		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -71,7 +72,7 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(200, nil), nil)
+		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
@@ -156,7 +157,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(404, nil), nil).
+		Return(WithResponse(404, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -169,11 +170,8 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 	// Run command
 	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
-	// Expected error
-	expectedErr := errors.New("Server with ID " + SERVERID + " not found")
-
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
 func TestResetServerFileReadingFailure(test_framework *testing.T) {
@@ -258,7 +256,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(500, nil), testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -272,7 +270,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(nil, "reset server")
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "reset server", ctlerrors.IncorrectRequestStructure)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

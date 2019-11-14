@@ -66,7 +66,7 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(nil, "get servers")
+	expectedErr := ctlerrors.GenericFailedRequestError(err, "get servers", ctlerrors.IncorrectRequestStructure)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

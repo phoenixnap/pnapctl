@@ -8,6 +8,7 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
+	"phoenixnap.com/pnap-cli/pnapctl/client"
 	poweron "phoenixnap.com/pnap-cli/pnapctl/commands/poweron/server"
 )
 
@@ -22,7 +23,7 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(200, nil), nil)
+		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil)
 
 	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
@@ -36,15 +37,12 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(404, nil), nil)
+		Return(WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
-	// Expected error
-	expectedErr := errors.New("Server with ID " + SERVERID + " not found")
-
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
 func TestPowerOnServerError(test_framework *testing.T) {

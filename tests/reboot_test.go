@@ -5,6 +5,7 @@ import (
 	"errors"
 	"testing"
 
+	"phoenixnap.com/pnap-cli/pnapctl/client"
 	reboot "phoenixnap.com/pnap-cli/pnapctl/commands/reboot/server"
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
@@ -22,7 +23,7 @@ func TestRebootServerSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(200, nil), nil)
+		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil)
 
 	// Run command
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
@@ -37,12 +38,12 @@ func TestRebootServerClientFail(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(200, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(nil, "reboot server")
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "reboot server", ctlerrors.IncorrectRequestStructure)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -68,15 +69,12 @@ func TestRebootServerNotFoundFail(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(404, nil), nil)
+		Return(WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
-	// Expected error
-	expectedErr := errors.New("Server with ID " + SERVERID + " not found.")
-
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
 func TestRebootServerErrorFail(test_framework *testing.T) {

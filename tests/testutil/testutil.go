@@ -25,13 +25,6 @@ func AssertEqual(testFramework *testing.T, expected interface{}, actual interfac
 	}
 }
 
-// AssertStringContains checks whether testString contains a particular string subset
-func AssertStringContains(testFramework *testing.T, testString string, contains string) {
-	if !strings.Contains(testString, contains) {
-		testFramework.Error("\n", testString, " does not contain ", contains)
-	}
-}
-
 // Asserting that no error was found.
 func AssertNoError(testFramework *testing.T, err error) {
 	if err != nil {

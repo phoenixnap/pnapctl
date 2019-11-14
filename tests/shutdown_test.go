@@ -5,6 +5,7 @@ import (
 	"errors"
 	"testing"
 
+	"phoenixnap.com/pnap-cli/pnapctl/client"
 	shutdown "phoenixnap.com/pnap-cli/pnapctl/commands/shutdown/server"
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
@@ -22,7 +23,7 @@ func TestShutdownServerSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(200, nil), nil)
+		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil)
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
@@ -37,16 +38,13 @@ func TestShutdownServerNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(404, nil), nil)
+		Return(WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
 
-	// Expected error
-	expectedErr := errors.New("Server with ID " + SERVERID + " not found.")
-
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
 func TestShutdownServerError(test_framework *testing.T) {
@@ -73,13 +71,13 @@ func TestShutdownServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockClient(test_framework).
 		PerformPost(URL, Body).
-		Return(WithResponse(200, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(nil, "shutdown server")
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "shutdown server", ctlerrors.IncorrectRequestStructure)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
