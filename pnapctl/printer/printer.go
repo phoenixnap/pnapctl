@@ -75,6 +75,7 @@ func printYAML(body interface{}) error {
 
 // Attempts to print the struct as a table.
 func printTable(body interface{}, tblprinter *tableprinter.Printer) error {
+	tblprinter.RowCharLimit = 23
 	rows := tblprinter.Print(body)
 
 	if rows == -1 {
