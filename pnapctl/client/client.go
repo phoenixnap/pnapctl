@@ -82,8 +82,8 @@ type ResponseBody struct {
 
 // HandleClientResponse determines whether
 // (i) request was executed at all, if not return a generic error
-// (ii) request was executed sucesfully, if so unmarshall response, print it and don't return an error
-// (iii) request was executed unsucesfully, if so attempt to use the return body to output an error
+// (ii) request was executed successfully, if so unmarshall response, print it and don't return an error
+// (iii) request was executed unsuccessfully, if so attempt to use the return body to output an error
 func HandleClientResponse(response *http.Response, err error, commandName string) error {
 	if response == nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
