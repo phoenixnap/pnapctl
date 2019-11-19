@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
+	utils "phoenixnap.com/pnap-cli/pnapctl/utility"
 )
 
 const commandName string = "power-on server"
@@ -21,7 +22,7 @@ var PowerOnServerCmd = &cobra.Command{
 		var resource = "servers/" + args[0] + "/actions/power-on"
 		var response, err = client.MainClient.PerformPost(resource, bytes.NewBuffer([]byte{}))
 
-		return client.HandleClientResponse(response, err, commandName)
+		return utils.HandleClientResponse(response, err, commandName)
 	},
 }
 

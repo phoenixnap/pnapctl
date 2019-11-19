@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/pnapctl/client"
+	utils "phoenixnap.com/pnap-cli/pnapctl/utility"
 )
 
 const commandName string = "reboot server"
@@ -21,7 +22,7 @@ var RebootCmd = &cobra.Command{
 		resource := "servers/" + args[0] + "/actions/reboot"
 		response, err := client.MainClient.PerformPost(resource, bytes.NewBuffer([]byte{}))
 
-		return client.HandleClientResponse(response, err, commandName)
+		return utils.HandleClientResponse(response, err, commandName)
 	},
 }
 

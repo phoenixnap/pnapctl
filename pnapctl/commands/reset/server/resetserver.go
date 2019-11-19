@@ -5,6 +5,7 @@ import (
 
 	"phoenixnap.com/pnap-cli/pnapctl/client"
 	files "phoenixnap.com/pnap-cli/pnapctl/fileprocessor"
+	utils "phoenixnap.com/pnap-cli/pnapctl/utility"
 
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 
@@ -65,7 +66,7 @@ sshKeys:
 
 		response, err := client.MainClient.PerformPost(resource, bytes.NewBuffer(structbyte))
 
-		return client.HandleClientResponse(response, err, commandName)
+		return utils.HandleClientResponse(response, err, commandName)
 	},
 }
 
