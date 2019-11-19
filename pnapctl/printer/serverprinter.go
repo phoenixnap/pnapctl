@@ -10,23 +10,27 @@ import (
 )
 
 type ShortServer struct {
-	ID          string `header:"id"`
-	Status      string `header:"status"`
-	Name        string `header:"name"`
-	Description string `header:"description"`
+	ID                 string   `header:"id"`
+	Status             string   `header:"status"`
+	Name               string   `header:"name"`
+	Description        string   `header:"description"`
+	PrivateIPAddresses []string `header:"Private Ips"`
+	PublicIPAddresses  []string `header:"Public Ips"`
 }
 
 type LongServer struct {
-	ID          string `header:"id"`
-	Status      string `header:"status"`
-	Name        string `header:"name"`
-	Description string `header:"description"`
-	Os          string `header:"os"`
-	Type        string `header:"type"`
-	Location    string `header:"location"`
-	CPU         string `header:"cpu"`
-	RAM         string `header:"ram"`
-	Storage     string `header:"storage"`
+	ID                 string   `header:"id"`
+	Status             string   `header:"status"`
+	Name               string   `header:"name"`
+	Description        string   `header:"description"`
+	PrivateIPAddresses []string `header:"Private Ips"`
+	PublicIPAddresses  []string `header:"Public Ips"`
+	Os                 string   `header:"os"`
+	Type               string   `header:"type"`
+	Location           string   `header:"location"`
+	CPU                string   `header:"cpu"`
+	RAM                string   `header:"ram"`
+	Storage            string   `header:"storage"`
 }
 
 func PrintServerResponse(responseBody io.Reader, multiple bool, full bool, commandName string) error {
