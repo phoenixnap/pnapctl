@@ -10,6 +10,7 @@ stages:
   - test
   - build
   - dev-portal-deploy
+  - prod-portal-deploy
 
 # A hack to make Golang-in-Gitlab happy
 .anchors:
@@ -73,18 +74,27 @@ build:
       - ./${CLI_NAME}.zip
       - ./${CLI_NAME}.tar.gz
 
-portal-deploy:
-  image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:0.0.5
-  stage: dev-portal-deploy
-  environment:
-    name: dev
+.portal-deployment:
+  image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:0.0.6
   only:
     - master
   script:
-    - ls
-    - pwd
-    - /automation/upload_single_asset.py --file ${CLI_NAME}.zip --portal $APIGEE_PORTAL --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
-    - /automation/upload_single_asset.py --file ${CLI_NAME}.tar.gz --portal $APIGEE_PORTAL --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+    - /automation/upload_single_asset.py --file ${CLI_NAME}.zip --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+    - /automation/upload_single_asset.py --file ${CLI_NAME}.tar.gz --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+
+portal-dev-deploy:
+  extends: .portal-deployment
+  stage: dev-portal-deploy
+  environment:
+    name: dev
+
+portal-prod-deploy:
+  extends: .portal-deployment
+  stage: prod-portal-deploy
+  environment:
+    name: prod
+  only:
+    - tags
 
 
 
