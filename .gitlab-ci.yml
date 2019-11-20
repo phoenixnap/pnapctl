@@ -46,8 +46,8 @@ test:
 
 build:
   stage: build
-  only:
-    - master
+  # only:
+  #   - master
   image: golang:1.13.1-alpine3.10
   cache:
     key: godep
@@ -62,6 +62,7 @@ build:
     - go get "github.com/mitchellh/gox"
     - go get "github.com/inconshreveable/mousetrap"
   script:
+  - pwd
     - gox -osarch="linux/amd64 windows/amd64"
     - mv pnap-cli_linux_amd64 ${CLI_NAME}
     - tar -czf ${CLI_NAME}.tar.gz ${CLI_NAME}
