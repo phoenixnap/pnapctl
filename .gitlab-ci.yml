@@ -72,6 +72,7 @@ build:
   artifacts:
     when: on_success
     paths:
+      - ./${ARTEFACT_FOLDER}/${CLI_NAME}
       - ./${ARTEFACT_FOLDER}/${CLI_NAME}.zip
       - ./${ARTEFACT_FOLDER}/${CLI_NAME}.tar.gz
 
