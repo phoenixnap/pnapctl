@@ -62,17 +62,17 @@ build:
     - go get "github.com/mitchellh/gox"
     - go get "github.com/inconshreveable/mousetrap"
   script:
-  - pwd
-    - gox -osarch="linux/amd64 windows/amd64"
-    - mv pnap-cli_linux_amd64 ${CLI_NAME}
+    - gox -osarch="linux/amd64 windows/amd64" -output=./build/output
+    - cd ./build
+    - mv output ${CLI_NAME}
     - tar -czf ${CLI_NAME}.tar.gz ${CLI_NAME}
-    - mv pnap-cli_windows_amd64.exe ${CLI_NAME}.exe
+    - mv output.exe ${CLI_NAME}.exe
     - zip ${CLI_NAME}.zip ${CLI_NAME}.exe
   artifacts:
     when: on_success
     paths:
-      - ./${CLI_NAME}.zip
-      - ./${CLI_NAME}.tar.gz
+      - ./build/${CLI_NAME}.zip
+      - ./build/${CLI_NAME}.tar.gz
 
 portal-deploy:
   image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:0.0.5
