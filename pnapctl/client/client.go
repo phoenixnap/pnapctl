@@ -72,6 +72,11 @@ func (m HTTPClient) PerformPost(resource string, body io.Reader) (*http.Response
 	})
 }
 
+// ResponseBody represents the format of the expected body returned from the server. it may have additional fields but we only care about the Result
+type ResponseBody struct {
+	Result string
+}
+
 // executeRequest will perform the http request provided and return the result
 // with the error decorated accordingly IF it is an auth error
 func executeRequest(f func() (*http.Response, error)) (*http.Response, error) {
@@ -80,7 +85,7 @@ func executeRequest(f func() (*http.Response, error)) (*http.Response, error) {
 	if e, isUrlError := err.(*url.Error); isUrlError && strings.Contains(err.Error(), "oauth2: cannot fetch token") {
 		//Timeout If there is an error it must have happened while resolving token
 		// ErrorURLs frome the actual request should be represented in the body
-		return response, ctlerrors.Error{Msg: "Failed to resolved provided credentials", Cause: e}
+		return response, ctlerrors.Error{Msg: "Failed to resolve provided credentials", Cause: e}
 	}
 
 	return response, err
