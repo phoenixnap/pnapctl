@@ -59,7 +59,8 @@ build:
     #only pull dependencies - this will not be push-pull
     policy: pull
   before_script:
-    - apt-get install curl git
+    - apt-get update
+    - apt-get install curl git zip
     - *inject-gopath
     - cp -R .cache/go/* $GOPATH
     - go get "github.com/mitchellh/gox"
