@@ -20,9 +20,7 @@ stages:
       && cd ${PACKAGE_PATH}      
   
 test:
-  stage: test   
-  # only:
-  #   - master
+  stage: test
   image: golang:1.13.1
   cache:
     key: godep
@@ -60,7 +58,7 @@ build:
     policy: pull
   before_script:
     - apt-get update
-    - apt-get install curl git zip
+    - apt-get install -y curl git zip
     - *inject-gopath
     - cp -R .cache/go/* $GOPATH
     - go get "github.com/mitchellh/gox"
