@@ -23,7 +23,7 @@ test:
   stage: test   
   only:
     - master
-  image: golang:1.13.1-alpine3.10  
+  image: golang:1.13.1
   cache:
     key: godep
     paths:
@@ -51,7 +51,7 @@ build:
   stage: build
   # only:
   #   - master
-  image: golang:1.13.1-alpine3.10
+  image: golang:1.13.1
   cache:
     key: godep
     paths:
@@ -67,11 +67,9 @@ build:
   script:
     - pwd
     - ls -lh
-    - gox -osarch="linux/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/output
+    - gox -osarch="linux/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/${CLI_NAME}
     - cd ./${ARTEFACT_FOLDER}
-    - mv output ${CLI_NAME}
     - tar -czf ${CLI_NAME}.tar.gz ${CLI_NAME}
-    - mv output.exe ${CLI_NAME}.exe
     - zip ${CLI_NAME}.zip ${CLI_NAME}.exe
   artifacts:
     when: on_success
