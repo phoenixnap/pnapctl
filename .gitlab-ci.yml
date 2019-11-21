@@ -47,8 +47,8 @@ test:
 
 build:
   stage: build
-  # only:
-  #   - master
+  only:
+    - master
   image: golang:1.13.1
   cache:
     key: godep
