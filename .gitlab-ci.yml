@@ -21,15 +21,15 @@ stages:
   
 test:
   stage: test   
-  only:
-    - master
+  # only:
+  #   - master
   image: golang:1.13.1
   cache:
     key: godep
     paths:
       - .cache
   before_script:
-    - apk add --no-cache curl git
+    - apt-get install curl git
     - *inject-gopath
     - go get 
     - go get "github.com/golang/mock/mockgen"
@@ -59,14 +59,12 @@ build:
     #only pull dependencies - this will not be push-pull
     policy: pull
   before_script:
-    - apk add --no-cache curl git zip
+    - apt-get install curl git zip
     - *inject-gopath
     - cp -R .cache/go/* $GOPATH
     - go get "github.com/mitchellh/gox"
     - go get "github.com/inconshreveable/mousetrap"
   script:
-    - pwd
-    - ls -lh
     - gox -osarch="linux/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/${CLI_NAME}
     - cd ./${ARTEFACT_FOLDER}
     - tar -czf ${CLI_NAME}.tar.gz ${CLI_NAME}
@@ -74,7 +72,6 @@ build:
   artifacts:
     when: on_success
     paths:
-      - ./${ARTEFACT_FOLDER}/${CLI_NAME}
       - ./${ARTEFACT_FOLDER}/${CLI_NAME}.zip
       - ./${ARTEFACT_FOLDER}/${CLI_NAME}.tar.gz
 
