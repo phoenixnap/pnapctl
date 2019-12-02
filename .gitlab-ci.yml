@@ -50,7 +50,7 @@ build:
   stage: build
   only:
     - master
-    - tag
+    - tags
   image: golang:1.13.1
   cache:
     key: godep
