@@ -86,7 +86,24 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err != nil {
-		fmt.Println("Error reading config file:", err)
+		// Checks whether the config file exists, by attempting to cast the error.
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			fmt.Println("A config file is required to run this program.\n" +
+				"There are 3 approaches to specify the path of a configuration file (in order of priority)\n" +
+				"\t1. --config flag: Specify the path and file name for the configuration file. (ex. pnapctl get servers --config=~/myconfig.yml\n" +
+				"\t2. Environmental variable: Create an environmental variable called PNAPCTL_HOME specifying the path and filename.\n" +
+				"\t3. Default: The default config file path is the home directory (" + configuration.DefaultConfigPath + "/pnap.yaml)\n\n" +
+				"The following shows a sample config file:\n\n" +
+				"# =====================================================\n" +
+				"# Sample yaml config file\n" +
+				"# =====================================================\n\n" +
+				"# Authentication\n" +
+				"clientId: <enter your client id>\n" +
+				"clientSecret: <enter your client secret>")
+		} else {
+			fmt.Println("Error reading config file:", err)
+		}
+
 		os.Exit(1)
 	} else if viper.GetString("clientId") == "" || viper.GetString("clientSecret") == "" {
 		fmt.Println("Client ID and Client Secret in config file should not be empty")
