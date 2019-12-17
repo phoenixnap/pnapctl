@@ -1,6 +1,5 @@
 # =====================================================
 # Sample yaml config file; Rename and move to ~/pnap.yaml
-# The CLI currently works without a version and can be left commented
 # =====================================================
 
 # Authentication

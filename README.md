@@ -15,6 +15,14 @@
 
 The executable generated will have the same name as the folder. This means that `go build` in this repository with its default name will produce an executable called `pnap-cli`. To change its name, use `go build -o <name>`
 
+## Multi OS Build
+
+We are using `gox` for multi os build. Note that unless otherwise specified `gox` will build the pnapctl against an unnecessarily long list of OS's so it is suggested to define the desire OS architectures.
+
+* `gox` -> build a version for all OS architectures.
+* `gox -osarch="linux/amd64 windows/amd64"` -> build a version for linux and windows, 64 bit.
+* `gox -osarch="linux/amd64 windows/amd64" -output=./builds/pnapctl` -> build and output to the `builds` sub-directory using the executable name `pnapctl`.
+
 ## Running Tests
 
 If you'd like a colourised output *(success as green, fail as red)* get `gotest` using `go get -u github.com/rakyll/gotest` and run `gotest ./tests/...` instead.
