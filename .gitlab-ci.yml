@@ -6,6 +6,7 @@ variables:
   PACKAGE_PATH: /go/src/phoenixnap.com/pnap-cli
   CLI_NAME: pnapctl
   ARTEFACT_FOLDER: build
+  ARTEFACT_DIST_FOLDER: dist
 
 stages:  
   - test
@@ -66,23 +67,22 @@ build:
     - go get "github.com/mitchellh/gox"
     - go get "github.com/inconshreveable/mousetrap"
   script:
-    - gox -osarch="linux/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/${CLI_NAME}
+    - gox -osarch="linux/amd64 darwin/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/${CLI_NAME}-{{.OS}}-{{.Arch}}
     - cd ./${ARTEFACT_FOLDER}
-    - tar -czf ${CLI_NAME}.tar.gz ${CLI_NAME}
-    - zip ${CLI_NAME}.zip ${CLI_NAME}.exe
+    - mkdir ${ARTEFACT_DIST_FOLDER}
+    - for i in *; do [[ $i != *.exe ]] && [[ -f "$i" ]] && tar -czf ${ARTEFACT_DIST_FOLDER/$i.tar.gz $i; done;
+    - zip ${ARTEFACT_DIST_FOLDER}/${CLI_NAME}-windows-amd64.zip ${CLI_NAME}-windows-amd64.exe
   artifacts:
     when: on_success
     paths:
-      - ./${ARTEFACT_FOLDER}/${CLI_NAME}.zip
-      - ./${ARTEFACT_FOLDER}/${CLI_NAME}.tar.gz
+      - ./${ARTEFACT_FOLDER}/${ARTEFACT_DIST_FOLDER}
 
 .portal-deployment:
   image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:0.0.6
   only:
     - master
   script:
-    - /automation/upload_single_asset.py --file ./${ARTEFACT_FOLDER}/${CLI_NAME}.zip --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
-    - /automation/upload_single_asset.py --file ./${ARTEFACT_FOLDER}/${CLI_NAME}.tar.gz --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+    - /automation/upload_assets.py --folder ./${ARTEFACT_FOLDER}/${ARTEFACT_DIST_FOLDER} --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
 
 portal-dev-deploy:
   extends: .portal-deployment
@@ -97,6 +97,3 @@ portal-prod-deploy:
     name: prod
   only:
     - tags
-
-
-
