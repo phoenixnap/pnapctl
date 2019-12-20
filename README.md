@@ -5,13 +5,12 @@
 1. Get [`go`](https://golang.org/) and install
 2. Clone this repository in `$GOPATH/phoenixnap.com`. *(`$GOPATH` is normally `~/go/src`)*
 3. Go into the `pnap-cli` folder.
-4. Run `go get` to get all dependencies.
-5. Install [`gomock`](https://github.com/golang/mock):
+4. Install [`gomock`](https://github.com/golang/mock):
     - go get github.com/golang/mock/mockgen
     - go get github.com/golang/mock/gomock
     - go install github.com/golang/mock/mockgen
-6. Move the `sample-config.yaml` file to `$HOME/pnap.yaml` and add your client credentials (ID and secret)
-7. Run `go build` to build, or `go run main.go` to run.
+5. Move the `sample-config.yaml` file to `$HOME/pnap.yaml` and add your client credentials (ID and secret)
+6. Run `go build` to build, or `go run main.go` to run.
 
 The executable generated will have the same name as the folder. This means that `go build` in this repository with its default name will produce an executable called `pnap-cli`. To change its name, use `go build -o <name>`
 
