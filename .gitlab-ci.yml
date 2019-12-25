@@ -30,12 +30,11 @@ test:
   before_script:
     - apt-get install curl git
     - *inject-gopath
-    - go get 
     - go get "github.com/golang/mock/mockgen"
     - go get -u "github.com/jstemmer/go-junit-report"
   script:
     #-vet-off is required due to failures in using gcc 
-    - go test ./... -v -vet=off 2>&1 | go-junit-report > report.xml                 
+    - go test ./... -v -vet=off 2>&1 | go-junit-report > report.xml
   after_script:
     #copy over $GOPATH directory to a local cache dir. This will be cached. Necessary since 
     #GL doesn't cache dirs outside the CI_PROJECT_DIR path
