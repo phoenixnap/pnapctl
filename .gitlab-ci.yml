@@ -3,7 +3,6 @@ services:
   - docker:dind
   
 variables:
-  PACKAGE_PATH: /go/src/phoenixnap.com/pnap-cli
   CLI_NAME: pnapctl
   ARTEFACT_FOLDER: build
 
@@ -13,32 +12,27 @@ stages:
   - dev-portal-deploy
   - prod-portal-deploy
 
-# A hack to make Golang-in-Gitlab happy
-.anchors:
-  - &inject-gopath
-      mkdir -p $(dirname ${PACKAGE_PATH})
-      && ln -s ${CI_PROJECT_DIR} ${PACKAGE_PATH}
-      && cd ${PACKAGE_PATH}      
-  
+.go-cache:
+  variables:
+    GOPATH: ${CI_PROJECT_DIR}/.go
+  before_script:
+    - mkdir -p .go
+  cache:
+    paths:
+      - .go/pkg/mod/
+
 test:
+  extends: .go-cache
   stage: test
   image: golang:1.13.1
-  cache:
-    key: godep
-    paths:
-      - .cache
   before_script:
     - apt-get install curl git
-    - *inject-gopath
+    - go mod download
     - go get "github.com/golang/mock/mockgen"
     - go get -u "github.com/jstemmer/go-junit-report"
   script:
     #-vet-off is required due to failures in using gcc 
-    - go test ./... -v -vet=off 2>&1 | go-junit-report > report.xml
-  after_script:
-    #copy over $GOPATH directory to a local cache dir. This will be cached. Necessary since 
-    #GL doesn't cache dirs outside the CI_PROJECT_DIR path
-    - mkdir -p .cache && cp -R $GOPATH .cache
+    - go test ./... -v -vet=off 2>&1 | ${GOPATH}/bin/go-junit-report > report.xml
   artifacts:
     when: always
     reports:
@@ -46,26 +40,20 @@ test:
 
 
 build:
+  extends: .go-cache
   stage: build
   only:
     - master
     - tags
   image: golang:1.13.1
-  cache:
-    key: godep
-    paths:
-      - .cache
-    #only pull dependencies - this will not be push-pull
-    policy: pull
   before_script:
     - apt-get update
     - apt-get install -y curl git zip
-    - *inject-gopath
-    - cp -R .cache/go/* $GOPATH
+    - go mod download
     - go get "github.com/mitchellh/gox"
     - go get "github.com/inconshreveable/mousetrap"
   script:
-    - gox -osarch="linux/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/${CLI_NAME}
+    - ${GOPATH}/bin/gox -osarch="linux/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/${CLI_NAME}
     - cd ./${ARTEFACT_FOLDER}
     - tar -czf ${CLI_NAME}.tar.gz ${CLI_NAME}
     - zip ${CLI_NAME}.zip ${CLI_NAME}.exe
@@ -96,6 +84,3 @@ portal-prod-deploy:
     name: prod
   only:
     - tags
-
-
-
