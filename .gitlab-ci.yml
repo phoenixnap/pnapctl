@@ -42,9 +42,9 @@ test:
 build:
   extends: .go-cache
   stage: build
-#  only:
-#    - master
-#    - tags
+  only:
+    - master
+    - tags
   image: golang:1.13.1
   before_script:
     - apt-get update
