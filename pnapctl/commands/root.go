@@ -62,6 +62,7 @@ func init() {
 }
 
 func initConfig() {
+	var homePath string
 	envHome := os.Getenv("PNAPCTL_HOME")
 	if envHome != "" && cfgFile == "" {
 		cfgFile = envHome
@@ -79,6 +80,7 @@ func initConfig() {
 			os.Exit(1)
 		}
 
+		homePath = home
 		// Search config in home directory with name "config" (without extension)
 		viper.AddConfigPath(home + configuration.DefaultConfigPath)
 		viper.SetConfigName("config")
@@ -92,7 +94,7 @@ func initConfig() {
 				"There are 3 approaches to specify the path of a configuration file (in order of priority)\n" +
 				"\t1. --config flag: Specify the path and file name for the configuration file. (ex. pnapctl get servers --config=~/myconfig.yml\n" +
 				"\t2. Environmental variable: Create an environmental variable called PNAPCTL_HOME specifying the path and filename.\n" +
-				"\t3. Default: The default config file path is the home directory (" + configuration.DefaultConfigPath + "/pnap.yaml)\n\n" +
+				"\t3. Default: The default config file path is the home directory (" + homePath + configuration.DefaultConfigPath + "config.yaml)\n\n" +
 				"The following shows a sample config file:\n\n" +
 				"# =====================================================\n" +
 				"# Sample yaml config file\n" +
