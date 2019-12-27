@@ -9,7 +9,8 @@ variables:
 
 stages:  
   - test
-  - build
+  - dev-build
+  - prod-build
   - dev-portal-deploy
   - prod-portal-deploy
 
@@ -45,8 +46,7 @@ test:
       junit: report.xml
 
 
-build:
-  stage: build
+.build:
   only:
     - master
     - tags
@@ -65,23 +65,23 @@ build:
     - go get "github.com/mitchellh/gox"
     - go get "github.com/inconshreveable/mousetrap"
   script:
-    - gox -osarch="linux/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/${CLI_NAME}
-    - cd ./${ARTEFACT_FOLDER}
+    - gox -osarch="linux/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME} -tags=$CI_ENVIRONMENT_NAME
+    - cd ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME
     - tar -czf ${CLI_NAME}.tar.gz ${CLI_NAME}
     - zip ${CLI_NAME}.zip ${CLI_NAME}.exe
   artifacts:
     when: on_success
     paths:
-      - ./${ARTEFACT_FOLDER}/${CLI_NAME}.zip
-      - ./${ARTEFACT_FOLDER}/${CLI_NAME}.tar.gz
+      - ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME}.zip
+      - ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME}.tar.gz
 
 .portal-deployment:
   image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:0.0.6
   only:
     - master
   script:
-    - /automation/upload_single_asset.py --file ./${ARTEFACT_FOLDER}/${CLI_NAME}.zip --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
-    - /automation/upload_single_asset.py --file ./${ARTEFACT_FOLDER}/${CLI_NAME}.tar.gz --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+    - /automation/upload_single_asset.py --file ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME}.zip --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+    - /automation/upload_single_asset.py --file ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME}.tar.gz --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
 
 portal-dev-deploy:
   extends: .portal-deployment
@@ -97,5 +97,17 @@ portal-prod-deploy:
   only:
     - tags
 
+build-dev:
+  extends: .build
+  stage: dev-build
+  environment:
+    name: dev
 
+build-prod:
+  extends: .build
+  stage: prod-build
+  environment:
+    name: prod
+  only:
+    - tags
 
