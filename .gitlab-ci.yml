@@ -40,7 +40,7 @@ test:
       junit: report.xml
 
 
-build:
+.build:
   extends: .go-cache
   stage: build
   only:
