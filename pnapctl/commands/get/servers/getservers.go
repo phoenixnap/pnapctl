@@ -5,6 +5,7 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
 	"phoenixnap.com/pnap-cli/pnapctl/printer"
 
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -41,6 +42,8 @@ pnapctl get servers NDIid939dfkoDd -o yaml --full`,
 }
 
 func getServers(serverID string) error {
+	log.Debug("Getting servers...")
+
 	path := "servers/" + serverID
 
 	response, err := client.MainClient.PerformGet(path)
