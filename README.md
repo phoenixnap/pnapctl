@@ -22,6 +22,11 @@ We are using `gox` for multi os build. Note that unless otherwise specified `gox
 * `gox -osarch="linux/amd64 windows/amd64"` -> build a version for linux and windows, 64 bit.
 * `gox -osarch="linux/amd64 windows/amd64" -output=./builds/pnapctl` -> build and output to the `builds` sub-directory using the executable name `pnapctl`.
 
+## Multi Enviroment Build
+
+We are building two versions of `pnapctl` executable. Default one for `prod` environment and one for `dev` environment. They are uploaded to `prod/dev` environment of Apigee portal. 
+You can change `dev` environment specific properties by editing `./pnapctl/configuration/properties_dev.go` file
+
 ## Running Tests
 
 If you'd like a colourised output *(success as green, fail as red)* get `gotest` using `go get -u github.com/rakyll/gotest` and run `gotest ./tests/...` instead.
