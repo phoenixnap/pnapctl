@@ -10,7 +10,7 @@
     - go get github.com/golang/mock/gomock
     - go install github.com/golang/mock/mockgen
 5. Move the `sample-config.yaml` file to `$HOME/pnap.yaml` and add your client credentials (ID and secret)
-6. Run `go build` to build, or `go run main.go` to run.
+6. Run `go build` to build, or `go run main.go` to run (add -v or --verbose for DEBUG level logging).
 
 The executable generated will have the same name as the folder. This means that `go build` in this repository with its default name will produce an executable called `pnap-cli`. To change its name, use `go build -o <name>`
 
