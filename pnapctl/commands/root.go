@@ -16,25 +16,29 @@ import (
 	"phoenixnap.com/pnap-cli/pnapctl/fileprocessor"
 
 	"github.com/mitchellh/go-homedir"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/pnapctl/configuration"
 )
 
-var cfgFile string
+var (
+	verbose bool
+	cfgFile string
 
-var rootCmd = &cobra.Command{
-	Use:   "pnapctl",
-	Short: "pnapctl creates new and manages existing bare metal servers.",
-	Long: `pnapctl creates new and manages existing bare metal servers provided by the phoenixNAP Bare Metal Cloud service.
-
-Find More information at: ` + configuration.KnowledgeBaseURL,
-	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Help()
-		os.Exit(0)
-	},
-}
+	rootCmd = &cobra.Command{
+		Use:   "pnapctl",
+		Short: "pnapctl creates new and manages existing bare metal servers.",
+		Long: `pnapctl creates new and manages existing bare metal servers provided by the phoenixNAP Bare Metal Cloud service.
+	
+	Find More information at: ` + configuration.KnowledgeBaseURL,
+		Run: func(cmd *cobra.Command, args []string) {
+			cmd.Help()
+			os.Exit(0)
+		},
+	}
+)
 
 // Execute adds all child commands to the root command, setting flags appropriately.
 // Called by main.main(), only needing to happen once.
@@ -57,8 +61,9 @@ func init() {
 	rootCmd.AddCommand(reboot.RebootCmd)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
+	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Warn (default) to Debug.")
 
-	cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(initConfig, setLoggingLevel)
 }
 
 func initConfig() {
@@ -112,5 +117,11 @@ func initConfig() {
 		os.Exit(1)
 	} else {
 		client.MainClient = client.NewHTTPClient(viper.GetString("clientId"), viper.GetString("clientSecret"))
+	}
+}
+
+func setLoggingLevel() {
+	if verbose {
+		logrus.SetLevel(logrus.DebugLevel)
 	}
 }
