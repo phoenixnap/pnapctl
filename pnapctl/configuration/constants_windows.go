@@ -3,4 +3,4 @@
 package configuration
 
 // DefaultConfigPath represents the default location used for the configuration file
-const DefaultConfigPath = "%USERPROFILE%"
+const DefaultConfigPath = "\\AppData\\Roaming\\pnap\\"
