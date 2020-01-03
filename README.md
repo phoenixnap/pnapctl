@@ -9,7 +9,7 @@
     - go get github.com/golang/mock/mockgen
     - go get github.com/golang/mock/gomock
     - go install github.com/golang/mock/mockgen
-5. Move the `sample-config.yaml` file to `$HOME/pnap.yaml` and add your client credentials (ID and secret)
+5. Move the `sample-config.yaml` file to `$HOME/.pnap/config.yaml` and add your client credentials (ID and secret)
 6. Run `go build` to build, or `go run main.go` to run.
 
 The executable generated will have the same name as the folder. This means that `go build` in this repository with its default name will produce an executable called `pnap-cli`. To change its name, use `go build -o <name>`
@@ -48,7 +48,7 @@ Mocks must be placed in the `pnapctl/mocks` directory. They also need to have a 
 `mockgen --source=pnapctl/printer/printer.go --destination=pnapctl/mocks/mock_printer.go --package=mocks`
 
 ## Configuration
-Details can be passed using a config file. This file can be passed as an argument, as environment variable `PNAPCTL_HOME`, or can be read if placed in `~/pnap.yaml`. An example of this file is in `sample-config.yaml`. In order to currently test the application, this `yaml` file can be used by using the following command: `pnapctl --config=sample-config.yaml ...` or simply copying/symlinking the file to your home directory.
+Details can be passed using a config file. This file can be passed as an argument, as environment variable `PNAPCTL_HOME`, or can be read if placed in `~/.pnap/config.yaml`. An example of this file is in `sample-config.yaml`. In order to currently test the application, this `yaml` file can be used by using the following command: `pnapctl --config=sample-config.yaml ...` or simply copying/symlinking the file to your home directory.
 
 ## Current folder structure
 
