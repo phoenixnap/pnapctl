@@ -44,9 +44,9 @@ test:
 .build:
   extends: .go-cache
   stage: build
-  only:
-    - master
-    - tags
+#  only:
+#    - master
+#    - tags
   image: golang:1.13.1
   before_script:
     - apt-get update
@@ -68,8 +68,8 @@ test:
 
 .portal-deployment:
   image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:0.0.6
-  only:
-    - master
+#  only:
+#    - master
   script:
     - /automation/upload_assets.py --folder ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${ARTEFACT_DIST_FOLDER} --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
 
