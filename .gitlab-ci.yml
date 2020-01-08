@@ -5,6 +5,7 @@ services:
 variables:
   CLI_NAME: pnapctl
   ARTEFACT_FOLDER: build
+  ARTEFACT_DIST_FOLDER: dist
 
 stages:  
   - test
@@ -54,23 +55,23 @@ test:
     - go get "github.com/mitchellh/gox"
     - go get "github.com/inconshreveable/mousetrap"
   script:
-    - ${GOPATH}/bin/gox -osarch="linux/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME} -tags=$CI_ENVIRONMENT_NAME
+    - ${GOPATH}/bin/gox -osarch="linux/amd64 darwin/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME}-{{.OS}}-{{.Arch}}
     - cd ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME
-    - tar -czf ${CLI_NAME}.tar.gz ${CLI_NAME}
-    - zip ${CLI_NAME}.zip ${CLI_NAME}.exe
+    - mkdir ${ARTEFACT_DIST_FOLDER}
+    - tar -czf ${ARTEFACT_DIST_FOLDER}/${CLI_NAME}-darwin-amd64.tar.gz --transform='flags=r;s|${CLI_NAME}-darwin-amd64|${CLI_NAME}|' ${CLI_NAME}-darwin-amd64
+    - tar -czf ${ARTEFACT_DIST_FOLDER}/${CLI_NAME}-linux-amd64.tar.gz --transform='flags=r;s|${CLI_NAME}-linux-amd64|${CLI_NAME}|' ${CLI_NAME}-linux-amd64
+    - mv ${CLI_NAME}-windows-amd64.exe ${CLI_NAME}.exe && zip ${ARTEFACT_DIST_FOLDER}/${CLI_NAME}-windows-amd64.zip ${CLI_NAME}.exe
   artifacts:
     when: on_success
     paths:
-      - ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME}.zip
-      - ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME}.tar.gz
+      - ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${ARTEFACT_DIST_FOLDER}
 
 .portal-deployment:
   image: registry.gitlab.com/phoenixnap/platform-api/apigee-automation:0.0.6
   only:
     - master
   script:
-    - /automation/upload_single_asset.py --file ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME}.zip --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
-    - /automation/upload_single_asset.py --file ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME}.tar.gz --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
+    - /automation/upload_assets.py --folder ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${ARTEFACT_DIST_FOLDER} --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
 
 portal-dev-deploy:
   extends: .portal-deployment
