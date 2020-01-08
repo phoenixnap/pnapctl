@@ -85,7 +85,7 @@ portal-prod-deploy:
   environment:
     name: prod
   only:
-    - tags
+    - master
 
 build-dev:
   extends: .build
@@ -99,4 +99,4 @@ build-prod:
   environment:
     name: prod
   only:
-    - tags
+    - master
