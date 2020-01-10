@@ -57,7 +57,7 @@ stages:
 #    - go get "github.com/mitchellh/gox"
 #    - go get "github.com/inconshreveable/mousetrap"
   script:
-    - make build ENVIRONMENT_NAME="dev"
+    - make build-and-deploy ENVIRONMENT_NAME=$CI_ENVIRONMENT_NAME
   artifacts:
     when: on_success
     paths:
