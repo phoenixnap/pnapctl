@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 	"os"
+	"phoenixnap.com/pnap-cli/pnapctl/commands/version"
 
 	"phoenixnap.com/pnap-cli/pnapctl/client"
 	"phoenixnap.com/pnap-cli/pnapctl/commands/create"
@@ -59,6 +60,7 @@ func init() {
 	rootCmd.AddCommand(poweron.PowerOnCmd)
 	rootCmd.AddCommand(shutdown.ShutdownCmd)
 	rootCmd.AddCommand(reboot.RebootCmd)
+	rootCmd.AddCommand(version.VersionCmd)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Warn (default) to Debug.")
