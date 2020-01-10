@@ -38,11 +38,11 @@ func init() {
 }
 
 func (v *AppVersionInfo) String() string {
-	version := fmt.Sprintf("Version:      %s\n", v.Version)
-	version += fmt.Sprintf("Git commit:   %s\n", v.BuildCommit)
-	version += fmt.Sprintf("GO version:   %s\n", v.GOVersion)
-	version += fmt.Sprintf("Built date:   %s\n", v.BuiltAt)
-	version += fmt.Sprintf("OS/Arch:      %s/%s\n", v.OS, v.Architecture)
+	version := fmt.Sprintf("Version:        %s\n", v.Version)
+	version += fmt.Sprintf("Build commit:   %s\n", v.BuildCommit)
+	version += fmt.Sprintf("Built date:     %s\n", v.BuiltAt)
+	version += fmt.Sprintf("GO version:     %s\n", v.GOVersion)
+	version += fmt.Sprintf("OS/Arch:        %s/%s\n", v.OS, v.Architecture)
 
 	return version
 }
