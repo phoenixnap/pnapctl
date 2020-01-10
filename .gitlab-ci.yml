@@ -8,7 +8,7 @@ variables:
   ARTEFACT_DIST_FOLDER: dist
 
 stages:  
-  - test
+#  - test
   - dev-build
   - prod-build
   - dev-portal-deploy
@@ -23,13 +23,13 @@ stages:
     paths:
       - .go/pkg/mod/
 
-test:
-  extends: .go-cache
-  stage: test
-  image: golang:1.13.1
-  before_script:
-    - make --version
-    - apt-get install curl git
+#test:
+#  extends: .go-cache
+#  stage: test
+#  image: golang:1.13.1
+#  before_script:
+#    - make --version
+#    - apt-get install curl git
 #    - go mod download
 #    - go get "github.com/golang/mock/mockgen"
 #    - go get -u "github.com/jstemmer/go-junit-report"
