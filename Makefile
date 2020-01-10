@@ -1,3 +1,6 @@
+# Build automation directives.
+# Content of this file is heavely inspired by https://github.com/vincentbernat/hellogopher
+
 MODULE   = $(shell env GO111MODULE=on $(GO) list -m)
 CLI_NAME = pnapctl
 DATE    ?= $(shell date +%FT%T%z)
@@ -13,8 +16,8 @@ TESTPKGS = $(shell env GO111MODULE=on $(GO) list -f \
 BIN      = $(CURDIR)/bin
 
 GO      = go
-GOX     = gox
 TIMEOUT = 15
+
 V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
@@ -46,7 +49,7 @@ $(BIN)/go-junit-report: PACKAGE = github.com/mitchellh/gox
 # Binaries
 
 .PHONY: build
-build: $(GOX) ; $(info $(M) building executable…) @ ## Build program binaries
+build: $(GOX) ; $(info $(M) building executable…) @ ## Build program binaries for deployment
 	$Q $(GOX) -osarch="$(BUILD_PLATFORMS)" -output="build/$(ENVIRONMENT_NAME)/$(CLI_NAME)-{{.OS}}-{{.Arch}}" -tags="$(ENVIRONMENT_NAME)" \
 		-tags $(ENVIRONMENT_NAME) \
 		-ldflags '-X $(MODULE)/pnapctl/commands/version.Version=$(VERSION) -X $(MODULE)/pnapctl/commands/version.BuildDate=$(DATE) -X $(MODULE)/pnapctl/commands/version.BuildCommit=$(REVISION)'
@@ -58,7 +61,7 @@ build-simple: $(BIN) ; $(info $(M) building executable…) @ ## Build program bi
 		-ldflags '-X $(MODULE)/pnapctl/commands/version.Version=$(VERSION) -X $(MODULE)/pnapctl/commands/version.BuildDate=$(DATE) -X $(MODULE)/pnapctl/commands/version.BuildCommit=$(REVISION)' \
 		-o $(BIN)/$(basename $(CLI_NAME)) main.go
 
-build-and-deploy:
+build-and-pack: ## Build cross compilation binaries ready for deployment
 	make clean-build
 	make build
 	cd $(ARTIFACT_FOLDER)/$(ENVIRONMENT_NAME) && \
