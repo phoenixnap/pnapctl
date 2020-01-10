@@ -1,9 +1,10 @@
 MODULE   = $(shell env GO111MODULE=on $(GO) list -m)
 CLI_NAME = pnapctl
 DATE    ?= $(shell date +%FT%T%z)
-VERSION ?= $(shell it describe --tags --always --match=v*.*.* 2> /dev/null || echo v0)
+VERSION ?= $(shell git describe --tags --always --match=v*.*.* 2> /dev/null || echo v0)
 LATEST_STABLE_TAG := $(shell git tag -l "v*.*.*" --sort=-v:refname | awk '!/rc/' | head -n 1)
 REVISION := $(shell git rev-parse --short=8 HEAD || echo unknown)
+BRANCH := $(shell git show-ref | grep "$(REVISION)" | grep -v HEAD | awk '{print $$2}' | sed 's|refs/remotes/origin/||' | sed 's|refs/heads/||' | sort | head -n 1)
 PKGS     = $(or $(PKG),$(shell env GO111MODULE=on $(GO) list ./...))
 BUILD_PLATFORMS = linux/amd64 darwin/amd64 windows/amd64
 TESTPKGS = $(shell env GO111MODULE=on $(GO) list -f \
@@ -91,5 +92,9 @@ help:
 
 .PHONY: version
 version:
-	@echo $(VERSION)
-	@echo $(MODULE)
+	@echo Current version: $(VERSION)
+	@echo Current revision: $(REVISION)
+	@echo Current branch: $(BRANCH)
+	@echo Current date: $(DATE)
+	@echo Build platforms: $(BUILD_PLATFORMS)
+	@echo Latest stable tag: $(LATEST_STABLE_TAG)

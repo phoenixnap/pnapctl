@@ -53,10 +53,8 @@ stages:
     - apt-get update
     - apt-get install -y curl git zip
     - apt-get install make
-#    - go mod download
-#    - go get "github.com/mitchellh/gox"
-#    - go get "github.com/inconshreveable/mousetrap"
   script:
+    - make version
     - make build-and-deploy ENVIRONMENT_NAME=$CI_ENVIRONMENT_NAME
   artifacts:
     when: on_success
@@ -95,5 +93,5 @@ build-prod:
   stage: prod-build
   environment:
     name: prod
-#  only:
-#    - master
+  only:
+    - master
