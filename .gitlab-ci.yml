@@ -33,13 +33,13 @@ test:
 #    - go mod download
 #    - go get "github.com/golang/mock/mockgen"
 #    - go get -u "github.com/jstemmer/go-junit-report"
-  script:
+#  script:
     #-vet-off is required due to failures in using gcc 
 #    - go test ./... -v -vet=off 2>&1 | ${GOPATH}/bin/go-junit-report > report.xml
-  artifacts:
-    when: always
-    reports:
-      junit: report.xml
+#  artifacts:
+#    when: always
+#    reports:
+#      junit: report.xml
 
 
 .build:
