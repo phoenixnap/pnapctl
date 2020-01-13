@@ -48,20 +48,21 @@ $(BIN)/go-junit-report: PACKAGE = github.com/mitchellh/gox
 
 # Binaries
 
-.PHONY: build
-build: $(GOX) ; $(info $(M) building executable…) @ ## Build program binaries for deployment
+.PHONY: build ## Build cross compilation binaries ready for deployment
+build: $(GOX) ; $(info $(M) building executable…) @
 	$Q $(GOX) -osarch="$(BUILD_PLATFORMS)" -output="build/$(ENVIRONMENT_NAME)/$(CLI_NAME)-{{.OS}}-{{.Arch}}" -tags="$(ENVIRONMENT_NAME)" \
 		-tags $(ENVIRONMENT_NAME) \
 		-ldflags '-X $(MODULE)/pnapctl/commands/version.Version=$(VERSION) -X $(MODULE)/pnapctl/commands/version.BuildDate=$(DATE) -X $(MODULE)/pnapctl/commands/version.BuildCommit=$(REVISION)'
 
-.PHONY: build-simple
+.PHONY: build-simple ## Simple build process used for local development
 build-simple: $(BIN) ; $(info $(M) building executable…) @ ## Build program binary
 	$Q $(GO) build \
 		-tags dev \
 		-ldflags '-X $(MODULE)/pnapctl/commands/version.Version=$(VERSION) -X $(MODULE)/pnapctl/commands/version.BuildDate=$(DATE) -X $(MODULE)/pnapctl/commands/version.BuildCommit=$(REVISION)' \
 		-o $(BIN)/$(basename $(CLI_NAME)) main.go
 
-build-and-pack: ## Build cross compilation binaries ready for deployment
+build-and-pack: ## Build cross compilation binaries ready for deployment and pack them for distibution
+	make version
 	make clean-build
 	make build
 	cd $(ARTIFACT_FOLDER)/$(ENVIRONMENT_NAME) && \
