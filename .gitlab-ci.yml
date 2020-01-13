@@ -50,12 +50,9 @@ stages:
 #    - tags
   image: golang:1.13.1
   before_script:
-    - make --version
     - apt-get update
-    - apt-get install -y curl git zip
-    - apt-get install make
+    - apt-get install -y curl git zip make
   script:
-    - make version
     - make build-and-pack ENVIRONMENT_NAME=$CI_ENVIRONMENT_NAME
   artifacts:
     when: on_success
