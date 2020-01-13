@@ -1,19 +1,25 @@
 # Build automation directives.
 # Content of this file is heavely inspired by https://github.com/vincentbernat/hellogopher
 
-MODULE   = $(shell env GO111MODULE=on $(GO) list -m)
-CLI_NAME = pnapctl
-DATE    ?= $(shell date +%FT%T%z)
-VERSION ?= $(shell git describe --tags --always --match=v*.*.* 2> /dev/null || echo v0)
+MODULE             = $(shell env GO111MODULE=on $(GO) list -m)
+CLI_NAME           = pnapctl
+DATE              ?= $(shell date +%FT%T%z)
+VERSION           ?= $(shell git describe --tags --always --match=v*.*.* 2> /dev/null || echo v0)
 LATEST_STABLE_TAG := $(shell git tag -l "v*.*.*" --sort=-v:refname | awk '!/rc/' | head -n 1)
-REVISION := $(shell git rev-parse --short=8 HEAD || echo unknown)
-BRANCH := $(shell git show-ref | grep "$(REVISION)" | grep -v HEAD | awk '{print $$2}' | sed 's|refs/remotes/origin/||' | sed 's|refs/heads/||' | sort | head -n 1)
-PKGS     = $(or $(PKG),$(shell env GO111MODULE=on $(GO) list ./...))
-BUILD_PLATFORMS = linux/amd64 darwin/amd64 windows/amd64
+REVISION          := $(shell git rev-parse --short=8 HEAD || echo unknown)
+BRANCH            := $(shell git show-ref | grep "$(REVISION)" | grep -v HEAD | awk '{print $$2}' | sed 's|refs/remotes/origin/||' | sed 's|refs/heads/||' | sort | head -n 1)
+PKGS               = $(or $(PKG),$(shell env GO111MODULE=on $(GO) list ./...))
+
+BUILD_PLATFORMS  = linux/amd64 darwin/amd64 windows/amd64
+ENVIRONMENT_NAME = dev
+
 TESTPKGS = $(shell env GO111MODULE=on $(GO) list -f \
 			'{{ if or .TestGoFiles .XTestGoFiles }}{{ .ImportPath }}{{ end }}' \
 			$(PKGS))
-BIN      = $(CURDIR)/bin
+
+BIN                  = $(CURDIR)/bin
+ARTIFACT_FOLDER      = build/$(ENVIRONMENT_NAME)
+ARTIFACT_DIST_FOLDER = $(ARTIFACT_FOLDER)/dist
 
 GO      = go
 TIMEOUT = 15
@@ -22,8 +28,6 @@ V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
 
-ARTIFACT_FOLDER = build
-ARTIFACT_DIST_FOLDER = dist
 
 export GO111MODULE=on
 
@@ -48,28 +52,31 @@ $(BIN)/go-junit-report: PACKAGE = github.com/mitchellh/gox
 
 # Binaries
 
-.PHONY: build ## Build cross compilation binaries ready for deployment
-build: $(GOX) ; $(info $(M) building executable…) @
-	$Q $(GOX) -osarch="$(BUILD_PLATFORMS)" -output="build/$(ENVIRONMENT_NAME)/$(CLI_NAME)-{{.OS}}-{{.Arch}}" -tags="$(ENVIRONMENT_NAME)" \
+.PHONY: build
+build: $(GOX) ; $(info $(M) building executable…) @ ## Build cross compilation binaries ready for deployment
+	$Q $(GOX) -osarch="$(BUILD_PLATFORMS)" -output="$(ARTIFACT_FOLDER)/$(CLI_NAME)-{{.OS}}-{{.Arch}}" -tags="$(ENVIRONMENT_NAME)" \
 		-tags $(ENVIRONMENT_NAME) \
 		-ldflags '-X $(MODULE)/pnapctl/commands/version.Version=$(VERSION) -X $(MODULE)/pnapctl/commands/version.BuildDate=$(DATE) -X $(MODULE)/pnapctl/commands/version.BuildCommit=$(REVISION)'
 
-.PHONY: build-simple ## Simple build process used for local development
-build-simple: $(BIN) ; $(info $(M) building executable…) @ ## Build program binary
+.PHONY: build-simple
+build-simple: $(BIN) ; $(info $(M) building executable…) @ ## Simple build process used for local development
 	$Q $(GO) build \
-		-tags dev \
+		-tags $(ENVIRONMENT_NAME) \
 		-ldflags '-X $(MODULE)/pnapctl/commands/version.Version=$(VERSION) -X $(MODULE)/pnapctl/commands/version.BuildDate=$(DATE) -X $(MODULE)/pnapctl/commands/version.BuildCommit=$(REVISION)' \
 		-o $(BIN)/$(basename $(CLI_NAME)) main.go
 
-build-and-pack: ## Build cross compilation binaries ready for deployment and pack them for distibution
+.PHONY: pack
+pack: ; $(info $(M) packing executables…) @ ## Pack generated cross compilation binaries
+	mkdir $(ARTIFACT_DIST_FOLDER) && \
+	tar -czf $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-darwin-amd64.tar.gz --transform='flags=r;s|$(CLI_NAME)-darwin-amd64|$(CLI_NAME)|' $(ARTIFACT_FOLDER)/$(CLI_NAME)-darwin-amd64 && \
+	tar -czf $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-linux-amd64.tar.gz --transform='flags=r;s|$(CLI_NAME)-linux-amd64|$(CLI_NAME)|' $(ARTIFACT_FOLDER)/$(CLI_NAME)-linux-amd64 && \
+	mv $(ARTIFACT_FOLDER)/$(CLI_NAME)-windows-amd64.exe $(ARTIFACT_FOLDER)/$(CLI_NAME).exe && zip $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-windows-amd64.zip $(ARTIFACT_FOLDER)/$(CLI_NAME).exe
+
+build-and-pack: ; @ ## Build cross compilation binaries ready for deployment and pack them for distibution
 	make version
 	make clean-build
 	make build
-	cd $(ARTIFACT_FOLDER)/$(ENVIRONMENT_NAME) && \
-	mkdir $(ARTIFACT_DIST_FOLDER) && \
-	tar -czf $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-darwin-amd64.tar.gz --transform='flags=r;s|$(CLI_NAME)-darwin-amd64|$(CLI_NAME)|' $(CLI_NAME)-darwin-amd64 && \
-	tar -czf $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-linux-amd64.tar.gz --transform='flags=r;s|$(CLI_NAME)-linux-amd64|$(CLI_NAME)|' $(CLI_NAME)-linux-amd64 && \
-	mv $(CLI_NAME)-windows-amd64.exe $(CLI_NAME).exe && zip $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-windows-amd64.zip $(CLI_NAME).exe
+	make pack
 
 # Tests
 
