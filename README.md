@@ -9,12 +9,8 @@
 
 3. Clone this repository.
 4. Go into the `pnap-cli` folder.
-5. Install [`gomock`](https://github.com/golang/mock):
-    - go get github.com/golang/mock/mockgen
-    - go get github.com/golang/mock/gomock
-    - go install github.com/golang/mock/mockgen
-6. Move the `sample-config.yaml` file to `$HOME/.pnap/config.yaml` and add your client credentials (ID and secret)
-7. Run `make build-simple` to build.
+5. Move the `sample-config.yaml` file to `$HOME/.pnap/config.yaml` and add your client credentials (ID and secret)
+6. Run `make build-simple` to build.
 
 The executable will be generated in `bin` folder. This is an example of command execution:
 
@@ -45,23 +41,23 @@ make build ENVIRONMENT_NAME=prod
 
 ## Running Tests
 
-If you'd like a colourised output *(success as green, fail as red)* get `gotest` using `go get -u github.com/rakyll/gotest` and run `gotest ./tests/...` instead.
+Usage:
 
-* `go test ./tests/...` -> run all tests
-* `go test ./tests/... -v` -> run all tests with verbose output
-* `go test ./tests/create_test.go` -> run all tests in `create_test.go` file
-* `go test ./tests/create_test.go -run TestCreateServerSuccessYAML` -> run all tests in`create_test.go` that match the regex `TestCreateServerSuccessYAML`
-
+* `make test` to run tests
+* `make test-verbose` to run tests in verbose mode
+* `make test-race` for race tests
+* `make test-coverage` for test coverage (will output report.xml in test/coverage/).
+* `make test PKG=helloworld/hello` to restrict test to a package
 
 ## Mocks
 
-To generate mocks, get [`mockgen`](https://github.com/golang/mock), the mock generation tool by `gomock`.
+We are using [`mockgen`](https://github.com/golang/mock), the mock generation tool by `gomock`.
 
 Note that *only interfaces can be mocked.* An example can be seen in [`Client`](./pnapctl/client/client.go), and [`Printer`](./pnapctl/printer/printer.go).
 
 Mocks must be placed in the `pnapctl/mocks` directory. They also need to have a package name of `mocks`. The following is an example command to generate the `Printer`'s mocks:
 
-`mockgen --source=pnapctl/printer/printer.go --destination=pnapctl/mocks/mock_printer.go --package=mocks`
+`make generate-mock MOCK_SOURCE=pnapctl/printer/printer.go MOCK_DESTINATION=pnapctl/mocks/mock_printer.go`
 
 ## Configuration
 Details can be passed using a config file. This file can be passed as an argument, as environment variable `PNAPCTL_HOME`, or can be read if placed in `~/.pnap/config.yaml`. An example of this file is in `sample-config.yaml`. In order to currently test the application, this `yaml` file can be used by using the following command: `pnapctl --config=sample-config.yaml ...` or simply copying/symlinking the file to your home directory.

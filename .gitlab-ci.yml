@@ -6,9 +6,10 @@ variables:
   CLI_NAME: pnapctl
   ARTEFACT_FOLDER: build
   ARTEFACT_DIST_FOLDER: dist
+  TEST_COVERAGE_FOLDER: test/coverage
 
 stages:  
-#  - test
+  - test
   - dev-build
   - prod-build
   - dev-portal-deploy
@@ -23,31 +24,26 @@ stages:
     paths:
       - .go/pkg/mod/
 
-#test:
-#  extends: .go-cache
-#  stage: test
-#  image: golang:1.13.1
-#  before_script:
-#    - make --version
-#    - apt-get install curl git
-#    - go mod download
-#    - go get "github.com/golang/mock/mockgen"
-#    - go get -u "github.com/jstemmer/go-junit-report"
-#  script:
-    #-vet-off is required due to failures in using gcc 
-#    - go test ./... -v -vet=off 2>&1 | ${GOPATH}/bin/go-junit-report > report.xml
-#  artifacts:
-#    when: always
-#    reports:
-#      junit: report.xml
+test:
+  extends: .go-cache
+  stage: test
+  image: golang:1.13.1
+  before_script:
+    - apt-get install curl git
+  script:
+    - make test-coverage COVERAGE_DIR=${TEST_COVERAGE_FOLDER}
+  artifacts:
+    when: always
+    reports:
+      junit: ${TEST_COVERAGE_FOLDER}/report.xml
 
 
 .build:
   extends: .go-cache
   stage: build
-#  only:
-#    - master
-#    - tags
+  only:
+    - master
+    - tags
   image: golang:1.13.1
   before_script:
     - apt-get update

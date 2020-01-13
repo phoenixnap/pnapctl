@@ -50,6 +50,9 @@ $(BIN)/gox: PACKAGE = github.com/mitchellh/gox
 GO_JUNIT_REPORT = $(BIN)/go-junit-report
 $(BIN)/go-junit-report: PACKAGE = github.com/mitchellh/gox
 
+MOCKGEN = $(BIN)/mockgen
+$(BIN)/mockgen: PACKAGE = github.com/golang/mock/mockgen
+
 # Binaries
 
 .PHONY: build
@@ -80,6 +83,39 @@ build-and-pack: ; @ ## Build cross compilation binaries ready for deployment and
 
 # Tests
 
+.PHONY: generate-mock
+generate-mock: $(MOCKGEN) ; $(info $(M) generating mock...) @ ## Genrate mock using mockgen tool.
+	$Q $(MOCKGEN) --source=$(MOCK_SOURCE) --destination=$(MOCK_DESTINATION) --package=mocks
+
+COVERAGE_MODE    = atomic
+COVERAGE_PROFILE = $(COVERAGE_DIR)/profile.out
+
+TEST_TARGETS := test-default test-bench test-short test-verbose test-race
+.PHONY: $(TEST_TARGETS) test-xml check test tests
+test-bench:   ARGS=-run=__absolutelynothing__ -bench=. ## Run benchmarks
+test-short:   ARGS=-short        ## Run only short tests
+test-verbose: ARGS=-v            ## Run tests in verbose mode with coverage reporting
+test-race:    ARGS=-race         ## Run tests with race detector
+$(TEST_TARGETS): NAME=$(MAKECMDGOALS:test-%=%)
+$(TEST_TARGETS): test
+check test tests: ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
+	$Q $(GO) test -vet=off -timeout $(TIMEOUT)s $(ARGS) $(TESTPKGS)
+
+.PHONY: test-coverage test-coverage-tools
+test-coverage-tools: | $(GO_JUNIT_REPORT)
+test-coverage: COVERAGE_DIR := $(CURDIR)/test/coverage
+test-coverage: test-coverage-tools ; $(info $(M) running coverage tests…) @ ## Run coverage tests
+	$Q mkdir -p $(COVERAGE_DIR)
+	$Q $(GO) test \
+		-v \
+		-vet=off \
+		-coverpkg=$$($(GO) list -f '{{ join .Deps "\n" }}' $(TESTPKGS) | \
+					grep '^$(MODULE)/' | \
+					tr '\n' ',' | sed 's/,$$//') \
+		-covermode=$(COVERAGE_MODE) \
+		-coverprofile="$(COVERAGE_PROFILE)" $(TESTPKGS) 2>&1 | \
+		$(GO_JUNIT_REPORT) > $(COVERAGE_DIR)/report.xml
+
 # Misc
 
 .PHONY: lint
@@ -99,7 +135,7 @@ clean-build: ; $(info $(M) cleaning build directory…)	@ ## Cleanup build direc
 .PHONY: help
 help:
 	@grep -E '^[ a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
-		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
+		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-16s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: version
 version:
