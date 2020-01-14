@@ -126,7 +126,8 @@ lint: | $(GOLINT) ; $(info $(M) running golint…) @ ## Run golint
 clean: ; $(info $(M) cleaning…)	@ ## Cleanup everything
 	@rm -rf $(BIN)
 	@rm -rf $(ARTIFACT_FOLDER)
-	@rm -rf test/tests.* test/coverage.*
+	@rm -rf  test/coverage/
+	make clean-build
 
 .PHONY: clean-build
 clean-build: ; $(info $(M) cleaning build directory…)	@ ## Cleanup build directory
