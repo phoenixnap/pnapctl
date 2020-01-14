@@ -36,7 +36,7 @@ make build-simple ENVIRONMENT_NAME=prod
 or
 
 ```
-make build ENVIRONMENT_NAME=prod
+make build ENVIRONMENT_NAME=dev
 ```
 
 ## Running Tests
