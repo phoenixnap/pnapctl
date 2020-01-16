@@ -71,9 +71,9 @@ build-simple: $(BIN) ; $(info $(M) building executable…) @ ## Simple build pro
 .PHONY: pack
 pack: ; $(info $(M) packing executables…) @ ## Pack generated cross compilation binaries
 	mkdir $(ARTIFACT_DIST_FOLDER) && \
-	tar -czf $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-darwin-amd64.tar.gz --transform='flags=r;s|$(CLI_NAME)-darwin-amd64|$(CLI_NAME)|' $(ARTIFACT_FOLDER)/$(CLI_NAME)-darwin-amd64 && \
-	tar -czf $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-linux-amd64.tar.gz --transform='flags=r;s|$(CLI_NAME)-linux-amd64|$(CLI_NAME)|' $(ARTIFACT_FOLDER)/$(CLI_NAME)-linux-amd64 && \
-	mv $(ARTIFACT_FOLDER)/$(CLI_NAME)-windows-amd64.exe $(ARTIFACT_FOLDER)/$(CLI_NAME).exe && zip $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-windows-amd64.zip $(ARTIFACT_FOLDER)/$(CLI_NAME).exe
+	tar -czf $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-darwin-amd64.tar.gz --transform='flags=r;s|$(CLI_NAME)-darwin-amd64|$(CLI_NAME)|' -C $(ARTIFACT_FOLDER) $(CLI_NAME)-darwin-amd64 && \
+	tar -czf $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-linux-amd64.tar.gz --transform='flags=r;s|$(CLI_NAME)-linux-amd64|$(CLI_NAME)|' -C $(ARTIFACT_FOLDER) $(CLI_NAME)-linux-amd64 && \
+	mv $(ARTIFACT_FOLDER)/$(CLI_NAME)-windows-amd64.exe $(ARTIFACT_FOLDER)/$(CLI_NAME).exe && zip -j $(ARTIFACT_DIST_FOLDER)/$(CLI_NAME)-windows-amd64.zip $(ARTIFACT_FOLDER)/$(CLI_NAME).exe
 
 build-and-pack: ; @ ## Build cross compilation binaries ready for deployment and pack them for distibution
 	make version
