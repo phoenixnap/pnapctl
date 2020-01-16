@@ -6,6 +6,7 @@ variables:
   CLI_NAME: pnapctl
   ARTEFACT_FOLDER: build
   ARTEFACT_DIST_FOLDER: dist
+  TEST_COVERAGE_FOLDER: test/coverage
 
 stages:  
   - test
@@ -29,16 +30,12 @@ test:
   image: golang:1.13.1
   before_script:
     - apt-get install curl git
-    - go mod download
-    - go get "github.com/golang/mock/mockgen"
-    - go get -u "github.com/jstemmer/go-junit-report"
   script:
-    #-vet-off is required due to failures in using gcc 
-    - go test ./... -v -vet=off 2>&1 | ${GOPATH}/bin/go-junit-report > report.xml
+    - make test-coverage COVERAGE_DIR=${TEST_COVERAGE_FOLDER}
   artifacts:
     when: always
     reports:
-      junit: report.xml
+      junit: ${TEST_COVERAGE_FOLDER}/report.xml
 
 
 .build:
@@ -50,17 +47,9 @@ test:
   image: golang:1.13.1
   before_script:
     - apt-get update
-    - apt-get install -y curl git zip
-    - go mod download
-    - go get "github.com/mitchellh/gox"
-    - go get "github.com/inconshreveable/mousetrap"
+    - apt-get install -y curl git zip make
   script:
-    - ${GOPATH}/bin/gox -osarch="linux/amd64 darwin/amd64 windows/amd64" -output=./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${CLI_NAME}-{{.OS}}-{{.Arch}} -tags=$CI_ENVIRONMENT_NAME
-    - cd ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME
-    - mkdir ${ARTEFACT_DIST_FOLDER}
-    - tar -czf ${ARTEFACT_DIST_FOLDER}/${CLI_NAME}-darwin-amd64.tar.gz --transform='flags=r;s|${CLI_NAME}-darwin-amd64|${CLI_NAME}|' ${CLI_NAME}-darwin-amd64
-    - tar -czf ${ARTEFACT_DIST_FOLDER}/${CLI_NAME}-linux-amd64.tar.gz --transform='flags=r;s|${CLI_NAME}-linux-amd64|${CLI_NAME}|' ${CLI_NAME}-linux-amd64
-    - mv ${CLI_NAME}-windows-amd64.exe ${CLI_NAME}.exe && zip ${ARTEFACT_DIST_FOLDER}/${CLI_NAME}-windows-amd64.zip ${CLI_NAME}.exe
+    - make build-and-pack ENVIRONMENT_NAME=$CI_ENVIRONMENT_NAME
   artifacts:
     when: on_success
     paths:
