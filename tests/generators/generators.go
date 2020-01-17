@@ -3,7 +3,7 @@ package generators
 import (
 	"math/rand"
 
-	"phoenixnap.com/pnap-cli/pnapctl/printer"
+	"phoenixnap.com/pnap-cli/common/printer"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")

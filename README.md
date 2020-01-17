@@ -47,7 +47,7 @@ Usage:
 * `make test-verbose` to run tests in verbose mode
 * `make test-race` for race tests
 * `make test-coverage` for test coverage (will output report.xml in test/coverage/).
-* `make test PKG=helloworld/hello` to restrict test to a package
+* `make test PKG=./commands/create` to restrict test to a package
 
 ## Mocks
 
@@ -55,9 +55,9 @@ We are using [`mockgen`](https://github.com/golang/mock), the mock generation to
 
 Note that *only interfaces can be mocked.* An example can be seen in [`Client`](./pnapctl/client/client.go), and [`Printer`](./pnapctl/printer/printer.go).
 
-Mocks must be placed in the `pnapctl/mocks` directory. They also need to have a package name of `mocks`. The following is an example command to generate the `Printer`'s mocks:
+Mocks must be placed in the `tests/mocks` directory. They also need to have a package name of `mocks`. The following is an example command to generate the `Printer`'s mocks:
 
-`make generate-mock MOCK_SOURCE=pnapctl/printer/printer.go MOCK_DESTINATION=pnapctl/mocks/mock_printer.go`
+`make generate-mock MOCK_SOURCE=common/printer/printer.go MOCK_DESTINATION=tests/mocks/mock_printer.go`
 
 ## Configuration
 Details can be passed using a config file. This file can be passed as an argument, as environment variable `PNAPCTL_HOME`, or can be read if placed in `~/.pnap/config.yaml`. An example of this file is in `sample-config.yaml`. In order to currently test the application, this `yaml` file can be used by using the following command: `pnapctl --config=sample-config.yaml ...` or simply copying/symlinking the file to your home directory.

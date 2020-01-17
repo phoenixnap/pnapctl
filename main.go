@@ -1,6 +1,6 @@
 package main
 
-import "phoenixnap.com/pnap-cli/pnapctl/commands"
+import commands "phoenixnap.com/pnap-cli/apps/pnapctl"
 
 func main() {
 	commands.Execute()
