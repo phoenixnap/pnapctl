@@ -59,13 +59,13 @@ $(BIN)/mockgen: PACKAGE = github.com/golang/mock/mockgen
 build: $(GOX) ; $(info $(M) building executable…) @ ## Build cross compilation binaries ready for deployment
 	$Q $(GOX) -osarch="$(BUILD_PLATFORMS)" -output="$(ARTIFACT_FOLDER)/$(CLI_NAME)-{{.OS}}-{{.Arch}}" -tags="$(ENVIRONMENT_NAME)" \
 		-tags $(ENVIRONMENT_NAME) \
-		-ldflags '-X $(MODULE)/pnapctl/commands/version.Version=$(VERSION) -X $(MODULE)/pnapctl/commands/version.BuildDate=$(DATE) -X $(MODULE)/pnapctl/commands/version.BuildCommit=$(REVISION)'
+		-ldflags '-X $(MODULE)/commands/version.Version=$(VERSION) -X $(MODULE)/commands/version.BuildDate=$(DATE) -X $(MODULE)/commands/version.BuildCommit=$(REVISION)'
 
 .PHONY: build-simple
 build-simple: $(BIN) ; $(info $(M) building executable…) @ ## Simple build process used for local development
 	$Q $(GO) build \
 		-tags $(ENVIRONMENT_NAME) \
-		-ldflags '-X $(MODULE)/pnapctl/commands/version.Version=$(VERSION) -X $(MODULE)/pnapctl/commands/version.BuildDate=$(DATE) -X $(MODULE)/pnapctl/commands/version.BuildCommit=$(REVISION)' \
+		-ldflags '-X $(MODULE)/commands/version.Version=$(VERSION) -X $(MODULE)/commands/version.BuildDate=$(DATE) -X $(MODULE)/commands/version.BuildCommit=$(REVISION)' \
 		-o $(BIN)/$(basename $(CLI_NAME)) main.go
 
 .PHONY: pack

@@ -9,8 +9,8 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"phoenixnap.com/pnap-cli/pnapctl/client"
-	"phoenixnap.com/pnap-cli/pnapctl/mocks"
+	"phoenixnap.com/pnap-cli/common/client"
+	"phoenixnap.com/pnap-cli/tests/mocks"
 )
 
 var Body io.Writer

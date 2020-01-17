@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"phoenixnap.com/pnap-cli/pnapctl/ctlerrors"
+	"phoenixnap.com/pnap-cli/common/ctlerrors"
 )
 
 // A generic test error.
