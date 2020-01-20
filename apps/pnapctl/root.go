@@ -101,6 +101,7 @@ func initConfig() {
 				"\t1. --config flag: Specify the path and file name for the configuration file. (ex. pnapctl get servers --config=~/myconfig.yml\n" +
 				"\t2. Environmental variable: Create an environmental variable called PNAPCTL_HOME specifying the path and filename.\n" +
 				"\t3. Default: The default config file path is the home directory (" + configPath + "config.yaml)\n\n" +
+				"Find More information at: " + configuration.KnowledgeBaseURL + "\n\n" +
 				"The following shows a sample config file:\n\n" +
 				"# =====================================================\n" +
 				"# Sample yaml config file\n" +
