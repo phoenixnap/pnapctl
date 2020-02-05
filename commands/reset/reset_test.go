@@ -12,6 +12,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
+	"github.com/stretchr/testify/assert"
 	reset "phoenixnap.com/pnap-cli/commands/reset/server"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 )
@@ -53,7 +54,7 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestResetServerSuccessJSON(test_framework *testing.T) {
@@ -85,7 +86,7 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
@@ -107,7 +108,7 @@ func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 
 }
 
@@ -135,7 +136,7 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, "reset server")
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestResetServerNotFoundFailure(test_framework *testing.T) {
@@ -171,7 +172,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
+	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
 func TestResetServerFileReadingFailure(test_framework *testing.T) {
@@ -195,7 +196,7 @@ func TestResetServerFileReadingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.FileReading, "reset server")
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestResetServerBackendErrorFailure(test_framework *testing.T) {
@@ -234,7 +235,7 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestResetServerClientFailure(test_framework *testing.T) {
@@ -273,7 +274,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "reset server", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestResetServerKeycloakFailure(test_framework *testing.T) {
@@ -309,5 +310,5 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }

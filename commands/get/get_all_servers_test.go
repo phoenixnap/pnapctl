@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnap-cli/commands/get/servers"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/tests/generators"
@@ -30,7 +31,7 @@ func TestGetAllServersUnmarshallingError(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingErrorBody, "get servers")
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestGetAllServersShortSuccess(test_framework *testing.T) {
@@ -51,7 +52,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestGetAllServersLongSuccess(test_framework *testing.T) {
@@ -74,7 +75,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestGetAllServersClientFailure(test_framework *testing.T) {
@@ -94,7 +95,7 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(err, "get servers", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
@@ -111,7 +112,7 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
@@ -135,5 +136,5 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
 	// Assertions
-	testutil.AssertErrorCode(test_framework, err, ctlerrors.UnmarshallingInPrinter)
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
 }

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnap-cli/tests/generators"
 
 	create "phoenixnap.com/pnap-cli/commands/create/server"
@@ -59,7 +60,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestCreateServerSuccessJSON(test_framework *testing.T) {
@@ -99,7 +100,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
@@ -121,7 +122,7 @@ func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 
 }
 
@@ -149,7 +150,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, "create server")
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestCreateServerFileReadingFailure(test_framework *testing.T) {
@@ -173,7 +174,7 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.FileReading, "create server")
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
@@ -218,7 +219,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestCreateServerClientFailure(test_framework *testing.T) {
@@ -263,7 +264,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "create server", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestCreateServerKeycloakFailure(test_framework *testing.T) {
@@ -305,5 +306,5 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
