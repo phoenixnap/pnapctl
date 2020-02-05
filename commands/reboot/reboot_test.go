@@ -5,8 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"phoenixnap.com/pnap-cli/common/client"
+	"github.com/stretchr/testify/assert"
 	reboot "phoenixnap.com/pnap-cli/commands/reboot/server"
+	"phoenixnap.com/pnap-cli/common/client"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
@@ -29,7 +30,7 @@ func TestRebootServerSuccess(test_framework *testing.T) {
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestRebootServerClientFail(test_framework *testing.T) {
@@ -46,7 +47,7 @@ func TestRebootServerClientFail(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "reboot server", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestRebootServerKeycloakFailure(test_framework *testing.T) {
@@ -60,7 +61,7 @@ func TestRebootServerKeycloakFailure(test_framework *testing.T) {
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestRebootServerNotFoundFail(test_framework *testing.T) {
@@ -74,7 +75,7 @@ func TestRebootServerNotFoundFail(test_framework *testing.T) {
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
+	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
 func TestRebootServerErrorFail(test_framework *testing.T) {
@@ -91,5 +92,5 @@ func TestRebootServerErrorFail(test_framework *testing.T) {
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }

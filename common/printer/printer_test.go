@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
-	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
 type ExampleStruct1 struct {
@@ -39,7 +39,7 @@ func TestPrintOutputJsonFormat(test_framework *testing.T) {
 		test_framework.Run(fmt.Sprintf("%s", tc.name), func(test_framework *testing.T) {
 			outputError := MainPrinter.PrintOutput(&tc.input, tc.isEmpty)
 
-			testutil.AssertEqual(test_framework, nil, outputError)
+			assert.NoError(test_framework, outputError)
 		})
 	}
 }
@@ -77,7 +77,7 @@ func TestPrintOutputYamlFormat(test_framework *testing.T) {
 		test_framework.Run(fmt.Sprintf("%s", tc.name), func(test_framework *testing.T) {
 			outputError := MainPrinter.PrintOutput(tc.input, tc.isEmpty)
 
-			testutil.AssertEqual(test_framework, nil, outputError)
+			assert.NoError(test_framework, outputError)
 		})
 	}
 }
@@ -127,12 +127,12 @@ func TestPrintOutputTableFormat(test_framework *testing.T) {
 
 			outputError := MainPrinter.PrintOutput(tc.input, tc.isEmpty)
 
-			testutil.AssertEqual(test_framework, nil, outputError)
+			assert.NoError(test_framework, outputError)
 
 			// asserting the custom buffer printed something
 			outputText := string(customTablePrinterBuffer.Bytes())
 
-			testutil.AssertEqual(test_framework, tc.expected, outputText)
+			assert.Equal(test_framework, tc.expected, outputText)
 		})
 	}
 }

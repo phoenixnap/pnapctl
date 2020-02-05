@@ -5,8 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"phoenixnap.com/pnap-cli/common/client"
+	"github.com/stretchr/testify/assert"
 	shutdown "phoenixnap.com/pnap-cli/commands/shutdown/server"
+	"phoenixnap.com/pnap-cli/common/client"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
@@ -29,7 +30,7 @@ func TestShutdownServerSuccess(test_framework *testing.T) {
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestShutdownServerNotFound(test_framework *testing.T) {
@@ -44,7 +45,7 @@ func TestShutdownServerNotFound(test_framework *testing.T) {
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
+	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
 func TestShutdownServerError(test_framework *testing.T) {
@@ -62,7 +63,7 @@ func TestShutdownServerError(test_framework *testing.T) {
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestShutdownServerClientFailure(test_framework *testing.T) {
@@ -80,7 +81,7 @@ func TestShutdownServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "shutdown server", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestShutdownServerKeycloakFailure(test_framework *testing.T) {
@@ -95,5 +96,5 @@ func TestShutdownServerKeycloakFailure(test_framework *testing.T) {
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }

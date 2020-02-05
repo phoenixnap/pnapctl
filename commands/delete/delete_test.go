@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	delete "phoenixnap.com/pnap-cli/commands/delete/server"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
@@ -29,7 +30,7 @@ func TestDeleteServerSuccess(test_framework *testing.T) {
 	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestDeleteServerNotFound(test_framework *testing.T) {
@@ -44,7 +45,8 @@ func TestDeleteServerNotFound(test_framework *testing.T) {
 	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
+	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
+
 }
 
 func TestDeleteServerError(test_framework *testing.T) {
@@ -59,7 +61,7 @@ func TestDeleteServerError(test_framework *testing.T) {
 	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
+	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
 func TestDeleteServerClientFailure(test_framework *testing.T) {
@@ -77,7 +79,7 @@ func TestDeleteServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "delete server", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestDeleteServerKeycloakFailure(test_framework *testing.T) {
@@ -92,5 +94,5 @@ func TestDeleteServerKeycloakFailure(test_framework *testing.T) {
 	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }

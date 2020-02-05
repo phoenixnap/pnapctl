@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnap-cli/commands/get/servers"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/tests/generators"
@@ -33,7 +34,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestGetServerLongSuccess(test_framework *testing.T) {
@@ -53,7 +54,7 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestGetServerClientFailure(test_framework *testing.T) {
@@ -69,7 +70,7 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(err, "get servers", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestGetServerKeycloakFailure(test_framework *testing.T) {
@@ -82,7 +83,7 @@ func TestGetServerKeycloakFailure(test_framework *testing.T) {
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
@@ -103,5 +104,5 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertErrorCode(test_framework, err, ctlerrors.UnmarshallingInPrinter)
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
 }

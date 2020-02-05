@@ -10,6 +10,7 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
+	"github.com/stretchr/testify/assert"
 	poweroff "phoenixnap.com/pnap-cli/commands/poweroff/server"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 )
@@ -33,7 +34,7 @@ func TestPowerOffServerSuccess(test_framework *testing.T) {
 	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestPowerOffServerNotFound(test_framework *testing.T) {
@@ -48,7 +49,7 @@ func TestPowerOffServerNotFound(test_framework *testing.T) {
 	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
+	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
 func TestPowerOffServerError(test_framework *testing.T) {
@@ -66,7 +67,7 @@ func TestPowerOffServerError(test_framework *testing.T) {
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestPowerOffServerClientFailure(test_framework *testing.T) {
@@ -84,7 +85,7 @@ func TestPowerOffServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "power-off server", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestPowerOffServerKeycloakFailure(test_framework *testing.T) {
@@ -99,5 +100,5 @@ func TestPowerOffServerKeycloakFailure(test_framework *testing.T) {
 	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }

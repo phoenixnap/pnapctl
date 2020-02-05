@@ -8,8 +8,9 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
-	"phoenixnap.com/pnap-cli/common/client"
+	"github.com/stretchr/testify/assert"
 	poweron "phoenixnap.com/pnap-cli/commands/poweron/server"
+	"phoenixnap.com/pnap-cli/common/client"
 )
 
 func powerOnSetup() {
@@ -28,7 +29,7 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertNoError(test_framework, err)
+	assert.NoError(test_framework, err)
 }
 
 func TestPowerOnServerNotFound(test_framework *testing.T) {
@@ -42,7 +43,7 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.GenericBMCError.Message, err.Error())
+	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
 func TestPowerOnServerError(test_framework *testing.T) {
@@ -59,7 +60,7 @@ func TestPowerOnServerError(test_framework *testing.T) {
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
 
 	// Assertions
-	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
 func TestPowerOnServerKeycloakFailure(test_framework *testing.T) {
@@ -74,5 +75,5 @@ func TestPowerOnServerKeycloakFailure(test_framework *testing.T) {
 	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
 	// Assertions
-	testutil.AssertEqual(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
