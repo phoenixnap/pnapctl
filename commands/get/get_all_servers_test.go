@@ -27,7 +27,7 @@ func TestGetAllServersUnmarshallingError(test_framework *testing.T) {
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
-	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingErrorBody, "get servers")
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingErrorBody, "get servers", err)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -45,7 +45,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 
 	shortServer := generators.ConvertLongToShortServers(serverlist)
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&shortServer, false).
+		PrintOutput(&shortServer, false, "get servers").
 		Return(nil)
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
@@ -65,7 +65,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 		Return(WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&serverlist, false).
+		PrintOutput(&serverlist, false, "get servers").
 		Return(nil)
 
 	// to display full output
@@ -126,7 +126,7 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 		Return(WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&serverlist, false).
+		PrintOutput(&serverlist, false, "get servers").
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	// to display full output

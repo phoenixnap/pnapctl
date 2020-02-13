@@ -26,7 +26,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 
 	shortServer := generators.ConvertLongToShortServer(server)
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&shortServer, false).
+		PrintOutput(&shortServer, false, "get servers").
 		Return(nil)
 
 	servers.Full = false
@@ -46,7 +46,7 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 		Return(WithResponse(200, WithBody(server)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&server, false).
+		PrintOutput(&server, false, "get servers").
 		Return(nil)
 
 	servers.Full = true
@@ -96,7 +96,7 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 
 	shortServer := generators.ConvertLongToShortServer(server)
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&shortServer, false).
+		PrintOutput(&shortServer, false, "get servers").
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	servers.Full = false

@@ -37,7 +37,7 @@ func TestPrintOutputJsonFormat(test_framework *testing.T) {
 
 	for _, tc := range testCases {
 		test_framework.Run(fmt.Sprintf("%s", tc.name), func(test_framework *testing.T) {
-			outputError := MainPrinter.PrintOutput(&tc.input, tc.isEmpty)
+			outputError := MainPrinter.PrintOutput(&tc.input, tc.isEmpty, "dummy command")
 
 			testutil.AssertEqual(test_framework, nil, outputError)
 		})
@@ -51,7 +51,7 @@ func ExamplePrintOutputJsonFormat() {
 
 	inputStruct := ExampleStruct1{ID: "123", Status: "OK"}
 
-	MainPrinter.PrintOutput(inputStruct, false)
+	MainPrinter.PrintOutput(inputStruct, false, "dummy command")
 
 	// Output: {
 	//     "ID": "123",
@@ -75,7 +75,7 @@ func TestPrintOutputYamlFormat(test_framework *testing.T) {
 
 	for _, tc := range testCases {
 		test_framework.Run(fmt.Sprintf("%s", tc.name), func(test_framework *testing.T) {
-			outputError := MainPrinter.PrintOutput(tc.input, tc.isEmpty)
+			outputError := MainPrinter.PrintOutput(tc.input, tc.isEmpty, "dummy command")
 
 			testutil.AssertEqual(test_framework, nil, outputError)
 		})
@@ -89,7 +89,7 @@ func ExamplePrintOutputYamlFormat() {
 
 	inputStruct := ExampleStruct1{ID: "123", Status: "OK"}
 
-	MainPrinter.PrintOutput(inputStruct, false)
+	MainPrinter.PrintOutput(inputStruct, false, "dummy command")
 
 	// Output: id: "123"
 	// status: OK
@@ -125,7 +125,7 @@ func TestPrintOutputTableFormat(test_framework *testing.T) {
 				Tableprinter: tableprinter.New(customTablePrinterBuffer),
 			}
 
-			outputError := MainPrinter.PrintOutput(tc.input, tc.isEmpty)
+			outputError := MainPrinter.PrintOutput(tc.input, tc.isEmpty, "dummy command")
 
 			testutil.AssertEqual(test_framework, nil, outputError)
 
@@ -141,7 +141,7 @@ func ExamplePrintOutputTableFormatEmpty() {
 	printerSetup()
 	OutputFormat = ""
 
-	MainPrinter.PrintOutput([]ExampleStruct1{}, true)
+	MainPrinter.PrintOutput([]ExampleStruct1{}, true, "dummy command")
 
 	// Output: No data found
 }

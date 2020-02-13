@@ -4,8 +4,7 @@ import (
 	"context"
 	"io"
 	"net/http"
-	"net/url"
-	"strings"
+	"os"
 
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
@@ -82,13 +81,13 @@ type ResponseBody struct {
 func executeRequest(f func() (*http.Response, error)) (*http.Response, error) {
 	response, err := f()
 
-	if e, isUrlError := err.(*url.Error); isUrlError && strings.Contains(err.Error(), "oauth2: cannot fetch token") {
+	if err == nil || !os.IsTimeout(err) {
+		return response, err
+	} else {
 		//Timeout If there is an error it must have happened while resolving token
 		// ErrorURLs frome the actual request should be represented in the body
-		return response, ctlerrors.Error{Msg: "Failed to resolve provided credentials", Cause: e}
+		return response, ctlerrors.CLIError{Message: "Failed to resolve provided credentials", Cause: err}
 	}
-
-	return response, err
 }
 
 func (m HTTPClient) buildURI(resource string) string {

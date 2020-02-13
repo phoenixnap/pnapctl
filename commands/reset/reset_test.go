@@ -97,7 +97,7 @@ func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, errors.New(ctlerrors.FileDoesNotExist)).
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
 	// Run command
@@ -132,7 +132,7 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, "reset server")
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "reset server", err)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -185,14 +185,16 @@ func TestResetServerFileReadingFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(nil, errors.New(ctlerrors.FileReading)).
+		Return(nil, ctlerrors.CLIError{
+			Message: "Command 'reset server' has been performed, but something went wrong. Error code: 0503",
+		}).
 		Times(1)
 
 	// Run command
 	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.FileReading, "reset server")
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "reset server", err)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())

@@ -22,19 +22,19 @@ func HandleClientResponse(response *http.Response, err error, commandName string
 		body, err := ioutil.ReadAll(response.Body)
 
 		if err != nil {
-			return ctlerrors.GenericNonRequestError(ctlerrors.ResponseBodyReadFailure, commandName)
+			return ctlerrors.CreateCLIError(ctlerrors.ResponseBodyReadFailure, commandName, err)
 		}
 
 		responseBody := client.ResponseBody{}
 		err = json.Unmarshal(body, &responseBody)
 
 		if err != nil {
-			return ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingResponseBody, commandName)
+			return ctlerrors.CreateCLIError(ctlerrors.UnmarshallingResponseBody, commandName, err)
 		}
 
 		fmt.Println(responseBody.Result)
 		return nil
 	} else {
-		return ctlerrors.HandleResponseError(response, commandName)
+		return ctlerrors.HandleBMCError(response, commandName)
 	}
 }

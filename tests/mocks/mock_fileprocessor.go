@@ -33,7 +33,7 @@ func (m *MockFileProcessor) EXPECT() *MockFileProcessorMockRecorder {
 }
 
 // ReadFile mocks base method
-func (m *MockFileProcessor) ReadFile(filename string) ([]byte, error) {
+func (m *MockFileProcessor) ReadFile(filename string, commandName string) ([]byte, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadFile", filename)
 	ret0, _ := ret[0].([]byte)

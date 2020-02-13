@@ -111,14 +111,14 @@ func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, errors.New(ctlerrors.FileDoesNotExist)).
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
 	// Run command
 	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Expected command
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
+	expectedErr := ctlerrors.FileNotExistError(FILENAME) // TODO remove this from tests. We should give plain text here, not compare it.
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -146,7 +146,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, "create server")
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "create server", err)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
@@ -163,14 +163,16 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(nil, errors.New(ctlerrors.FileReading)).
+		Return(nil, ctlerrors.CLIError{
+			Message: "Command 'create server' has been performed, but something went wrong. Error code: 0503",
+		}).
 		Times(1)
 
 	// Run command
 	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericNonRequestError(ctlerrors.FileReading, "create server")
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "create server", err)
 
 	// Assertions
 	testutil.AssertEqual(test_framework, expectedErr.Error(), err.Error())
