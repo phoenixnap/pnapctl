@@ -2,7 +2,6 @@ package printer
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 
@@ -19,7 +18,7 @@ var MainPrinter = NewBodyPrinter()
 var OutputFormat string
 
 type Printer interface {
-	PrintOutput(construct interface{}, isEmpty bool) error
+	PrintOutput(construct interface{}, isEmpty bool, commandName string) error
 }
 
 type BodyPrinter struct {
@@ -34,11 +33,11 @@ func NewBodyPrinter() Printer {
 
 // PrintOutput prints the construct passed according to the format.
 // The output parameter specifies whether any errors were encountered during printing
-func (m BodyPrinter) PrintOutput(construct interface{}, isEmpty bool) error {
+func (m BodyPrinter) PrintOutput(construct interface{}, isEmpty bool, commandName string) error {
 	if OutputFormat == "json" {
-		return printJSON(construct)
+		return printJSON(construct, commandName)
 	} else if OutputFormat == "yaml" {
-		return printYAML(construct)
+		return printYAML(construct, commandName)
 	} else {
 		if isEmpty {
 			// We cannot print a table if we don't have at least the headers.
@@ -46,16 +45,16 @@ func (m BodyPrinter) PrintOutput(construct interface{}, isEmpty bool) error {
 			return nil
 		} else {
 			// default to table
-			return printTable(construct, m.Tableprinter)
+			return printTable(construct, m.Tableprinter, commandName)
 		}
 	}
 }
 
 // printJSON attempts to print in JSON via marshalling.
-func printJSON(body interface{}) error {
+func printJSON(body interface{}, commandName string) error {
 	b, err := json.MarshalIndent(body, "", "    ")
 	if err != nil {
-		return errors.New(ctlerrors.MarshallingInPrinter)
+		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, commandName, err)
 	}
 
 	fmt.Println(string(b))
@@ -63,10 +62,10 @@ func printJSON(body interface{}) error {
 }
 
 // printYAML attempts to print in YAML via marshalling.
-func printYAML(body interface{}) error {
+func printYAML(body interface{}, commandName string) error {
 	b, err := yaml.Marshal(body)
 	if err != nil {
-		return errors.New(ctlerrors.MarshallingInPrinter)
+		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, commandName, err)
 	}
 
 	fmt.Println(string(b))
@@ -74,12 +73,12 @@ func printYAML(body interface{}) error {
 }
 
 // Attempts to print the struct as a table.
-func printTable(body interface{}, tblprinter *tableprinter.Printer) error {
+func printTable(body interface{}, tblprinter *tableprinter.Printer, commandName string) error {
 	tblprinter.RowCharLimit = 23
 	rows := tblprinter.Print(body)
 
 	if rows == -1 {
-		return errors.New(ctlerrors.TablePrinterFailure)
+		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, commandName, nil)
 	}
 
 	return nil

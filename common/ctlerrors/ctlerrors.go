@@ -2,7 +2,6 @@ package ctlerrors
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -38,10 +37,7 @@ const (
 	Marshalling          = "0400"
 	MarshallingInPrinter = "0402"
 
-	// File related errors:
-	File             = "0500"
-	FileReading      = "0503"
-	FileDoesNotExist = "0504"
+	FileReading = "0503"
 
 	// Miscellaneous errors: 99XX
 	TablePrinterFailure = "9901"
@@ -54,78 +50,101 @@ const (
 
 // FileNotExistError represents a file that does not exist
 func FileNotExistError(filename string) error {
-	return errors.New("The file '" + filename + "' does not exist.")
+	return CLIValidationError{
+		Message: "The file '" + filename + "' does not exist.",
+	}
 }
 
-// A generic error used for generic cases.
-func GenericNonRequestError(errorCode string, command string) error {
-	return errors.New("Command '" + command + "' has been performed, but something went wrong. Error code: " + errorCode)
+// A generic error used for generic cases in commands.
+func CreateCLIError(errorCode string, command string, cause error) CLIError {
+	return CLIError{
+		Message: "Command '" + command + "' has been performed, but something went wrong. Error code: " + errorCode,
+		Cause:   cause,
+	}
 }
 
 // GenericFailedRequestError is used when an error occurs before the request has been executed.
 // Requires the error that caused this issue, the command name being executed and a potential error code
 func GenericFailedRequestError(err error, commandName string, errorCode string) error {
-	if e, isCtlError := err.(Error); isCtlError {
+	if e, isCtlError := err.(PnapctlError); isCtlError {
 		return e
 	}
 
-	return errors.New("Command '" + commandName + "' could not be performed. Error code: " + errorCode)
+	return CLIError{
+		Message: "Command '" + commandName + "' could not be performed. Error code: " + errorCode,
+		Cause:   err,
+	}
 }
 
 /* Error handling.
    Structs and functions/methods for error handling. */
 
-// Error is an error that has been processed by ctlerrors.go and
+// PnapctlError is an error that has been processed by ctlerrors.go and
 // is ready to be shown to the user if so desired
-type Error struct {
-	Msg   string
-	Cause error
+type PnapctlError interface {
+	Error() string
 }
 
-func (e Error) Error() string {
-	return e.Msg
-}
-
+// Error that ocurrs on BMC API side (eg. validation, non 2xx response)
 type BMCError struct {
 	Message          string
 	ValidationErrors []string
 }
 
-func (b BMCError) String() string {
-	if len(b.ValidationErrors) == 0 {
-		return b.Message
+func (e BMCError) Error() string {
+	if len(e.ValidationErrors) == 0 {
+		return e.Message
 	} else {
-		return b.Message + "\n" + strings.Join(b.ValidationErrors, "\n")
+		return e.Message + "\n" + strings.Join(e.ValidationErrors, "\n")
 	}
 }
 
-// HandleResponseError handles responses where the response is not 200.
+// Error that ocured at CLI level such as failing to unmarshal response, process response, timeout on authentication etc...
+type CLIError struct {
+	Message string
+	Cause   error
+}
+
+func (e CLIError) Error() string {
+	return e.Message
+}
+
+// Error to be used when some validation in CLI fails (eg. missing file, wrong format in file, wrong flag for command...)
+type CLIValidationError struct {
+	Message string
+}
+
+func (e CLIValidationError) Error() string {
+	return e.Message
+}
+
+// HandleBMCError handles responses where the response is not 200.
 // Ideally we want to use the response returned to us by the server but we return a generic error if
 // (i) There is no response body (command executed but no body returned)
 // (ii) The response body can't be read (probably GO error)
 // (iii) we can't deserialize the response (probably a server error)
-func HandleResponseError(response *http.Response, commandName string) error {
+func HandleBMCError(response *http.Response, commandName string) error {
 	if response != nil && response.StatusCode == 200 {
 		// Technically we should never enter here. If we do, something went wrong previously.
 		return nil
 	}
 
 	if response.Body == nil {
-		return GenericNonRequestError(ExpectedBodyInErrorResponse, commandName)
+		return CreateCLIError(ExpectedBodyInErrorResponse, commandName, nil)
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 
 	if err != nil {
-		return GenericNonRequestError(ResponseBodyReadFailure, commandName)
+		return CreateCLIError(ResponseBodyReadFailure, commandName, err)
 	}
 
 	bmcErr := BMCError{}
 	err = json.Unmarshal(body, &bmcErr)
 
-	if err != nil || len(bmcErr.String()) == 0 {
-		return GenericNonRequestError(UnmarshallingErrorBody, commandName)
+	if err != nil || len(bmcErr.Error()) == 0 {
+		return CreateCLIError(UnmarshallingErrorBody, commandName, err)
 	}
 
-	return errors.New(bmcErr.String())
+	return bmcErr
 }

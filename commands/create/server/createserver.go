@@ -58,21 +58,19 @@ sshKeys:
 	RunE: func(cmd *cobra.Command, args []string) error {
 		files.ExpandPath(&Filename)
 
-		data, err := files.ReadFile(Filename)
+		data, err := files.ReadFile(Filename, commandName)
 
-		if files.IsNotExist(err) {
-			return ctlerrors.FileNotExistError(Filename)
-		} else if err != nil {
-			return ctlerrors.GenericNonRequestError(err.Error(), commandName)
+		if err != nil {
+			return err
 		}
 
 		// Marshal file into JSON using the struct
 		var serverCreate ServerCreate
 
-		structbyte, err := files.UnmarshalToJson(data, &serverCreate)
+		structbyte, err := files.UnmarshalToJson(data, &serverCreate, commandName)
 
 		if err != nil {
-			return ctlerrors.GenericNonRequestError(err.Error(), commandName)
+			return err
 		}
 
 		// Create the server
@@ -83,7 +81,7 @@ sshKeys:
 		} else if response.StatusCode == 200 {
 			return printer.PrintServerResponse(response.Body, false, Full, commandName)
 		} else {
-			return ctlerrors.HandleResponseError(response, commandName)
+			return ctlerrors.HandleBMCError(response, commandName)
 		}
 	},
 }

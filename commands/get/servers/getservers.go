@@ -52,7 +52,7 @@ func getServers(serverID string) error {
 	} else if response.StatusCode == 200 {
 		return printer.PrintServerResponse(response.Body, serverID == "", Full, commandName)
 	} else {
-		return ctlerrors.HandleResponseError(response, commandName)
+		return ctlerrors.HandleBMCError(response, commandName)
 	}
 }
 

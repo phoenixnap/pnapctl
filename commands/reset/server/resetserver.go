@@ -47,21 +47,19 @@ sshKeys:
 		files.ExpandPath(&Filename)
 		var resource = "servers/" + args[0] + "/actions/reset"
 
-		data, err := files.ReadFile(Filename)
+		data, err := files.ReadFile(Filename, commandName)
 
-		if files.IsNotExist(err) {
-			return ctlerrors.FileNotExistError(Filename)
-		} else if err != nil {
-			return ctlerrors.GenericNonRequestError(err.Error(), commandName)
+		if err != nil {
+			return err
 		}
 
 		// Marshal file into JSON using the struct
 		var serverReset ServerReset
 
-		structbyte, err := files.UnmarshalToJson(data, &serverReset)
+		structbyte, err := files.UnmarshalToJson(data, &serverReset, commandName)
 
 		if err != nil {
-			return ctlerrors.GenericNonRequestError(ctlerrors.UnmarshallingInFileProcessor, commandName)
+			return ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, commandName, err)
 		}
 
 		response, err := client.MainClient.PerformPost(resource, bytes.NewBuffer(structbyte))

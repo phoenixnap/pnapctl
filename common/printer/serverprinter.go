@@ -2,7 +2,6 @@ package printer
 
 import (
 	"encoding/json"
-	"errors"
 	"io"
 	"io/ioutil"
 
@@ -37,52 +36,52 @@ func PrintServerResponse(responseBody io.Reader, multiple bool, full bool, comma
 	body, err := ioutil.ReadAll(responseBody)
 
 	if err != nil {
-		return ctlerrors.GenericNonRequestError(ctlerrors.ResponseBodyReadFailure, commandName)
+		return ctlerrors.CreateCLIError(ctlerrors.ResponseBodyReadFailure, commandName, err)
 	}
 
 	if full {
 		if multiple {
 			construct := &[]LongServer{}
-			err = unmarshall(body, construct)
+			err = unmarshall(body, construct, commandName)
 			if err == nil {
-				err = MainPrinter.PrintOutput(construct, len(*construct) == 0)
+				err = MainPrinter.PrintOutput(construct, len(*construct) == 0, commandName)
 			}
 		} else {
 			construct := &LongServer{}
-			err = unmarshall(body, construct)
+			err = unmarshall(body, construct, commandName)
 			if err == nil {
-				err = MainPrinter.PrintOutput(construct, false)
+				err = MainPrinter.PrintOutput(construct, false, commandName)
 			}
 		}
 	} else {
 		if multiple {
 			construct := &[]ShortServer{}
-			err = unmarshall(body, construct)
+			err = unmarshall(body, construct, commandName)
 			if err == nil {
-				err = MainPrinter.PrintOutput(construct, len(*construct) == 0)
+				err = MainPrinter.PrintOutput(construct, len(*construct) == 0, commandName)
 			}
 		} else {
 			construct := &ShortServer{}
-			err = unmarshall(body, construct)
+			err = unmarshall(body, construct, commandName)
 			if err == nil {
-				err = MainPrinter.PrintOutput(construct, false)
+				err = MainPrinter.PrintOutput(construct, false, commandName)
 			}
 		}
 	}
 
 	// This err is the one outputted within the PrintOutput
 	if err != nil {
-		return ctlerrors.GenericNonRequestError(err.Error(), commandName)
+		return err
 	}
 
 	return nil
 }
 
 // unmarshall will unmarshall a Json byte stream into the provided construct.
-func unmarshall(body []byte, construct interface{}) error {
+func unmarshall(body []byte, construct interface{}, commandName string) error {
 	err := json.Unmarshal(body, &construct)
 	if err != nil {
-		return errors.New(ctlerrors.UnmarshallingErrorBody)
+		return ctlerrors.CreateCLIError(ctlerrors.UnmarshallingErrorBody, commandName, err)
 	}
 	return nil
 }
