@@ -27,7 +27,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 
 	// Setup
 	serverCreate := create.ServerCreate{
-		Name:        "name",
+		Hostname:    "hostname",
 		Description: "description",
 		Public:      true,
 		Os:          "os",
@@ -70,7 +70,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	server := generators.GenerateServer()
 
 	serverCreate := create.ServerCreate{
-		Name:        "name",
+		Hostname:    "hostname",
 		Description: "description",
 		Public:      true,
 		Os:          "os",
@@ -184,7 +184,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 
 	// Setup
 	serverCreate := create.ServerCreate{
-		Name:        "name",
+		Hostname:    "hostname",
 		Description: "description",
 		Public:      true,
 		Os:          "os",
@@ -229,7 +229,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 
 	// Setup
 	serverCreate := create.ServerCreate{
-		Name:        "name",
+		Hostname:    "hostname",
 		Description: "description",
 		Public:      true,
 		Os:          "os",
@@ -274,7 +274,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 
 	// Setup
 	serverCreate := create.ServerCreate{
-		Name:        "name",
+		Hostname:    "hostname",
 		Description: "description",
 		Public:      true,
 		Os:          "os",
