@@ -28,7 +28,7 @@ func GenerateServer() printer.LongServer {
 	return printer.LongServer{
 		ID:          randSeq(10),
 		Status:      randSeq(10),
-		Name:        randSeq(10),
+		Hostname:    randSeq(10),
 		Description: randSeq(10),
 		Os:          randSeq(10),
 		Type:        randSeq(10),
@@ -53,7 +53,7 @@ func ConvertLongToShortServer(long_server printer.LongServer) printer.ShortServe
 	return printer.ShortServer{
 		ID:          long_server.ID,
 		Status:      long_server.Status,
-		Name:        long_server.Name,
+		Hostname:    long_server.Hostname,
 		Description: long_server.Description,
 	}
 }

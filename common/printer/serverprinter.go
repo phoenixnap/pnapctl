@@ -11,7 +11,7 @@ import (
 type ShortServer struct {
 	ID                 string   `header:"id"`
 	Status             string   `header:"status"`
-	Name               string   `header:"name"`
+	Hostname           string   `header:"hostname"`
 	Description        string   `header:"description"`
 	PrivateIPAddresses []string `header:"Private Ips"`
 	PublicIPAddresses  []string `header:"Public Ips"`
@@ -20,7 +20,7 @@ type ShortServer struct {
 type LongServer struct {
 	ID                 string   `header:"id"`
 	Status             string   `header:"status"`
-	Name               string   `header:"name"`
+	Hostname           string   `header:"hostname"`
 	Description        string   `header:"description"`
 	PrivateIPAddresses []string `header:"Private Ips"`
 	PublicIPAddresses  []string `header:"Public Ips"`

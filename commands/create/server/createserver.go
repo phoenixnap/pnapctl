@@ -16,7 +16,7 @@ import (
 // ServerCreate is the struct used as the body of the request
 // to create a new server.
 type ServerCreate struct {
-	Name        string   `json:"name" yaml:"name"`
+	Hostname    string   `json:"hostname" yaml:"hostname"`
 	Description string   `json:"description" yaml:"description"`
 	Public      bool     `json:"public" yaml:"public"`
 	Os          string   `json:"os" yaml:"os"`
@@ -46,7 +46,7 @@ Requires a file (yaml or json) containing the information needed to create the s
 pnapctl create server --filename ~/server.yaml
 
 # server.yaml
-name: "new-server"
+hostname: "new-server"
 description: "New server description"
 public: true
 os: "ubuntu/bionic"
