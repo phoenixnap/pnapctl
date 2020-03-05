@@ -10,8 +10,10 @@ variables:
 
 stages:  
   - test
+  - lab-build
   - dev-build
   - prod-build
+  - lab-portal-deploy
   - dev-portal-deploy
   - prod-portal-deploy
 
@@ -62,6 +64,12 @@ test:
   script:
     - /automation/upload_assets.py --folder ./${ARTEFACT_FOLDER}/$CI_ENVIRONMENT_NAME/${ARTEFACT_DIST_FOLDER} --portal "$APIGEE_PORTAL" --org $ORG_NAME --username $APIGEE_USER --password $APIGEE_PASSWORD
 
+portal-lab-deploy:
+  extends: .portal-deployment
+  stage: lab-portal-deploy
+  environment:
+    name: lab
+
 portal-dev-deploy:
   extends: .portal-deployment
   stage: dev-portal-deploy
@@ -75,6 +83,12 @@ portal-prod-deploy:
     name: prod
   only:
     - master
+
+build-lab:
+  extends: .build
+  stage: lab-build
+  environment:
+    name: lab
 
 build-dev:
   extends: .build
