@@ -18,7 +18,6 @@ import (
 type ServerCreate struct {
 	Hostname    string   `json:"hostname" yaml:"hostname"`
 	Description string   `json:"description" yaml:"description"`
-	Public      bool     `json:"public" yaml:"public"`
 	Os          string   `json:"os" yaml:"os"`
 	TYPE        string   `json:"type" yaml:"type"`
 	Location    string   `json:"location" yaml:"location"`
@@ -48,7 +47,6 @@ pnapctl create server --filename ~/server.yaml
 # server.yaml
 hostname: "new-server"
 description: "New server description"
-public: true
 os: "ubuntu/bionic"
 type: "s1.c1.tiny"
 location: "PHX"
