@@ -48,15 +48,19 @@ func NewHTTPClient(clientID string, clientSecret string) WebClient {
 // PerformGet performs a Get request and check for auth errors
 func (m HTTPClient) PerformGet(resource string) (*http.Response, error) {
 	return executeRequest(func() (*http.Response, error) {
-		return m.client.Get(m.buildURI(resource))
+		req, err := CreateRequest("GET", m.buildURI(resource), nil)
+		if err != nil {
+			return nil, err
+		}
+
+		return m.client.Do(req)
 	})
 }
 
 // PerformDelete performs a Delete request and check for auth errors
 func (m HTTPClient) PerformDelete(resource string) (*http.Response, error) {
 	return executeRequest(func() (*http.Response, error) {
-		req, err := http.NewRequest("DELETE", m.buildURI(resource), nil)
-		// replicating Get/Post error handling
+		req, err := CreateRequest("DELETE", m.buildURI(resource), nil)
 		if err != nil {
 			return nil, err
 		}
@@ -67,7 +71,12 @@ func (m HTTPClient) PerformDelete(resource string) (*http.Response, error) {
 // PerformPost performs a Post request and check for auth errors
 func (m HTTPClient) PerformPost(resource string, body io.Reader) (*http.Response, error) {
 	return executeRequest(func() (*http.Response, error) {
-		return m.client.Post(m.buildURI(resource), "application/json", body)
+		req, err := CreateRequest("POST", m.buildURI(resource), body)
+		if err != nil {
+			return nil, err
+		}
+
+		return m.client.Do(req)
 	})
 }
 
@@ -92,4 +101,17 @@ func executeRequest(f func() (*http.Response, error)) (*http.Response, error) {
 
 func (m HTTPClient) buildURI(resource string) string {
 	return m.baseURL + resource
+}
+
+func CreateRequest(method, path string, body io.Reader) (*http.Request, error) {
+	req, err := http.NewRequest(method, path, body)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("X-Powered-By", "PNAP-CLI")
+	if method == "POST" {
+		req.Header.Set("Content-Type", "application/json")
+	}
+
+	return req, nil
 }
