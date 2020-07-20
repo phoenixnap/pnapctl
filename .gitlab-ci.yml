@@ -1,7 +1,7 @@
-image: docker:latest
-services:
-  - docker:dind
-  
+default:
+  tags:
+    - noprox
+
 variables:
   CLI_NAME: pnapctl
   ARTEFACT_FOLDER: build
