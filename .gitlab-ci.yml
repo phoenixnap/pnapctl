@@ -27,9 +27,7 @@ stages:
 test:
   extends: .go-cache
   stage: test
-  image: golang:1.13.1
-  before_script:
-    - apt-get install curl git
+  image: registry.gitlab.com/phoenixnap/docker/golang:1.17.1
   script:
     - make test-coverage COVERAGE_DIR=${TEST_COVERAGE_FOLDER}
   artifacts:
@@ -44,10 +42,7 @@ test:
   only:
     - master
     - tags
-  image: golang:1.13.1
-  before_script:
-    - apt-get update
-    - apt-get install -y curl git zip make
+  image: registry.gitlab.com/phoenixnap/docker/golang:1.17.1
   script:
     - make build-and-pack ENVIRONMENT_NAME=$CI_ENVIRONMENT_NAME
   artifacts:
