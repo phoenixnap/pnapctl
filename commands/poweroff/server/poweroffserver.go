@@ -1,11 +1,12 @@
 package server
 
 import (
-	"bytes"
+	"context"
+	"fmt"
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/common/client"
-	utils "phoenixnap.com/pnap-cli/helpers/utility"
+	"phoenixnap.com/pnap-cli/common/ctlerrors"
 )
 
 const commandName = "power-off server"
@@ -19,10 +20,17 @@ var PowerOffServerCmd = &cobra.Command{
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var resource = "servers/" + args[0] + "/actions/power-off"
-		var response, err = client.MainClient.PerformPost(resource, bytes.NewBuffer([]byte{}))
+		result, response, err := client.BmcApiClient.ServersServerIdActionsPowerOffPost(context.Background(), args[0]).Execute()
 
-		return utils.HandleClientResponse(response, err, commandName)
+		if err != nil {
+			// TODO - Process error from SDK in ctlerrors.
+			return err
+		} else if response.StatusCode != 200 {
+			return ctlerrors.HandleBMCError(response, commandName)
+		}
+
+		fmt.Println(result.Result)
+		return nil
 	},
 }
 

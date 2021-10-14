@@ -65,3 +65,25 @@ Details can be passed using a config file. This file can be passed as an argumen
 ## Current folder structure
 
 Every command is its own folder, having a `.go` file that represents it. So, to check `pnapctl get servers`, the directory structure would be `./pnapctl/commands/get/servers`.
+
+# Local SDK
+
+While there is no public version of the SDK - a local one is used to facilitate development. The following are instructions to set up the local SDK for an example sub-folder (`bmc-api`) in the SDK.
+
+1) Create a new folder: `~/go/src/phoenixnap.com`
+2) Put `pnap-cli` in above folder.
+3) Put SDK subfolders (like `bmc-api`) in above folder.
+4) Change SDK modules (in `go.mod`) to `phoenixnap.com/bmc-api`
+5) Add following lines to pnap-cli's `go.mod`.
+
+```
+require phoenixnap.com/bmc-api v1.0.0
+replace phoenixnap.com/bmc-api v1.0.0 => "../bmc-api"
+```
+
+6) Where used, add this import:
+```
+bmcApi "phoenixnap.com/bmc-api"
+```
+
+For any other sub-folder (`bmc-billing`, etc.) the above instructions work - simply replace `bmc-api` with the name of your sub-folder.

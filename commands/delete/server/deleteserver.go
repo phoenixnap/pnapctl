@@ -1,10 +1,13 @@
 package server
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnap-cli/common/client"
-	utils "phoenixnap.com/pnap-cli/helpers/utility"
+	"phoenixnap.com/pnap-cli/common/ctlerrors"
 )
 
 const commandName = "delete server"
@@ -18,9 +21,16 @@ var DeleteServerCmd = &cobra.Command{
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var resource = "servers/" + args[0]
-		var response, err = client.MainClient.PerformDelete(resource)
+		// var response, err = client.MainClient.PerformDelete(resource)
+		result, response, err := client.BmcApiClient.ServersServerIdDelete(context.Background(), args[0]).Execute()
 
-		return utils.HandleClientResponse(response, err, commandName)
+		if err != nil {
+			return err
+		} else if response.StatusCode != 200 {
+			return ctlerrors.HandleBMCError(response, commandName)
+		}
+
+		fmt.Println(result.Result, result.ServerId)
+		return nil
 	},
 }

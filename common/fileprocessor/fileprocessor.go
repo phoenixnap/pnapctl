@@ -47,7 +47,7 @@ func ReadFile(filename string, commandName string) ([]byte, error) {
 
 // unmarshal unmarshals a byte array into an object.
 // The byte array can be either formatted as YAML or as JSON
-func unmarshal(data []byte, construct interface{}, commandName string) error {
+func Unmarshal(data []byte, construct interface{}, commandName string) error {
 	err := json.Unmarshal(data, construct)
 
 	if err != nil {
@@ -63,7 +63,7 @@ func unmarshal(data []byte, construct interface{}, commandName string) error {
 // UnmarshalToJson unmarshals a byte array and marshals it back into JSON,
 // using the struct that was passed as `construct`
 func UnmarshalToJson(data []byte, construct interface{}, commandName string) ([]byte, error) {
-	err := unmarshal(data, construct, commandName)
+	err := Unmarshal(data, construct, commandName)
 
 	if err != nil {
 		return nil, err

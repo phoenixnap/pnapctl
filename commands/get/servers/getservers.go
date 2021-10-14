@@ -1,8 +1,13 @@
 package servers
 
 import (
+	"context"
+
+	netHttp "net/http"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/client"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
@@ -43,16 +48,27 @@ pnapctl get servers NDIid939dfkoDd -o yaml --full`,
 func getServers(serverID string) error {
 	log.Debug("Getting servers...")
 
-	path := "servers/" + serverID
+	var resp *netHttp.Response
+	var err error
+	var server bmcapi.Server
+	var servers []bmcapi.Server
 
-	response, err := client.MainClient.PerformGet(path)
-
-	if response == nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if response.StatusCode == 200 {
-		return printer.PrintServerResponse(response.Body, serverID == "", Full, commandName)
+	if serverID == "" {
+		servers, resp, err = client.BmcApiClient.ServersGet(context.Background()).Execute()
 	} else {
-		return ctlerrors.HandleBMCError(response, commandName)
+		server, resp, err = client.BmcApiClient.ServersServerIdGet(context.Background(), serverID).Execute()
+	}
+
+	if err != nil {
+		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+	} else if resp.StatusCode == 200 {
+		if serverID == "" {
+			return printer.PrintServerListResponse(servers, Full, commandName)
+		} else {
+			return printer.PrintServerResponse(server, Full, commandName)
+		}
+	} else {
+		return ctlerrors.HandleBMCError(resp, commandName)
 	}
 }
 
