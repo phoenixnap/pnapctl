@@ -13,8 +13,8 @@ func SetupBmcApiClient(clientId string, clientSecret string) {
 	configuration := bmcapi.NewConfiguration()
 
 	config := clientcredentials.Config{
-		ClientID:     "clientID here",
-		ClientSecret: "clientSecret here",
+		ClientID:     clientId,
+		ClientSecret: clientSecret,
 		TokenURL:     "https://auth-dev.phoenixnap.com/auth/realms/BMC/protocol/openid-connect/token",
 		Scopes:       []string{"bmc", "bmc.read"},
 	}

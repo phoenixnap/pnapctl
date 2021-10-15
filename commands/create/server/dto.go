@@ -77,6 +77,10 @@ func ServerCreateDtoToSdk(serverCreate ServerCreate) *bmcapi.ServerCreate {
 }
 
 func osConfigurationDtoToSdk(osConfiguration *OsConfiguration) *bmcapi.OsConfiguration {
+	if osConfiguration == nil {
+		return nil
+	}
+
 	return &bmcapi.OsConfiguration{
 		Windows:                    osConfigurationWindowsDtoToSdk(osConfiguration.Windows),
 		RootPassword:               osConfiguration.RootPassword,
@@ -86,12 +90,20 @@ func osConfigurationDtoToSdk(osConfiguration *OsConfiguration) *bmcapi.OsConfigu
 }
 
 func osConfigurationWindowsDtoToSdk(osConfigurationWindows *OsConfigurationWindows) *bmcapi.OsConfigurationWindows {
+	if osConfigurationWindows == nil {
+		return nil
+	}
+
 	return &bmcapi.OsConfigurationWindows{
 		RdpAllowedIps: osConfigurationWindows.RdpAllowedIps,
 	}
 }
 
 func tagAssignmentRequestDtoToSdk(tagAssignmentRequest *[]TagAssignmentRequest) *[]bmcapi.TagAssignmentRequest {
+	if tagAssignmentRequest == nil {
+		return nil
+	}
+
 	var list []bmcapi.TagAssignmentRequest
 
 	for _, x := range *tagAssignmentRequest {

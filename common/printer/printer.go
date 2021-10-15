@@ -77,6 +77,8 @@ func printTable(body interface{}, tblprinter *tableprinter.Printer, commandName 
 	tblprinter.RowCharLimit = 23
 	rows := tblprinter.Print(body)
 
+	fmt.Println(body)
+
 	if rows == -1 {
 		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, commandName, nil)
 	}
