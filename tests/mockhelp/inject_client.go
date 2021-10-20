@@ -18,11 +18,11 @@ var URL string
 
 const SERVERID = "mock_id"
 
-func PrepareMockClient(test_framework *testing.T) *mocks.MockWebClientMockRecorder {
+func PrepareMockClient(test_framework *testing.T) *mocks.MockSdkClientMockRecorder {
 	ctrl := gomock.NewController(test_framework)
-	mockClient := mocks.NewMockWebClient(ctrl)
+	mockClient := mocks.NewMockSdkClient(ctrl)
 
-	client.MainClient = mockClient
+	client.Client = mockClient
 
 	return mockClient.EXPECT()
 }
