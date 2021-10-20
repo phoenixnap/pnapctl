@@ -47,7 +47,7 @@ sshKeys:
 
 		// Create the server
 		request := client.BmcApiClient.ServersPost(context.Background())
-		request.ServerCreate(*serverCreate)
+		request = request.ServerCreate(*serverCreate)
 		response, r, err := request.Execute()
 
 		if err != nil {

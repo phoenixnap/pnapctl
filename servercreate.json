@@ -1,7 +1,7 @@
 {
     "hostname": "dev-test-server",
     "os": "ubuntu/bionic",
-    "type": "s1.c1.medium",
+    "type": "s1.c1.small",
     "location": "PHX",
     "sshKeys": [],
     "installDefaultSshKeys": true,
@@ -12,4 +12,4 @@
         }
     },
     "description": "dev-test-server-desc"
-  }
+}

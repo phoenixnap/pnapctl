@@ -123,6 +123,10 @@ func PrintServerListResponse(servers []bmcapi.Server, full bool, commandName str
 }
 
 func osConfigurationDtoToSdk(osConfiguration *bmcapi.OsConfiguration) *OsConfiguration {
+	if osConfiguration == nil {
+		return nil
+	}
+
 	return &OsConfiguration{
 		Windows:                    osConfigurationWindowsDtoToSdk(osConfiguration.Windows),
 		RootPassword:               osConfiguration.RootPassword,
@@ -132,12 +136,20 @@ func osConfigurationDtoToSdk(osConfiguration *bmcapi.OsConfiguration) *OsConfigu
 }
 
 func osConfigurationWindowsDtoToSdk(osConfigurationWindows *bmcapi.OsConfigurationWindows) *OsConfigurationWindows {
+	if osConfigurationWindows == nil {
+		return nil
+	}
+
 	return &OsConfigurationWindows{
 		RdpAllowedIps: osConfigurationWindows.RdpAllowedIps,
 	}
 }
 
 func tagAssignmentDtoToSdk(tagAssignment *[]bmcapi.TagAssignment) *[]TagAssignment {
+	if tagAssignment == nil {
+		return nil
+	}
+
 	var list []TagAssignment
 
 	for _, x := range *tagAssignment {
