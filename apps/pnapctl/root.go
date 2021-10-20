@@ -118,7 +118,7 @@ func initConfig() {
 		fmt.Println("Client ID and Client Secret in config file should not be empty")
 		os.Exit(1)
 	} else {
-		client.SetupBmcApiClient(viper.GetString("clientId"), viper.GetString("clientSecret"))
+		client.Client = client.NewMainClient(viper.GetString("clientId"), viper.GetString("clientSecret"))
 	}
 }
 

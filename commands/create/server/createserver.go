@@ -1,8 +1,6 @@
 package server
 
 import (
-	"context"
-
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/common/client"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
@@ -46,9 +44,7 @@ sshKeys:
 		}
 
 		// Create the server
-		request := client.BmcApiClient.ServersPost(context.Background())
-		request = request.ServerCreate(*serverCreate)
-		response, r, err := request.Execute()
+		response, r, err := client.Client.ServersPost(*serverCreate)
 
 		if err != nil {
 			// TODO - Validate way of processing errors.

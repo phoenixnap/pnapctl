@@ -1,7 +1,6 @@
 package server
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -20,7 +19,7 @@ var ShutdownCmd = &cobra.Command{
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		result, response, err := client.BmcApiClient.ServersServerIdActionsShutdownPost(context.Background(), args[0]).Execute()
+		result, response, err := client.Client.ServerShutdown(args[0])
 
 		if err != nil {
 			return err

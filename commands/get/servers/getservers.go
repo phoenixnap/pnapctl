@@ -1,8 +1,6 @@
 package servers
 
 import (
-	"context"
-
 	netHttp "net/http"
 
 	log "github.com/sirupsen/logrus"
@@ -54,9 +52,9 @@ func getServers(serverID string) error {
 	var servers []bmcapi.Server
 
 	if serverID == "" {
-		servers, resp, err = client.BmcApiClient.ServersGet(context.Background()).Execute()
+		servers, resp, err = client.Client.ServersGet()
 	} else {
-		server, resp, err = client.BmcApiClient.ServersServerIdGet(context.Background(), serverID).Execute()
+		server, resp, err = client.Client.ServerGetById(serverID)
 	}
 
 	if err != nil {

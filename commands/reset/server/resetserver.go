@@ -1,7 +1,6 @@
 package server
 
 import (
-	"context"
 	"fmt"
 
 	"phoenixnap.com/pnap-cli/common/client"
@@ -39,8 +38,7 @@ sshKeys:
 			return err
 		}
 
-		request := client.BmcApiClient.ServersServerIdActionsResetPost(context.Background(), args[0])
-		result, resp, err := request.ServerReset(*resetRequest).Execute()
+		result, resp, err := client.Client.ServerReset(args[0], *resetRequest)
 
 		if err != nil {
 			// TODO - Process error from SDK in ctlerrors.
