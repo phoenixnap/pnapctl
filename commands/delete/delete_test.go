@@ -1,30 +1,22 @@
 package delete
 
 import (
-	"io/ioutil"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	delete "phoenixnap.com/pnap-cli/commands/delete/server"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
-func deleteSetup() {
-	URL = "servers/" + SERVERID
-}
-
 func TestDeleteServerSuccess(test_framework *testing.T) {
-	deleteSetup()
-
-	returnBody := "{\"result\":\"OK\",\"serverId\":123}"
-
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformDelete(URL).
-		Return(WithResponse(200, ioutil.NopCloser(strings.NewReader(returnBody))), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerDelete(SERVERID).
+		Return(generators.GenerateDeleteResult(), WithResponse(200, nil), nil)
 
 	// Run command
 	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
@@ -34,43 +26,40 @@ func TestDeleteServerSuccess(test_framework *testing.T) {
 }
 
 func TestDeleteServerNotFound(test_framework *testing.T) {
-	deleteSetup()
-
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformDelete(URL).
-		Return(WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerDelete(SERVERID).
+		Return(bmcapi.DeleteResult{}, WithResponse(404, nil), nil)
 
 	// Run command
 	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
 
 	// Assertions
-	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
+	expectedMessage := "Command 'delete server' has been performed, but something went wrong. Error code: 0201"
+	assert.Equal(test_framework, expectedMessage, err.Error())
 
 }
 
 func TestDeleteServerError(test_framework *testing.T) {
-	deleteSetup()
-
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformDelete(URL).
-		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerDelete(SERVERID).
+		Return(bmcapi.DeleteResult{}, WithResponse(500, nil), nil)
 
 	// Run command
 	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
 
+	expectedMessage := "Command 'delete server' has been performed, but something went wrong. Error code: 0201"
+
 	// Assertions
-	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
+	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
 func TestDeleteServerClientFailure(test_framework *testing.T) {
-	deleteSetup()
-
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformDelete(URL).
-		Return(nil, testutil.TestError)
+	PrepareBmcApiMockClient(test_framework).
+		ServerDelete(SERVERID).
+		Return(bmcapi.DeleteResult{}, nil, testutil.TestError)
 
 	// Run command
 	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})
@@ -83,12 +72,10 @@ func TestDeleteServerClientFailure(test_framework *testing.T) {
 }
 
 func TestDeleteServerKeycloakFailure(test_framework *testing.T) {
-	deleteSetup()
-
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformDelete(URL).
-		Return(nil, testutil.TestKeycloakError)
+	PrepareBmcApiMockClient(test_framework).
+		ServerDelete(SERVERID).
+		Return(bmcapi.DeleteResult{}, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := delete.DeleteServerCmd.RunE(delete.DeleteServerCmd, []string{SERVERID})

@@ -79,21 +79,9 @@ func GenerateServerCreate() server.ServerCreate {
 	}
 }
 
-// ConvertLongToShortServers will convert a slice of long servers to a short servers
-// func ConvertLongToShortServers(long_servers []printer.LongServer) []printer.ShortServer {
-// 	var serverlist []printer.ShortServer
-// 	for i := 0; i < len(long_servers); i++ {
-// 		serverlist = append(serverlist, ConvertLongToShortServer(long_servers[i]))
-// 	}
-// 	return serverlist
-// }
-
-// ConvertLongToShortServer will convert a single long server to a short server
-// func ConvertLongToShortServer(long_server printer.LongServer) printer.ShortServer {
-// 	return printer.ShortServer{
-// 		ID:          long_server.ID,
-// 		Status:      long_server.Status,
-// 		Hostname:    long_server.Hostname,
-// 		Description: long_server.Description,
-// 	}
-// }
+func GenerateDeleteResult() bmcapi.DeleteResult {
+	return bmcapi.DeleteResult{
+		Result:   randSeq(10),
+		ServerId: randSeq(10),
+	}
+}
