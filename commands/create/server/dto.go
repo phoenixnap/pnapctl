@@ -19,6 +19,7 @@ type ServerCreate struct {
 	NetworkType           *string                 `yaml:"networkType,omitempty" json:"networkType,omitempty"`
 	OsConfiguration       *OsConfiguration        `yaml:"osConfiguration,omitempty" json:"osConfiguration,omitempty"`
 	Tags                  *[]TagAssignmentRequest `yaml:"tags,omitempty" json:"tags,omitempty"`
+	NetworkConfiguration  *NetworkConfiguration   `yaml:"networkConfiguration,omitempty" json:"networkConfiguration,omitempty"`
 }
 
 type OsConfiguration struct {
@@ -36,6 +37,8 @@ type TagAssignmentRequest struct {
 	Name  string  `yaml:"name" json:"name"`
 	Value *string `yaml:"value,omitempty" json:"value,omitempty"`
 }
+
+type NetworkConfiguration struct{}
 
 func CreateServerRequestFromFile() (*bmcapi.ServerCreate, error) {
 	files.ExpandPath(&Filename)
@@ -73,6 +76,7 @@ func ServerCreateDtoToSdk(serverCreate ServerCreate) *bmcapi.ServerCreate {
 		NetworkType:           serverCreate.NetworkType,
 		OsConfiguration:       osConfigurationDtoToSdk(serverCreate.OsConfiguration),
 		Tags:                  tagAssignmentRequestDtoToSdk(serverCreate.Tags),
+		NetworkConfiguration:  nil,
 	}
 }
 

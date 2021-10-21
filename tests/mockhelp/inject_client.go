@@ -14,7 +14,6 @@ import (
 )
 
 var Body io.Writer
-var URL string
 
 const SERVERID = "mock_id"
 
