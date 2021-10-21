@@ -9,8 +9,8 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"phoenixnap.com/pnap-cli/common/client"
-	"phoenixnap.com/pnap-cli/tests/mocks"
+	"phoenixnap.com/pnap-cli/common/client/bmcapi"
+	"phoenixnap.com/pnap-cli/tests/mocks/sdkmocks"
 )
 
 var Body io.Writer
@@ -18,11 +18,11 @@ var URL string
 
 const SERVERID = "mock_id"
 
-func PrepareMockClient(test_framework *testing.T) *mocks.MockSdkClientMockRecorder {
+func PrepareBmcApiMockClient(test_framework *testing.T) *sdkmocks.MockBmcApiSdkClientMockRecorder {
 	ctrl := gomock.NewController(test_framework)
-	mockClient := mocks.NewMockSdkClient(ctrl)
+	mockClient := sdkmocks.NewMockBmcApiSdkClient(ctrl)
 
-	client.Client = mockClient
+	bmcapi.Client = mockClient
 
 	return mockClient.EXPECT()
 }

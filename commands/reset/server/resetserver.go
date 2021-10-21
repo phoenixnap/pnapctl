@@ -3,8 +3,7 @@ package server
 import (
 	"fmt"
 
-	"phoenixnap.com/pnap-cli/common/client"
-
+	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 
 	"github.com/spf13/cobra"
@@ -38,7 +37,7 @@ sshKeys:
 			return err
 		}
 
-		result, resp, err := client.Client.ServerReset(args[0], *resetRequest)
+		result, resp, err := bmcapi.Client.ServerReset(args[0], *resetRequest)
 
 		if err != nil {
 			// TODO - Process error from SDK in ctlerrors.

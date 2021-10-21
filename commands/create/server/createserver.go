@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client"
+	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
 )
@@ -44,7 +44,7 @@ sshKeys:
 		}
 
 		// Create the server
-		response, r, err := client.Client.ServersPost(*serverCreate)
+		response, r, err := bmcapi.Client.ServersPost(*serverCreate)
 
 		if err != nil {
 			// TODO - Validate way of processing errors.

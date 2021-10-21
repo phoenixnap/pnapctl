@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"phoenixnap.com/pnap-cli/common/client"
+	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 )
 
@@ -20,7 +20,7 @@ var DeleteServerCmd = &cobra.Command{
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		result, response, err := client.Client.ServerDelete(args[0])
+		result, response, err := bmcapi.Client.ServerDelete(args[0])
 
 		if err != nil {
 			return err

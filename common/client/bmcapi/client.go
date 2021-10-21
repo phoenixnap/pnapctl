@@ -1,4 +1,4 @@
-package client
+package bmcapi
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"golang.org/x/oauth2/clientcredentials"
 )
 
-var Client SdkClient
+var Client BmcApiSdkClient
 
-type SdkClient interface {
+type BmcApiSdkClient interface {
 	ServersPost(serverCreate bmcapi.ServerCreate) (bmcapi.Server, *http.Response, error)
 	ServersGet() ([]bmcapi.Server, *http.Response, error)
 	ServerGetById(serverId string) (bmcapi.Server, *http.Response, error)
@@ -26,7 +26,7 @@ type MainClient struct {
 	BmcApiClient bmcapi.DefaultApi
 }
 
-func NewMainClient(clientId string, clientSecret string) SdkClient {
+func NewMainClient(clientId string, clientSecret string) BmcApiSdkClient {
 	configuration := bmcapi.NewConfiguration()
 
 	config := clientcredentials.Config{

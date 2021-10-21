@@ -6,7 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
-	"phoenixnap.com/pnap-cli/common/client"
+	bmcapisdk "phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
 )
@@ -52,9 +52,9 @@ func getServers(serverID string) error {
 	var servers []bmcapi.Server
 
 	if serverID == "" {
-		servers, resp, err = client.Client.ServersGet()
+		servers, resp, err = bmcapisdk.Client.ServersGet()
 	} else {
-		server, resp, err = client.Client.ServerGetById(serverID)
+		server, resp, err = bmcapisdk.Client.ServerGetById(serverID)
 	}
 
 	if err != nil {
