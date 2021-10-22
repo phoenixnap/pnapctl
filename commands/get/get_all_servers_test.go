@@ -1,52 +1,35 @@
 package get
 
 import (
-	"bytes"
 	"errors"
-	"io/ioutil"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/commands/get/servers"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnap-cli/common/printer"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
-func getAllServersSetup() {
-	URL = "servers/"
-}
-
-func TestGetAllServersUnmarshallingError(test_framework *testing.T) {
-	getAllServersSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformGet(URL).
-		Return(WithResponse(200, ioutil.NopCloser(bytes.NewBuffer([]byte{0, 5}))), nil)
-
-	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
-
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingErrorBody, "get servers", err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestGetAllServersShortSuccess(test_framework *testing.T) {
-	getAllServersSetup()
+	serverlist := generators.GenerateServers(5)
 
-	serverlist := generators.GenerateServers(3)
+	var shortServers []interface{}
+
+	for _, x := range serverlist {
+		shortServers = append(shortServers, printer.ToShortServer(x))
+	}
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformGet(URL).
-		Return(WithResponse(200, WithBody(serverlist)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServersGet().
+		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
-	shortServer := generators.ConvertLongToShortServers(serverlist)
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&shortServer, false, "get servers").
+		PrintOutput(shortServers, false, "get servers").
 		Return(nil)
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
@@ -56,17 +39,21 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllServersLongSuccess(test_framework *testing.T) {
-	getAllServersSetup()
+	serverlist := generators.GenerateServers(5)
 
-	serverlist := generators.GenerateServers(3)
+	var longServers []interface{}
+
+	for _, x := range serverlist {
+		longServers = append(longServers, printer.ToFullServer(x))
+	}
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformGet(URL).
-		Return(WithResponse(200, WithBody(serverlist)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServersGet().
+		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&serverlist, false, "get servers").
+		PrintOutput(longServers, false, "get servers").
 		Return(nil)
 
 	// to display full output
@@ -79,15 +66,10 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllServersClientFailure(test_framework *testing.T) {
-	getAllServersSetup()
-
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformGet(URL).
-		Return(nil, testutil.TestError)
-
-	// to display full output
-	servers.Full = true
+	PrepareBmcApiMockClient(test_framework).
+		ServersGet().
+		Return([]bmcapi.Server{}, WithResponse(200, nil), testutil.TestError)
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
@@ -99,15 +81,11 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
-	getAllServersSetup()
-
+	server := []bmcapi.Server{generators.GenerateServer()}
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformGet(URL).
-		Return(nil, testutil.TestKeycloakError)
-
-	// to display full output
-	servers.Full = true
+	PrepareBmcApiMockClient(test_framework).
+		ServersGet().
+		Return(server, nil, testutil.TestKeycloakError)
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 
@@ -116,22 +94,23 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
-	getAllServersSetup()
+	serverlist := generators.GenerateServers(5)
 
-	// generate servers
-	serverlist := generators.GenerateServers(3)
+	var shortServers []interface{}
 
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformGet(URL).
-		Return(WithResponse(200, WithBody(serverlist)), nil)
+	for _, x := range serverlist {
+		shortServers = append(shortServers, printer.ToShortServer(x))
+	}
+
+	PrepareBmcApiMockClient(test_framework).
+		ServersGet().
+		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&serverlist, false, "get servers").
+		PrintOutput(shortServers, false, "get servers").
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
-	// to display full output
-	servers.Full = true
+	servers.Full = false
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
 

@@ -5,29 +5,27 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/commands/get/servers"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnap-cli/common/printer"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
-func getOneServerSetup() {
-	URL = "servers/" + SERVERID
-}
-
 func TestGetServerShortSuccess(test_framework *testing.T) {
-	getOneServerSetup()
 
 	server := generators.GenerateServer()
+	var shortServer interface{}
+	shortServer = printer.ToShortServer(server)
 
-	PrepareMockClient(test_framework).
-		PerformGet(URL).
-		Return(WithResponse(200, WithBody(server)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerGetById(SERVERID).
+		Return(server, WithResponse(200, WithBody(server)), nil)
 
-	shortServer := generators.ConvertLongToShortServer(server)
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&shortServer, false, "get servers").
+		PrintOutput(shortServer, false, "get servers").
 		Return(nil)
 
 	servers.Full = false
@@ -38,16 +36,16 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetServerLongSuccess(test_framework *testing.T) {
-	getOneServerSetup()
-
 	server := generators.GenerateServer()
+	var longServer interface{}
+	longServer = printer.ToFullServer(server)
 
-	PrepareMockClient(test_framework).
-		PerformGet(URL).
-		Return(WithResponse(200, WithBody(server)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerGetById(SERVERID).
+		Return(server, WithResponse(200, WithBody(server)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&server, false, "get servers").
+		PrintOutput(longServer, false, "get servers").
 		Return(nil)
 
 	servers.Full = true
@@ -58,11 +56,9 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 }
 
 func TestGetServerClientFailure(test_framework *testing.T) {
-	getOneServerSetup()
-
-	PrepareMockClient(test_framework).
-		PerformGet(URL).
-		Return(nil, testutil.TestError)
+	PrepareBmcApiMockClient(test_framework).
+		ServerGetById(SERVERID).
+		Return(bmcapi.Server{}, nil, testutil.TestError)
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
@@ -74,11 +70,9 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 }
 
 func TestGetServerKeycloakFailure(test_framework *testing.T) {
-	getOneServerSetup()
-
-	PrepareMockClient(test_framework).
-		PerformGet(URL).
-		Return(nil, testutil.TestKeycloakError)
+	PrepareBmcApiMockClient(test_framework).
+		ServerGetById(SERVERID).
+		Return(bmcapi.Server{}, nil, testutil.TestKeycloakError)
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{SERVERID})
 
@@ -87,17 +81,15 @@ func TestGetServerKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
-	getOneServerSetup()
-
 	server := generators.GenerateServer()
+	shortServer := printer.ToShortServer(server)
 
-	PrepareMockClient(test_framework).
-		PerformGet(URL).
-		Return(WithResponse(200, WithBody(server)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerGetById(SERVERID).
+		Return(server, WithResponse(200, WithBody(server)), nil)
 
-	shortServer := generators.ConvertLongToShortServer(server)
 	PrepareMockPrinter(test_framework).
-		PrintOutput(&shortServer, false, "get servers").
+		PrintOutput(shortServer, false, "get servers").
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	servers.Full = false
