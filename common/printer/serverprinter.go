@@ -60,7 +60,22 @@ type OsConfigurationWindows struct {
 	RdpAllowedIps *[]string `yaml:"rdpAllowedIps,omitempty" json:"rdpAllowedIps,omitempty"`
 }
 
-type NetworkConfiguration struct{}
+type NetworkConfiguration struct {
+	PrivateNetworkConfiguration *PrivateNetworkConfiguration `yaml:"privateNetworkConfiguration" json:"privateNetworkConfiguration"`
+}
+
+type PrivateNetworkConfiguration struct {
+	GatewayAddress    *string                 `yaml:"gatewayAddress" json:"gatewayAddress"`
+	ConfigurationType *string                 `yaml:"configurationType" json:"configurationType"`
+	PrivateNetworks   *[]ServerPrivateNetwork `yaml:"privateNetworks" json:"privateNetworks"`
+}
+
+type ServerPrivateNetwork struct {
+	Id                string    `yaml:"id" json:"id"`
+	Ips               *[]string `yaml:"ips" json:"ips"`
+	Dhcp              *bool     `yaml:"dhcp" json:"dhcp"`
+	StatusDescription *string   `yaml:"statusDescription" json:"statusDescription"`
+}
 
 func ToShortServer(server bmcapi.Server) ShortServer {
 	return ShortServer{
@@ -95,10 +110,10 @@ func ToFullServer(server bmcapi.Server) LongServer {
 		Password:             server.Password,
 		NetworkType:          server.NetworkType,
 		ClusterId:            server.ClusterId,
-		Tags:                 tagAssignmentDtoToSdk(server.Tags),
+		Tags:                 tagAssignmentSdkToDto(server.Tags),
 		ProvisionedOn:        server.ProvisionedOn,
-		OsConfiguration:      osConfigurationDtoToSdk(server.OsConfiguration),
-		NetworkConfiguration: nil,
+		OsConfiguration:      osConfigurationSdkToDto(server.OsConfiguration),
+		NetworkConfiguration: networkConfigurationSdkToDto(&server.NetworkConfiguration),
 	}
 }
 
@@ -126,20 +141,20 @@ func PrintServerListResponse(servers []bmcapi.Server, full bool, commandName str
 	return MainPrinter.PrintOutput(serverList, false, commandName)
 }
 
-func osConfigurationDtoToSdk(osConfiguration *bmcapi.OsConfiguration) *OsConfiguration {
+func osConfigurationSdkToDto(osConfiguration *bmcapi.OsConfiguration) *OsConfiguration {
 	if osConfiguration == nil {
 		return nil
 	}
 
 	return &OsConfiguration{
-		Windows:                    osConfigurationWindowsDtoToSdk(osConfiguration.Windows),
+		Windows:                    osConfigurationWindowsSdkToDto(osConfiguration.Windows),
 		RootPassword:               osConfiguration.RootPassword,
 		ManagementUiUrl:            osConfiguration.ManagementUiUrl,
 		ManagementAccessAllowedIps: osConfiguration.ManagementAccessAllowedIps,
 	}
 }
 
-func osConfigurationWindowsDtoToSdk(osConfigurationWindows *bmcapi.OsConfigurationWindows) *OsConfigurationWindows {
+func osConfigurationWindowsSdkToDto(osConfigurationWindows *bmcapi.OsConfigurationWindows) *OsConfigurationWindows {
 	if osConfigurationWindows == nil {
 		return nil
 	}
@@ -149,7 +164,7 @@ func osConfigurationWindowsDtoToSdk(osConfigurationWindows *bmcapi.OsConfigurati
 	}
 }
 
-func tagAssignmentDtoToSdk(tagAssignment *[]bmcapi.TagAssignment) *[]TagAssignment {
+func tagAssignmentSdkToDto(tagAssignment *[]bmcapi.TagAssignment) *[]TagAssignment {
 	if tagAssignment == nil {
 		return nil
 	}
@@ -168,4 +183,45 @@ func tagAssignmentDtoToSdk(tagAssignment *[]bmcapi.TagAssignment) *[]TagAssignme
 	}
 
 	return &list
+}
+
+func networkConfigurationSdkToDto(networkConf *bmcapi.NetworkConfiguration) *NetworkConfiguration {
+	if networkConf == nil {
+		return nil
+	}
+
+	return &NetworkConfiguration{
+		PrivateNetworkConfiguration: privateNetworkConfigurationSdkToDto(networkConf.PrivateNetworkConfiguration),
+	}
+}
+
+func privateNetworkConfigurationSdkToDto(privateNetConf *bmcapi.PrivateNetworkConfiguration) *PrivateNetworkConfiguration {
+	if privateNetConf == nil {
+		return nil
+	}
+
+	return &PrivateNetworkConfiguration{
+		GatewayAddress:    privateNetConf.GatewayAddress,
+		ConfigurationType: privateNetConf.ConfigurationType,
+		PrivateNetworks:   privateNetworksSdkToDto(privateNetConf.PrivateNetworks),
+	}
+}
+
+func privateNetworksSdkToDto(privateNetworks *[]bmcapi.ServerPrivateNetwork) *[]ServerPrivateNetwork {
+	if privateNetworks == nil {
+		return nil
+	}
+
+	var bmcPrivNet []ServerPrivateNetwork
+
+	for _, x := range *privateNetworks {
+		bmcPrivNet = append(bmcPrivNet, ServerPrivateNetwork{
+			Id:                x.Id,
+			Ips:               x.Ips,
+			Dhcp:              x.Dhcp,
+			StatusDescription: x.StatusDescription,
+		})
+	}
+
+	return &bmcPrivNet
 }
