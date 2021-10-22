@@ -48,6 +48,10 @@ func CreateResetRequestFromFile() (*bmcapi.ServerReset, error) {
 }
 
 func ServerResetToSDK(resetRequest *ServerReset) *bmcapi.ServerReset {
+	if resetRequest == nil {
+		return nil
+	}
+
 	return &bmcapi.ServerReset{
 		InstallDefaultSshKeys: resetRequest.InstallDefaultSshKeys,
 		SshKeys:               resetRequest.SshKeys,
@@ -57,6 +61,10 @@ func ServerResetToSDK(resetRequest *ServerReset) *bmcapi.ServerReset {
 }
 
 func OsConfigurationMapToSDK(osConfMap *OsConfigurationMap) *bmcapi.OsConfigurationMap {
+	if osConfMap == nil {
+		return nil
+	}
+
 	return &bmcapi.OsConfigurationMap{
 		Windows: OsConfigurationWindowsToSDK(osConfMap.Windows),
 		Esxi:    OsConfigurationMapEsxiToSDK(osConfMap.Esxi),
@@ -64,12 +72,20 @@ func OsConfigurationMapToSDK(osConfMap *OsConfigurationMap) *bmcapi.OsConfigurat
 }
 
 func OsConfigurationWindowsToSDK(osConfWin *OsConfigurationWindows) *bmcapi.OsConfigurationWindows {
+	if osConfWin == nil {
+		return nil
+	}
+
 	return &bmcapi.OsConfigurationWindows{
 		RdpAllowedIps: osConfWin.RdpAllowedIps,
 	}
 }
 
 func OsConfigurationMapEsxiToSDK(osConfExsi *OsConfigurationMapEsxi) *bmcapi.OsConfigurationMapEsxi {
+	if osConfExsi == nil {
+		return nil
+	}
+
 	return &bmcapi.OsConfigurationMapEsxi{
 		RootPassword:               osConfExsi.RootPassword,
 		ManagementUiUrl:            osConfExsi.ManagementUiUrl,

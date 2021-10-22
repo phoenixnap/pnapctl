@@ -1,12 +1,11 @@
 package poweroff
 
 import (
-	"bytes"
 	"errors"
 	"testing"
 
-	"phoenixnap.com/pnap-cli/common/client"
-
+	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
@@ -15,20 +14,13 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 )
 
-func powerOffSetup() {
-	Body = bytes.NewBuffer([]byte{})
-	URL = "servers/" + SERVERID + "/actions/power-off"
-}
-
 // Each test needs to have a name like `TestXXX`
 // They also need a parameter of `*testing.T`
 func TestPowerOffServerSuccess(test_framework *testing.T) {
-	powerOffSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil)
+	actionResult := generators.GenerateActionResult()
+	PrepareBmcApiMockClient(test_framework).
+		ServerPowerOff(SERVERID).
+		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
 	// Run command
 	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
@@ -38,12 +30,9 @@ func TestPowerOffServerSuccess(test_framework *testing.T) {
 }
 
 func TestPowerOffServerNotFound(test_framework *testing.T) {
-	powerOffSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerPowerOff(SERVERID).
+		Return(bmcapi.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
@@ -53,12 +42,9 @@ func TestPowerOffServerNotFound(test_framework *testing.T) {
 }
 
 func TestPowerOffServerError(test_framework *testing.T) {
-	powerOffSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerPowerOff(SERVERID).
+		Return(bmcapi.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
@@ -71,12 +57,9 @@ func TestPowerOffServerError(test_framework *testing.T) {
 }
 
 func TestPowerOffServerClientFailure(test_framework *testing.T) {
-	powerOffSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(nil, testutil.TestError)
+	PrepareBmcApiMockClient(test_framework).
+		ServerPowerOff(SERVERID).
+		Return(bmcapi.ActionResult{}, nil, testutil.TestError)
 
 	// Run command
 	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})
@@ -89,12 +72,9 @@ func TestPowerOffServerClientFailure(test_framework *testing.T) {
 }
 
 func TestPowerOffServerKeycloakFailure(test_framework *testing.T) {
-	powerOffSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(nil, testutil.TestKeycloakError)
+	PrepareBmcApiMockClient(test_framework).
+		ServerPowerOff(SERVERID).
+		Return(bmcapi.ActionResult{}, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := poweroff.PowerOffServerCmd.RunE(poweroff.PowerOffServerCmd, []string{SERVERID})

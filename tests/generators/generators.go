@@ -85,3 +85,26 @@ func GenerateDeleteResult() bmcapi.DeleteResult {
 		ServerId: randSeq(10),
 	}
 }
+
+func GenerateActionResult() bmcapi.ActionResult {
+	return bmcapi.ActionResult{
+		Result: randSeq(10),
+	}
+}
+
+func GenerateServerReset() bmcapi.ServerReset {
+	return bmcapi.ServerReset{
+		InstallDefaultSshKeys: nil,
+		SshKeys:               nil,
+		SshKeyIds:             nil,
+		OsConfiguration:       nil,
+	}
+}
+
+func GenerateResetResult() bmcapi.ResetResult {
+	return bmcapi.ResetResult{
+		Result:          randSeq(10),
+		Password:        nil,
+		OsConfiguration: nil,
+	}
+}

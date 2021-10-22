@@ -1,30 +1,23 @@
 package shutdown
 
 import (
-	"bytes"
 	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	shutdown "phoenixnap.com/pnap-cli/commands/shutdown/server"
-	"phoenixnap.com/pnap-cli/common/client"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
-func shutdownSetup() {
-	Body = bytes.NewBuffer([]byte{})
-	URL = "servers/" + SERVERID + "/actions/shutdown"
-}
-
 func TestShutdownServerSuccess(test_framework *testing.T) {
-	shutdownSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil)
+	actionResult := generators.GenerateActionResult()
+	PrepareBmcApiMockClient(test_framework).
+		ServerShutdown(SERVERID).
+		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
@@ -34,12 +27,9 @@ func TestShutdownServerSuccess(test_framework *testing.T) {
 }
 
 func TestShutdownServerNotFound(test_framework *testing.T) {
-	shutdownSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerShutdown(SERVERID).
+		Return(bmcapi.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
@@ -49,12 +39,9 @@ func TestShutdownServerNotFound(test_framework *testing.T) {
 }
 
 func TestShutdownServerError(test_framework *testing.T) {
-	shutdownSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerShutdown(SERVERID).
+		Return(bmcapi.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
@@ -67,12 +54,9 @@ func TestShutdownServerError(test_framework *testing.T) {
 }
 
 func TestShutdownServerClientFailure(test_framework *testing.T) {
-	shutdownSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(nil, testutil.TestError)
+	PrepareBmcApiMockClient(test_framework).
+		ServerShutdown(SERVERID).
+		Return(bmcapi.ActionResult{}, nil, testutil.TestError)
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})
@@ -85,12 +69,9 @@ func TestShutdownServerClientFailure(test_framework *testing.T) {
 }
 
 func TestShutdownServerKeycloakFailure(test_framework *testing.T) {
-	shutdownSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(nil, testutil.TestKeycloakError)
+	PrepareBmcApiMockClient(test_framework).
+		ServerShutdown(SERVERID).
+		Return(bmcapi.ActionResult{}, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := shutdown.ShutdownCmd.RunE(shutdown.ShutdownCmd, []string{SERVERID})

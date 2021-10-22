@@ -1,30 +1,24 @@
 package reboot
 
 import (
-	"bytes"
 	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	reboot "phoenixnap.com/pnap-cli/commands/reboot/server"
-	"phoenixnap.com/pnap-cli/common/client"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
-func rebootSetup() {
-	Body = bytes.NewBuffer([]byte{})
-	URL = "servers/" + SERVERID + "/actions/reboot"
-}
-
 func TestRebootServerSuccess(test_framework *testing.T) {
-	rebootSetup()
-
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil)
+	actionResult := generators.GenerateActionResult()
+	PrepareBmcApiMockClient(test_framework).
+		ServerReboot(SERVERID).
+		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
 	// Run command
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
@@ -34,12 +28,9 @@ func TestRebootServerSuccess(test_framework *testing.T) {
 }
 
 func TestRebootServerClientFail(test_framework *testing.T) {
-	rebootSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(nil, testutil.TestError)
+	PrepareBmcApiMockClient(test_framework).
+		ServerReboot(SERVERID).
+		Return(bmcapi.ActionResult{}, nil, testutil.TestError)
 
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
@@ -51,12 +42,9 @@ func TestRebootServerClientFail(test_framework *testing.T) {
 }
 
 func TestRebootServerKeycloakFailure(test_framework *testing.T) {
-	rebootSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(nil, testutil.TestKeycloakError)
+	PrepareBmcApiMockClient(test_framework).
+		ServerReboot(SERVERID).
+		Return(bmcapi.ActionResult{}, nil, testutil.TestKeycloakError)
 
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
@@ -65,12 +53,9 @@ func TestRebootServerKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestRebootServerNotFoundFail(test_framework *testing.T) {
-	rebootSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerReboot(SERVERID).
+		Return(bmcapi.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 
@@ -79,12 +64,9 @@ func TestRebootServerNotFoundFail(test_framework *testing.T) {
 }
 
 func TestRebootServerErrorFail(test_framework *testing.T) {
-	rebootSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerReboot(SERVERID).
+		Return(bmcapi.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	err := reboot.RebootCmd.RunE(reboot.RebootCmd, []string{SERVERID})
 

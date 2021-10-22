@@ -1,15 +1,15 @@
 package reset
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"testing"
 
-	"phoenixnap.com/pnap-cli/common/client"
+	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 
 	"gopkg.in/yaml.v2"
+	"phoenixnap.com/pnap-cli/tests/generators"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -17,30 +17,20 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 )
 
-func resetSetup() {
-	URL = "servers/" + SERVERID + "/actions/reset"
-}
-
 func TestResetServerSuccessYAML(test_framework *testing.T) {
-	resetSetup()
-
 	// Setup
-	serverReset := reset.ServerReset{
-		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
-	}
+	serverReset := generators.GenerateServerReset()
+	resetResult := generators.GenerateResetResult()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverReset)
 
-	// What the server should receive.
-	jsonmarshal, _ := json.Marshal(serverReset)
-
 	reset.Filename = FILENAME
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil).
+	PrepareBmcApiMockClient(test_framework).
+		ServerReset(SERVERID, serverReset).
+		Return(resetResult, WithResponse(200, WithBody(resetResult)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -58,22 +48,20 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 }
 
 func TestResetServerSuccessJSON(test_framework *testing.T) {
-	resetSetup()
-
 	// Setup
-	serverReset := reset.ServerReset{
-		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
-	}
+	serverReset := generators.GenerateServerReset()
+	resetResult := generators.GenerateResetResult()
 
-	// What will be sent to the server, and the assumed contents of the file.
+	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverReset)
 
 	reset.Filename = FILENAME
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerReset(SERVERID, serverReset).
+		Return(resetResult, WithResponse(200, WithBody(resetResult)), nil).
+		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
@@ -90,8 +78,6 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 }
 
 func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
-	resetSetup()
-
 	// Setup
 	reset.Filename = FILENAME
 
@@ -109,12 +95,9 @@ func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-
 }
 
 func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
-	resetSetup()
-
 	// Invalid contents of the file
 	// filecontents := make([]byte, 10)
 	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
@@ -140,25 +123,18 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 }
 
 func TestResetServerNotFoundFailure(test_framework *testing.T) {
-	resetSetup()
-
 	// Setup
-	serverReset := reset.ServerReset{
-		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
-	}
+	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverReset)
 
-	// What the server should receive.
-	jsonmarshal, _ := json.Marshal(serverReset)
-
 	reset.Filename = FILENAME
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(404, WithBody(testutil.GenericBMCError)), nil).
+	PrepareBmcApiMockClient(test_framework).
+		ServerReset(SERVERID, serverReset).
+		Return(bmcapi.ResetResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -176,8 +152,6 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 }
 
 func TestResetServerFileReadingFailure(test_framework *testing.T) {
-	resetSetup()
-
 	// Setup
 	reset.Filename = FILENAME
 
@@ -202,25 +176,18 @@ func TestResetServerFileReadingFailure(test_framework *testing.T) {
 }
 
 func TestResetServerBackendErrorFailure(test_framework *testing.T) {
-	resetSetup()
-
 	// Setup
-	serverReset := reset.ServerReset{
-		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
-	}
+	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverReset)
 
-	// What the server should receive.
-	jsonmarshal, _ := json.Marshal(serverReset)
-
 	reset.Filename = FILENAME
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+	PrepareBmcApiMockClient(test_framework).
+		ServerReset(SERVERID, serverReset).
+		Return(bmcapi.ResetResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -241,25 +208,18 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 }
 
 func TestResetServerClientFailure(test_framework *testing.T) {
-	resetSetup()
-
 	// Setup
-	serverReset := reset.ServerReset{
-		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
-	}
+	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverReset)
 
-	// What the server should receive.
-	jsonmarshal, _ := json.Marshal(serverReset)
-
 	reset.Filename = FILENAME
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(nil, testutil.TestError).
+	PrepareBmcApiMockClient(test_framework).
+		ServerReset(SERVERID, serverReset).
+		Return(bmcapi.ResetResult{}, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -280,25 +240,18 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 }
 
 func TestResetServerKeycloakFailure(test_framework *testing.T) {
-	resetSetup()
-
 	// Setup
-	serverReset := reset.ServerReset{
-		SSHKeys: []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
-	}
+	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverReset)
 
-	// What the server should receive.
-	jsonmarshal, _ := json.Marshal(serverReset)
-
 	reset.Filename = FILENAME
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(nil, testutil.TestKeycloakError).
+	PrepareBmcApiMockClient(test_framework).
+		ServerReset(SERVERID, serverReset).
+		Return(bmcapi.ResetResult{}, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

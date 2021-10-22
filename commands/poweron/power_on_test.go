@@ -1,30 +1,24 @@
 package poweron
 
 import (
-	"bytes"
 	"errors"
 	"testing"
 
+	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
 	"github.com/stretchr/testify/assert"
 	poweron "phoenixnap.com/pnap-cli/commands/poweron/server"
-	"phoenixnap.com/pnap-cli/common/client"
 )
 
-func powerOnSetup() {
-	Body = bytes.NewBuffer([]byte{})
-	URL = "servers/" + SERVERID + "/actions/power-on"
-}
-
 func TestPowerOnServerSuccess(test_framework *testing.T) {
-	powerOnSetup()
+	actionResult := generators.GenerateActionResult()
 
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(200, WithBody(client.ResponseBody{Result: "OK"})), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerPowerOn(SERVERID).
+		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
 	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
@@ -33,12 +27,9 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 }
 
 func TestPowerOnServerNotFound(test_framework *testing.T) {
-	powerOnSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerPowerOn(SERVERID).
+		Return(bmcapi.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
@@ -47,12 +38,9 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 }
 
 func TestPowerOnServerError(test_framework *testing.T) {
-	powerOnSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServerPowerOn(SERVERID).
+		Return(bmcapi.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
 
@@ -64,12 +52,9 @@ func TestPowerOnServerError(test_framework *testing.T) {
 }
 
 func TestPowerOnServerKeycloakFailure(test_framework *testing.T) {
-	powerOnSetup()
-
-	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, Body).
-		Return(nil, testutil.TestKeycloakError)
+	PrepareBmcApiMockClient(test_framework).
+		ServerPowerOn(SERVERID).
+		Return(bmcapi.ActionResult{}, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
