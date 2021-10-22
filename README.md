@@ -68,13 +68,13 @@ Every command is its own folder, having a `.go` file that represents it. So, to 
 
 # Local SDK
 
-While there is no public version of the SDK - a local one is used to facilitate development. The following are instructions to set up the local SDK for an example sub-folder (`bmc-api`) in the SDK.
+While there is no public version of the SDK - a local one can be used to facilitate development. The following are instructions to set up the local SDK for an example sub-folder (`bmc-api`) in the SDK.
 
-1) Create a new folder: `~/go/src/phoenixnap.com`
-2) Put `pnap-cli` in above folder.
-3) Put SDK subfolders (like `bmc-api`) in above folder.
-4) Change SDK modules (in `go.mod`) to `phoenixnap.com/bmc-api`
-5) Add following lines to pnap-cli's `go.mod`.
+1. Create a new folder: `~/go/src/phoenixnap.com`
+2. Put `pnap-cli` in above folder.
+3. Put SDK subfolders (like `bmc-api`) in above folder.
+4. Change SDK modules (in `go.mod`) to `phoenixnap.com/bmc-api`
+5. Add following lines to pnap-cli's `go.mod`.
 
 ```
 require phoenixnap.com/bmc-api v1.0.0
@@ -87,3 +87,16 @@ bmcApi "phoenixnap.com/bmc-api"
 ```
 
 For any other sub-folder (`bmc-billing`, etc.) the above instructions work - simply replace `bmc-api` with the name of your sub-folder.
+
+# Gitlab SDK
+
+The private version of the SDK on Gitlab can be used as well, however for this to work locally there needs to be some setup.
+
+1. Create a new gitlab access token.
+2. Add the following into your `.gitconfig` file (it should be in your home directory):
+```
+[url "https://oauth2:{YOUR ACCESS TOKEN}@gitlab.com"]
+	insteadOf = https://gitlab.com
+```
+3. Run the following command: `go env -w GOPRIVATE=gitlab.com/*`
+  - This is so that the `go` compiler knows what dependencies are *private* - since it runs additional checks for public dependencies that won't work for private.
