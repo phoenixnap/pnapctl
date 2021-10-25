@@ -9,8 +9,9 @@ import (
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/tests/generators"
 
-	"phoenixnap.com/pnap-cli/commands/create/server"
 	create "phoenixnap.com/pnap-cli/commands/create/server"
+	createModel "phoenixnap.com/pnap-cli/common/models"
+	serverModel "phoenixnap.com/pnap-cli/common/models"
 
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 
@@ -27,14 +28,14 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	create.Filename = FILENAME
+	createModel.Filename = FILENAME
 
 	// What the server should return.
 	createdServer := generators.GenerateServer()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*server.ServerCreateDtoToSdk(serverCreate))).
+		ServersPost(gomock.Eq(*serverModel.ServerCreateDtoToSdk(serverCreate))).
 		Return(createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
@@ -59,14 +60,14 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	create.Filename = FILENAME
+	createModel.Filename = FILENAME
 
 	// What the server should return.
 	createdServer := generators.GenerateServer()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*server.ServerCreateDtoToSdk(serverCreate))).
+		ServersPost(gomock.Eq(*serverModel.ServerCreateDtoToSdk(serverCreate))).
 		Return(createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
@@ -87,7 +88,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
 
 	// Setup
-	create.Filename = FILENAME
+	createModel.Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
@@ -111,7 +112,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 	// filecontents := make([]byte, 10)
 	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
 
-	create.Filename = FILENAME
+	createModel.Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -133,7 +134,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 	// Setup
-	create.Filename = FILENAME
+	createModel.Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -162,11 +163,11 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	create.Filename = FILENAME
+	createModel.Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*server.ServerCreateDtoToSdk(serverCreate))).
+		ServersPost(gomock.Eq(*serverModel.ServerCreateDtoToSdk(serverCreate))).
 		Return(bmcapi.Server{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -195,11 +196,11 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	create.Filename = FILENAME
+	createModel.Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*server.ServerCreateDtoToSdk(serverCreate))).
+		ServersPost(gomock.Eq(*serverModel.ServerCreateDtoToSdk(serverCreate))).
 		Return(bmcapi.Server{}, nil, testutil.TestError).
 		Times(1)
 
@@ -227,11 +228,11 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	create.Filename = FILENAME
+	createModel.Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*server.ServerCreateDtoToSdk(serverCreate))).
+		ServersPost(gomock.Eq(*serverModel.ServerCreateDtoToSdk(serverCreate))).
 		Return(bmcapi.Server{}, nil, testutil.TestKeycloakError).
 		Times(1)
 

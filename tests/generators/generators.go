@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
-	"phoenixnap.com/pnap-cli/commands/create/server"
+	server "phoenixnap.com/pnap-cli/common/models"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
