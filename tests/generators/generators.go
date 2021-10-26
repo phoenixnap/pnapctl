@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
-	"phoenixnap.com/pnap-cli/commands/create/server"
+	"phoenixnap.com/pnap-cli/common/models"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -60,8 +60,8 @@ func GenerateServer() bmcapi.Server {
 	}
 }
 
-func GenerateServerCreate() server.ServerCreate {
-	return server.ServerCreate{
+func GenerateServerCreate() models.ServerCreate {
+	return models.ServerCreate{
 		Hostname:              randSeq(10),
 		Description:           randSeqPointer(10),
 		Os:                    randSeq(10),

@@ -1,4 +1,4 @@
-package printer
+package models
 
 import (
 	"time"
@@ -42,41 +42,6 @@ type ShortServer struct {
 	PublicIPAddresses  []string `yaml:"publicIpAddresses" json:"publicIpAddresses" header:"Public Ips"`
 }
 
-type TagAssignment struct {
-	Id           string  `yaml:"id" json:"id"`
-	Name         string  `yaml:"name" json:"name"`
-	Value        *string `yaml:"value,omitempty" json:"value,omitempty"`
-	IsBillingTag bool    `yaml:"isBillingTag" json:"isBillingTag"`
-}
-
-type OsConfiguration struct {
-	Windows                    *OsConfigurationWindows `yaml:"windows,omitempty" json:"windows,omitempty"`
-	RootPassword               *string                 `yaml:"rootPassword,omitempty" json:"rootPassword,omitempty"`
-	ManagementUiUrl            *string                 `yaml:"managementUiUrl,omitempty" json:"managementUiUrl,omitempty"`
-	ManagementAccessAllowedIps *[]string               `yaml:"managementAccessAllowedIps,omitempty" json:"managementAccessAllowedIps,omitempty"`
-}
-
-type OsConfigurationWindows struct {
-	RdpAllowedIps *[]string `yaml:"rdpAllowedIps,omitempty" json:"rdpAllowedIps,omitempty"`
-}
-
-type NetworkConfiguration struct {
-	PrivateNetworkConfiguration *PrivateNetworkConfiguration `yaml:"privateNetworkConfiguration" json:"privateNetworkConfiguration"`
-}
-
-type PrivateNetworkConfiguration struct {
-	GatewayAddress    *string                 `yaml:"gatewayAddress" json:"gatewayAddress"`
-	ConfigurationType *string                 `yaml:"configurationType" json:"configurationType"`
-	PrivateNetworks   *[]ServerPrivateNetwork `yaml:"privateNetworks" json:"privateNetworks"`
-}
-
-type ServerPrivateNetwork struct {
-	Id                string    `yaml:"id" json:"id"`
-	Ips               *[]string `yaml:"ips" json:"ips"`
-	Dhcp              *bool     `yaml:"dhcp" json:"dhcp"`
-	StatusDescription *string   `yaml:"statusDescription" json:"statusDescription"`
-}
-
 func ToShortServer(server bmcapi.Server) ShortServer {
 	return ShortServer{
 		ID:                 server.Id,
@@ -115,113 +80,4 @@ func ToFullServer(server bmcapi.Server) LongServer {
 		OsConfiguration:      osConfigurationSdkToDto(server.OsConfiguration),
 		NetworkConfiguration: networkConfigurationSdkToDto(&server.NetworkConfiguration),
 	}
-}
-
-func PrintServerResponse(server bmcapi.Server, full bool, commandName string) error {
-	if full {
-		return MainPrinter.PrintOutput(ToFullServer(server), false, commandName)
-	} else {
-		return MainPrinter.PrintOutput(ToShortServer(server), false, commandName)
-	}
-}
-
-func PrintServerListResponse(servers []bmcapi.Server, full bool, commandName string) error {
-	var serverList []interface{}
-
-	if full {
-		for _, x := range servers {
-			serverList = append(serverList, ToFullServer(x))
-		}
-	} else {
-		for _, x := range servers {
-			serverList = append(serverList, ToShortServer(x))
-		}
-	}
-
-	return MainPrinter.PrintOutput(serverList, false, commandName)
-}
-
-func osConfigurationSdkToDto(osConfiguration *bmcapi.OsConfiguration) *OsConfiguration {
-	if osConfiguration == nil {
-		return nil
-	}
-
-	return &OsConfiguration{
-		Windows:                    osConfigurationWindowsSdkToDto(osConfiguration.Windows),
-		RootPassword:               osConfiguration.RootPassword,
-		ManagementUiUrl:            osConfiguration.ManagementUiUrl,
-		ManagementAccessAllowedIps: osConfiguration.ManagementAccessAllowedIps,
-	}
-}
-
-func osConfigurationWindowsSdkToDto(osConfigurationWindows *bmcapi.OsConfigurationWindows) *OsConfigurationWindows {
-	if osConfigurationWindows == nil {
-		return nil
-	}
-
-	return &OsConfigurationWindows{
-		RdpAllowedIps: osConfigurationWindows.RdpAllowedIps,
-	}
-}
-
-func tagAssignmentSdkToDto(tagAssignment *[]bmcapi.TagAssignment) *[]TagAssignment {
-	if tagAssignment == nil {
-		return nil
-	}
-
-	var list []TagAssignment
-
-	for _, x := range *tagAssignment {
-		converted := &TagAssignment{
-			Id:           x.Id,
-			Name:         x.Name,
-			Value:        x.Value,
-			IsBillingTag: x.IsBillingTag,
-		}
-
-		list = append(list, *converted)
-	}
-
-	return &list
-}
-
-func networkConfigurationSdkToDto(networkConf *bmcapi.NetworkConfiguration) *NetworkConfiguration {
-	if networkConf == nil {
-		return nil
-	}
-
-	return &NetworkConfiguration{
-		PrivateNetworkConfiguration: privateNetworkConfigurationSdkToDto(networkConf.PrivateNetworkConfiguration),
-	}
-}
-
-func privateNetworkConfigurationSdkToDto(privateNetConf *bmcapi.PrivateNetworkConfiguration) *PrivateNetworkConfiguration {
-	if privateNetConf == nil {
-		return nil
-	}
-
-	return &PrivateNetworkConfiguration{
-		GatewayAddress:    privateNetConf.GatewayAddress,
-		ConfigurationType: privateNetConf.ConfigurationType,
-		PrivateNetworks:   privateNetworksSdkToDto(privateNetConf.PrivateNetworks),
-	}
-}
-
-func privateNetworksSdkToDto(privateNetworks *[]bmcapi.ServerPrivateNetwork) *[]ServerPrivateNetwork {
-	if privateNetworks == nil {
-		return nil
-	}
-
-	var bmcPrivNet []ServerPrivateNetwork
-
-	for _, x := range *privateNetworks {
-		bmcPrivNet = append(bmcPrivNet, ServerPrivateNetwork{
-			Id:                x.Id,
-			Ips:               x.Ips,
-			Dhcp:              x.Dhcp,
-			StatusDescription: x.StatusDescription,
-		})
-	}
-
-	return &bmcPrivNet
 }
