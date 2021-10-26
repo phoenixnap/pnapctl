@@ -8,6 +8,10 @@ import (
 	"github.com/landoop/tableprinter"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
+
+	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+
+	models "phoenixnap.com/pnap-cli/common/models"
 )
 
 // The main printer used by the application.
@@ -93,4 +97,28 @@ func printTable(body interface{}, tblprinter *tableprinter.Printer, commandName 
 	}
 
 	return nil
+}
+
+func PrintServerResponse(server bmcapi.Server, full bool, commandName string) error {
+	if full {
+		return MainPrinter.PrintOutput(models.ToFullServer(server), false, commandName)
+	} else {
+		return MainPrinter.PrintOutput(models.ToShortServer(server), false, commandName)
+	}
+}
+
+func PrintServerListResponse(servers []bmcapi.Server, full bool, commandName string) error {
+	var serverList []interface{}
+
+	if full {
+		for _, x := range servers {
+			serverList = append(serverList, models.ToFullServer(x))
+		}
+	} else {
+		for _, x := range servers {
+			serverList = append(serverList, models.ToShortServer(x))
+		}
+	}
+
+	return MainPrinter.PrintOutput(serverList, false, commandName)
 }

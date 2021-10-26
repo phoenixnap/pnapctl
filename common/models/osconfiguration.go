@@ -15,25 +15,48 @@ type OsConfigurationWindows struct {
 	RdpAllowedIps *[]string `yaml:"rdpAllowedIps,omitempty" json:"rdpAllowedIps,omitempty"`
 }
 
-func osConfigurationDtoToSdk(osConfiguration *OsConfiguration) *bmcapi.OsConfiguration {
+func (osConfiguration *OsConfiguration) toSdk() *bmcapi.OsConfiguration {
 	if osConfiguration == nil {
 		return nil
 	}
 
 	return &bmcapi.OsConfiguration{
-		Windows:                    osConfigurationWindowsDtoToSdk(osConfiguration.Windows),
+		Windows:                    osConfiguration.Windows.toSdk(),
 		RootPassword:               osConfiguration.RootPassword,
 		ManagementUiUrl:            osConfiguration.ManagementUiUrl,
 		ManagementAccessAllowedIps: osConfiguration.ManagementAccessAllowedIps,
 	}
 }
 
-func osConfigurationWindowsDtoToSdk(osConfigurationWindows *OsConfigurationWindows) *bmcapi.OsConfigurationWindows {
+func (osConfigurationWindows *OsConfigurationWindows) toSdk() *bmcapi.OsConfigurationWindows {
 	if osConfigurationWindows == nil {
 		return nil
 	}
 
 	return &bmcapi.OsConfigurationWindows{
+		RdpAllowedIps: osConfigurationWindows.RdpAllowedIps,
+	}
+}
+
+func osConfigurationSdkToDto(osConfiguration *bmcapi.OsConfiguration) *OsConfiguration {
+	if osConfiguration == nil {
+		return nil
+	}
+
+	return &OsConfiguration{
+		Windows:                    osConfigurationWindowsSdkToDto(osConfiguration.Windows),
+		RootPassword:               osConfiguration.RootPassword,
+		ManagementUiUrl:            osConfiguration.ManagementUiUrl,
+		ManagementAccessAllowedIps: osConfiguration.ManagementAccessAllowedIps,
+	}
+}
+
+func osConfigurationWindowsSdkToDto(osConfigurationWindows *bmcapi.OsConfigurationWindows) *OsConfigurationWindows {
+	if osConfigurationWindows == nil {
+		return nil
+	}
+
+	return &OsConfigurationWindows{
 		RdpAllowedIps: osConfigurationWindows.RdpAllowedIps,
 	}
 }

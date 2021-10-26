@@ -10,7 +10,6 @@ import (
 	"phoenixnap.com/pnap-cli/tests/generators"
 
 	create "phoenixnap.com/pnap-cli/commands/create/server"
-	serverModel "phoenixnap.com/pnap-cli/common/models"
 
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 
@@ -34,7 +33,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverModel.ServerCreateDtoToSdk(serverCreate))).
+		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
 		Return(createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
@@ -66,7 +65,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverModel.ServerCreateDtoToSdk(serverCreate))).
+		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
 		Return(createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
@@ -166,7 +165,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverModel.ServerCreateDtoToSdk(serverCreate))).
+		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
 		Return(bmcapi.Server{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -199,7 +198,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverModel.ServerCreateDtoToSdk(serverCreate))).
+		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
 		Return(bmcapi.Server{}, nil, testutil.TestError).
 		Times(1)
 
@@ -231,7 +230,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverModel.ServerCreateDtoToSdk(serverCreate))).
+		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
 		Return(bmcapi.Server{}, nil, testutil.TestKeycloakError).
 		Times(1)
 

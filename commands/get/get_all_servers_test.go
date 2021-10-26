@@ -8,7 +8,7 @@ import (
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/commands/get/servers"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/models"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
@@ -20,7 +20,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 	var shortServers []interface{}
 
 	for _, x := range serverlist {
-		shortServers = append(shortServers, printer.ToShortServer(x))
+		shortServers = append(shortServers, models.ToShortServer(x))
 	}
 
 	// Mocking
@@ -44,7 +44,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 	var longServers []interface{}
 
 	for _, x := range serverlist {
-		longServers = append(longServers, printer.ToFullServer(x))
+		longServers = append(longServers, models.ToFullServer(x))
 	}
 
 	// Mocking
@@ -99,7 +99,7 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 	var shortServers []interface{}
 
 	for _, x := range serverlist {
-		shortServers = append(shortServers, printer.ToShortServer(x))
+		shortServers = append(shortServers, models.ToShortServer(x))
 	}
 
 	PrepareBmcApiMockClient(test_framework).

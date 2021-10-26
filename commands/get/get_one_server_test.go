@@ -8,7 +8,7 @@ import (
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/commands/get/servers"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/models"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
@@ -18,7 +18,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 
 	server := generators.GenerateServer()
 	var shortServer interface{}
-	shortServer = printer.ToShortServer(server)
+	shortServer = models.ToShortServer(server)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(SERVERID).
@@ -38,7 +38,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 func TestGetServerLongSuccess(test_framework *testing.T) {
 	server := generators.GenerateServer()
 	var longServer interface{}
-	longServer = printer.ToFullServer(server)
+	longServer = models.ToFullServer(server)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(SERVERID).
@@ -82,7 +82,7 @@ func TestGetServerKeycloakFailure(test_framework *testing.T) {
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
 	server := generators.GenerateServer()
-	shortServer := printer.ToShortServer(server)
+	shortServer := models.ToShortServer(server)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(SERVERID).

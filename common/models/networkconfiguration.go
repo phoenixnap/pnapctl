@@ -21,17 +21,18 @@ type ServerPrivateNetwork struct {
 	StatusDescription *string   `yaml:"statusDescription" json:"statusDescription"`
 }
 
-func networkConfigurationDtoToSdk(networkConf *NetworkConfiguration) *bmcapi.NetworkConfiguration {
-	if networkConf == nil {
+/* DTO to SDK mapping functions*/
+func (networkconfiguration *NetworkConfiguration) toSdk() *bmcapi.NetworkConfiguration {
+	if networkconfiguration == nil {
 		return nil
 	}
 
 	return &bmcapi.NetworkConfiguration{
-		PrivateNetworkConfiguration: privateNetworkConfigurationDtoToSdk(networkConf.PrivateNetworkConfiguration),
+		PrivateNetworkConfiguration: networkconfiguration.PrivateNetworkConfiguration.toSdk(),
 	}
 }
 
-func privateNetworkConfigurationDtoToSdk(privateNetConf *PrivateNetworkConfiguration) *bmcapi.PrivateNetworkConfiguration {
+func (privateNetConf *PrivateNetworkConfiguration) toSdk() *bmcapi.PrivateNetworkConfiguration {
 	if privateNetConf == nil {
 		return nil
 	}
@@ -39,25 +40,73 @@ func privateNetworkConfigurationDtoToSdk(privateNetConf *PrivateNetworkConfigura
 	return &bmcapi.PrivateNetworkConfiguration{
 		GatewayAddress:    privateNetConf.GatewayAddress,
 		ConfigurationType: privateNetConf.ConfigurationType,
-		PrivateNetworks:   privateNetworksDtoToSdk(privateNetConf.PrivateNetworks),
+		PrivateNetworks:   mapServerPrivateNetworksToSdk(privateNetConf.PrivateNetworks),
 	}
 }
 
-func privateNetworksDtoToSdk(privateNetworks *[]ServerPrivateNetwork) *[]bmcapi.ServerPrivateNetwork {
+func mapServerPrivateNetworksToSdk(serverPrivateNetworks *[]ServerPrivateNetwork) *[]bmcapi.ServerPrivateNetwork {
+	if serverPrivateNetworks == nil {
+		return nil
+	}
+
+	var bmcServerPrivateNetworks []bmcapi.ServerPrivateNetwork
+
+	for _, serverPrivateNetwork := range *serverPrivateNetworks {
+		bmcServerPrivateNetworks = append(bmcServerPrivateNetworks, serverPrivateNetwork.toSdk())
+	}
+
+	return &bmcServerPrivateNetworks
+}
+
+func (serverPrivateNetwork ServerPrivateNetwork) toSdk() bmcapi.ServerPrivateNetwork {
+	var serverPrivateNetworkSdk = bmcapi.ServerPrivateNetwork{
+		Id:                serverPrivateNetwork.Id,
+		Ips:               serverPrivateNetwork.Ips,
+		Dhcp:              serverPrivateNetwork.Dhcp,
+		StatusDescription: serverPrivateNetwork.StatusDescription,
+	}
+
+	return serverPrivateNetworkSdk
+}
+
+/* SDK to DTO mapping functions */
+func networkConfigurationSdkToDto(networkConf *bmcapi.NetworkConfiguration) *NetworkConfiguration {
+	if networkConf == nil {
+		return nil
+	}
+
+	return &NetworkConfiguration{
+		PrivateNetworkConfiguration: privateNetworkConfigurationSdkToDto(networkConf.PrivateNetworkConfiguration),
+	}
+}
+
+func privateNetworkConfigurationSdkToDto(privateNetworkConfnfiguration *bmcapi.PrivateNetworkConfiguration) *PrivateNetworkConfiguration {
+	if privateNetworkConfnfiguration == nil {
+		return nil
+	}
+
+	return &PrivateNetworkConfiguration{
+		GatewayAddress:    privateNetworkConfnfiguration.GatewayAddress,
+		ConfigurationType: privateNetworkConfnfiguration.ConfigurationType,
+		PrivateNetworks:   privateNetworksSdkToDto(privateNetworkConfnfiguration.PrivateNetworks),
+	}
+}
+
+func privateNetworksSdkToDto(privateNetworks *[]bmcapi.ServerPrivateNetwork) *[]ServerPrivateNetwork {
 	if privateNetworks == nil {
 		return nil
 	}
 
-	var bmcPrivNet []bmcapi.ServerPrivateNetwork
+	var bmcServerPrivateNetworks []ServerPrivateNetwork
 
-	for _, x := range *privateNetworks {
-		bmcPrivNet = append(bmcPrivNet, bmcapi.ServerPrivateNetwork{
-			Id:                x.Id,
-			Ips:               x.Ips,
-			Dhcp:              x.Dhcp,
-			StatusDescription: x.StatusDescription,
+	for _, bmcServerPrivateNetwork := range *privateNetworks {
+		bmcServerPrivateNetworks = append(bmcServerPrivateNetworks, ServerPrivateNetwork{
+			Id:                bmcServerPrivateNetwork.Id,
+			Ips:               bmcServerPrivateNetwork.Ips,
+			Dhcp:              bmcServerPrivateNetwork.Dhcp,
+			StatusDescription: bmcServerPrivateNetwork.StatusDescription,
 		})
 	}
 
-	return &bmcPrivNet
+	return &bmcServerPrivateNetworks
 }
