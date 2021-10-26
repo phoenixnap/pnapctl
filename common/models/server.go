@@ -37,7 +37,7 @@ type ShortServer struct {
 	ID                 string   `yaml:"id" json:"id" header:"id"`
 	Status             string   `yaml:"status" json:"status" header:"status"`
 	Name               string   `yaml:"name" json:"name" header:"name"`
-	Description        string   `yaml:"description" json:"description" header:"description"`
+	Description        *string  `yaml:"description" json:"description" header:"description"`
 	PrivateIPAddresses []string `yaml:"privateIpAddresses" json:"privateIpAddresses" header:"Private Ips"`
 	PublicIPAddresses  []string `yaml:"publicIpAddresses" json:"publicIpAddresses" header:"Public Ips"`
 }
@@ -47,7 +47,7 @@ func ToShortServer(server bmcapi.Server) ShortServer {
 		ID:                 server.Id,
 		Status:             server.Status,
 		Name:               server.Hostname,
-		Description:        *server.Description,
+		Description:        server.Description,
 		PrivateIPAddresses: server.PrivateIpAddresses,
 		PublicIPAddresses:  server.PublicIpAddresses,
 	}
