@@ -11,7 +11,7 @@ import (
 
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 
-	models "phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models"
 )
 
 // The main printer used by the application.
@@ -111,12 +111,12 @@ func PrintServerListResponse(servers []bmcapi.Server, full bool, commandName str
 	var serverList []interface{}
 
 	if full {
-		for _, x := range servers {
-			serverList = append(serverList, models.ToFullServer(x))
+		for _, bmcServer := range servers {
+			serverList = append(serverList, models.ToFullServer(bmcServer))
 		}
 	} else {
-		for _, x := range servers {
-			serverList = append(serverList, models.ToShortServer(x))
+		for _, bmcServer := range servers {
+			serverList = append(serverList, models.ToShortServer(bmcServer))
 		}
 	}
 

@@ -44,18 +44,18 @@ func tagAssignmentSdkToDto(tagAssignment *[]bmcapi.TagAssignment) *[]TagAssignme
 		return nil
 	}
 
-	var list []TagAssignment
+	var tagAssignments []TagAssignment
 
-	for _, x := range *tagAssignment {
-		converted := &TagAssignment{
-			Id:           x.Id,
-			Name:         x.Name,
-			Value:        x.Value,
-			IsBillingTag: x.IsBillingTag,
+	for _, bmcTagAssignment := range *tagAssignment {
+		mappedTagAssignment := &TagAssignment{
+			Id:           bmcTagAssignment.Id,
+			Name:         bmcTagAssignment.Name,
+			Value:        bmcTagAssignment.Value,
+			IsBillingTag: bmcTagAssignment.IsBillingTag,
 		}
 
-		list = append(list, *converted)
+		tagAssignments = append(tagAssignments, *mappedTagAssignment)
 	}
 
-	return &list
+	return &tagAssignments
 }
