@@ -10,7 +10,6 @@ import (
 	"phoenixnap.com/pnap-cli/tests/generators"
 
 	create "phoenixnap.com/pnap-cli/commands/create/server"
-	createModel "phoenixnap.com/pnap-cli/common/models"
 	serverModel "phoenixnap.com/pnap-cli/common/models"
 
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
@@ -28,7 +27,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	createModel.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// What the server should return.
 	createdServer := generators.GenerateServer()
@@ -60,7 +59,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	createModel.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// What the server should return.
 	createdServer := generators.GenerateServer()
@@ -88,7 +87,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
 
 	// Setup
-	createModel.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
@@ -112,7 +111,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 	// filecontents := make([]byte, 10)
 	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
 
-	createModel.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -134,7 +133,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 	// Setup
-	createModel.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -163,7 +162,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	createModel.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -196,7 +195,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	createModel.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -228,7 +227,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	createModel.Filename = FILENAME
+	create.Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).

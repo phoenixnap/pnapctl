@@ -22,10 +22,10 @@ type ServerCreate struct {
 	NetworkConfiguration  *NetworkConfiguration   `yaml:"networkConfiguration,omitempty" json:"networkConfiguration,omitempty"`
 }
 
-func CreateServerRequestFromFile() (*bmcapi.ServerCreate, error) {
-	files.ExpandPath(&Filename)
+func CreateServerRequestFromFile(filename string, commandname string) (*bmcapi.ServerCreate, error) {
+	files.ExpandPath(&filename)
 
-	data, err := files.ReadFile(Filename, CommandName)
+	data, err := files.ReadFile(filename, commandname)
 
 	if err != nil {
 		return nil, err
@@ -34,7 +34,7 @@ func CreateServerRequestFromFile() (*bmcapi.ServerCreate, error) {
 	// Marshal file into JSON using the struct
 	var serverCreate ServerCreate
 
-	err = files.Unmarshal(data, &serverCreate, CommandName)
+	err = files.Unmarshal(data, &serverCreate, commandname)
 
 	if err != nil {
 		return nil, err
