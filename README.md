@@ -88,7 +88,7 @@ Setup:
             "mode": "debug",
             "program": "<reaplace_with_path_to_your_workspace>/pnap-cli/",
             "env": {},
-            "args": ["get", "servers"],
+            "args": ["get", "servers"], // replace args accordingly 
             "buildFlags": "-tags dev"            
         }
     ]
