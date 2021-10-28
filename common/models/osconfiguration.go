@@ -38,7 +38,7 @@ func (osConfigurationWindows *OsConfigurationWindows) toSdk() *bmcapi.OsConfigur
 	}
 }
 
-func osConfigurationSdkToDto(osConfiguration *bmcapi.OsConfiguration) *OsConfiguration {
+func OsConfigurationSdkToDto(osConfiguration *bmcapi.OsConfiguration) *OsConfiguration {
 	if osConfiguration == nil {
 		return nil
 	}
@@ -58,5 +58,13 @@ func osConfigurationWindowsSdkToDto(osConfigurationWindows *bmcapi.OsConfigurati
 
 	return &OsConfigurationWindows{
 		RdpAllowedIps: osConfigurationWindows.RdpAllowedIps,
+	}
+}
+
+func (os OsConfiguration) ToTableString() string {
+	if os.RootPassword == nil {
+		return ""
+	} else {
+		return "Password: " + *os.RootPassword
 	}
 }

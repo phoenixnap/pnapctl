@@ -8,7 +8,7 @@ import (
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/commands/get/servers"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models/tables"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
@@ -18,14 +18,14 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 
 	server := generators.GenerateServer()
 	var shortServer interface{}
-	shortServer = models.ToShortServer(server)
+	shortServer = tables.ToShortServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(SERVERID).
 		Return(server, WithResponse(200, WithBody(server)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServer, false, "get servers").
+		PrintOutput(shortServer, "get servers").
 		Return(nil)
 
 	servers.Full = false
@@ -38,14 +38,14 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 func TestGetServerLongSuccess(test_framework *testing.T) {
 	server := generators.GenerateServer()
 	var longServer interface{}
-	longServer = models.ToFullServer(server)
+	longServer = tables.ToLongServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(SERVERID).
 		Return(server, WithResponse(200, WithBody(server)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(longServer, false, "get servers").
+		PrintOutput(longServer, "get servers").
 		Return(nil)
 
 	servers.Full = true
@@ -82,14 +82,14 @@ func TestGetServerKeycloakFailure(test_framework *testing.T) {
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
 	server := generators.GenerateServer()
-	shortServer := models.ToShortServer(server)
+	shortServer := tables.ToShortServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(SERVERID).
 		Return(server, WithResponse(200, WithBody(server)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServer, false, "get servers").
+		PrintOutput(shortServer, "get servers").
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	servers.Full = false

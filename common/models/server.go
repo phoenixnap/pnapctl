@@ -7,39 +7,39 @@ import (
 )
 
 type LongServer struct {
-	Id                   string                `header:"ID" yaml:"id" json:"id"`
-	Status               string                `header:"Status" yaml:"status" json:"status"`
-	Hostname             string                `header:"Name" yaml:"hostname" json:"hostname"`
-	Description          *string               `header:"Description" yaml:"description,omitempty" json:"description,omitempty"`
-	Os                   string                `header:"OS" yaml:"os" json:"os"`
-	Type                 string                `header:"Type" yaml:"type" json:"type"`
-	Location             string                `header:"Location" yaml:"location" json:"location"`
-	Cpu                  string                `header:"Cpu" yaml:"cpu" json:"cpu"`
-	CpuCount             int32                 `header:"Cpu Count" yaml:"cpuCount" json:"cpuCount"`
-	CoresPerCpu          int32                 `header:"Cores Per Cpu" yaml:"coresPerCpu" json:"coresPerCpu"`
-	CpuFrequency         float32               `header:"Cpu Frequency" yaml:"cpuFrequency" json:"cpuFrequency"`
-	Ram                  string                `header:"Ram" yaml:"ram" json:"ram"`
-	Storage              string                `header:"Storage" yaml:"storage" json:"storage"`
-	PrivateIpAddresses   []string              `header:"Private IP" yaml:"privateIpAddresses" json:"privateIpAddresses"`
-	PublicIpAddresses    []string              `header:"Public IP" yaml:"publicIpAddresses" json:"publicIpAddresses"`
-	ReservationId        *string               `header:"Reservation ID" yaml:"reservationId,omitempty" json:"reservationId,omitempty"`
-	PricingModel         string                `header:"Pricing Model" yaml:"pricingModel" json:"pricingModel"`
-	Password             *string               `header:"Password" yaml:"password,omitempty" json:"password,omitempty"`
-	NetworkType          *string               `header:"Network Type" yaml:"networkType,omitempty" json:"networkType,omitempty"`
-	ClusterId            *string               `header:"Cluster ID" yaml:"clusterId,omitempty" json:"clusterId,omitempty"`
-	Tags                 *[]TagAssignment      `header:"Tags" yaml:"tags,omitempty" json:"tags,omitempty"`
-	ProvisionedOn        *time.Time            `header:"Provisioned On" yaml:"provisionedOn,omitempty" json:"provisionedOn,omitempty"`
-	OsConfiguration      *OsConfiguration      `header:"Os Configuration" yaml:"osConfiguration,omitempty" json:"osConfiguration,omitempty"`
-	NetworkConfiguration *NetworkConfiguration `header:"Network Configuration" yaml:"networkConfiguration,omitempty" json:"networkConfiguration,omitempty"`
+	Id                   string                `yaml:"id" json:"id"`
+	Status               string                `yaml:"status" json:"status"`
+	Hostname             string                `yaml:"hostname" json:"hostname"`
+	Description          *string               `yaml:"description,omitempty" json:"description,omitempty"`
+	Os                   string                `yaml:"os" json:"os"`
+	Type                 string                `yaml:"type" json:"type"`
+	Location             string                `yaml:"location" json:"location"`
+	Cpu                  string                `yaml:"cpu" json:"cpu"`
+	CpuCount             int32                 `yaml:"cpuCount" json:"cpuCount"`
+	CoresPerCpu          int32                 `yaml:"coresPerCpu" json:"coresPerCpu"`
+	CpuFrequency         float32               `yaml:"cpuFrequency" json:"cpuFrequency"`
+	Ram                  string                `yaml:"ram" json:"ram"`
+	Storage              string                `yaml:"storage" json:"storage"`
+	PrivateIpAddresses   []string              `yaml:"privateIpAddresses" json:"privateIpAddresses"`
+	PublicIpAddresses    []string              `yaml:"publicIpAddresses" json:"publicIpAddresses"`
+	ReservationId        *string               `yaml:"reservationId,omitempty" json:"reservationId,omitempty"`
+	PricingModel         string                `yaml:"pricingModel" json:"pricingModel"`
+	Password             *string               `yaml:"password,omitempty" json:"password,omitempty"`
+	NetworkType          *string               `yaml:"networkType,omitempty" json:"networkType,omitempty"`
+	ClusterId            *string               `yaml:"clusterId,omitempty" json:"clusterId,omitempty"`
+	Tags                 *[]TagAssignment      `yaml:"tags,omitempty" json:"tags,omitempty"`
+	ProvisionedOn        *time.Time            `yaml:"provisionedOn,omitempty" json:"provisionedOn,omitempty"`
+	OsConfiguration      *OsConfiguration      `yaml:"osConfiguration,omitempty" json:"osConfiguration,omitempty"`
+	NetworkConfiguration *NetworkConfiguration `yaml:"networkConfiguration,omitempty" json:"networkConfiguration,omitempty"`
 }
 
 type ShortServer struct {
-	ID                 string   `yaml:"id" json:"id" header:"id"`
-	Status             string   `yaml:"status" json:"status" header:"status"`
-	Name               string   `yaml:"name" json:"name" header:"name"`
-	Description        *string  `yaml:"description" json:"description" header:"description"`
-	PrivateIPAddresses []string `yaml:"privateIpAddresses" json:"privateIpAddresses" header:"Private Ips"`
-	PublicIPAddresses  []string `yaml:"publicIpAddresses" json:"publicIpAddresses" header:"Public Ips"`
+	ID                 string   `yaml:"id" json:"id"`
+	Status             string   `yaml:"status" json:"status"`
+	Name               string   `yaml:"name" json:"name"`
+	Description        *string  `yaml:"description" json:"description"`
+	PrivateIPAddresses []string `yaml:"privateIpAddresses" json:"privateIpAddresses"`
+	PublicIPAddresses  []string `yaml:"publicIpAddresses" json:"publicIpAddresses"`
 }
 
 func ToShortServer(server bmcapi.Server) ShortServer {
@@ -75,9 +75,9 @@ func ToFullServer(server bmcapi.Server) LongServer {
 		Password:             server.Password,
 		NetworkType:          server.NetworkType,
 		ClusterId:            server.ClusterId,
-		Tags:                 tagAssignmentSdkToDto(server.Tags),
+		Tags:                 TagAssignmentSdkToDto(server.Tags),
 		ProvisionedOn:        server.ProvisionedOn,
-		OsConfiguration:      osConfigurationSdkToDto(server.OsConfiguration),
-		NetworkConfiguration: networkConfigurationSdkToDto(&server.NetworkConfiguration),
+		OsConfiguration:      OsConfigurationSdkToDto(server.OsConfiguration),
+		NetworkConfiguration: NetworkConfigurationSdkToDto(&server.NetworkConfiguration),
 	}
 }

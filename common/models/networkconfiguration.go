@@ -70,7 +70,7 @@ func (serverPrivateNetwork ServerPrivateNetwork) toSdk() bmcapi.ServerPrivateNet
 }
 
 /* SDK to DTO mapping functions */
-func networkConfigurationSdkToDto(networkConf *bmcapi.NetworkConfiguration) *NetworkConfiguration {
+func NetworkConfigurationSdkToDto(networkConf *bmcapi.NetworkConfiguration) *NetworkConfiguration {
 	if networkConf == nil {
 		return nil
 	}
@@ -109,4 +109,12 @@ func privateNetworksSdkToDto(privateNetworks *[]bmcapi.ServerPrivateNetwork) *[]
 	}
 
 	return &bmcServerPrivateNetworks
+}
+
+func (n NetworkConfiguration) ToTableString() string {
+	if n.PrivateNetworkConfiguration == nil {
+		return "Public"
+	} else {
+		return "Private"
+	}
 }

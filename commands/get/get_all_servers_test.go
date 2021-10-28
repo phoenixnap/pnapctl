@@ -8,7 +8,7 @@ import (
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/commands/get/servers"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models/tables"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
@@ -20,7 +20,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 	var shortServers []interface{}
 
 	for _, x := range serverlist {
-		shortServers = append(shortServers, models.ToShortServer(x))
+		shortServers = append(shortServers, tables.ToShortServerTable(x))
 	}
 
 	// Mocking
@@ -29,7 +29,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServers, false, "get servers").
+		PrintOutput(shortServers, "get servers").
 		Return(nil)
 
 	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
@@ -44,7 +44,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 	var longServers []interface{}
 
 	for _, x := range serverlist {
-		longServers = append(longServers, models.ToFullServer(x))
+		longServers = append(longServers, tables.ToLongServerTable(x))
 	}
 
 	// Mocking
@@ -53,7 +53,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(longServers, false, "get servers").
+		PrintOutput(longServers, "get servers").
 		Return(nil)
 
 	// to display full output
@@ -99,7 +99,7 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 	var shortServers []interface{}
 
 	for _, x := range serverlist {
-		shortServers = append(shortServers, models.ToShortServer(x))
+		shortServers = append(shortServers, tables.ToShortServerTable(x))
 	}
 
 	PrepareBmcApiMockClient(test_framework).
@@ -107,7 +107,7 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServers, false, "get servers").
+		PrintOutput(shortServers, "get servers").
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	servers.Full = false

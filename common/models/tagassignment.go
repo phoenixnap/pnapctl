@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 )
 
@@ -39,7 +41,7 @@ func (tagAssignmentRequest TagAssignmentRequest) toSdk() bmcapi.TagAssignmentReq
 	return tagAssignmentRequestSdk
 }
 
-func tagAssignmentSdkToDto(tagAssignment *[]bmcapi.TagAssignment) *[]TagAssignment {
+func TagAssignmentSdkToDto(tagAssignment *[]bmcapi.TagAssignment) *[]TagAssignment {
 	if tagAssignment == nil {
 		return nil
 	}
@@ -58,4 +60,15 @@ func tagAssignmentSdkToDto(tagAssignment *[]bmcapi.TagAssignment) *[]TagAssignme
 	}
 
 	return &tagAssignments
+}
+
+func (t TagAssignment) ToTableString() string {
+	var tagValue string
+
+	if t.Value == nil {
+		tagValue = ""
+	} else {
+		tagValue = ": " + *t.Value
+	}
+	return fmt.Sprintf("(%s) %s%s", t.Id, t.Name, tagValue)
 }

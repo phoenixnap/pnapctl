@@ -4,14 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"reflect"
 
 	"github.com/landoop/tableprinter"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
-
-	"phoenixnap.com/pnap-cli/common/models"
 )
 
 // The main printer used by the application.
@@ -22,7 +19,7 @@ var MainPrinter = NewBodyPrinter()
 var OutputFormat string
 
 type Printer interface {
-	PrintOutput(construct interface{}, isEmpty bool, commandName string) error
+	PrintOutput(construct interface{}, commandName string) error
 }
 
 type BodyPrinter struct {
@@ -37,20 +34,13 @@ func NewBodyPrinter() Printer {
 
 // PrintOutput prints the construct passed according to the format.
 // The output parameter specifies whether any errors were encountered during printing
-func (m BodyPrinter) PrintOutput(construct interface{}, isEmpty bool, commandName string) error {
+func (m BodyPrinter) PrintOutput(construct interface{}, commandName string) error {
 	if OutputFormat == "json" {
 		return printJSON(construct, commandName)
 	} else if OutputFormat == "yaml" {
 		return printYAML(construct, commandName)
 	} else {
-		if isEmpty {
-			// We cannot print a table if we don't have at least the headers.
-			fmt.Println("No data found")
-			return nil
-		} else {
-			// default to table
-			return printTable(construct, m.Tableprinter, commandName)
-		}
+		return printTable(construct, m.Tableprinter, commandName)
 	}
 }
 
@@ -82,15 +72,17 @@ func printTable(body interface{}, tblprinter *tableprinter.Printer, commandName 
 	rows := tblprinter.Print(body)
 
 	emptyBody := false
-	switch x := body.(type) {
-	case []interface{}:
-		emptyBody = len(x) == 0
+
+	switch reflect.TypeOf(body).Kind() {
+	case reflect.Slice:
+		list := reflect.ValueOf(body)
+		emptyBody = list.Len() == 0
 	default:
-		emptyBody = x == nil
+		emptyBody = body == nil
 	}
 
 	if emptyBody {
-		fmt.Println("Nothing found.")
+		fmt.Println("No data found.")
 		return nil
 	} else if rows == -1 {
 		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, commandName, nil)
@@ -99,26 +91,6 @@ func printTable(body interface{}, tblprinter *tableprinter.Printer, commandName 
 	return nil
 }
 
-func PrintServerResponse(server bmcapi.Server, full bool, commandName string) error {
-	if full {
-		return MainPrinter.PrintOutput(models.ToFullServer(server), false, commandName)
-	} else {
-		return MainPrinter.PrintOutput(models.ToShortServer(server), false, commandName)
-	}
-}
-
-func PrintServerListResponse(servers []bmcapi.Server, full bool, commandName string) error {
-	var serverList []interface{}
-
-	if full {
-		for _, bmcServer := range servers {
-			serverList = append(serverList, models.ToFullServer(bmcServer))
-		}
-	} else {
-		for _, bmcServer := range servers {
-			serverList = append(serverList, models.ToShortServer(bmcServer))
-		}
-	}
-
-	return MainPrinter.PrintOutput(serverList, false, commandName)
+func OutputIsTable() bool {
+	return OutputFormat != "json" && OutputFormat != "yaml"
 }
