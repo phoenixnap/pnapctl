@@ -49,6 +49,53 @@ Usage:
 * `make test-coverage` for test coverage (will output report.xml in test/coverage/).
 * `make test PKG=./commands/create` to restrict test to a package
 
+### Running Tests with TParse
+
+TParse is a command line tool used to summarise a go test output. It is also useful when analysing test coverage. 
+
+Installation and Usage: 
+1. Verify that the bin directory for GO is included in `$PATH`
+2. Install [`tparse`](https://github.com/mfridman/tparse) by running `go install github.com/mfridman/tparse@latest`
+3. Use `go test -json -cover ./... | tparse -all` to run all tests or `go test -json -cover ./commands/get | tparse -all` to run specific tests. 
+
+## Debugging 
+
+Our preferred IDE for developemnt in GO is VS Code. To debug GO we make use of a [Delve](https://github.com/go-delve/delve), which is a debugger for the Go programming language. 
+
+Setup: 
+1. Clone and install Delve
+  ```
+  $ git clone https://github.com/go-delve/delve
+  $ cd delve
+  $ go install github.com/go-delve/delve/cmd/dlv
+
+  ```
+2. In VS Code, create a new debug configuration 
+  * Select the `Run and Debug` button from the Run view or hit the `F5` button to start the debugging mode. 
+  * From the drop down menu next to `Run and Debug` select `Add Configuration...`. A new configuration `.vscode/launch.json` will be created.
+  * Paste the following configuration in `launch.json`:
+  ```
+  {
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Package",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "<reaplace_with_path_to_your_workspace>/pnap-cli/",
+            "env": {},
+            "args": ["get", "servers"],
+            "buildFlags": "-tags dev"            
+        }
+    ]
+  }
+  ```
+
+
 ## Mocks
 
 We are using [`mockgen`](https://github.com/golang/mock), the mock generation tool by `gomock`.
