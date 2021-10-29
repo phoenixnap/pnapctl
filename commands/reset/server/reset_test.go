@@ -1,4 +1,4 @@
-package reset
+package server
 
 import (
 	"encoding/json"
@@ -13,7 +13,6 @@ import (
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
 	"github.com/stretchr/testify/assert"
-	reset "phoenixnap.com/pnap-cli/commands/reset/server"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 )
 
@@ -25,7 +24,7 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverReset)
 
-	reset.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -41,7 +40,7 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -55,7 +54,7 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverReset)
 
-	reset.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -71,7 +70,7 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -79,7 +78,7 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 
 func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
 	// Setup
-	reset.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
@@ -88,7 +87,7 @@ func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
 
 	// Expected command
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
@@ -102,7 +101,7 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 	// filecontents := make([]byte, 10)
 	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
 
-	reset.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -113,7 +112,7 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "reset server", err)
@@ -129,7 +128,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverReset)
 
-	reset.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -145,7 +144,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
@@ -153,7 +152,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 
 func TestResetServerFileReadingFailure(test_framework *testing.T) {
 	// Setup
-	reset.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -166,7 +165,7 @@ func TestResetServerFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "reset server", err)
@@ -182,7 +181,7 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverReset)
 
-	reset.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -198,7 +197,7 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
@@ -214,7 +213,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverReset)
 
-	reset.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -230,7 +229,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "reset server", ctlerrors.ErrorSendingRequest)
@@ -246,7 +245,7 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverReset)
 
-	reset.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -262,7 +261,7 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := reset.ResetServerCmd.RunE(reset.ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.TestKeycloakError, err)

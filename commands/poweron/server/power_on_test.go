@@ -1,4 +1,4 @@
-package poweron
+package server
 
 import (
 	"errors"
@@ -10,7 +10,6 @@ import (
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
 	"github.com/stretchr/testify/assert"
-	poweron "phoenixnap.com/pnap-cli/commands/poweron/server"
 )
 
 func TestPowerOnServerSuccess(test_framework *testing.T) {
@@ -20,7 +19,7 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 		ServerPowerOn(SERVERID).
 		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
-	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
+	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{SERVERID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -31,7 +30,7 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 		ServerPowerOn(SERVERID).
 		Return(bmcapi.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
-	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
+	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{SERVERID})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
@@ -42,7 +41,7 @@ func TestPowerOnServerError(test_framework *testing.T) {
 		ServerPowerOn(SERVERID).
 		Return(bmcapi.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
-	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
+	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{SERVERID})
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
@@ -57,7 +56,7 @@ func TestPowerOnServerKeycloakFailure(test_framework *testing.T) {
 		Return(bmcapi.ActionResult{}, nil, testutil.TestKeycloakError)
 
 	// Run command
-	err := poweron.PowerOnServerCmd.RunE(poweron.PowerOnServerCmd, []string{SERVERID})
+	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{SERVERID})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.TestKeycloakError, err)

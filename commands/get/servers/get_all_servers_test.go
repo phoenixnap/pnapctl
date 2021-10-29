@@ -1,4 +1,4 @@
-package get
+package servers
 
 import (
 	"errors"
@@ -6,7 +6,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
-	"phoenixnap.com/pnap-cli/commands/get/servers"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 	"phoenixnap.com/pnap-cli/tests/generators"
@@ -32,7 +31,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 		PrintOutput(shortServers, "get servers").
 		Return(nil)
 
-	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -57,9 +56,9 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 		Return(nil)
 
 	// to display full output
-	servers.Full = true
+	Full = true
 
-	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -71,7 +70,7 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 		ServersGet().
 		Return([]bmcapi.Server{}, WithResponse(200, nil), testutil.TestError)
 
-	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
 	// Expected error
 	expectedErr := ctlerrors.GenericFailedRequestError(err, "get servers", ctlerrors.ErrorSendingRequest)
@@ -87,7 +86,7 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 		ServersGet().
 		Return(server, nil, testutil.TestKeycloakError)
 
-	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.TestKeycloakError, err)
@@ -110,9 +109,9 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 		PrintOutput(shortServers, "get servers").
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
-	servers.Full = false
+	Full = false
 
-	err := servers.GetServersCmd.RunE(servers.GetServersCmd, []string{})
+	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
 	// Assertions
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)

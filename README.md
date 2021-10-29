@@ -58,6 +58,13 @@ Installation and Usage:
 2. Install [`tparse`](https://github.com/mfridman/tparse) by running `go install github.com/mfridman/tparse@latest`
 3. Use `go test -json -cover ./... | tparse -all` to run all tests or `go test -json -cover ./commands/get | tparse -all` to run specific tests. 
 
+### Showing test coverage information
+
+TParse can show you the total coverage%, but there's a way to find the exact lines being covered.
+
+1. Run `go test ./... -coverprofile cover.out`. This runs all tests and outputs coverage information into `cover.out`.
+2. Run `go tool cover -html=cover.out`. This will use the `cover.out` you just generated to display coverage information in your browser.
+
 ## Debugging 
 
 Our preferred IDE for developemnt in GO is VS Code. To debug GO we make use of a [Delve](https://github.com/go-delve/delve), which is a debugger for the Go programming language. 

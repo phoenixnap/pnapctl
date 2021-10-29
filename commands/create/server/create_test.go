@@ -1,4 +1,4 @@
-package create
+package server
 
 import (
 	"errors"
@@ -8,8 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/tests/generators"
-
-	create "phoenixnap.com/pnap-cli/commands/create/server"
 
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 
@@ -26,7 +24,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// What the server should return.
 	createdServer := generators.GenerateServer()
@@ -45,7 +43,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -58,7 +56,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// What the server should return.
 	createdServer := generators.GenerateServer()
@@ -77,7 +75,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -86,7 +84,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
 
 	// Setup
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
@@ -95,7 +93,7 @@ func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected command
 	expectedErr := ctlerrors.FileNotExistError(FILENAME) // TODO remove this from tests. We should give plain text here, not compare it.
@@ -110,7 +108,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 	// filecontents := make([]byte, 10)
 	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
 
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -121,7 +119,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "create server", err)
@@ -132,7 +130,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 	// Setup
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -145,7 +143,7 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "create server", err)
@@ -161,7 +159,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -177,7 +175,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
@@ -194,7 +192,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -210,7 +208,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected error
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "create server", ctlerrors.ErrorSendingRequest)
@@ -226,7 +224,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -242,7 +240,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.TestKeycloakError, err)
