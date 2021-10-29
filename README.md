@@ -47,6 +47,7 @@ Usage:
 * `make test-verbose` to run tests in verbose mode
 * `make test-race` for race tests
 * `make test-coverage` for test coverage (will output report.xml in test/coverage/).
+* `make test-tparse` to run tests in a pretty format (requires `tparse` to be installed)
 * `make test PKG=./commands/create` to restrict test to a package
 
 ### Running Tests with TParse
