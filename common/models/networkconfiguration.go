@@ -118,3 +118,12 @@ func (n NetworkConfiguration) ToTableString() string {
 		return "Private"
 	}
 }
+
+func NetworkConfigurationToTableString(networkConfiguration *bmcapi.NetworkConfiguration) string {
+	if networkConfiguration == nil {
+		return ""
+	} else {
+		sdkObj := NetworkConfigurationSdkToDto(networkConfiguration)
+		return sdkObj.ToTableString()
+	}
+}

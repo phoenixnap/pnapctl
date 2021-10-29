@@ -68,3 +68,12 @@ func (os OsConfiguration) ToTableString() string {
 		return "Password: " + *os.RootPassword
 	}
 }
+
+func OsConfigurationToTableString(osConfiguration *bmcapi.OsConfiguration) string {
+	if osConfiguration == nil {
+		return ""
+	} else {
+		sdkObj := OsConfigurationSdkToDto(osConfiguration)
+		return sdkObj.ToTableString()
+	}
+}

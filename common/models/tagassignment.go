@@ -72,3 +72,17 @@ func (t TagAssignment) ToTableString() string {
 	}
 	return fmt.Sprintf("(%s) %s%s", t.Id, t.Name, tagValue)
 }
+
+func TagsToTableStrings(tags *[]bmcapi.TagAssignment) []string {
+	var tagStrings []string
+	if tags == nil {
+		tagStrings = []string{}
+	} else {
+		dtoTags := TagAssignmentSdkToDto(tags)
+		for _, tag := range *dtoTags {
+			tagStrings = append(tagStrings, tag.ToTableString())
+		}
+	}
+
+	return tagStrings
+}
