@@ -5,8 +5,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
-	bmcapisdk "phoenixnap.com/pnap-cli/common/client/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
 )
@@ -48,13 +48,13 @@ func getServers(serverID string) error {
 
 	var resp *netHttp.Response
 	var err error
-	var server bmcapi.Server
-	var servers []bmcapi.Server
+	var server bmcapisdk.Server
+	var servers []bmcapisdk.Server
 
 	if serverID == "" {
-		servers, resp, err = bmcapisdk.Client.ServersGet()
+		servers, resp, err = bmcapi.Client.ServersGet()
 	} else {
-		server, resp, err = bmcapisdk.Client.ServerGetById(serverID)
+		server, resp, err = bmcapi.Client.ServerGetById(serverID)
 	}
 
 	if err != nil {

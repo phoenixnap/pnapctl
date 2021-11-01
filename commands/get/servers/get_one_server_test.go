@@ -54,6 +54,18 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestGetServerNotFound(test_framework *testing.T) {
+	PrepareBmcApiMockClient(test_framework).
+		ServerGetById(SERVERID).
+		Return(bmcapi.Server{}, WithResponse(400, nil), nil)
+
+	err := GetServersCmd.RunE(GetServersCmd, []string{SERVERID})
+
+	// Assertions
+	expectedMessage := "Command 'get servers' has been performed, but something went wrong. Error code: 0201"
+	assert.Equal(test_framework, expectedMessage, err.Error())
+}
+
 func TestGetServerClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(SERVERID).
