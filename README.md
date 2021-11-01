@@ -47,6 +47,7 @@ Usage:
 * `make test-verbose` to run tests in verbose mode
 * `make test-race` for race tests
 * `make test-coverage` for test coverage (will output report.xml in test/coverage/).
+* `make test-coverage-show` for showing a GUI with coverage information (will output `cover.out`)
 * `make test-tparse` to run tests in a pretty format (requires `tparse` to be installed)
 * `make test PKG=./commands/create` to restrict test to a package
 
@@ -59,12 +60,16 @@ Installation and Usage:
 2. Install [`tparse`](https://github.com/mfridman/tparse) by running `go install github.com/mfridman/tparse@latest`
 3. Use `go test -json -cover ./... | tparse -all` to run all tests or `go test -json -cover ./commands/get | tparse -all` to run specific tests. 
 
+**NOTE:** You can also run `make test-tparse` as a shortcut, which also works with `PKG`.
+
 ### Showing test coverage information
 
 TParse can show you the total coverage%, but there's a way to find the exact lines being covered.
 
 1. Run `go test ./... -coverprofile cover.out`. This runs all tests and outputs coverage information into `cover.out`.
 2. Run `go tool cover -html=cover.out`. This will use the `cover.out` you just generated to display coverage information in your browser.
+
+**NOTE:** You can also run `make test-coverage-show`, which will run both of the mentioned commands. It works with `PKG` as well.
 
 ## Debugging 
 

@@ -103,7 +103,9 @@ check test tests: ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
 test-tparse: ; $(info $(M) running $(NAME:%=% )tests...) @
 	$Q $(GO) test -vet=off -timeout $(TIMEOUT)s -json -cover $(TESTPKGS) | tparse -all 
 
-.PHONY: test-coverage test-coverage-tools
+.PHONY: test-coverage test-coverage-tools test-coverage-show
+test-coverage-show: ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
+	 $Q $(GO) test -vet=off -coverprofile cover.out $(ARGS) $(TESTPKGS) && go tool cover -html=cover.out
 test-coverage-tools: | $(GO_JUNIT_REPORT)
 test-coverage: COVERAGE_DIR := $(CURDIR)/test/coverage
 test-coverage: test-coverage-tools ; $(info $(M) running coverage tests…) @ ## Run coverage tests
