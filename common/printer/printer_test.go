@@ -7,6 +7,7 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
+	"phoenixnap.com/pnap-cli/tests/generators"
 )
 
 type ExampleStruct1 struct {
@@ -132,6 +133,57 @@ func TestPrintOutputTableFormat(test_framework *testing.T) {
 			assert.Equal(test_framework, tc.expected, outputText)
 		})
 	}
+}
+
+func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	server := generators.GenerateServer()
+	prepared := PrepareServerForPrinting(server, true)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.LongServerTable")
+}
+
+func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	server := generators.GenerateServer()
+	prepared := PrepareServerForPrinting(server, false)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.ShortServerTable")
+}
+
+func TestPrepareServerForPrintingLongServer(test_framework *testing.T) {
+	OutputFormat = "json"
+	server := generators.GenerateServer()
+	prepared := PrepareServerForPrinting(server, true)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "models.LongServer")
+}
+
+func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
+	OutputFormat = "json"
+	server := generators.GenerateServer()
+	prepared := PrepareServerForPrinting(server, false)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "models.ShortServer")
+}
+
+func TestPrepareServerListForPrinting(test_framework *testing.T) {
+	OutputFormat = "json"
+	servers := generators.GenerateServers(1)
+	prepared := PrepareServerListForPrinting(servers, false)
+
+	outputType := fmt.Sprintf("%T", prepared[0])
+
+	assert.Equal(test_framework, outputType, "models.ShortServer")
+	assert.Equal(test_framework, len(prepared), 1)
 }
 
 func ExamplePrintOutputTableFormatEmpty() {
