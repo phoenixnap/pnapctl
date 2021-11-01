@@ -1,7 +1,7 @@
 package models
 
 import (
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 )
 
 type NetworkConfiguration struct {
@@ -22,34 +22,34 @@ type ServerPrivateNetwork struct {
 }
 
 /* DTO to SDK mapping functions*/
-func (networkconfiguration *NetworkConfiguration) toSdk() *bmcapi.NetworkConfiguration {
+func (networkconfiguration *NetworkConfiguration) toSdk() *bmcapisdk.NetworkConfiguration {
 	if networkconfiguration == nil {
 		return nil
 	}
 
-	return &bmcapi.NetworkConfiguration{
+	return &bmcapisdk.NetworkConfiguration{
 		PrivateNetworkConfiguration: networkconfiguration.PrivateNetworkConfiguration.toSdk(),
 	}
 }
 
-func (privateNetConf *PrivateNetworkConfiguration) toSdk() *bmcapi.PrivateNetworkConfiguration {
+func (privateNetConf *PrivateNetworkConfiguration) toSdk() *bmcapisdk.PrivateNetworkConfiguration {
 	if privateNetConf == nil {
 		return nil
 	}
 
-	return &bmcapi.PrivateNetworkConfiguration{
+	return &bmcapisdk.PrivateNetworkConfiguration{
 		GatewayAddress:    privateNetConf.GatewayAddress,
 		ConfigurationType: privateNetConf.ConfigurationType,
 		PrivateNetworks:   mapServerPrivateNetworksToSdk(privateNetConf.PrivateNetworks),
 	}
 }
 
-func mapServerPrivateNetworksToSdk(serverPrivateNetworks *[]ServerPrivateNetwork) *[]bmcapi.ServerPrivateNetwork {
+func mapServerPrivateNetworksToSdk(serverPrivateNetworks *[]ServerPrivateNetwork) *[]bmcapisdk.ServerPrivateNetwork {
 	if serverPrivateNetworks == nil {
 		return nil
 	}
 
-	var bmcServerPrivateNetworks []bmcapi.ServerPrivateNetwork
+	var bmcServerPrivateNetworks []bmcapisdk.ServerPrivateNetwork
 
 	for _, serverPrivateNetwork := range *serverPrivateNetworks {
 		bmcServerPrivateNetworks = append(bmcServerPrivateNetworks, serverPrivateNetwork.toSdk())
@@ -58,8 +58,8 @@ func mapServerPrivateNetworksToSdk(serverPrivateNetworks *[]ServerPrivateNetwork
 	return &bmcServerPrivateNetworks
 }
 
-func (serverPrivateNetwork ServerPrivateNetwork) toSdk() bmcapi.ServerPrivateNetwork {
-	var serverPrivateNetworkSdk = bmcapi.ServerPrivateNetwork{
+func (serverPrivateNetwork ServerPrivateNetwork) toSdk() bmcapisdk.ServerPrivateNetwork {
+	var serverPrivateNetworkSdk = bmcapisdk.ServerPrivateNetwork{
 		Id:                serverPrivateNetwork.Id,
 		Ips:               serverPrivateNetwork.Ips,
 		Dhcp:              serverPrivateNetwork.Dhcp,
@@ -70,7 +70,7 @@ func (serverPrivateNetwork ServerPrivateNetwork) toSdk() bmcapi.ServerPrivateNet
 }
 
 /* SDK to DTO mapping functions */
-func NetworkConfigurationSdkToDto(networkConf *bmcapi.NetworkConfiguration) *NetworkConfiguration {
+func NetworkConfigurationSdkToDto(networkConf *bmcapisdk.NetworkConfiguration) *NetworkConfiguration {
 	if networkConf == nil {
 		return nil
 	}
@@ -80,7 +80,7 @@ func NetworkConfigurationSdkToDto(networkConf *bmcapi.NetworkConfiguration) *Net
 	}
 }
 
-func privateNetworkConfigurationSdkToDto(privateNetworkConfnfiguration *bmcapi.PrivateNetworkConfiguration) *PrivateNetworkConfiguration {
+func privateNetworkConfigurationSdkToDto(privateNetworkConfnfiguration *bmcapisdk.PrivateNetworkConfiguration) *PrivateNetworkConfiguration {
 	if privateNetworkConfnfiguration == nil {
 		return nil
 	}
@@ -92,7 +92,7 @@ func privateNetworkConfigurationSdkToDto(privateNetworkConfnfiguration *bmcapi.P
 	}
 }
 
-func privateNetworksSdkToDto(privateNetworks *[]bmcapi.ServerPrivateNetwork) *[]ServerPrivateNetwork {
+func privateNetworksSdkToDto(privateNetworks *[]bmcapisdk.ServerPrivateNetwork) *[]ServerPrivateNetwork {
 	if privateNetworks == nil {
 		return nil
 	}
@@ -119,7 +119,7 @@ func (n NetworkConfiguration) ToTableString() string {
 	}
 }
 
-func NetworkConfigurationToTableString(networkConfiguration *bmcapi.NetworkConfiguration) string {
+func NetworkConfigurationToTableString(networkConfiguration *bmcapisdk.NetworkConfiguration) string {
 	if networkConfiguration == nil {
 		return ""
 	} else {

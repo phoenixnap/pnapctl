@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 
 	"gopkg.in/yaml.v2"
@@ -133,7 +133,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(SERVERID, serverReset).
-		Return(bmcapi.ResetResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil).
+		Return(bmcapisdk.ResetResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -186,7 +186,7 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(SERVERID, serverReset).
-		Return(bmcapi.ResetResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(bmcapisdk.ResetResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -218,7 +218,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(SERVERID, serverReset).
-		Return(bmcapi.ResetResult{}, nil, testutil.TestError).
+		Return(bmcapisdk.ResetResult{}, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -250,7 +250,7 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(SERVERID, serverReset).
-		Return(bmcapi.ResetResult{}, nil, testutil.TestKeycloakError).
+		Return(bmcapisdk.ResetResult{}, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

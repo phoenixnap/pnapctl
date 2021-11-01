@@ -1,7 +1,7 @@
 package tables
 
 import (
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/models"
 )
 
@@ -41,7 +41,7 @@ type ShortServerTable struct {
 	PublicIPAddresses  []string `header:"Public Ips"`
 }
 
-func ToShortServerTable(server bmcapi.Server) ShortServerTable {
+func ToShortServerTable(server bmcapisdk.Server) ShortServerTable {
 
 	return ShortServerTable{
 		ID:                 server.Id,
@@ -53,7 +53,7 @@ func ToShortServerTable(server bmcapi.Server) ShortServerTable {
 	}
 }
 
-func ToLongServerTable(server bmcapi.Server) LongServerTable {
+func ToLongServerTable(server bmcapisdk.Server) LongServerTable {
 	return LongServerTable{
 		Id:                   server.Id,
 		Status:               server.Status,

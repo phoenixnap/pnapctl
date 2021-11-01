@@ -1,6 +1,8 @@
 package models
 
-import "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+import (
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+)
 
 type OsConfigurationMap struct {
 	Windows *OsConfigurationWindows `json:"windows,omitempty"`
@@ -13,23 +15,23 @@ type OsConfigurationMapEsxi struct {
 	ManagementAccessAllowedIps *[]string `json:"managementAccessAllowedIps,omitempty"`
 }
 
-func OsConfigurationMapToSDK(osConfMap *OsConfigurationMap) *bmcapi.OsConfigurationMap {
+func OsConfigurationMapToSDK(osConfMap *OsConfigurationMap) *bmcapisdk.OsConfigurationMap {
 	if osConfMap == nil {
 		return nil
 	}
 
-	return &bmcapi.OsConfigurationMap{
+	return &bmcapisdk.OsConfigurationMap{
 		Windows: osConfMap.Windows.toSdk(),
 		Esxi:    osConfMap.Esxi.toSdk(),
 	}
 }
 
-func (osConfExsi *OsConfigurationMapEsxi) toSdk() *bmcapi.OsConfigurationMapEsxi {
+func (osConfExsi *OsConfigurationMapEsxi) toSdk() *bmcapisdk.OsConfigurationMapEsxi {
 	if osConfExsi == nil {
 		return nil
 	}
 
-	return &bmcapi.OsConfigurationMapEsxi{
+	return &bmcapisdk.OsConfigurationMapEsxi{
 		RootPassword:               osConfExsi.RootPassword,
 		ManagementUiUrl:            osConfExsi.ManagementUiUrl,
 		ManagementAccessAllowedIps: osConfExsi.ManagementAccessAllowedIps,

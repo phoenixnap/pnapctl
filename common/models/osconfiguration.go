@@ -1,7 +1,7 @@
 package models
 
 import (
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 )
 
 type OsConfiguration struct {
@@ -15,12 +15,12 @@ type OsConfigurationWindows struct {
 	RdpAllowedIps *[]string `yaml:"rdpAllowedIps,omitempty" json:"rdpAllowedIps,omitempty"`
 }
 
-func (osConfiguration *OsConfiguration) toSdk() *bmcapi.OsConfiguration {
+func (osConfiguration *OsConfiguration) toSdk() *bmcapisdk.OsConfiguration {
 	if osConfiguration == nil {
 		return nil
 	}
 
-	return &bmcapi.OsConfiguration{
+	return &bmcapisdk.OsConfiguration{
 		Windows:                    osConfiguration.Windows.toSdk(),
 		RootPassword:               osConfiguration.RootPassword,
 		ManagementUiUrl:            osConfiguration.ManagementUiUrl,
@@ -28,17 +28,17 @@ func (osConfiguration *OsConfiguration) toSdk() *bmcapi.OsConfiguration {
 	}
 }
 
-func (osConfigurationWindows *OsConfigurationWindows) toSdk() *bmcapi.OsConfigurationWindows {
+func (osConfigurationWindows *OsConfigurationWindows) toSdk() *bmcapisdk.OsConfigurationWindows {
 	if osConfigurationWindows == nil {
 		return nil
 	}
 
-	return &bmcapi.OsConfigurationWindows{
+	return &bmcapisdk.OsConfigurationWindows{
 		RdpAllowedIps: osConfigurationWindows.RdpAllowedIps,
 	}
 }
 
-func OsConfigurationSdkToDto(osConfiguration *bmcapi.OsConfiguration) *OsConfiguration {
+func OsConfigurationSdkToDto(osConfiguration *bmcapisdk.OsConfiguration) *OsConfiguration {
 	if osConfiguration == nil {
 		return nil
 	}
@@ -51,7 +51,7 @@ func OsConfigurationSdkToDto(osConfiguration *bmcapi.OsConfiguration) *OsConfigu
 	}
 }
 
-func osConfigurationWindowsSdkToDto(osConfigurationWindows *bmcapi.OsConfigurationWindows) *OsConfigurationWindows {
+func osConfigurationWindowsSdkToDto(osConfigurationWindows *bmcapisdk.OsConfigurationWindows) *OsConfigurationWindows {
 	if osConfigurationWindows == nil {
 		return nil
 	}
@@ -69,7 +69,7 @@ func (os OsConfiguration) ToTableString() string {
 	}
 }
 
-func OsConfigurationToTableString(osConfiguration *bmcapi.OsConfiguration) string {
+func OsConfigurationToTableString(osConfiguration *bmcapisdk.OsConfiguration) string {
 	if osConfiguration == nil {
 		return ""
 	} else {

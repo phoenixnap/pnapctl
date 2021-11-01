@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 	"phoenixnap.com/pnap-cli/tests/generators"
@@ -57,7 +57,7 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 func TestGetServerNotFound(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(SERVERID).
-		Return(bmcapi.Server{}, WithResponse(400, nil), nil)
+		Return(bmcapisdk.Server{}, WithResponse(400, nil), nil)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{SERVERID})
 
@@ -69,7 +69,7 @@ func TestGetServerNotFound(test_framework *testing.T) {
 func TestGetServerClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(SERVERID).
-		Return(bmcapi.Server{}, nil, testutil.TestError)
+		Return(bmcapisdk.Server{}, nil, testutil.TestError)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{SERVERID})
 
@@ -83,7 +83,7 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 func TestGetServerKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(SERVERID).
-		Return(bmcapi.Server{}, nil, testutil.TestKeycloakError)
+		Return(bmcapisdk.Server{}, nil, testutil.TestKeycloakError)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{SERVERID})
 

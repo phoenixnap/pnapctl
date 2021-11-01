@@ -1,7 +1,7 @@
 package models
 
 import (
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	files "phoenixnap.com/pnap-cli/common/fileprocessor"
 )
 
@@ -22,7 +22,7 @@ type ServerCreate struct {
 	NetworkConfiguration  *NetworkConfiguration   `yaml:"networkConfiguration,omitempty" json:"networkConfiguration,omitempty"`
 }
 
-func CreateServerRequestFromFile(filename string, commandname string) (*bmcapi.ServerCreate, error) {
+func CreateServerRequestFromFile(filename string, commandname string) (*bmcapisdk.ServerCreate, error) {
 	files.ExpandPath(&filename)
 
 	data, err := files.ReadFile(filename, commandname)
@@ -43,8 +43,8 @@ func CreateServerRequestFromFile(filename string, commandname string) (*bmcapi.S
 	return serverCreate.ToSdk(), nil
 }
 
-func (serverCreate ServerCreate) ToSdk() *bmcapi.ServerCreate {
-	return &bmcapi.ServerCreate{
+func (serverCreate ServerCreate) ToSdk() *bmcapisdk.ServerCreate {
+	return &bmcapisdk.ServerCreate{
 		Hostname:              serverCreate.Hostname,
 		Description:           serverCreate.Description,
 		Os:                    serverCreate.Os,

@@ -1,22 +1,22 @@
 package printer
 
 import (
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/models"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 )
 
-func PrintServerResponse(server bmcapi.Server, full bool, commandName string) error {
+func PrintServerResponse(server bmcapisdk.Server, full bool, commandName string) error {
 	serverToPrint := PrepareServerForPrinting(server, full)
 	return MainPrinter.PrintOutput(serverToPrint, commandName)
 }
 
-func PrintServerListResponse(servers []bmcapi.Server, full bool, commandName string) error {
+func PrintServerListResponse(servers []bmcapisdk.Server, full bool, commandName string) error {
 	serverListToPrint := PrepareServerListForPrinting(servers, full)
 	return MainPrinter.PrintOutput(serverListToPrint, commandName)
 }
 
-func PrepareServerForPrinting(server bmcapi.Server, full bool) interface{} {
+func PrepareServerForPrinting(server bmcapisdk.Server, full bool) interface{} {
 	table := OutputIsTable()
 
 	switch {
@@ -31,7 +31,7 @@ func PrepareServerForPrinting(server bmcapi.Server, full bool) interface{} {
 	}
 }
 
-func PrepareServerListForPrinting(servers []bmcapi.Server, full bool) []interface{} {
+func PrepareServerListForPrinting(servers []bmcapisdk.Server, full bool) []interface{} {
 	var serverList []interface{}
 
 	for _, bmcServer := range servers {

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
@@ -28,7 +28,7 @@ func TestDeleteServerNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDelete(SERVERID).
-		Return(bmcapi.DeleteResult{}, WithResponse(404, nil), nil)
+		Return(bmcapisdk.DeleteResult{}, WithResponse(404, nil), nil)
 
 	// Run command
 	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{SERVERID})
@@ -43,7 +43,7 @@ func TestDeleteServerError(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDelete(SERVERID).
-		Return(bmcapi.DeleteResult{}, WithResponse(500, nil), nil)
+		Return(bmcapisdk.DeleteResult{}, WithResponse(500, nil), nil)
 
 	// Run command
 	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{SERVERID})
@@ -58,7 +58,7 @@ func TestDeleteServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDelete(SERVERID).
-		Return(bmcapi.DeleteResult{}, nil, testutil.TestError)
+		Return(bmcapisdk.DeleteResult{}, nil, testutil.TestError)
 
 	// Run command
 	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{SERVERID})
@@ -74,7 +74,7 @@ func TestDeleteServerKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDelete(SERVERID).
-		Return(bmcapi.DeleteResult{}, nil, testutil.TestKeycloakError)
+		Return(bmcapisdk.DeleteResult{}, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{SERVERID})

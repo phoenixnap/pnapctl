@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/tests/generators"
 
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
@@ -164,7 +164,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
-		Return(bmcapi.Server{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(bmcapisdk.Server{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -197,7 +197,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
-		Return(bmcapi.Server{}, nil, testutil.TestError).
+		Return(bmcapisdk.Server{}, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -229,7 +229,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
-		Return(bmcapi.Server{}, nil, testutil.TestKeycloakError).
+		Return(bmcapisdk.Server{}, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

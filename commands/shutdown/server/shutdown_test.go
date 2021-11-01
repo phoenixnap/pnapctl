@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
@@ -28,7 +28,7 @@ func TestShutdownServerSuccess(test_framework *testing.T) {
 func TestShutdownServerNotFound(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerShutdown(SERVERID).
-		Return(bmcapi.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+		Return(bmcapisdk.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := ShutdownCmd.RunE(ShutdownCmd, []string{SERVERID})
@@ -40,7 +40,7 @@ func TestShutdownServerNotFound(test_framework *testing.T) {
 func TestShutdownServerError(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerShutdown(SERVERID).
-		Return(bmcapi.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+		Return(bmcapisdk.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := ShutdownCmd.RunE(ShutdownCmd, []string{SERVERID})
@@ -55,7 +55,7 @@ func TestShutdownServerError(test_framework *testing.T) {
 func TestShutdownServerClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerShutdown(SERVERID).
-		Return(bmcapi.ActionResult{}, nil, testutil.TestError)
+		Return(bmcapisdk.ActionResult{}, nil, testutil.TestError)
 
 	// Run command
 	err := ShutdownCmd.RunE(ShutdownCmd, []string{SERVERID})
@@ -70,7 +70,7 @@ func TestShutdownServerClientFailure(test_framework *testing.T) {
 func TestShutdownServerKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerShutdown(SERVERID).
-		Return(bmcapi.ActionResult{}, nil, testutil.TestKeycloakError)
+		Return(bmcapisdk.ActionResult{}, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := ShutdownCmd.RunE(ShutdownCmd, []string{SERVERID})

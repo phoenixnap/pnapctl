@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 	"phoenixnap.com/pnap-cli/tests/generators"
@@ -68,7 +68,7 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersGet().
-		Return([]bmcapi.Server{}, WithResponse(200, nil), testutil.TestError)
+		Return([]bmcapisdk.Server{}, WithResponse(200, nil), testutil.TestError)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
@@ -80,7 +80,7 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
-	server := []bmcapi.Server{generators.GenerateServer()}
+	server := []bmcapisdk.Server{generators.GenerateServer()}
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersGet().

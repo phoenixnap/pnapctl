@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
@@ -31,7 +31,7 @@ func TestPowerOffServerSuccess(test_framework *testing.T) {
 func TestPowerOffServerNotFound(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(SERVERID).
-		Return(bmcapi.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+		Return(bmcapisdk.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := PowerOffServerCmd.RunE(PowerOffServerCmd, []string{SERVERID})
@@ -43,7 +43,7 @@ func TestPowerOffServerNotFound(test_framework *testing.T) {
 func TestPowerOffServerError(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(SERVERID).
-		Return(bmcapi.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+		Return(bmcapisdk.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := PowerOffServerCmd.RunE(PowerOffServerCmd, []string{SERVERID})
@@ -58,7 +58,7 @@ func TestPowerOffServerError(test_framework *testing.T) {
 func TestPowerOffServerClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(SERVERID).
-		Return(bmcapi.ActionResult{}, nil, testutil.TestError)
+		Return(bmcapisdk.ActionResult{}, nil, testutil.TestError)
 
 	// Run command
 	err := PowerOffServerCmd.RunE(PowerOffServerCmd, []string{SERVERID})
@@ -73,7 +73,7 @@ func TestPowerOffServerClientFailure(test_framework *testing.T) {
 func TestPowerOffServerKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(SERVERID).
-		Return(bmcapi.ActionResult{}, nil, testutil.TestKeycloakError)
+		Return(bmcapisdk.ActionResult{}, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := PowerOffServerCmd.RunE(PowerOffServerCmd, []string{SERVERID})

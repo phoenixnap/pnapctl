@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 )
 
 type LongServer struct {
@@ -42,7 +42,7 @@ type ShortServer struct {
 	PublicIPAddresses  []string `yaml:"publicIpAddresses" json:"publicIpAddresses"`
 }
 
-func ToShortServer(server bmcapi.Server) ShortServer {
+func ToShortServer(server bmcapisdk.Server) ShortServer {
 	return ShortServer{
 		ID:                 server.Id,
 		Status:             server.Status,
@@ -53,7 +53,7 @@ func ToShortServer(server bmcapi.Server) ShortServer {
 	}
 }
 
-func ToFullServer(server bmcapi.Server) LongServer {
+func ToFullServer(server bmcapisdk.Server) LongServer {
 	return LongServer{
 		Id:                   server.Id,
 		Status:               server.Status,

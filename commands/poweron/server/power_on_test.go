@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
@@ -28,7 +28,7 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 func TestPowerOnServerNotFound(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOn(SERVERID).
-		Return(bmcapi.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+		Return(bmcapisdk.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{SERVERID})
 
@@ -39,7 +39,7 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 func TestPowerOnServerError(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOn(SERVERID).
-		Return(bmcapi.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+		Return(bmcapisdk.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{SERVERID})
 
@@ -53,7 +53,7 @@ func TestPowerOnServerError(test_framework *testing.T) {
 func TestPowerOnServerKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOn(SERVERID).
-		Return(bmcapi.ActionResult{}, nil, testutil.TestKeycloakError)
+		Return(bmcapisdk.ActionResult{}, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{SERVERID})

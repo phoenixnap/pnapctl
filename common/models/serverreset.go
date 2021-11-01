@@ -1,7 +1,7 @@
 package models
 
 import (
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	files "phoenixnap.com/pnap-cli/common/fileprocessor"
 )
 
@@ -12,7 +12,7 @@ type ServerReset struct {
 	OsConfiguration       *OsConfigurationMap `json:"osConfiguration,omitempty"`
 }
 
-func CreateResetRequestFromFile(filename string, commandname string) (*bmcapi.ServerReset, error) {
+func CreateResetRequestFromFile(filename string, commandname string) (*bmcapisdk.ServerReset, error) {
 	files.ExpandPath(&filename)
 	data, err := files.ReadFile(filename, commandname)
 
@@ -32,12 +32,12 @@ func CreateResetRequestFromFile(filename string, commandname string) (*bmcapi.Se
 	return ServerResetToSDK(&serverReset), nil
 }
 
-func ServerResetToSDK(resetRequest *ServerReset) *bmcapi.ServerReset {
+func ServerResetToSDK(resetRequest *ServerReset) *bmcapisdk.ServerReset {
 	if resetRequest == nil {
 		return nil
 	}
 
-	return &bmcapi.ServerReset{
+	return &bmcapisdk.ServerReset{
 		InstallDefaultSshKeys: resetRequest.InstallDefaultSshKeys,
 		SshKeys:               resetRequest.SshKeys,
 		SshKeyIds:             resetRequest.SshKeyIds,

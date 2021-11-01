@@ -3,7 +3,7 @@ package models
 import (
 	"fmt"
 
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 )
 
 type TagAssignmentRequest struct {
@@ -18,12 +18,12 @@ type TagAssignment struct {
 	IsBillingTag bool    `yaml:"isBillingTag" json:"isBillingTag"`
 }
 
-func mapTagAssignmentRequestToSdk(tagAssignmentRequest *[]TagAssignmentRequest) *[]bmcapi.TagAssignmentRequest {
+func mapTagAssignmentRequestToSdk(tagAssignmentRequest *[]TagAssignmentRequest) *[]bmcapisdk.TagAssignmentRequest {
 	if tagAssignmentRequest == nil {
 		return nil
 	}
 
-	var tagAssignmentRequests []bmcapi.TagAssignmentRequest
+	var tagAssignmentRequests []bmcapisdk.TagAssignmentRequest
 
 	for _, tagAssignmentRequest := range *tagAssignmentRequest {
 		tagAssignmentRequests = append(tagAssignmentRequests, tagAssignmentRequest.toSdk())
@@ -32,8 +32,8 @@ func mapTagAssignmentRequestToSdk(tagAssignmentRequest *[]TagAssignmentRequest) 
 	return &tagAssignmentRequests
 }
 
-func (tagAssignmentRequest TagAssignmentRequest) toSdk() bmcapi.TagAssignmentRequest {
-	var tagAssignmentRequestSdk = bmcapi.TagAssignmentRequest{
+func (tagAssignmentRequest TagAssignmentRequest) toSdk() bmcapisdk.TagAssignmentRequest {
+	var tagAssignmentRequestSdk = bmcapisdk.TagAssignmentRequest{
 		Name:  tagAssignmentRequest.Name,
 		Value: tagAssignmentRequest.Value,
 	}
@@ -41,7 +41,7 @@ func (tagAssignmentRequest TagAssignmentRequest) toSdk() bmcapi.TagAssignmentReq
 	return tagAssignmentRequestSdk
 }
 
-func TagAssignmentSdkToDto(tagAssignment *[]bmcapi.TagAssignment) *[]TagAssignment {
+func TagAssignmentSdkToDto(tagAssignment *[]bmcapisdk.TagAssignment) *[]TagAssignment {
 	if tagAssignment == nil {
 		return nil
 	}
@@ -73,7 +73,7 @@ func (t TagAssignment) ToTableString() string {
 	return fmt.Sprintf("(%s) %s%s", t.Id, t.Name, tagValue)
 }
 
-func TagsToTableStrings(tags *[]bmcapi.TagAssignment) []string {
+func TagsToTableStrings(tags *[]bmcapisdk.TagAssignment) []string {
 	var tagStrings []string
 	if tags == nil {
 		tagStrings = []string{}

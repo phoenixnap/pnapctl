@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
@@ -29,7 +29,7 @@ func TestRebootServerSuccess(test_framework *testing.T) {
 func TestRebootServerClientFail(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(SERVERID).
-		Return(bmcapi.ActionResult{}, nil, testutil.TestError)
+		Return(bmcapisdk.ActionResult{}, nil, testutil.TestError)
 
 	err := RebootCmd.RunE(RebootCmd, []string{SERVERID})
 
@@ -43,7 +43,7 @@ func TestRebootServerClientFail(test_framework *testing.T) {
 func TestRebootServerKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(SERVERID).
-		Return(bmcapi.ActionResult{}, nil, testutil.TestKeycloakError)
+		Return(bmcapisdk.ActionResult{}, nil, testutil.TestKeycloakError)
 
 	err := RebootCmd.RunE(RebootCmd, []string{SERVERID})
 
@@ -54,7 +54,7 @@ func TestRebootServerKeycloakFailure(test_framework *testing.T) {
 func TestRebootServerNotFoundFail(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(SERVERID).
-		Return(bmcapi.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+		Return(bmcapisdk.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	err := RebootCmd.RunE(RebootCmd, []string{SERVERID})
 
@@ -65,7 +65,7 @@ func TestRebootServerNotFoundFail(test_framework *testing.T) {
 func TestRebootServerErrorFail(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(SERVERID).
-		Return(bmcapi.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+		Return(bmcapisdk.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	err := RebootCmd.RunE(RebootCmd, []string{SERVERID})
 
