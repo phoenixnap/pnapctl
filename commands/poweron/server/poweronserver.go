@@ -19,13 +19,13 @@ var PowerOnServerCmd = &cobra.Command{
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		result, response, err := bmcapi.Client.ServerPowerOn(args[0])
+		result, httpResponse, err := bmcapi.Client.ServerPowerOn(args[0])
 
 		if err != nil {
 			// TODO - Process error from SDK in ctlerrors.
 			return err
-		} else if response.StatusCode != 200 {
-			return ctlerrors.HandleBMCError(response, commandName)
+		} else if httpResponse.StatusCode != 200 {
+			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		}
 
 		fmt.Println(result.Result)

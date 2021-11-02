@@ -45,15 +45,15 @@ sshKeys:
 		}
 
 		// Create the server
-		response, r, err := bmcapi.Client.ServersPost(*serverCreate)
+		response, httpResponse, err := bmcapi.Client.ServersPost(*serverCreate)
 
 		if err != nil {
 			// TODO - Validate way of processing errors.
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if r.StatusCode == 200 {
+		} else if httpResponse.StatusCode == 200 {
 			return printer.PrintServerResponse(response, false, commandName)
 		} else {
-			return ctlerrors.HandleBMCError(r, commandName)
+			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		}
 	},
 }

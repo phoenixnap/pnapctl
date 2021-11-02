@@ -46,27 +46,27 @@ pnapctl get servers NDIid939dfkoDd -o yaml --full`,
 func getServers(serverID string) error {
 	log.Debug("Getting servers...")
 
-	var resp *netHttp.Response
+	var httpResponse *netHttp.Response
 	var err error
 	var server bmcapisdk.Server
 	var servers []bmcapisdk.Server
 
 	if serverID == "" {
-		servers, resp, err = bmcapi.Client.ServersGet()
+		servers, httpResponse, err = bmcapi.Client.ServersGet()
 	} else {
-		server, resp, err = bmcapi.Client.ServerGetById(serverID)
+		server, httpResponse, err = bmcapi.Client.ServerGetById(serverID)
 	}
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if resp.StatusCode == 200 {
+	} else if httpResponse.StatusCode == 200 {
 		if serverID == "" {
 			return printer.PrintServerListResponse(servers, Full, commandName)
 		} else {
 			return printer.PrintServerResponse(server, Full, commandName)
 		}
 	} else {
-		return ctlerrors.HandleBMCError(resp, commandName)
+		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	}
 }
 

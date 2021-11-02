@@ -38,13 +38,13 @@ sshKeys:
 			return err
 		}
 
-		result, resp, err := bmcapi.Client.ServerReset(args[0], *resetRequest)
+		result, httpResponse, err := bmcapi.Client.ServerReset(args[0], *resetRequest)
 
 		if err != nil {
 			// TODO - Process error from SDK in ctlerrors.
 			return err
-		} else if resp.StatusCode != 200 {
-			return ctlerrors.HandleBMCError(resp, commandName)
+		} else if httpResponse.StatusCode != 200 {
+			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		}
 
 		fmt.Println(result.Result)
