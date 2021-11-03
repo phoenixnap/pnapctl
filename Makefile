@@ -91,7 +91,7 @@ COVERAGE_MODE    = atomic
 COVERAGE_PROFILE = $(COVERAGE_DIR)/profile.out
 
 TEST_TARGETS := test-default test-bench test-short test-verbose test-race
-.PHONY: $(TEST_TARGETS) test-xml check test tests
+.PHONY: $(TEST_TARGETS) test-xml check test tests test-tparse
 test-bench:   ARGS=-run=__absolutelynothing__ -bench=. ## Run benchmarks
 test-short:   ARGS=-short        ## Run only short tests
 test-verbose: ARGS=-v            ## Run tests in verbose mode with coverage reporting
@@ -100,8 +100,12 @@ $(TEST_TARGETS): NAME=$(MAKECMDGOALS:test-%=%)
 $(TEST_TARGETS): test
 check test tests: ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
 	$Q $(GO) test -vet=off -timeout $(TIMEOUT)s $(ARGS) $(TESTPKGS)
+test-tparse: ; $(info $(M) running $(NAME:%=% )tests...) @
+	$Q $(GO) test -vet=off -timeout $(TIMEOUT)s -json -cover $(TESTPKGS) | tparse -all 
 
-.PHONY: test-coverage test-coverage-tools
+.PHONY: test-coverage test-coverage-tools test-coverage-show
+test-coverage-show: ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
+	 $Q $(GO) test -vet=off -coverprofile cover.out $(ARGS) $(TESTPKGS) && go tool cover -html=cover.out && rm cover.out
 test-coverage-tools: | $(GO_JUNIT_REPORT)
 test-coverage: COVERAGE_DIR := $(CURDIR)/test/coverage
 test-coverage: test-coverage-tools ; $(info $(M) running coverage tests…) @ ## Run coverage tests

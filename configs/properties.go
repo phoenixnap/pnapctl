@@ -1,10 +1,11 @@
+//go:build !dev
 // +build !dev
 
 package configuration
 
 const (
-	// Hostname represents the URL entrypoint of our application
-	Hostname = "https://api.phoenixnap.com/bmc/v1beta/"
+	// Hostname represents the URL entrypoint of our application. By default SDK points to prod
+	Hostname = ""
 	// TokenURL represents the URL of the OpenID Connect provider from where we can retrieve a token
 	TokenURL = "https://auth.phoenixnap.com/auth/realms/BMC/protocol/openid-connect/token"
 	// KnowledgeBaseURL represents the URL of the public knowledge base for pnapCTL

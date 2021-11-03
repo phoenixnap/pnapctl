@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"reflect"
 
 	"github.com/landoop/tableprinter"
 	"gopkg.in/yaml.v2"
@@ -18,7 +19,7 @@ var MainPrinter = NewBodyPrinter()
 var OutputFormat string
 
 type Printer interface {
-	PrintOutput(construct interface{}, isEmpty bool, commandName string) error
+	PrintOutput(construct interface{}, commandName string) error
 }
 
 type BodyPrinter struct {
@@ -33,20 +34,13 @@ func NewBodyPrinter() Printer {
 
 // PrintOutput prints the construct passed according to the format.
 // The output parameter specifies whether any errors were encountered during printing
-func (m BodyPrinter) PrintOutput(construct interface{}, isEmpty bool, commandName string) error {
+func (m BodyPrinter) PrintOutput(construct interface{}, commandName string) error {
 	if OutputFormat == "json" {
 		return printJSON(construct, commandName)
 	} else if OutputFormat == "yaml" {
 		return printYAML(construct, commandName)
 	} else {
-		if isEmpty {
-			// We cannot print a table if we don't have at least the headers.
-			fmt.Println("No data found")
-			return nil
-		} else {
-			// default to table
-			return printTable(construct, m.Tableprinter, commandName)
-		}
+		return printTable(construct, m.Tableprinter, commandName)
 	}
 }
 
@@ -77,9 +71,26 @@ func printTable(body interface{}, tblprinter *tableprinter.Printer, commandName 
 	tblprinter.RowCharLimit = 23
 	rows := tblprinter.Print(body)
 
-	if rows == -1 {
+	emptyBody := false
+
+	switch reflect.TypeOf(body).Kind() {
+	case reflect.Slice:
+		list := reflect.ValueOf(body)
+		emptyBody = list.Len() == 0
+	default:
+		emptyBody = body == nil
+	}
+
+	if emptyBody {
+		fmt.Println("No data found.")
+		return nil
+	} else if rows == -1 {
 		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, commandName, nil)
 	}
 
 	return nil
+}
+
+func OutputIsTable() bool {
+	return OutputFormat != "json" && OutputFormat != "yaml"
 }
