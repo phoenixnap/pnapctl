@@ -2,7 +2,7 @@ package tables
 
 import (
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
-	"phoenixnap.com/pnap-cli/common/models"
+	models "phoenixnap.com/pnap-cli/common/models"
 )
 
 type LongServerTable struct {

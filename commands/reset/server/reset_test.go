@@ -28,7 +28,7 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(resetResult, WithResponse(200, WithBody(resetResult)), nil).
 		Times(1)
 
@@ -40,7 +40,7 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -58,7 +58,7 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(resetResult, WithResponse(200, WithBody(resetResult)), nil).
 		Times(1)
 
@@ -70,7 +70,7 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -87,7 +87,7 @@ func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Expected command
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
@@ -112,7 +112,7 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "reset server", err)
@@ -132,7 +132,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(bmcapisdk.ResetResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -144,7 +144,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
@@ -165,7 +165,7 @@ func TestResetServerFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "reset server", err)
@@ -185,7 +185,7 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(bmcapisdk.ResetResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -197,7 +197,7 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
@@ -217,7 +217,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(bmcapisdk.ResetResult{}, nil, testutil.TestError).
 		Times(1)
 
@@ -229,7 +229,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "reset server", ctlerrors.ErrorSendingRequest)
@@ -249,7 +249,7 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(bmcapisdk.ResetResult{}, nil, testutil.TestKeycloakError).
 		Times(1)
 
@@ -261,7 +261,7 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.TestKeycloakError, err)

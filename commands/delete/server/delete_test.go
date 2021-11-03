@@ -14,11 +14,11 @@ import (
 func TestDeleteServerSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerDelete(SERVERID).
+		ServerDelete(RESOURCEID).
 		Return(generators.GenerateDeleteResult(), WithResponse(200, nil), nil)
 
 	// Run command
-	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{SERVERID})
+	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -27,11 +27,11 @@ func TestDeleteServerSuccess(test_framework *testing.T) {
 func TestDeleteServerNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerDelete(SERVERID).
+		ServerDelete(RESOURCEID).
 		Return(bmcapisdk.DeleteResult{}, WithResponse(404, nil), nil)
 
 	// Run command
-	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{SERVERID})
+	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	expectedMessage := "Command 'delete server' has been performed, but something went wrong. Error code: 0201"
@@ -42,11 +42,11 @@ func TestDeleteServerNotFound(test_framework *testing.T) {
 func TestDeleteServerError(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerDelete(SERVERID).
+		ServerDelete(RESOURCEID).
 		Return(bmcapisdk.DeleteResult{}, WithResponse(500, nil), nil)
 
 	// Run command
-	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{SERVERID})
+	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})
 
 	expectedMessage := "Command 'delete server' has been performed, but something went wrong. Error code: 0201"
 
@@ -57,11 +57,11 @@ func TestDeleteServerError(test_framework *testing.T) {
 func TestDeleteServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerDelete(SERVERID).
+		ServerDelete(RESOURCEID).
 		Return(bmcapisdk.DeleteResult{}, nil, testutil.TestError)
 
 	// Run command
-	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{SERVERID})
+	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "delete server", ctlerrors.ErrorSendingRequest)
@@ -73,11 +73,11 @@ func TestDeleteServerClientFailure(test_framework *testing.T) {
 func TestDeleteServerKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerDelete(SERVERID).
+		ServerDelete(RESOURCEID).
 		Return(bmcapisdk.DeleteResult{}, nil, testutil.TestKeycloakError)
 
 	// Run command
-	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{SERVERID})
+	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.TestKeycloakError, err)

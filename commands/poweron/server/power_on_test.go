@@ -16,10 +16,10 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 	actionResult := generators.GenerateActionResult()
 
 	PrepareBmcApiMockClient(test_framework).
-		ServerPowerOn(SERVERID).
+		ServerPowerOn(RESOURCEID).
 		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
-	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{SERVERID})
+	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -27,10 +27,10 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 
 func TestPowerOnServerNotFound(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
-		ServerPowerOn(SERVERID).
+		ServerPowerOn(RESOURCEID).
 		Return(bmcapisdk.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
-	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{SERVERID})
+	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
@@ -38,10 +38,10 @@ func TestPowerOnServerNotFound(test_framework *testing.T) {
 
 func TestPowerOnServerError(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
-		ServerPowerOn(SERVERID).
+		ServerPowerOn(RESOURCEID).
 		Return(bmcapisdk.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
-	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{SERVERID})
+	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
@@ -52,11 +52,11 @@ func TestPowerOnServerError(test_framework *testing.T) {
 
 func TestPowerOnServerKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
-		ServerPowerOn(SERVERID).
+		ServerPowerOn(RESOURCEID).
 		Return(bmcapisdk.ActionResult{}, nil, testutil.TestKeycloakError)
 
 	// Run command
-	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{SERVERID})
+	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.TestKeycloakError, err)
