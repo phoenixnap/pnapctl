@@ -1,0 +1,15 @@
+{
+    "hostname": "dev-test-server",
+    "os": "ubuntu/bionic",
+    "type": "s1.c1.small",
+    "location": "PHX",
+    "sshKeys": [],
+    "installDefaultSshKeys": true,
+    "sshKeyIds": [],
+    "osConfiguration": {
+        "windows": {
+            "rdpAllowedIps": ["10.0.0.0/24"]
+        }
+    },
+    "description": "dev-test-server-desc"
+}

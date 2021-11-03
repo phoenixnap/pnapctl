@@ -2,8 +2,10 @@ package generators
 
 import (
 	"math/rand"
+	"time"
 
-	"phoenixnap.com/pnap-cli/common/printer"
+	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	"phoenixnap.com/pnap-cli/common/models"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -16,44 +18,93 @@ func randSeq(n int) string {
 	return string(b)
 }
 
-func GenerateServers(n int) []printer.LongServer {
-	var serverlist []printer.LongServer
+func randSeqPointer(n int) *string {
+	random := randSeq(n)
+	return &random
+}
+
+func GenerateServers(n int) []bmcapi.Server {
+	var serverlist []bmcapi.Server
 	for i := 0; i < n; i++ {
 		serverlist = append(serverlist, GenerateServer())
 	}
 	return serverlist
 }
 
-func GenerateServer() printer.LongServer {
-	return printer.LongServer{
-		ID:          randSeq(10),
-		Status:      randSeq(10),
-		Hostname:    randSeq(10),
-		Description: randSeq(10),
-		Os:          randSeq(10),
-		Type:        randSeq(10),
-		Location:    randSeq(10),
-		CPU:         randSeq(10),
-		RAM:         randSeq(10),
-		Storage:     randSeq(10),
+func GenerateServer() bmcapi.Server {
+	provisionedOn := time.Now()
+	return bmcapi.Server{
+		Id:                 randSeq(10),
+		Status:             randSeq(10),
+		Hostname:           randSeq(10),
+		Description:        randSeqPointer(10),
+		Os:                 randSeq(10),
+		Type:               randSeq(10),
+		Location:           randSeq(10),
+		Cpu:                randSeq(10),
+		CpuCount:           int32(rand.Int()),
+		CoresPerCpu:        int32(rand.Int()),
+		CpuFrequency:       rand.Float32(),
+		Ram:                randSeq(10),
+		Storage:            randSeq(10),
+		PrivateIpAddresses: []string{},
+		PublicIpAddresses:  []string{},
+		ReservationId:      randSeqPointer(10),
+		PricingModel:       randSeq(10),
+		Password:           randSeqPointer(10),
+		NetworkType:        randSeqPointer(10),
+		ClusterId:          randSeqPointer(10),
+		Tags:               nil,
+		ProvisionedOn:      &provisionedOn,
+		OsConfiguration:    nil,
 	}
 }
 
-// ConvertLongToShortServers will convert a slice of long servers to a short servers
-func ConvertLongToShortServers(long_servers []printer.LongServer) []printer.ShortServer {
-	var serverlist []printer.ShortServer
-	for i := 0; i < len(long_servers); i++ {
-		serverlist = append(serverlist, ConvertLongToShortServer(long_servers[i]))
+func GenerateServerCreate() models.ServerCreate {
+	return models.ServerCreate{
+		Hostname:              randSeq(10),
+		Description:           randSeqPointer(10),
+		Os:                    randSeq(10),
+		Type:                  randSeq(10),
+		Location:              randSeq(10),
+		InstallDefaultSshKeys: nil,
+		SshKeys:               nil,
+		SshKeyIds:             nil,
+		ReservationId:         randSeqPointer(10),
+		PricingModel:          randSeqPointer(10),
+		NetworkType:           randSeqPointer(10),
+		OsConfiguration:       nil,
+		Tags:                  nil,
+		NetworkConfiguration:  nil,
 	}
-	return serverlist
 }
 
-// ConvertLongToShortServer will convert a single long server to a short server
-func ConvertLongToShortServer(long_server printer.LongServer) printer.ShortServer {
-	return printer.ShortServer{
-		ID:          long_server.ID,
-		Status:      long_server.Status,
-		Hostname:    long_server.Hostname,
-		Description: long_server.Description,
+func GenerateDeleteResult() bmcapi.DeleteResult {
+	return bmcapi.DeleteResult{
+		Result:   randSeq(10),
+		ServerId: randSeq(10),
+	}
+}
+
+func GenerateActionResult() bmcapi.ActionResult {
+	return bmcapi.ActionResult{
+		Result: randSeq(10),
+	}
+}
+
+func GenerateServerReset() bmcapi.ServerReset {
+	return bmcapi.ServerReset{
+		InstallDefaultSshKeys: nil,
+		SshKeys:               nil,
+		SshKeyIds:             nil,
+		OsConfiguration:       nil,
+	}
+}
+
+func GenerateResetResult() bmcapi.ResetResult {
+	return bmcapi.ResetResult{
+		Result:          randSeq(10),
+		Password:        nil,
+		OsConfiguration: nil,
 	}
 }

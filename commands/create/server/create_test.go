@@ -1,15 +1,13 @@
-package create
+package server
 
 import (
-	"bytes"
-	"encoding/json"
 	"errors"
 	"testing"
 
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/tests/generators"
-
-	create "phoenixnap.com/pnap-cli/commands/create/server"
 
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 
@@ -19,34 +17,22 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 )
 
-func createSetup() {
-	URL = "servers"
-}
 func TestCreateServerSuccessYAML(test_framework *testing.T) {
-	createSetup()
-
-	// Setup
-	serverCreate := create.ServerCreate{
-		Hostname:    "hostname",
-		Description: "description",
-		Os:          "os",
-		TYPE:        "type",
-		Location:    "Location",
-		SSHKeys:     []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
-	}
+	// What the client should receive.
+	serverCreate := generators.GenerateServerCreate()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	// What the server should receive.
-	jsonmarshal, _ := json.Marshal(serverCreate)
+	Filename = FILENAME
 
-	create.Filename = FILENAME
+	// What the server should return.
+	createdServer := generators.GenerateServer()
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(200, WithBody(Body)), nil).
+	PrepareBmcApiMockClient(test_framework).
+		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
+		Return(createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -55,57 +41,50 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 		ReadFile(FILENAME).
 		Return(yamlmarshal, nil).
 		Times(1)
+
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
 }
 
 func TestCreateServerSuccessJSON(test_framework *testing.T) {
-	createSetup()
+	// What the client should receive.
+	serverCreate := generators.GenerateServerCreate()
 
-	// Setup
-	server := generators.GenerateServer()
+	// Assumed contents of the file.
+	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	serverCreate := create.ServerCreate{
-		Hostname:    "hostname",
-		Description: "description",
-		Os:          "os",
-		TYPE:        "type",
-		Location:    "Location",
-		SSHKeys:     []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
-	}
+	Filename = FILENAME
 
-	// What will be sent to the server, and the assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverCreate)
-
-	create.Filename = FILENAME
+	// What the server should return.
+	createdServer := generators.GenerateServer()
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(200, WithBody(server)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
+		Return(createdServer, WithResponse(200, WithBody(createdServer)), nil).
+		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
+		Return(yamlmarshal, nil).
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
 }
 
 func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
-	createSetup()
 
 	// Setup
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
@@ -114,7 +93,7 @@ func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected command
 	expectedErr := ctlerrors.FileNotExistError(FILENAME) // TODO remove this from tests. We should give plain text here, not compare it.
@@ -125,13 +104,11 @@ func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
 }
 
 func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
-	createSetup()
-
 	// Invalid contents of the file
 	// filecontents := make([]byte, 10)
 	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
 
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -142,7 +119,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "create server", err)
@@ -152,10 +129,8 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 }
 
 func TestCreateServerFileReadingFailure(test_framework *testing.T) {
-	createSetup()
-
 	// Setup
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -168,7 +143,7 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "create server", err)
@@ -178,30 +153,18 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 }
 
 func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
-	createSetup()
-
 	// Setup
-	serverCreate := create.ServerCreate{
-		Hostname:    "hostname",
-		Description: "description",
-		Os:          "os",
-		TYPE:        "type",
-		Location:    "Location",
-		SSHKeys:     []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
-	}
+	serverCreate := generators.GenerateServerCreate()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	// What the server should receive.
-	jsonmarshal, _ := json.Marshal(serverCreate)
-
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+	PrepareBmcApiMockClient(test_framework).
+		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
+		Return(bmcapisdk.Server{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -212,7 +175,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
@@ -222,30 +185,19 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 }
 
 func TestCreateServerClientFailure(test_framework *testing.T) {
-	createSetup()
 
 	// Setup
-	serverCreate := create.ServerCreate{
-		Hostname:    "hostname",
-		Description: "description",
-		Os:          "os",
-		TYPE:        "type",
-		Location:    "Location",
-		SSHKeys:     []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
-	}
+	serverCreate := generators.GenerateServerCreate()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	// What the server should receive.
-	jsonmarshal, _ := json.Marshal(serverCreate)
-
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(nil, testutil.TestError).
+	PrepareBmcApiMockClient(test_framework).
+		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
+		Return(bmcapisdk.Server{}, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -256,7 +208,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected error
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "create server", ctlerrors.ErrorSendingRequest)
@@ -266,30 +218,18 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 }
 
 func TestCreateServerKeycloakFailure(test_framework *testing.T) {
-	createSetup()
-
 	// Setup
-	serverCreate := create.ServerCreate{
-		Hostname:    "hostname",
-		Description: "description",
-		Os:          "os",
-		TYPE:        "type",
-		Location:    "Location",
-		SSHKeys:     []string{"CNDI0W92UYC480D", "HDSIODIPS9879D"},
-	}
+	serverCreate := generators.GenerateServerCreate()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
 
-	// What the server should receive.
-	jsonmarshal, _ := json.Marshal(serverCreate)
-
-	create.Filename = FILENAME
+	Filename = FILENAME
 
 	// Mocking
-	PrepareMockClient(test_framework).
-		PerformPost(URL, bytes.NewBuffer(jsonmarshal)).
-		Return(nil, testutil.TestKeycloakError).
+	PrepareBmcApiMockClient(test_framework).
+		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
+		Return(bmcapisdk.Server{}, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -300,7 +240,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := create.CreateServerCmd.RunE(create.CreateServerCmd, []string{})
+	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.TestKeycloakError, err)

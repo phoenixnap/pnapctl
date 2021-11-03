@@ -1,87 +1,42 @@
 package printer
 
 import (
-	"encoding/json"
-	"io"
-	"io/ioutil"
-
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	"phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models/tables"
 )
 
-type ShortServer struct {
-	ID                 string   `header:"id"`
-	Status             string   `header:"status"`
-	Hostname           string   `header:"hostname"`
-	Description        string   `header:"description"`
-	PrivateIPAddresses []string `header:"Private Ips"`
-	PublicIPAddresses  []string `header:"Public Ips"`
+func PrintServerResponse(server bmcapisdk.Server, full bool, commandName string) error {
+	serverToPrint := PrepareServerForPrinting(server, full)
+	return MainPrinter.PrintOutput(serverToPrint, commandName)
 }
 
-type LongServer struct {
-	ID                 string   `header:"id"`
-	Status             string   `header:"status"`
-	Hostname           string   `header:"hostname"`
-	Description        string   `header:"description"`
-	PrivateIPAddresses []string `header:"Private Ips"`
-	PublicIPAddresses  []string `header:"Public Ips"`
-	Os                 string   `header:"os"`
-	Type               string   `header:"type"`
-	Location           string   `header:"location"`
-	CPU                string   `header:"cpu"`
-	RAM                string   `header:"ram"`
-	Storage            string   `header:"storage"`
+func PrintServerListResponse(servers []bmcapisdk.Server, full bool, commandName string) error {
+	serverListToPrint := PrepareServerListForPrinting(servers, full)
+	return MainPrinter.PrintOutput(serverListToPrint, commandName)
 }
 
-func PrintServerResponse(responseBody io.Reader, multiple bool, full bool, commandName string) error {
-	body, err := ioutil.ReadAll(responseBody)
+func PrepareServerForPrinting(server bmcapisdk.Server, full bool) interface{} {
+	table := OutputIsTable()
 
-	if err != nil {
-		return ctlerrors.CreateCLIError(ctlerrors.ResponseBodyReadFailure, commandName, err)
+	switch {
+	case full && table:
+		return tables.ToLongServerTable(server)
+	case !full && table:
+		return tables.ToShortServerTable(server)
+	case full:
+		return models.ToFullServer(server)
+	default:
+		return models.ToShortServer(server)
 	}
-
-	if full {
-		if multiple {
-			construct := &[]LongServer{}
-			err = unmarshall(body, construct, commandName)
-			if err == nil {
-				err = MainPrinter.PrintOutput(construct, len(*construct) == 0, commandName)
-			}
-		} else {
-			construct := &LongServer{}
-			err = unmarshall(body, construct, commandName)
-			if err == nil {
-				err = MainPrinter.PrintOutput(construct, false, commandName)
-			}
-		}
-	} else {
-		if multiple {
-			construct := &[]ShortServer{}
-			err = unmarshall(body, construct, commandName)
-			if err == nil {
-				err = MainPrinter.PrintOutput(construct, len(*construct) == 0, commandName)
-			}
-		} else {
-			construct := &ShortServer{}
-			err = unmarshall(body, construct, commandName)
-			if err == nil {
-				err = MainPrinter.PrintOutput(construct, false, commandName)
-			}
-		}
-	}
-
-	// This err is the one outputted within the PrintOutput
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
-// unmarshall will unmarshall a Json byte stream into the provided construct.
-func unmarshall(body []byte, construct interface{}, commandName string) error {
-	err := json.Unmarshal(body, &construct)
-	if err != nil {
-		return ctlerrors.CreateCLIError(ctlerrors.UnmarshallingErrorBody, commandName, err)
+func PrepareServerListForPrinting(servers []bmcapisdk.Server, full bool) []interface{} {
+	var serverList []interface{}
+
+	for _, bmcServer := range servers {
+		serverList = append(serverList, PrepareServerForPrinting(bmcServer, full))
 	}
-	return nil
+
+	return serverList
 }
