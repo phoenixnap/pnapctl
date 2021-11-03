@@ -26,6 +26,7 @@ type BmcApiSdkClient interface {
 	//Quotas
 	QuotasGet() ([]bmcapisdk.Quota, *http.Response, error)
 	QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error)
+	QuotaEditById(quotaId string, quotaEditRequest bmcapisdk.QuotaEditLimitRequest) (*http.Response, error)
 }
 
 type MainClient struct {
@@ -103,4 +104,8 @@ func (m MainClient) QuotasGet() ([]bmcapisdk.Quota, *http.Response, error) {
 
 func (m MainClient) QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error) {
 	return m.BmcApiClient.QuotasQuotaIdGet(context.Background(), quotaId).Execute()
+}
+
+func (m MainClient) QuotaEditById(quotaId string, quotaEditRequest bmcapisdk.QuotaEditLimitRequest) (*http.Response, error) {
+	return m.BmcApiClient.QuotasQuotaIdActionsRequestEditPost(context.Background(), quotaId).QuotaEditLimitRequest(quotaEditRequest).Execute()
 }

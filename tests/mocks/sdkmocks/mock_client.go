@@ -211,3 +211,18 @@ func (mr *MockBmcApiSdkClientMockRecorder) QuotasGet() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuotasGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).QuotasGet))
 }
+
+// QuotasEdit mocks base method.
+func (m *MockBmcApiSdkClient) QuotaEditById(quotaId string, quotaEditRequest bmcapisdk.QuotaEditLimitRequest) (*http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QuotaEditById")
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret1, ret2
+}
+
+// QuotasEdit indicates an expected call of ServersGet.
+func (mr *MockBmcApiSdkClientMockRecorder) QuotaEditById(quotaId interface{}, quotaEditRequest interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuotaEditById", reflect.TypeOf((*MockBmcApiSdkClient)(nil).QuotaEditById))
+}

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	files "phoenixnap.com/pnap-cli/common/fileprocessor"
 )
 
 type Quota struct {
@@ -24,6 +25,11 @@ type QuotaEditLimitRequestDetails struct {
 	RequestedOn time.Time `yajsonml:"requestedOn" yaml:"requestedOn"`
 }
 
+type QuotaEditRequest struct {
+	Limit  int32  `json:"limit" yaml:"limit"`
+	Reason string `json:"reason" yaml:"reason"`
+}
+
 func QuotaSdkToDto(quota bmcapisdk.Quota) Quota {
 	return Quota{
 		ID:                           quota.Id,
@@ -34,6 +40,13 @@ func QuotaSdkToDto(quota bmcapisdk.Quota) Quota {
 		Unit:                         quota.Unit,
 		Used:                         quota.Used,
 		QuotaEditLimitRequestDetails: quotaEditLimitRequestDetailsListSdkToDto(quota.QuotaEditLimitRequestDetails),
+	}
+}
+
+func (quotaEditRequest QuotaEditRequest) toSdk() *bmcapisdk.QuotaEditLimitRequest {
+	return &bmcapisdk.QuotaEditLimitRequest{
+		Limit:  quotaEditRequest.Limit,
+		Reason: quotaEditRequest.Reason,
 	}
 }
 
@@ -77,4 +90,25 @@ func quotaEditLimitRequestDetailsToString(requestDetails QuotaEditLimitRequestDe
 	return "Limit: " + fmt.Sprint(requestDetails.Limit) +
 		"\nReason: " + requestDetails.Reason +
 		"\nRequestedOn: " + requestDetails.RequestedOn.String()
+}
+
+func CreateQuotaEditRequestFromFile(filename string, commandname string) (*bmcapisdk.QuotaEditLimitRequest, error) {
+	files.ExpandPath(&filename)
+
+	data, err := files.ReadFile(filename, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Marshal file into JSON using the struct
+	var editRequest QuotaEditRequest
+
+	err = files.Unmarshal(data, &editRequest, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return editRequest.toSdk(), nil
 }
