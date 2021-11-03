@@ -5,14 +5,14 @@ import (
 )
 
 type OsConfigurationMap struct {
-	Windows *OsConfigurationWindows `json:"windows,omitempty"`
-	Esxi    *OsConfigurationMapEsxi `json:"esxi,omitempty"`
+	Windows *OsConfigurationWindows `json:"windows,omitempty" yaml:"windows,omitempty"`
+	Esxi    *OsConfigurationMapEsxi `json:"esxi,omitempty" yaml:"esxi,omitempty"`
 }
 
 type OsConfigurationMapEsxi struct {
-	RootPassword               *string   `json:"rootPassword,omitempty"`
-	ManagementUiUrl            *string   `json:"managementUiUrl,omitempty"`
-	ManagementAccessAllowedIps *[]string `json:"managementAccessAllowedIps,omitempty"`
+	RootPassword               *string   `json:"rootPassword,omitempty" yaml:"rootPassword,omitempty"`
+	ManagementUiUrl            *string   `json:"managementUiUrl,omitempty" yaml:"managementUiUrl,omitempty"`
+	ManagementAccessAllowedIps *[]string `json:"managementAccessAllowedIps,omitempty" yaml:"managementAccessAllowedIps,omitempty"`
 }
 
 func OsConfigurationMapToSDK(osConfMap *OsConfigurationMap) *bmcapisdk.OsConfigurationMap {

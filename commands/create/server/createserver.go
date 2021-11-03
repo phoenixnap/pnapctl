@@ -51,7 +51,7 @@ sshKeys:
 			// TODO - Validate way of processing errors.
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 		} else if httpResponse.StatusCode == 200 {
-			return printer.PrintServerResponse(response, false, commandName)
+			return printer.PrintServerResponse(response, Full, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		}
