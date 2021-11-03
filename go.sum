@@ -826,6 +826,8 @@ github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9dec
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211014105911-fa606d9b2a89 h1:m5G6Jo9rk4uQb8g1g7moajYHlKMj75DLItBmjYXCcTs=
 gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211014105911-fa606d9b2a89/go.mod h1:o4yDnhW+diBRqYRSGUaCf+6/oy1mlHu8Udi4LMfhI+g=
+gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211103081416-a6efcf6e8f00 h1:g6QYyorn4CJyWaEh4g6mXB5WhbFPljGeTugmdj6z+6U=
+gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211103081416-a6efcf6e8f00/go.mod h1:n5whwv0gjDyX/5XZObabWRZRm4bEutIutpmf8n80tw8=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/etcd v0.0.0-20191023171146-3cf2f69b5738/go.mod h1:dnLIgRNXwCJa5e+c6mIZCrds/GIG4ncV9HhK5PX7jPg=
 go.etcd.io/etcd/api/v3 v3.5.0/go.mod h1:cbVKeC6lCfl7j/8jBhAK6aIYO9XOjdptoxU/nLQcPvs=
