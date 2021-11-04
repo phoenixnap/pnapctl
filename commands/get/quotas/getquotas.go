@@ -44,7 +44,7 @@ pnapctl get quota bmc.servers.max_count -o yaml --full`,
 }
 
 func getQuotas(quotaId string) error {
-	log.Debug("Getting servers...")
+	log.Debug("Getting quotas...")
 
 	var httpResponse *netHttp.Response
 	var err error
