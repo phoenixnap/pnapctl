@@ -22,7 +22,7 @@ type Quota struct {
 type QuotaEditLimitRequestDetails struct {
 	Limit       int32     `json:"limit" yaml:"limit"`
 	Reason      string    `json:"reason" yaml:"reason"`
-	RequestedOn time.Time `yajsonml:"requestedOn" yaml:"requestedOn"`
+	RequestedOn time.Time `json:"requestedOn" yaml:"requestedOn"`
 }
 
 type QuotaEditRequest struct {
