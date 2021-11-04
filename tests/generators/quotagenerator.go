@@ -26,3 +26,10 @@ func GenerateQuotas(n int) []bmcapisdk.Quota {
 	}
 	return quotaList
 }
+
+func GenerateQuotaEditLimitRequest() bmcapisdk.QuotaEditLimitRequest {
+	return bmcapisdk.QuotaEditLimitRequest{
+		Limit:  int32(rand.Int()),
+		Reason: randSeq(10),
+	}
+}

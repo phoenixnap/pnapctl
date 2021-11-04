@@ -216,9 +216,9 @@ func (mr *MockBmcApiSdkClientMockRecorder) QuotasGet() *gomock.Call {
 func (m *MockBmcApiSdkClient) QuotaEditById(quotaId string, quotaEditRequest bmcapisdk.QuotaEditLimitRequest) (*http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "QuotaEditById")
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret1, ret2
+	ret0, _ := ret[0].(*http.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // QuotasEdit indicates an expected call of ServersGet.
