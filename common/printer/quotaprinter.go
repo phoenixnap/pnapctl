@@ -2,6 +2,7 @@ package printer
 
 import (
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	quotaModel "phoenixnap.com/pnap-cli/common/models"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 )
 
@@ -32,6 +33,6 @@ func PrepareQuotaForPrinting(quota bmcapisdk.Quota, full bool) interface{} {
 	case table:
 		return tables.ToQuotaTable(quota)
 	default:
-		return quota
+		return quotaModel.QuotaSdkToDto(quota)
 	}
 }

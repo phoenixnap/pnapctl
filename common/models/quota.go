@@ -87,9 +87,7 @@ func QuotaEditLimitRequestDetailsToTableString(requestDetails []bmcapisdk.QuotaE
 }
 
 func quotaEditLimitRequestDetailsToString(requestDetails QuotaEditLimitRequestDetails) string {
-	return "Limit: " + fmt.Sprint(requestDetails.Limit) +
-		"\nReason: " + requestDetails.Reason +
-		"\nRequestedOn: " + requestDetails.RequestedOn.String()
+	return fmt.Sprintf("Limit: %d\nReason: %s\nRequestedOn: %s", requestDetails.Limit, requestDetails.Reason, requestDetails.RequestedOn)
 }
 
 func CreateQuotaEditRequestFromFile(filename string, commandname string) (*bmcapisdk.QuotaEditLimitRequest, error) {

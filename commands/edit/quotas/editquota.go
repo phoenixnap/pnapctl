@@ -14,8 +14,6 @@ var Filename string
 
 var commandName = "edit quota"
 
-var Full bool
-
 // CreateServerCmd is the command for creating a server.
 var EditQuotaCmd = &cobra.Command{
 	Use:   "quota [QUOTA_ID]",

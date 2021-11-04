@@ -2,10 +2,6 @@ module phoenixnap.com/pnap-cli
 
 go 1.17
 
-require phoenixnap.com/bmc-api v1.0.0
-
-replace phoenixnap.com/bmc-api v1.0.0 => ../bmc-api
-
 require (
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/golang/mock v1.6.0

@@ -13,7 +13,6 @@ import (
 
 const commandName string = "get quotas"
 
-var Full bool
 var ID string
 
 var GetQuotasCmd = &cobra.Command{
@@ -61,9 +60,9 @@ func getQuotas(quotaId string) error {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 	} else if httpResponse.StatusCode == 200 {
 		if quotaId == "" {
-			return printer.PrintQuotaListResponse(quotas, Full, commandName)
+			return printer.PrintQuotaListResponse(quotas, true, commandName)
 		} else {
-			return printer.PrintQuotaResponse(quota, Full, commandName)
+			return printer.PrintQuotaResponse(quota, true, commandName)
 		}
 	} else {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)
