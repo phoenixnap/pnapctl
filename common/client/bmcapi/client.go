@@ -30,7 +30,8 @@ type BmcApiSdkClient interface {
 }
 
 type MainClient struct {
-	BmcApiClient bmcapisdk.DefaultApi
+	ServersApiClient bmcapisdk.ServersApi
+	QuotaApiClient   bmcapisdk.QuotasApi
 }
 
 func NewMainClient(clientId string, clientSecret string) BmcApiSdkClient {
@@ -56,56 +57,57 @@ func NewMainClient(clientId string, clientSecret string) BmcApiSdkClient {
 	api_client := bmcapisdk.NewAPIClient(bmcAPIconfiguration)
 
 	return MainClient{
-		BmcApiClient: api_client.DefaultApi,
+		ServersApiClient: api_client.ServersApi,
+		QuotaApiClient:   api_client.QuotasApi,
 	}
 }
 
 //Servers APIs
 func (m MainClient) ServersPost(serverCreate bmcapisdk.ServerCreate) (bmcapisdk.Server, *http.Response, error) {
-	return m.BmcApiClient.ServersPost(context.Background()).ServerCreate(serverCreate).Execute()
+	return m.ServersApiClient.ServersPost(context.Background()).ServerCreate(serverCreate).Execute()
 }
 
 func (m MainClient) ServersGet() ([]bmcapisdk.Server, *http.Response, error) {
-	return m.BmcApiClient.ServersGet(context.Background()).Execute()
+	return m.ServersApiClient.ServersGet(context.Background()).Execute()
 }
 
 func (m MainClient) ServerGetById(serverId string) (bmcapisdk.Server, *http.Response, error) {
-	return m.BmcApiClient.ServersServerIdGet(context.Background(), serverId).Execute()
+	return m.ServersApiClient.ServersServerIdGet(context.Background(), serverId).Execute()
 }
 
 func (m MainClient) ServerDelete(serverId string) (bmcapisdk.DeleteResult, *http.Response, error) {
-	return m.BmcApiClient.ServersServerIdDelete(context.Background(), serverId).Execute()
+	return m.ServersApiClient.ServersServerIdDelete(context.Background(), serverId).Execute()
 }
 
 func (m MainClient) ServerPowerOff(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
-	return m.BmcApiClient.ServersServerIdActionsPowerOffPost(context.Background(), serverId).Execute()
+	return m.ServersApiClient.ServersServerIdActionsPowerOffPost(context.Background(), serverId).Execute()
 }
 
 func (m MainClient) ServerPowerOn(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
-	return m.BmcApiClient.ServersServerIdActionsPowerOnPost(context.Background(), serverId).Execute()
+	return m.ServersApiClient.ServersServerIdActionsPowerOnPost(context.Background(), serverId).Execute()
 }
 
 func (m MainClient) ServerReboot(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
-	return m.BmcApiClient.ServersServerIdActionsRebootPost(context.Background(), serverId).Execute()
+	return m.ServersApiClient.ServersServerIdActionsRebootPost(context.Background(), serverId).Execute()
 }
 
 func (m MainClient) ServerReset(serverId string, serverReset bmcapisdk.ServerReset) (bmcapisdk.ResetResult, *http.Response, error) {
-	return m.BmcApiClient.ServersServerIdActionsResetPost(context.Background(), serverId).ServerReset(serverReset).Execute()
+	return m.ServersApiClient.ServersServerIdActionsResetPost(context.Background(), serverId).ServerReset(serverReset).Execute()
 }
 
 func (m MainClient) ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
-	return m.BmcApiClient.ServersServerIdActionsShutdownPost(context.Background(), serverId).Execute()
+	return m.ServersApiClient.ServersServerIdActionsShutdownPost(context.Background(), serverId).Execute()
 }
 
 // Quota APIs
 func (m MainClient) QuotasGet() ([]bmcapisdk.Quota, *http.Response, error) {
-	return m.BmcApiClient.QuotasGet(context.Background()).Execute()
+	return m.QuotaApiClient.QuotasGet(context.Background()).Execute()
 }
 
 func (m MainClient) QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error) {
-	return m.BmcApiClient.QuotasQuotaIdGet(context.Background(), quotaId).Execute()
+	return m.QuotaApiClient.QuotasQuotaIdGet(context.Background(), quotaId).Execute()
 }
 
 func (m MainClient) QuotaEditById(quotaId string, quotaEditRequest bmcapisdk.QuotaEditLimitRequest) (*http.Response, error) {
-	return m.BmcApiClient.QuotasQuotaIdActionsRequestEditPost(context.Background(), quotaId).QuotaEditLimitRequest(quotaEditRequest).Execute()
+	return m.QuotaApiClient.QuotasQuotaIdActionsRequestEditPost(context.Background(), quotaId).QuotaEditLimitRequest(quotaEditRequest).Execute()
 }
