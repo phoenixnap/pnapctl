@@ -11,7 +11,7 @@ require (
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.9.0
 	github.com/stretchr/testify v1.7.0
-	gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211103081416-a6efcf6e8f00
+	gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211109134311-d11e9d1ea5b6
 	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f
 	gopkg.in/yaml.v2 v2.4.0
 )
