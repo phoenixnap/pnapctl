@@ -51,7 +51,7 @@ func Unmarshal(data []byte, construct interface{}, commandName string) error {
 	err := json.Unmarshal(data, construct)
 
 	if err != nil {
-		err = yaml.Unmarshal(data, construct)
+		err = yaml.UnmarshalStrict(data, construct)
 
 		if err != nil {
 			return ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, commandName, err)

@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	bmcapi "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 )
 
 // MockBmcApiSdkClient is a mock of BmcApiSdkClient interface.
@@ -36,10 +36,10 @@ func (m *MockBmcApiSdkClient) EXPECT() *MockBmcApiSdkClientMockRecorder {
 }
 
 // ServerDelete mocks base method.
-func (m *MockBmcApiSdkClient) ServerDelete(serverId string) (bmcapi.DeleteResult, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerDelete(serverId string) (bmcapisdk.DeleteResult, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServerDelete", serverId)
-	ret0, _ := ret[0].(bmcapi.DeleteResult)
+	ret0, _ := ret[0].(bmcapisdk.DeleteResult)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -52,10 +52,10 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerDelete(serverId interface{}) *g
 }
 
 // ServerGetById mocks base method.
-func (m *MockBmcApiSdkClient) ServerGetById(serverId string) (bmcapi.Server, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerGetById(serverId string) (bmcapisdk.Server, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServerGetById", serverId)
-	ret0, _ := ret[0].(bmcapi.Server)
+	ret0, _ := ret[0].(bmcapisdk.Server)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -68,10 +68,10 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerGetById(serverId interface{}) *
 }
 
 // ServerPowerOff mocks base method.
-func (m *MockBmcApiSdkClient) ServerPowerOff(serverId string) (bmcapi.ActionResult, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerPowerOff(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServerPowerOff", serverId)
-	ret0, _ := ret[0].(bmcapi.ActionResult)
+	ret0, _ := ret[0].(bmcapisdk.ActionResult)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -84,10 +84,10 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerPowerOff(serverId interface{}) 
 }
 
 // ServerPowerOn mocks base method.
-func (m *MockBmcApiSdkClient) ServerPowerOn(serverId string) (bmcapi.ActionResult, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerPowerOn(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServerPowerOn", serverId)
-	ret0, _ := ret[0].(bmcapi.ActionResult)
+	ret0, _ := ret[0].(bmcapisdk.ActionResult)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -100,10 +100,10 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerPowerOn(serverId interface{}) *
 }
 
 // ServerReboot mocks base method.
-func (m *MockBmcApiSdkClient) ServerReboot(serverId string) (bmcapi.ActionResult, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerReboot(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServerReboot", serverId)
-	ret0, _ := ret[0].(bmcapi.ActionResult)
+	ret0, _ := ret[0].(bmcapisdk.ActionResult)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -116,10 +116,10 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerReboot(serverId interface{}) *g
 }
 
 // ServerReset mocks base method.
-func (m *MockBmcApiSdkClient) ServerReset(serverId string, serverReset bmcapi.ServerReset) (bmcapi.ResetResult, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerReset(serverId string, serverReset bmcapisdk.ServerReset) (bmcapisdk.ResetResult, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServerReset", serverId, serverReset)
-	ret0, _ := ret[0].(bmcapi.ResetResult)
+	ret0, _ := ret[0].(bmcapisdk.ResetResult)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -132,10 +132,10 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerReset(serverId, serverReset int
 }
 
 // ServerShutdown mocks base method.
-func (m *MockBmcApiSdkClient) ServerShutdown(serverId string) (bmcapi.ActionResult, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServerShutdown", serverId)
-	ret0, _ := ret[0].(bmcapi.ActionResult)
+	ret0, _ := ret[0].(bmcapisdk.ActionResult)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -148,10 +148,10 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerShutdown(serverId interface{}) 
 }
 
 // ServersGet mocks base method.
-func (m *MockBmcApiSdkClient) ServersGet() ([]bmcapi.Server, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServersGet() ([]bmcapisdk.Server, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServersGet")
-	ret0, _ := ret[0].([]bmcapi.Server)
+	ret0, _ := ret[0].([]bmcapisdk.Server)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -164,10 +164,10 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServersGet() *gomock.Call {
 }
 
 // ServersPost mocks base method.
-func (m *MockBmcApiSdkClient) ServersPost(serverCreate bmcapi.ServerCreate) (bmcapi.Server, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServersPost(serverCreate bmcapisdk.ServerCreate) (bmcapisdk.Server, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServersPost", serverCreate)
-	ret0, _ := ret[0].(bmcapi.Server)
+	ret0, _ := ret[0].(bmcapisdk.Server)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -177,4 +177,52 @@ func (m *MockBmcApiSdkClient) ServersPost(serverCreate bmcapi.ServerCreate) (bmc
 func (mr *MockBmcApiSdkClientMockRecorder) ServersPost(serverCreate interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersPost), serverCreate)
+}
+
+/*---- QUOTA -----*/
+// QuotaGetById mocks base method.
+func (m *MockBmcApiSdkClient) QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QuotaGetById", quotaId)
+	ret0, _ := ret[0].(bmcapisdk.Quota)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// QuotaGetById indicates an expected call of ServerGetById.
+func (mr *MockBmcApiSdkClientMockRecorder) QuotaGetById(quotaId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuotaGetById", reflect.TypeOf((*MockBmcApiSdkClient)(nil).QuotaGetById), quotaId)
+}
+
+// QuotasGet mocks base method.
+func (m *MockBmcApiSdkClient) QuotasGet() ([]bmcapisdk.Quota, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QuotasGet")
+	ret0, _ := ret[0].([]bmcapisdk.Quota)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// QuotasGet indicates an expected call of ServersGet.
+func (mr *MockBmcApiSdkClientMockRecorder) QuotasGet() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuotasGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).QuotasGet))
+}
+
+// QuotasEdit mocks base method.
+func (m *MockBmcApiSdkClient) QuotaEditById(quotaId string, quotaEditRequest bmcapisdk.QuotaEditLimitRequest) (*http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QuotaEditById")
+	ret0, _ := ret[0].(*http.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QuotasEdit indicates an expected call of ServersGet.
+func (mr *MockBmcApiSdkClientMockRecorder) QuotaEditById(quotaId interface{}, quotaEditRequest interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuotaEditById", reflect.TypeOf((*MockBmcApiSdkClient)(nil).QuotaEditById))
 }

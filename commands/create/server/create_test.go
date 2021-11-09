@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"errors"
 	"testing"
 
@@ -54,7 +55,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	serverCreate := generators.GenerateServerCreate()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverCreate)
+	jsonmarshal, _ := json.Marshal(serverCreate)
 
 	Filename = FILENAME
 
@@ -71,7 +72,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
+		Return(jsonmarshal, nil).
 		Times(1)
 
 	// Run command

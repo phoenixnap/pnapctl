@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"time"
 
-	"gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/models"
 )
 
@@ -23,17 +23,17 @@ func randSeqPointer(n int) *string {
 	return &random
 }
 
-func GenerateServers(n int) []bmcapi.Server {
-	var serverlist []bmcapi.Server
+func GenerateServers(n int) []bmcapisdk.Server {
+	var serverlist []bmcapisdk.Server
 	for i := 0; i < n; i++ {
 		serverlist = append(serverlist, GenerateServer())
 	}
 	return serverlist
 }
 
-func GenerateServer() bmcapi.Server {
+func GenerateServer() bmcapisdk.Server {
 	provisionedOn := time.Now()
-	return bmcapi.Server{
+	return bmcapisdk.Server{
 		Id:                 randSeq(10),
 		Status:             randSeq(10),
 		Hostname:           randSeq(10),
@@ -79,21 +79,21 @@ func GenerateServerCreate() models.ServerCreate {
 	}
 }
 
-func GenerateDeleteResult() bmcapi.DeleteResult {
-	return bmcapi.DeleteResult{
+func GenerateDeleteResult() bmcapisdk.DeleteResult {
+	return bmcapisdk.DeleteResult{
 		Result:   randSeq(10),
 		ServerId: randSeq(10),
 	}
 }
 
-func GenerateActionResult() bmcapi.ActionResult {
-	return bmcapi.ActionResult{
+func GenerateActionResult() bmcapisdk.ActionResult {
+	return bmcapisdk.ActionResult{
 		Result: randSeq(10),
 	}
 }
 
-func GenerateServerReset() bmcapi.ServerReset {
-	return bmcapi.ServerReset{
+func GenerateServerReset() bmcapisdk.ServerReset {
+	return bmcapisdk.ServerReset{
 		InstallDefaultSshKeys: nil,
 		SshKeys:               nil,
 		SshKeyIds:             nil,
@@ -101,8 +101,8 @@ func GenerateServerReset() bmcapi.ServerReset {
 	}
 }
 
-func GenerateResetResult() bmcapi.ResetResult {
-	return bmcapi.ResetResult{
+func GenerateResetResult() bmcapisdk.ResetResult {
+	return bmcapisdk.ResetResult{
 		Result:          randSeq(10),
 		Password:        nil,
 		OsConfiguration: nil,

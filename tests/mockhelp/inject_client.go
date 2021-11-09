@@ -15,7 +15,7 @@ import (
 
 var Body io.Writer
 
-const SERVERID = "mock_id"
+const RESOURCEID = "mock_id"
 
 func PrepareBmcApiMockClient(test_framework *testing.T) *sdkmocks.MockBmcApiSdkClientMockRecorder {
 	ctrl := gomock.NewController(test_framework)

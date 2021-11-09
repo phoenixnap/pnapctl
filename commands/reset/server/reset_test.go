@@ -7,6 +7,7 @@ import (
 
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnap-cli/common/models"
 
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnap-cli/tests/generators"
@@ -21,14 +22,22 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 	serverReset := generators.GenerateServerReset()
 	resetResult := generators.GenerateResetResult()
 
+	// to be used for marshaling only
+	serverResetModel := models.ServerReset{
+		InstallDefaultSshKeys: nil,
+		SshKeys:               nil,
+		SshKeyIds:             nil,
+		OsConfiguration:       nil,
+	}
+
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReset)
+	yamlmarshal, _ := yaml.Marshal(serverResetModel)
 
 	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(resetResult, WithResponse(200, WithBody(resetResult)), nil).
 		Times(1)
 
@@ -40,7 +49,7 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -58,7 +67,7 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(resetResult, WithResponse(200, WithBody(resetResult)), nil).
 		Times(1)
 
@@ -70,7 +79,7 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -87,7 +96,7 @@ func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Expected command
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
@@ -112,7 +121,7 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "reset server", err)
@@ -126,13 +135,12 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReset)
-
+	jsonmarshal, _ := json.Marshal(serverReset)
 	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(bmcapisdk.ResetResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -140,11 +148,11 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
+		Return(jsonmarshal, nil).
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
@@ -165,7 +173,7 @@ func TestResetServerFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "reset server", err)
@@ -179,13 +187,13 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReset)
+	jsonmarshal, _ := json.Marshal(serverReset)
 
 	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(bmcapisdk.ResetResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -193,11 +201,11 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
+		Return(jsonmarshal, nil).
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := errors.New(testutil.GenericBMCError.Message)
@@ -211,13 +219,13 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReset)
+	jsonmarshal, _ := json.Marshal(serverReset)
 
 	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(bmcapisdk.ResetResult{}, nil, testutil.TestError).
 		Times(1)
 
@@ -225,11 +233,11 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
+		Return(jsonmarshal, nil).
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "reset server", ctlerrors.ErrorSendingRequest)
@@ -243,13 +251,13 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReset)
+	jsonmarshal, _ := json.Marshal(serverReset)
 
 	Filename = FILENAME
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(SERVERID, serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(bmcapisdk.ResetResult{}, nil, testutil.TestKeycloakError).
 		Times(1)
 
@@ -257,11 +265,11 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
+		Return(jsonmarshal, nil).
 		Times(1)
 
 	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{SERVERID})
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.Equal(test_framework, testutil.TestKeycloakError, err)

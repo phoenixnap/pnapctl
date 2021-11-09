@@ -12,6 +12,7 @@ import (
 var Client BmcApiSdkClient
 
 type BmcApiSdkClient interface {
+	//Servers
 	ServersPost(serverCreate bmcapisdk.ServerCreate) (bmcapisdk.Server, *http.Response, error)
 	ServersGet() ([]bmcapisdk.Server, *http.Response, error)
 	ServerGetById(serverId string) (bmcapisdk.Server, *http.Response, error)
@@ -21,6 +22,11 @@ type BmcApiSdkClient interface {
 	ServerReboot(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
 	ServerReset(serverId string, serverReset bmcapisdk.ServerReset) (bmcapisdk.ResetResult, *http.Response, error)
 	ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
+
+	//Quotas
+	QuotasGet() ([]bmcapisdk.Quota, *http.Response, error)
+	QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error)
+	QuotaEditById(quotaId string, quotaEditRequest bmcapisdk.QuotaEditLimitRequest) (*http.Response, error)
 }
 
 type MainClient struct {
@@ -54,6 +60,7 @@ func NewMainClient(clientId string, clientSecret string) BmcApiSdkClient {
 	}
 }
 
+//Servers APIs
 func (m MainClient) ServersPost(serverCreate bmcapisdk.ServerCreate) (bmcapisdk.Server, *http.Response, error) {
 	return m.BmcApiClient.ServersPost(context.Background()).ServerCreate(serverCreate).Execute()
 }
@@ -88,4 +95,17 @@ func (m MainClient) ServerReset(serverId string, serverReset bmcapisdk.ServerRes
 
 func (m MainClient) ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
 	return m.BmcApiClient.ServersServerIdActionsShutdownPost(context.Background(), serverId).Execute()
+}
+
+// Quota APIs
+func (m MainClient) QuotasGet() ([]bmcapisdk.Quota, *http.Response, error) {
+	return m.BmcApiClient.QuotasGet(context.Background()).Execute()
+}
+
+func (m MainClient) QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error) {
+	return m.BmcApiClient.QuotasQuotaIdGet(context.Background(), quotaId).Execute()
+}
+
+func (m MainClient) QuotaEditById(quotaId string, quotaEditRequest bmcapisdk.QuotaEditLimitRequest) (*http.Response, error) {
+	return m.BmcApiClient.QuotasQuotaIdActionsRequestEditPost(context.Background(), quotaId).QuotaEditLimitRequest(quotaEditRequest).Execute()
 }
