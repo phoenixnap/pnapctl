@@ -43,8 +43,6 @@ const (
 	TablePrinterFailure = "9901"
 	// The error below typically happens either if there is a bug in the client or if the request body is incorrect
 	ErrorSendingRequest = "9902"
-	// Empty Request body error
-	EmptyRequestBody = "9903"
 )
 
 /* Error functions.
@@ -62,14 +60,6 @@ func CreateCLIError(errorCode string, command string, cause error) CLIError {
 	return CLIError{
 		Message: "Command '" + command + "' has been performed, but something went wrong. Error code: " + errorCode,
 		Cause:   cause,
-	}
-}
-
-// A generic error used for generic cases in commands.
-func EmptyRequestBodyError(errorCode string, command string) CLIError {
-	return CLIError{
-		Message: "Command '" + command + "' was not performed. Request body was empty (or effectively empty). Error code: " + errorCode,
-		Cause:   nil,
 	}
 }
 

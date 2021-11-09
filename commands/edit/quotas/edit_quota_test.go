@@ -7,7 +7,6 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/tests/generators"
@@ -39,33 +38,6 @@ func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 
 	// assertions
 	assert.NoError(test_framework, err)
-}
-
-func TestSubmitQuotaEditRequestEmptyRequestYAMLFailure(test_framework *testing.T) {
-	// setup
-	quotaEditLimitRequest := bmcapisdk.QuotaEditLimitRequest{
-		Limit:  0,
-		Reason: "",
-	}
-	yamlmarshal, _ := yaml.Marshal(quotaEditLimitRequest)
-	Filename = FILENAME
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, ctlerrors.CLIError{
-			Message: "Command 'edit quota' was not performed. Request body was empty (or effectively empty). Error code: " + ctlerrors.EmptyRequestBody,
-			Cause:   nil,
-		}).
-		Times(1)
-
-	EditQuotaCmd.RunE(EditQuotaCmd, []string{})
-
-	expectedErr := ctlerrors.EmptyRequestBodyError(ctlerrors.EmptyRequestBody, "edit quota")
-
-	// assertions
-	assert.EqualError(test_framework, expectedErr, expectedErr.Error())
 }
 
 func TestSubmitQuotaEditRequestSuccessJSON(test_framework *testing.T) {
@@ -133,6 +105,27 @@ func TestSubmitQuotaEditRequestUnmarshallingFailure(test_framework *testing.T) {
 
 	// assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
+}
+
+func TestSubmitQuotaEditRequestYAMLUnmarshallingFailure(test_framework *testing.T) {
+	// setup
+	filecontents := []byte(`Limit: 45`)
+	yamlmarshal, _ := yaml.Marshal(filecontents)
+	Filename = FILENAME
+
+	mockFileProcessor := PrepareMockFileProcessor(test_framework)
+
+	mockFileProcessor.
+		ReadFile(FILENAME).
+		Return(yamlmarshal, nil).
+		Times(1)
+
+	err := EditQuotaCmd.RunE(EditQuotaCmd, []string{})
+
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "edit quota", err)
+
+	// assertions
+	assert.EqualError(test_framework, expectedErr, expectedErr.Error())
 }
 
 func TestSubmitQuotaEditFileReadingFailure(test_framework *testing.T) {

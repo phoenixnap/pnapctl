@@ -7,6 +7,7 @@ import (
 
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnap-cli/common/models"
 
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnap-cli/tests/generators"
@@ -21,8 +22,16 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 	serverReset := generators.GenerateServerReset()
 	resetResult := generators.GenerateResetResult()
 
+	// to be used for marshaling only
+	serverResetModel := models.ServerReset{
+		InstallDefaultSshKeys: nil,
+		SshKeys:               nil,
+		SshKeyIds:             nil,
+		OsConfiguration:       nil,
+	}
+
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReset)
+	yamlmarshal, _ := yaml.Marshal(serverResetModel)
 
 	Filename = FILENAME
 
@@ -126,8 +135,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReset)
-
+	jsonmarshal, _ := json.Marshal(serverReset)
 	Filename = FILENAME
 
 	// Mocking
@@ -140,7 +148,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
+		Return(jsonmarshal, nil).
 		Times(1)
 
 	// Run command
@@ -179,7 +187,7 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReset)
+	jsonmarshal, _ := json.Marshal(serverReset)
 
 	Filename = FILENAME
 
@@ -193,7 +201,7 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
+		Return(jsonmarshal, nil).
 		Times(1)
 
 	// Run command
@@ -211,7 +219,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReset)
+	jsonmarshal, _ := json.Marshal(serverReset)
 
 	Filename = FILENAME
 
@@ -225,7 +233,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
+		Return(jsonmarshal, nil).
 		Times(1)
 
 	// Run command
@@ -243,7 +251,7 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 	serverReset := generators.GenerateServerReset()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReset)
+	jsonmarshal, _ := json.Marshal(serverReset)
 
 	Filename = FILENAME
 
@@ -257,7 +265,7 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 
 	mockFileProcessor.
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
+		Return(jsonmarshal, nil).
 		Times(1)
 
 	// Run command

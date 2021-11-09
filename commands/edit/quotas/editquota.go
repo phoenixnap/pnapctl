@@ -33,8 +33,6 @@ reason: "My current limit is not enough."`,
 		quotaEditRequest, err := models.CreateQuotaEditRequestFromFile(Filename, commandName)
 		if err != nil {
 			return err
-		} else if quotaEditRequest.Limit == 0 && quotaEditRequest.Reason == "" {
-			return ctlerrors.EmptyRequestBodyError(ctlerrors.EmptyRequestBody, commandName)
 		}
 
 		httpResponse, err := bmcapi.Client.QuotaEditById(args[0], *quotaEditRequest)
