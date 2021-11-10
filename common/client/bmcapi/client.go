@@ -22,6 +22,7 @@ type BmcApiSdkClient interface {
 	ServerReboot(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
 	ServerReset(serverId string, serverReset bmcapisdk.ServerReset) (bmcapisdk.ResetResult, *http.Response, error)
 	ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
+	ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error)
 
 	//Quotas
 	QuotasGet() ([]bmcapisdk.Quota, *http.Response, error)
@@ -97,6 +98,10 @@ func (m MainClient) ServerReset(serverId string, serverReset bmcapisdk.ServerRes
 
 func (m MainClient) ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
 	return m.ServersApiClient.ServersServerIdActionsShutdownPost(context.Background(), serverId).Execute()
+}
+
+func (m MainClient) ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error) {
+	return m.ServersApiClient.ServersServerIdPatch(context.Background(), serverId).ServerPatch(serverPatch).Execute()
 }
 
 // Quota APIs

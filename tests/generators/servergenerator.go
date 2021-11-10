@@ -108,3 +108,10 @@ func GenerateResetResult() bmcapisdk.ResetResult {
 		OsConfiguration: nil,
 	}
 }
+
+func GenerateServerPatch() bmcapisdk.ServerPatch {
+	return bmcapisdk.ServerPatch{
+		Hostname:    randSeqPointer(10),
+		Description: randSeqPointer(10),
+	}
+}

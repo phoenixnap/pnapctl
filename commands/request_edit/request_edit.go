@@ -9,8 +9,8 @@ import (
 
 var RequestEditCmd = &cobra.Command{
 	Use:   "request-edit",
-	Short: "Modify a resource.",
-	Long:  `Modify a resource.`,
+	Short: "Submit a modification request on a resource.",
+	Long:  `Submit a modification request on a resource.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 		os.Exit(0)

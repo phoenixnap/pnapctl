@@ -12,6 +12,7 @@ import (
 	"phoenixnap.com/pnap-cli/commands/create"
 	"phoenixnap.com/pnap-cli/commands/delete"
 	"phoenixnap.com/pnap-cli/commands/get"
+	"phoenixnap.com/pnap-cli/commands/patch"
 	"phoenixnap.com/pnap-cli/commands/poweroff"
 	"phoenixnap.com/pnap-cli/commands/poweron"
 	"phoenixnap.com/pnap-cli/commands/reboot"
@@ -54,6 +55,7 @@ func init() {
 	// add flags here when needed
 	rootCmd.AddCommand(get.GetCmd)
 	rootCmd.AddCommand(create.CreateCmd)
+	rootCmd.AddCommand(patch.PatchCmd)
 	rootCmd.AddCommand(reset.ResetCmd)
 	rootCmd.AddCommand(delete.DeleteCmd)
 	rootCmd.AddCommand(poweroff.PowerOffCmd)

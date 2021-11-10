@@ -14,7 +14,7 @@ var Filename string
 
 var commandName = "request-edit quota"
 
-// CreateServerCmd is the command for creating a server.
+// RequestEditQuotaCmd is the command for requesting a quota modification.
 var RequestEditQuotaCmd = &cobra.Command{
 	Use:          "quota [QUOTA_ID]",
 	Short:        "Submit a quota modification request.",
