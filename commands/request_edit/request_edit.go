@@ -1,14 +1,14 @@
-package edit
+package request_edit
 
 import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/edit/quotas"
+	"phoenixnap.com/pnap-cli/commands/request_edit/quotas"
 )
 
-var EditCmd = &cobra.Command{
-	Use:   "edit",
+var RequestEditCmd = &cobra.Command{
+	Use:   "request-edit",
 	Short: "Modify a resource.",
 	Long:  `Modify a resource.`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -18,5 +18,5 @@ var EditCmd = &cobra.Command{
 }
 
 func init() {
-	EditCmd.AddCommand(quotas.EditQuotaCmd)
+	RequestEditCmd.AddCommand(quotas.RequestEditQuotaCmd)
 }

@@ -12,10 +12,10 @@ import (
 // Filename is the filename from which to retrieve a complex object
 var Filename string
 
-var commandName = "edit quota"
+var commandName = "request-edit quota"
 
 // CreateServerCmd is the command for creating a server.
-var EditQuotaCmd = &cobra.Command{
+var RequestEditQuotaCmd = &cobra.Command{
 	Use:          "quota [QUOTA_ID]",
 	Short:        "Submit a quota modification request.",
 	Args:         cobra.ExactArgs(1),
@@ -24,9 +24,9 @@ var EditQuotaCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to submit the request.`,
 	Example: `# modify an existing quota as per quotaModificationRequest.yaml
-pnapctl edit quota  --filename ~/quotaModificationRequest.yaml
+pnapctl request-edit quota  --filename ~/quotaEditRequest.yaml
 
-# quotaModificationRequest.yaml
+# quotaEditRequest.yaml
 limit: 75
 reason: "My current limit is not enough."`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -49,6 +49,6 @@ reason: "My current limit is not enough."`,
 }
 
 func init() {
-	EditQuotaCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	EditQuotaCmd.MarkFlagRequired("filename")
+	RequestEditQuotaCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	RequestEditQuotaCmd.MarkFlagRequired("filename")
 }

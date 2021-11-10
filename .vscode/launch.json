@@ -1,0 +1,19 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Package",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "/home/andrewbu/Workspace/pnap-cli/",
+            "env": {},
+            //"args": ["create", "server", "--filename", "./servercreate.yaml"], // replace args accordingly 
+            "args": ["edit", "quota", "bmc.servers.max_count", "--filename", "./editquota.yaml"], // replace args accordingly 
+            "buildFlags": "-tags dev"            
+        }
+    ]
+}
