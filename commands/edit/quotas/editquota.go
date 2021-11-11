@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 )
 
 // Filename is the filename from which to retrieve a complex object
@@ -30,7 +30,7 @@ pnapctl edit quota  --filename ~/quotaModificationRequest.yaml
 limit: 75
 reason: "My current limit is not enough."`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		quotaEditRequest, err := models.CreateQuotaEditRequestFromFile(Filename, commandName)
+		quotaEditRequest, err := bmcapimodels.CreateQuotaEditRequestFromFile(Filename, commandName)
 		if err != nil {
 			return err
 		}

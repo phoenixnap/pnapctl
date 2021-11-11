@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnap-cli/commands/get/clusters"
 	"phoenixnap.com/pnap-cli/commands/get/quotas"
 	"phoenixnap.com/pnap-cli/commands/get/servers"
 )
@@ -20,5 +21,6 @@ var GetCmd = &cobra.Command{
 
 func init() {
 	GetCmd.AddCommand(servers.GetServersCmd)
+	GetCmd.AddCommand(clusters.GetClustersCmd)
 	GetCmd.AddCommand(quotas.GetQuotasCmd)
 }

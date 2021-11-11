@@ -1,4 +1,4 @@
-package models
+package bmcapimodels
 
 import (
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"

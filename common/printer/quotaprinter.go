@@ -2,7 +2,7 @@ package printer
 
 import (
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
-	quotaModel "phoenixnap.com/pnap-cli/common/models"
+	quotaModel "phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 )
 

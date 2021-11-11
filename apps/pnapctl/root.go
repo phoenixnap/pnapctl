@@ -20,6 +20,7 @@ import (
 	"phoenixnap.com/pnap-cli/commands/shutdown"
 	"phoenixnap.com/pnap-cli/commands/version"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
+	"phoenixnap.com/pnap-cli/common/client/rancher"
 	"phoenixnap.com/pnap-cli/common/fileprocessor"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )
@@ -120,7 +121,11 @@ func initConfig() {
 		fmt.Println("Client ID and Client Secret in config file should not be empty")
 		os.Exit(1)
 	} else {
-		bmcapi.Client = bmcapi.NewMainClient(viper.GetString("clientId"), viper.GetString("clientSecret"))
+		clientId := viper.GetString("clientId")
+		clientSecret := viper.GetString("clientSecret")
+
+		bmcapi.Client = bmcapi.NewMainClient(clientId, clientSecret)
+		rancher.Client = rancher.NewMainClient(clientId, clientSecret)
 	}
 }
 

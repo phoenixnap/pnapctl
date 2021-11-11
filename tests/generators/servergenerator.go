@@ -5,7 +5,9 @@ import (
 	"time"
 
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
-	"phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
+
+	ranchersdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/ranchersolutionapi"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -60,8 +62,8 @@ func GenerateServer() bmcapisdk.Server {
 	}
 }
 
-func GenerateServerCreate() models.ServerCreate {
-	return models.ServerCreate{
+func GenerateServerCreate() bmcapimodels.ServerCreate {
+	return bmcapimodels.ServerCreate{
 		Hostname:              randSeq(10),
 		Description:           randSeqPointer(10),
 		Os:                    randSeq(10),
@@ -79,7 +81,36 @@ func GenerateServerCreate() models.ServerCreate {
 	}
 }
 
-func GenerateDeleteResult() bmcapisdk.DeleteResult {
+func GenerateClusters(n int) []ranchersdk.Cluster {
+	var clusterlist []ranchersdk.Cluster
+	for i := 0; i < n; i++ {
+		clusterlist = append(clusterlist, GenerateCluster())
+	}
+	return clusterlist
+}
+
+func GenerateCluster() ranchersdk.Cluster {
+	return ranchersdk.Cluster{
+		Id:                    randSeqPointer(10),
+		Name:                  randSeqPointer(10),
+		Description:           randSeqPointer(10),
+		Location:              randSeq(10),
+		InitialClusterVersion: randSeqPointer(10),
+		NodePools:             nil,
+		Configuration:         nil,
+		Metadata:              nil,
+		StatusDescription:     randSeqPointer(10),
+	}
+}
+
+func GenerateRancherDeleteResult() ranchersdk.DeleteResult {
+	return ranchersdk.DeleteResult{
+		Result:    randSeq(10),
+		ClusterId: randSeqPointer(10),
+	}
+}
+
+func GenerateBmcApiDeleteResult() bmcapisdk.DeleteResult {
 	return bmcapisdk.DeleteResult{
 		Result:   randSeq(10),
 		ServerId: randSeq(10),
