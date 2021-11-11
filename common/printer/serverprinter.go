@@ -2,7 +2,7 @@ package printer
 
 import (
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
-	"phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 )
 
@@ -25,9 +25,9 @@ func PrepareServerForPrinting(server bmcapisdk.Server, full bool) interface{} {
 	case !full && table:
 		return tables.ToShortServerTable(server)
 	case full:
-		return models.ToFullServer(server)
+		return bmcapimodels.ToFullServer(server)
 	default:
-		return models.ToShortServer(server)
+		return bmcapimodels.ToShortServer(server)
 	}
 }
 

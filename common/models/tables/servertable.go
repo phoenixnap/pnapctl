@@ -2,7 +2,7 @@ package tables
 
 import (
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
-	"phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 )
 
 type LongServerTable struct {
@@ -75,9 +75,9 @@ func ToLongServerTable(server bmcapisdk.Server) LongServerTable {
 		Password:             DerefString(server.Password),
 		NetworkType:          DerefString(server.NetworkType),
 		ClusterId:            DerefString(server.ClusterId),
-		Tags:                 models.TagsToTableStrings(server.Tags),
+		Tags:                 bmcapimodels.TagsToTableStrings(server.Tags),
 		ProvisionedOn:        DerefTimeAsString(server.ProvisionedOn),
-		OsConfiguration:      models.OsConfigurationToTableString(server.OsConfiguration),
-		NetworkConfiguration: models.NetworkConfigurationToTableString(&server.NetworkConfiguration),
+		OsConfiguration:      bmcapimodels.OsConfigurationToTableString(server.OsConfiguration),
+		NetworkConfiguration: bmcapimodels.NetworkConfigurationToTableString(&server.NetworkConfiguration),
 	}
 }
