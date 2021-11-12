@@ -186,6 +186,36 @@ func TestPrepareServerListForPrinting(test_framework *testing.T) {
 	assert.Equal(test_framework, len(prepared), 1)
 }
 
+func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
+	OutputFormat = "json"
+	event := generators.GenerateEvent()
+	prepared := PrepareEventForPrinting(event)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*auditmodels.Event")
+}
+
+func TestPrepareEventForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	event := generators.GenerateEvent()
+	prepared := PrepareEventForPrinting(event)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.Event")
+}
+
+func TestPrepareEventListForPrinting(test_framework *testing.T) {
+	OutputFormat = "table"
+	events := generators.GenerateEvents(1)
+	prepared := PrepareEventListForPrinting(events)
+
+	outputType := fmt.Sprintf("%T", prepared[0])
+
+	assert.Equal(test_framework, outputType, "tables.Event")
+}
+
 func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
 	cluster := generators.GenerateCluster()
