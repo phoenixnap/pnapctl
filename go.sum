@@ -815,6 +815,8 @@ github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9de
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
+gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/auditapi v0.0.0-20211110143439-97920314c1bc h1:ScC9VPPE+l3jIsKNFDjeIu+8axU1ef3rlkydswN/a4o=
+gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/auditapi v0.0.0-20211110143439-97920314c1bc/go.mod h1:7Jsf9xNuJ4f1D9uELcq2dEC4dbNlIk4HDofskdcvhHU=
 gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211109134311-d11e9d1ea5b6 h1:7WiG0EqYTR625u31+0Il+xcEH+3Wjijofx5c/7TYTEk=
 gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211109134311-d11e9d1ea5b6/go.mod h1:n5whwv0gjDyX/5XZObabWRZRm4bEutIutpmf8n80tw8=
 gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/ranchersolutionapi v0.0.0-20211103081416-a6efcf6e8f00 h1:qkbIAEZ117l83P15GSPmmBhfqgD59BZibPUnBYQ30BI=
