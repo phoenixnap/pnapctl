@@ -195,6 +195,22 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerPatch(serverId, serverPatch int
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPatch", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPatch), serverPatch)
 }
 
+// ServerTag mocks base method.
+func (m *MockBmcApiSdkClient) ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerTag", tagAssignmentRequests)
+	ret0, _ := ret[0].(bmcapisdk.Server)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerPatch indicates an expected call of ServerTag.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerTag(serverId, tagAssignmentRequests interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerTag", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerTag), tagAssignmentRequests)
+}
+
 /*---- QUOTA -----*/
 // QuotaGetById mocks base method.
 func (m *MockBmcApiSdkClient) QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error) {

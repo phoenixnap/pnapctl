@@ -115,3 +115,18 @@ func GenerateServerPatch() bmcapisdk.ServerPatch {
 		Description: randSeqPointer(10),
 	}
 }
+
+func GenerateTagAssignmentRequest() bmcapisdk.TagAssignmentRequest {
+	return bmcapisdk.TagAssignmentRequest{
+		Name:  randSeq(10),
+		Value: randSeqPointer(10),
+	}
+}
+
+func GenerateTagAssignmentRequests(n int) []bmcapisdk.TagAssignmentRequest {
+	var list []bmcapisdk.TagAssignmentRequest
+	for i := 0; i < n; i++ {
+		list = append(list, GenerateTagAssignmentRequest())
+	}
+	return list
+}

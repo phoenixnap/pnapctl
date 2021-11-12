@@ -23,6 +23,7 @@ type BmcApiSdkClient interface {
 	ServerReset(serverId string, serverReset bmcapisdk.ServerReset) (bmcapisdk.ResetResult, *http.Response, error)
 	ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
 	ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error)
+	ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error)
 
 	//Quotas
 	QuotasGet() ([]bmcapisdk.Quota, *http.Response, error)
@@ -102,6 +103,14 @@ func (m MainClient) ServerShutdown(serverId string) (bmcapisdk.ActionResult, *ht
 
 func (m MainClient) ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error) {
 	return m.ServersApiClient.ServersServerIdPatch(context.Background(), serverId).ServerPatch(serverPatch).Execute()
+}
+
+func (m MainClient) ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error) {
+	//if there are no tag assignment requests, we must send an empty array as request body
+	if len(tagAssignmentRequests) < 1 {
+		return m.ServersApiClient.ServersServerIdTagsPut(context.Background(), serverId).TagAssignmentRequest().Execute()
+	}
+	return m.ServersApiClient.ServersServerIdTagsPut(context.Background(), serverId).TagAssignmentRequest(tagAssignmentRequests).Execute()
 }
 
 // Quota APIs

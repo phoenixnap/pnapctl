@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	files "phoenixnap.com/pnap-cli/common/fileprocessor"
 )
 
 type TagAssignmentRequest struct {
@@ -85,4 +86,25 @@ func TagsToTableStrings(tags *[]bmcapisdk.TagAssignment) []string {
 	}
 
 	return tagStrings
+}
+
+func TagServerRequestFromFile(filename string, commandname string) (*[]bmcapisdk.TagAssignmentRequest, error) {
+	files.ExpandPath(&filename)
+
+	data, err := files.ReadFile(filename, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Marshal file using the struct
+	var tagAssignmentRequests []TagAssignmentRequest
+
+	err = files.Unmarshal(data, &tagAssignmentRequests, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return mapTagAssignmentRequestToSdk(&tagAssignmentRequests), nil
 }
