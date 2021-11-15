@@ -8,7 +8,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
@@ -22,7 +22,7 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
 	serverPatch := generators.GenerateServerPatch()
 
-	serverPatchModel := models.ServerPatch{
+	serverPatchModel := bmcapimodels.ServerPatch{
 		Hostname:    serverPatch.Hostname,
 		Description: serverPatch.Description,
 	}

@@ -8,7 +8,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
@@ -22,17 +22,17 @@ func TestTagServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
 	tagAssignmentRequests := generators.GenerateTagAssignmentRequests(2)
 
-	tagAssignmentModel_1 := models.TagAssignmentRequest{
+	tagAssignmentModel_1 := bmcapimodels.TagAssignmentRequest{
 		Name:  tagAssignmentRequests[0].Name,
 		Value: tagAssignmentRequests[0].Value,
 	}
 
-	tagAssignmentModel_2 := models.TagAssignmentRequest{
+	tagAssignmentModel_2 := bmcapimodels.TagAssignmentRequest{
 		Name:  tagAssignmentRequests[1].Name,
 		Value: tagAssignmentRequests[1].Value,
 	}
 
-	tagAssignmentRequestModels := []models.TagAssignmentRequest{tagAssignmentModel_1, tagAssignmentModel_2}
+	tagAssignmentRequestModels := []bmcapimodels.TagAssignmentRequest{tagAssignmentModel_1, tagAssignmentModel_2}
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagAssignmentRequestModels)
@@ -62,7 +62,6 @@ func TestTagServerSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-// WORK IN PROGRESS
 func TestTagServerEmptyBodySuccessYAML(test_framework *testing.T) {
 	//tagAssignmentRequests := []bmcapisdk.TagAssignmentRequest{}
 

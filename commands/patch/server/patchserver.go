@@ -4,7 +4,7 @@ import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 	"phoenixnap.com/pnap-cli/common/printer"
 )
 
@@ -31,7 +31,7 @@ pnapctl patch server x78sdkjds879sd7cx8 --filename ~/serverPatch.yaml
 hostname: "patched-server"
 description: "My custom server edit"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		patchRequest, err := models.PatchServerRequestFromFile(Filename, commandName)
+		patchRequest, err := bmcapimodels.PatchServerRequestFromFile(Filename, commandName)
 		if err != nil {
 			return err
 		}

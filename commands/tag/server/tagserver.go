@@ -7,7 +7,7 @@ import (
 	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models"
+	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 	"phoenixnap.com/pnap-cli/common/printer"
 )
 
@@ -47,7 +47,7 @@ pnapctl tag server x78sdkjds879sd7cx8 --filename ~/serverTag.yaml
 - name: tagName2
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		tagRequests, err := models.TagServerRequestFromFile(Filename, commandName)
+		tagRequests, err := bmcapimodels.TagServerRequestFromFile(Filename, commandName)
 		if err != nil {
 			return err
 		}
