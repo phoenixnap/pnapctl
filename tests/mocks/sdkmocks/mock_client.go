@@ -147,6 +147,22 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerShutdown(serverId interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerShutdown", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerShutdown), serverId)
 }
 
+// ServerReserve mocks base method.
+func (m *MockBmcApiSdkClient) ServerReserve(serverId string, serverReserve bmcapisdk.ServerReserve) (bmcapisdk.Server, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerReserve", serverReserve)
+	ret0, _ := ret[0].(bmcapisdk.Server)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerReserve indicates an expected call of ServerReserve.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerReserve(serverId, serverReserve interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerReserve", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerReserve), serverReserve)
+}
+
 // ServersGet mocks base method.
 func (m *MockBmcApiSdkClient) ServersGet() ([]bmcapisdk.Server, *http.Response, error) {
 	m.ctrl.T.Helper()
@@ -205,7 +221,7 @@ func (m *MockBmcApiSdkClient) ServerTag(serverId string, tagAssignmentRequests [
 	return ret0, ret1, ret2
 }
 
-// ServerPatch indicates an expected call of ServerTag.
+// ServerTag indicates an expected call of ServerTag.
 func (mr *MockBmcApiSdkClientMockRecorder) ServerTag(serverId, tagAssignmentRequests interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerTag", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerTag), tagAssignmentRequests)

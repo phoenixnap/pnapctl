@@ -20,6 +20,7 @@ var PatchServerCmd = &cobra.Command{
 	Use:          "server [SERVER_ID]",
 	Short:        "Patch a server.",
 	Args:         cobra.ExactArgs(1),
+	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	Long: `Patch a server.
 

@@ -161,3 +161,9 @@ func GenerateTagAssignmentRequests(n int) []bmcapisdk.TagAssignmentRequest {
 	}
 	return list
 }
+
+func GenerateServerReserve() bmcapisdk.ServerReserve {
+	return bmcapisdk.ServerReserve{
+		PricingModel: "ONE_MONTH_RESERVATION",
+	}
+}

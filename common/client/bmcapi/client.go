@@ -21,6 +21,7 @@ type BmcApiSdkClient interface {
 	ServerPowerOn(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
 	ServerReboot(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
 	ServerReset(serverId string, serverReset bmcapisdk.ServerReset) (bmcapisdk.ResetResult, *http.Response, error)
+	ServerReserve(serverId string, serverReserve bmcapisdk.ServerReserve) (bmcapisdk.Server, *http.Response, error)
 	ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
 	ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error)
 	ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error)
@@ -95,6 +96,10 @@ func (m MainClient) ServerReboot(serverId string) (bmcapisdk.ActionResult, *http
 
 func (m MainClient) ServerReset(serverId string, serverReset bmcapisdk.ServerReset) (bmcapisdk.ResetResult, *http.Response, error) {
 	return m.ServersApiClient.ServersServerIdActionsResetPost(context.Background(), serverId).ServerReset(serverReset).Execute()
+}
+
+func (m MainClient) ServerReserve(serverId string, serverReserve bmcapisdk.ServerReserve) (bmcapisdk.Server, *http.Response, error) {
+	return m.ServersApiClient.ServersServerIdActionsReservePost(context.Background(), serverId).ServerReserve(serverReserve).Execute()
 }
 
 func (m MainClient) ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
