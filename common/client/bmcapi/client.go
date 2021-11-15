@@ -106,10 +106,6 @@ func (m MainClient) ServerPatch(serverId string, serverPatch bmcapisdk.ServerPat
 }
 
 func (m MainClient) ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error) {
-	//if there are no tag assignment requests, we must send an empty array as request body
-	if len(tagAssignmentRequests) < 1 {
-		return m.ServersApiClient.ServersServerIdTagsPut(context.Background(), serverId).TagAssignmentRequest().Execute()
-	}
 	return m.ServersApiClient.ServersServerIdTagsPut(context.Background(), serverId).TagAssignmentRequest(tagAssignmentRequests).Execute()
 }
 

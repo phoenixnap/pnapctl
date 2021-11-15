@@ -1,7 +1,10 @@
 package server
 
 import (
+	"net/http"
+
 	"github.com/spf13/cobra"
+	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models"
@@ -49,7 +52,7 @@ pnapctl tag server x78sdkjds879sd7cx8 --filename ~/serverTag.yaml
 			return err
 		}
 
-		serverResponse, httpResponse, err := bmcapi.Client.ServerTag(args[0], *tagRequests)
+		serverResponse, httpResponse, err := performTagRequest(args[0], tagRequests)
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
@@ -66,4 +69,13 @@ func init() {
 	TagServerCmd.MarkFlagRequired("filename")
 	TagServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
 	TagServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+}
+
+func performTagRequest(serverId string, tagRequests *[]bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error) {
+	// An empty array must be used as a request body if file is empty
+	if len(*tagRequests) < 1 {
+		return bmcapi.Client.ServerTag(serverId, []bmcapisdk.TagAssignmentRequest{})
+	} else {
+		return bmcapi.Client.ServerTag(serverId, *tagRequests)
+	}
 }
