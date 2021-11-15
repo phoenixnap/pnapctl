@@ -17,6 +17,7 @@ import (
 	"phoenixnap.com/pnap-cli/commands/poweron"
 	"phoenixnap.com/pnap-cli/commands/reboot"
 	"phoenixnap.com/pnap-cli/commands/request_edit"
+	"phoenixnap.com/pnap-cli/commands/reserve"
 	"phoenixnap.com/pnap-cli/commands/reset"
 	"phoenixnap.com/pnap-cli/commands/shutdown"
 	"phoenixnap.com/pnap-cli/commands/tag"
@@ -64,6 +65,7 @@ func init() {
 	rootCmd.AddCommand(poweron.PowerOnCmd)
 	rootCmd.AddCommand(shutdown.ShutdownCmd)
 	rootCmd.AddCommand(reboot.RebootCmd)
+	rootCmd.AddCommand(reserve.ReserveCmd)
 	rootCmd.AddCommand(version.VersionCmd)
 	rootCmd.AddCommand(request_edit.RequestEditCmd)
 	rootCmd.AddCommand(tag.TagCmd)
