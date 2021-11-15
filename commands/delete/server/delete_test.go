@@ -15,7 +15,7 @@ func TestDeleteServerSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDelete(RESOURCEID).
-		Return(generators.GenerateDeleteResult(), WithResponse(200, nil), nil)
+		Return(generators.GenerateBmcApiDeleteResult(), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})

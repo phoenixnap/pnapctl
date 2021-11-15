@@ -162,7 +162,7 @@ func TestPrepareServerForPrintingLongServer(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "models.LongServer")
+	assert.Equal(test_framework, outputType, "bmcapimodels.LongServer")
 }
 
 func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
@@ -172,7 +172,7 @@ func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "models.ShortServer")
+	assert.Equal(test_framework, outputType, "bmcapimodels.ShortServer")
 }
 
 func TestPrepareServerListForPrinting(test_framework *testing.T) {
@@ -182,8 +182,70 @@ func TestPrepareServerListForPrinting(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared[0])
 
-	assert.Equal(test_framework, outputType, "models.ShortServer")
+	assert.Equal(test_framework, outputType, "bmcapimodels.ShortServer")
 	assert.Equal(test_framework, len(prepared), 1)
+}
+
+func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
+	OutputFormat = "json"
+	event := generators.GenerateEvent()
+	prepared := PrepareEventForPrinting(event)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*auditmodels.Event")
+}
+
+func TestPrepareEventForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	event := generators.GenerateEvent()
+	prepared := PrepareEventForPrinting(event)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.Event")
+}
+
+func TestPrepareEventListForPrinting(test_framework *testing.T) {
+	OutputFormat = "table"
+	events := generators.GenerateEvents(1)
+	prepared := PrepareEventListForPrinting(events)
+
+	outputType := fmt.Sprintf("%T", prepared[0])
+
+	assert.Equal(test_framework, outputType, "tables.Event")
+}
+
+func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	cluster := generators.GenerateCluster()
+	prepared := PrepareClusterForPrinting(cluster)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.ClusterTable")
+}
+
+func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
+	OutputFormat = "json"
+	cluster := generators.GenerateCluster()
+	prepared := PrepareClusterForPrinting(cluster)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "ranchermodels.Cluster")
+}
+
+func TestPrepareClusterListForPrinting(test_framework *testing.T) {
+	OutputFormat = "json"
+	clusters := generators.GenerateClusters(1)
+	prepared := PrepareClusterListForPrinting(clusters)
+
+	outputType := fmt.Sprintf("%T", prepared[0])
+
+	assert.Equal(test_framework, outputType, "ranchermodels.Cluster")
+	assert.Equal(test_framework, len(prepared), 1)
+
 }
 
 func ExamplePrintOutputTableFormatEmpty() {
