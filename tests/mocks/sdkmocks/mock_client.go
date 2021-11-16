@@ -243,6 +243,22 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkPost(serverId, se
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkPost), serverPrivateNetwork)
 }
 
+// ServerPrivateNetworkDelete mocks base method.
+func (m *MockBmcApiSdkClient) ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerPrivateNetworkDelete", serverId, networkId)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerPrivateNetworkDelete indicates an expected call of ServerPrivateNetworkDelete.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkDelete(serverId, networkId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkDelete), serverId, networkId)
+}
+
 /*---- QUOTA -----*/
 // QuotaGetById mocks base method.
 func (m *MockBmcApiSdkClient) QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error) {

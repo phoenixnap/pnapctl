@@ -26,6 +26,7 @@ type BmcApiSdkClient interface {
 	ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error)
 	ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error)
 	ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error)
+	ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error)
 
 	//Quotas
 	QuotasGet() ([]bmcapisdk.Quota, *http.Response, error)
@@ -117,6 +118,10 @@ func (m MainClient) ServerTag(serverId string, tagAssignmentRequests []bmcapisdk
 
 func (m MainClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error) {
 	return m.ServersApiClient.ServersServerIdPrivateNetworksPost(context.Background(), serverId).ServerPrivateNetwork(serverPrivateNetwork).Execute()
+}
+
+func (m MainClient) ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error) {
+	return m.ServersApiClient.DeletePrivateNetwork(context.Background(), serverId, networkId).Execute()
 }
 
 // Quota APIs

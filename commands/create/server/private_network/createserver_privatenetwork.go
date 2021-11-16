@@ -13,17 +13,17 @@ var Filename string
 
 var commandName = "create server-private-network"
 
-// CreateServerCmd is the command for creating a server.
+// CreateServerPrivateNetworkCmd is the command for creating a server.
 var CreateServerPrivateNetworkCmd = &cobra.Command{
-	Use:          "server-private-network",
+	Use:          "server-private-network [SERVER_ID]",
 	Short:        "Create a new private network for server.",
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
-	Long: `Create a new private network forserver.
+	Long: `Create a new private network for server.
 
 Requires a file (yaml or json) containing the information needed to create the server.`,
-	Example: `# create a new server as described in server.yaml
-pnapctl create server --filename ./createPrivateNetwork.yaml
+	Example: `# Add a server to a private network as defined in createPrivateNetwork.yaml
+pnapctl create server-private-network 5ff5cc9bc1acf144d910621f --filename ./createPrivateNetwork.yaml
 
 # createPrivateNetwork.yaml
 id: 5ff5cc9bc1acf144d9106233,
@@ -39,7 +39,7 @@ statusDescription": in-progress
 			return err
 		}
 
-		// Create the server
+		// Create the server private network
 		response, httpResponse, err := bmcapi.Client.ServerPrivateNetworkPost(args[0], *serverPrivateNetwork)
 
 		if err != nil {
