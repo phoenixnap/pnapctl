@@ -227,6 +227,22 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerTag(serverId, tagAssignmentRequ
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerTag", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerTag), tagAssignmentRequests)
 }
 
+// ServerPrivateNetworkPost mocks base method.
+func (m *MockBmcApiSdkClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerPrivateNetworkPost", serverPrivateNetwork)
+	ret0, _ := ret[0].(bmcapisdk.ServerPrivateNetwork)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerPrivateNetworkPost indicates an expected call of ServerPrivateNetworkPost.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkPost(serverId, serverPrivateNetwork interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkPost), serverPrivateNetwork)
+}
+
 /*---- QUOTA -----*/
 // QuotaGetById mocks base method.
 func (m *MockBmcApiSdkClient) QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error) {
