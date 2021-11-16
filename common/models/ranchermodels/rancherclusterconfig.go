@@ -3,7 +3,7 @@ package ranchermodels
 import (
 	"fmt"
 
-	ranchersdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/ranchersolutionapi"
+	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 )
 
 type RancherClusterConfig struct {

@@ -1,7 +1,7 @@
 package printer
 
 import (
-	tagapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/tagapi"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 	"phoenixnap.com/pnap-cli/common/models/tagmodels"
 )

@@ -3,7 +3,7 @@ package tagmodels
 import (
 	"fmt"
 
-	tagapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/tagapi"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 )
 
 type ResourceAssignment struct {

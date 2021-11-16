@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	tagapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/tagapi"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"golang.org/x/oauth2/clientcredentials"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )

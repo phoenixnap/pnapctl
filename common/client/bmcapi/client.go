@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"golang.org/x/oauth2/clientcredentials"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )

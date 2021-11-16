@@ -1,7 +1,7 @@
 package tables
 
 import (
-	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 )
 
