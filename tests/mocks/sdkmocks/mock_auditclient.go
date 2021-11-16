@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	auditapi "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/auditapi"
+	auditapi "github.com/phoenixnap/go-sdk-bmc/auditapi"
 )
 
 // MockAuditSdkClient is a mock of AuditSdkClient interface.

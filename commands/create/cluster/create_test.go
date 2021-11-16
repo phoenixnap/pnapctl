@@ -14,7 +14,7 @@ import (
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
 
-	ranchersdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/ranchersolutionapi"
+	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 )
 
 func TestCreateClusterSuccessYAML(test_framework *testing.T) {

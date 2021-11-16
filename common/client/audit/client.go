@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	auditapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/auditapi"
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"golang.org/x/oauth2/clientcredentials"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )

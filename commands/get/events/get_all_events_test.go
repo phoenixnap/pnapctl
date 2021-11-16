@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"github.com/stretchr/testify/assert"
-	auditapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/auditapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 	"phoenixnap.com/pnap-cli/tests/generators"

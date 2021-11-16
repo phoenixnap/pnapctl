@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
-	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 	"phoenixnap.com/pnap-cli/tests/generators"
