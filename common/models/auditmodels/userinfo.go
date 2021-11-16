@@ -3,7 +3,7 @@ package auditmodels
 import (
 	"fmt"
 
-	auditsdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/auditapi"
+	auditsdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 )
 
 type UserInfo struct {

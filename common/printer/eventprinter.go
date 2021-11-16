@@ -1,7 +1,7 @@
 package printer
 
 import (
-	auditapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/auditapi"
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"phoenixnap.com/pnap-cli/common/models/auditmodels"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 )

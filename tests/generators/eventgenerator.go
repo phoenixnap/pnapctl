@@ -3,7 +3,7 @@ package generators
 import (
 	"time"
 
-	auditapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/auditapi"
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 )
 
 func GenerateEvent() auditapisdk.Event {

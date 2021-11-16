@@ -677,6 +677,12 @@ github.com/performancecopilot/speed v3.0.0+incompatible/go.mod h1:/CLtqpZ5gBg1M9
 github.com/peterbourgon/diskv v2.0.1+incompatible/go.mod h1:uqqh8zWWbv1HBMNONnaR/tNboyR3/BZd58JJSHlUSCU=
 github.com/peterh/liner v1.0.1-0.20180619022028-8c1271fcf47f/go.mod h1:xIteQHvHuaLYG9IFj6mSxM0fCKrs34IrEQUhOYuGPHc=
 github.com/philhofer/fwd v1.0.0/go.mod h1:gk3iGcWd9+svBvR0sR+KPcfE+RNWozjowpeBVG3ZVNU=
+github.com/phoenixnap/go-sdk-bmc/auditapi v0.0.0-20211116133257-cd68de6a4af2 h1:rSTSJPwciAhhCElUSAmBu9veakMKpT/z+aqIyXZTPbE=
+github.com/phoenixnap/go-sdk-bmc/auditapi v0.0.0-20211116133257-cd68de6a4af2/go.mod h1:ulNP1g6LRxaz3ClILMoLzBu3E0jRRCpp0A8AOP8q4B8=
+github.com/phoenixnap/go-sdk-bmc/bmcapi v0.0.0-20211116133257-cd68de6a4af2 h1:SiTD2TIfGmVY8WklVriXJsM9ZiMiD2Y03M0LSPP/aQA=
+github.com/phoenixnap/go-sdk-bmc/bmcapi v0.0.0-20211116133257-cd68de6a4af2/go.mod h1:VI5LhqwK8/3q9ULTGp9wadV5SFTiREW3xLBW/ImWaT4=
+github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v0.0.0-20211116133257-cd68de6a4af2 h1:I0Mxk8nwiJnNpJzx7XlAsfOMD1Ur10PKLFTV19zDWdU=
+github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v0.0.0-20211116133257-cd68de6a4af2/go.mod h1:nFkhVvk0eOqlaPJE899y/ZNbMqgHzXpMhpxdY/hknRw=
 github.com/pierrec/lz4 v1.0.2-0.20190131084431-473cd7ce01a1/go.mod h1:3/3N9NVKO0jef7pBehbT1qWhCMrIgbYNnFAZCqQ5LRc=
 github.com/pierrec/lz4 v2.0.5+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi+IEE17M5jbnwPHcY=
 github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4/go.mod h1:4OwLy04Bl9Ef3GJJCoec+30X3LQs/0/m4HFRt/2LUSA=
@@ -815,12 +821,6 @@ github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9de
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
-gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/auditapi v0.0.0-20211110143439-97920314c1bc h1:ScC9VPPE+l3jIsKNFDjeIu+8axU1ef3rlkydswN/a4o=
-gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/auditapi v0.0.0-20211110143439-97920314c1bc/go.mod h1:7Jsf9xNuJ4f1D9uELcq2dEC4dbNlIk4HDofskdcvhHU=
-gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211109134311-d11e9d1ea5b6 h1:7WiG0EqYTR625u31+0Il+xcEH+3Wjijofx5c/7TYTEk=
-gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211109134311-d11e9d1ea5b6/go.mod h1:n5whwv0gjDyX/5XZObabWRZRm4bEutIutpmf8n80tw8=
-gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/ranchersolutionapi v0.0.0-20211103081416-a6efcf6e8f00 h1:qkbIAEZ117l83P15GSPmmBhfqgD59BZibPUnBYQ30BI=
-gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/ranchersolutionapi v0.0.0-20211103081416-a6efcf6e8f00/go.mod h1:fmHXb3XNZCUmzX+jTO6BxXHlI783rn/RF5z5Sb/ziIY=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/etcd v0.0.0-20191023171146-3cf2f69b5738/go.mod h1:dnLIgRNXwCJa5e+c6mIZCrds/GIG4ncV9HhK5PX7jPg=
 go.etcd.io/etcd/api/v3 v3.5.0/go.mod h1:cbVKeC6lCfl7j/8jBhAK6aIYO9XOjdptoxU/nLQcPvs=

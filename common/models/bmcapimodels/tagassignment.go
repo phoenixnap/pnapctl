@@ -3,7 +3,7 @@ package bmcapimodels
 import (
 	"fmt"
 
-	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 )
 
 type TagAssignmentRequest struct {
