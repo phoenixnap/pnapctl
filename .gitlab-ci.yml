@@ -39,9 +39,9 @@ test:
 .build:
   extends: .go-cache
   stage: build
-  # only:
-  #   - master
-  #   - tags
+  only:
+    - master
+    - tags
   image: registry.gitlab.com/phoenixnap/docker/golang:1.17.1
   script:
     - make build-and-pack ENVIRONMENT_NAME=$CI_ENVIRONMENT_NAME
