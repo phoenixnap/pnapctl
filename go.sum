@@ -821,6 +821,8 @@ gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211109134311-d
 gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi v0.0.0-20211109134311-d11e9d1ea5b6/go.mod h1:n5whwv0gjDyX/5XZObabWRZRm4bEutIutpmf8n80tw8=
 gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/ranchersolutionapi v0.0.0-20211103081416-a6efcf6e8f00 h1:qkbIAEZ117l83P15GSPmmBhfqgD59BZibPUnBYQ30BI=
 gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/ranchersolutionapi v0.0.0-20211103081416-a6efcf6e8f00/go.mod h1:fmHXb3XNZCUmzX+jTO6BxXHlI783rn/RF5z5Sb/ziIY=
+gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/tagapi v0.0.0-20211110143439-97920314c1bc h1:n2gNGOA+w0KS4gC0AazhrpsSmqoO7p0GkTpDwSJqUH8=
+gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/tagapi v0.0.0-20211110143439-97920314c1bc/go.mod h1:SB4+Fxm+5oTDfW2AlTYBYaYVVE1FCNuUGe9p+WvEQcQ=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/etcd v0.0.0-20191023171146-3cf2f69b5738/go.mod h1:dnLIgRNXwCJa5e+c6mIZCrds/GIG4ncV9HhK5PX7jPg=
 go.etcd.io/etcd/api/v3 v3.5.0/go.mod h1:cbVKeC6lCfl7j/8jBhAK6aIYO9XOjdptoxU/nLQcPvs=
