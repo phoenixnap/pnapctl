@@ -3,9 +3,9 @@ package servers
 import (
 	netHttp "net/http"
 
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
