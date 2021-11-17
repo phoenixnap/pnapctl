@@ -14,7 +14,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	bmcapisdk "gitlab.com/phoenixnap/bare-metal-cloud/go-sdk.git/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 )
 
