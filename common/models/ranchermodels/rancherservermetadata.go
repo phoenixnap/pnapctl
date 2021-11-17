@@ -37,5 +37,19 @@ func RancherServerMetadataToTableString(metadata *ranchersdk.RancherServerMetada
 		return ""
 	}
 
-	return fmt.Sprintf("(User: %s, Pass: %s, Url: %s)", *metadata.Username, *metadata.Password, *metadata.Url)
+	username := ""
+	password := ""
+	url := ""
+
+	if metadata.Username != nil {
+		username = "User: " + *metadata.Username + "\n"
+	}
+	if metadata.Password != nil {
+		password = "Pass: " + *metadata.Password + "\n"
+	}
+	if metadata.Url != nil {
+		url = "Url: " + *metadata.Url + "\n"
+	}
+
+	return fmt.Sprintf("%s%s%s", username, password, url)
 }
