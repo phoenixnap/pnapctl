@@ -11,9 +11,9 @@ func GenerateEvent() auditapisdk.Event {
 		Name:      randSeqPointer(10),
 		Timestamp: time.Now(),
 		UserInfo: auditapisdk.UserInfo{
-			AccountId: randSeq(10),
+			AccountId: RandSeq(10),
 			ClientId:  randSeqPointer(10),
-			Username:  randSeq(10),
+			Username:  RandSeq(10),
 		},
 	}
 }

@@ -15,6 +15,7 @@ const commandName string = "get servers"
 
 var Full bool
 var ID string
+var tags []string
 
 var GetServersCmd = &cobra.Command{
 	Use:          "server [SERVER_ID]",
@@ -30,7 +31,7 @@ By default, the data is printed in table format.
 To print a single server, an ID needs to be passed as an argument.`,
 	Example: `
 # List all servers in json format.
-pnapctl get servers -o json
+pnapctl get servers --tag tagName.tagValue --tag tagName -o json
 
 # List all details of a single server in yaml format.
 pnapctl get servers NDIid939dfkoDd -o yaml --full`,
@@ -52,7 +53,7 @@ func getServers(serverID string) error {
 	var servers []bmcapisdk.Server
 
 	if serverID == "" {
-		servers, httpResponse, err = bmcapi.Client.ServersGet()
+		servers, httpResponse, err = bmcapi.Client.ServersGet(tags)
 	} else {
 		server, httpResponse, err = bmcapi.Client.ServerGetById(serverID)
 	}
@@ -73,4 +74,5 @@ func getServers(serverID string) error {
 func init() {
 	GetServersCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
 	GetServersCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	GetServersCmd.PersistentFlags().StringArrayVar(&tags, "tag", nil, "Filter by tag")
 }

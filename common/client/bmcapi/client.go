@@ -14,7 +14,7 @@ var Client BmcApiSdkClient
 type BmcApiSdkClient interface {
 	//Servers
 	ServersPost(serverCreate bmcapisdk.ServerCreate) (bmcapisdk.Server, *http.Response, error)
-	ServersGet() ([]bmcapisdk.Server, *http.Response, error)
+	ServersGet([]string) ([]bmcapisdk.Server, *http.Response, error)
 	ServerGetById(serverId string) (bmcapisdk.Server, *http.Response, error)
 	ServerDelete(serverId string) (bmcapisdk.DeleteResult, *http.Response, error)
 	ServerPowerOff(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
@@ -72,8 +72,8 @@ func (m MainClient) ServersPost(serverCreate bmcapisdk.ServerCreate) (bmcapisdk.
 	return m.ServersApiClient.ServersPost(context.Background()).ServerCreate(serverCreate).Execute()
 }
 
-func (m MainClient) ServersGet() ([]bmcapisdk.Server, *http.Response, error) {
-	return m.ServersApiClient.ServersGet(context.Background()).Execute()
+func (m MainClient) ServersGet(tags []string) ([]bmcapisdk.Server, *http.Response, error) {
+	return m.ServersApiClient.ServersGet(context.Background()).Tag(tags).Execute()
 }
 
 func (m MainClient) ServerGetById(serverId string) (bmcapisdk.Server, *http.Response, error) {

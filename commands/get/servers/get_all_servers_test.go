@@ -24,7 +24,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersGet().
+		ServersGet(tags).
 		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -48,7 +48,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersGet().
+		ServersGet(tags).
 		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -64,10 +64,38 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestFilteredServersLongSuccess(test_framework *testing.T) {
+	serverlist := generators.GenerateServers(5)
+
+	var longServers []interface{}
+
+	for _, x := range serverlist {
+		longServers = append(longServers, tables.ToLongServerTable(x))
+	}
+
+	// to display full output
+	Full = true
+	tags = []string{generators.RandSeq(10), generators.RandSeq(10)}
+
+	// Mocking
+	PrepareBmcApiMockClient(test_framework).
+		ServersGet(tags).
+		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
+
+	PrepareMockPrinter(test_framework).
+		PrintOutput(longServers, "get servers").
+		Return(nil)
+
+	err := GetServersCmd.RunE(GetServersCmd, []string{})
+
+	// Assertions
+	assert.NoError(test_framework, err)
+}
+
 func TestGetAllServersClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersGet().
+		ServersGet(tags).
 		Return([]bmcapisdk.Server{}, WithResponse(200, nil), testutil.TestError)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
@@ -83,7 +111,7 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 	server := []bmcapisdk.Server{generators.GenerateServer()}
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersGet().
+		ServersGet(tags).
 		Return(server, nil, testutil.TestKeycloakError)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
@@ -102,7 +130,7 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 	}
 
 	PrepareBmcApiMockClient(test_framework).
-		ServersGet().
+		ServersGet(tags).
 		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
