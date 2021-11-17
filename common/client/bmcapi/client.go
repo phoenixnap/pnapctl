@@ -37,12 +37,8 @@ type MainClient struct {
 func NewMainClient(clientId string, clientSecret string) BmcApiSdkClient {
 	bmcAPIconfiguration := bmcapisdk.NewConfiguration()
 
-	//TODO: Since the CLI is only working with bmc api for the time being
-	// we only have one server in the array bmcAPIconfiguration.Servers.
-	// We will need to revisit this configuration when we introduce other
-	// apis (i.e. billing, tags, audit, etc...)
-	if configuration.Hostname != "" {
-		bmcAPIconfiguration.Servers[0].URL = configuration.Hostname
+	if configuration.BmcApiHostname != "" {
+		bmcAPIconfiguration.Servers[0].URL = configuration.BmcApiHostname
 	}
 
 	config := clientcredentials.Config{

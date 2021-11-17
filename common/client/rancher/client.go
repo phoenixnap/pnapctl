@@ -25,6 +25,10 @@ type MainClient struct {
 func NewMainClient(clientId string, clientSecret string) RancherSdkClient {
 	rancherConfiguration := ranchersdk.NewConfiguration()
 
+	if configuration.RancherHostname != "" {
+		rancherConfiguration.Servers[0].URL = configuration.RancherHostname
+	}
+
 	config := clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,

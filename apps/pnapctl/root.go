@@ -19,8 +19,10 @@ import (
 	"phoenixnap.com/pnap-cli/commands/reset"
 	"phoenixnap.com/pnap-cli/commands/shutdown"
 	"phoenixnap.com/pnap-cli/commands/version"
+	"phoenixnap.com/pnap-cli/common/client/audit"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/client/rancher"
+	"phoenixnap.com/pnap-cli/common/client/tags"
 	"phoenixnap.com/pnap-cli/common/fileprocessor"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )
@@ -126,6 +128,8 @@ func initConfig() {
 
 		bmcapi.Client = bmcapi.NewMainClient(clientId, clientSecret)
 		rancher.Client = rancher.NewMainClient(clientId, clientSecret)
+		audit.Client = audit.NewMainClient(clientId, clientSecret)
+		tags.Client = tags.NewMainClient(clientId, clientSecret)
 	}
 }
 

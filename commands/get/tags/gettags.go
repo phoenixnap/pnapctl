@@ -54,7 +54,7 @@ func getTags(tagID string) error {
 	var tags []tagapisdk.Tag
 
 	if tagID == "" {
-		tags, httpResponse, err = tagclient.Client.TagsGet()
+		tags, httpResponse, err = tagclient.Client.TagsGet(Name)
 	} else {
 		tag, httpResponse, err = tagclient.Client.TagGetById(tagID)
 	}

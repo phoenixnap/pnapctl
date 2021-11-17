@@ -24,18 +24,22 @@ type MainClient struct {
 }
 
 func NewMainClient(clientId string, clientSecret string) TagSdkClient {
-	rancherConfiguration := tagapisdk.NewConfiguration()
+	tagConfiguration := tagapisdk.NewConfiguration()
+
+	if configuration.TagsHostname != "" {
+		tagConfiguration.Servers[0].URL = configuration.TagsHostname
+	}
 
 	config := clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
 		TokenURL:     configuration.TokenURL,
-		Scopes:       []string{"bmc", "bmc.read"},
+		Scopes:       []string{"tags", "tags.read"},
 	}
 
-	rancherConfiguration.HTTPClient = config.Client(context.Background())
+	tagConfiguration.HTTPClient = config.Client(context.Background())
 
-	api_client := tagapisdk.NewAPIClient(rancherConfiguration)
+	api_client := tagapisdk.NewAPIClient(tagConfiguration)
 
 	return MainClient{
 		TagSdkClient: api_client.TagsApi,
