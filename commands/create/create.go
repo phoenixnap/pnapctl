@@ -4,7 +4,9 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnap-cli/commands/create/cluster"
 	"phoenixnap.com/pnap-cli/commands/create/server"
+	"phoenixnap.com/pnap-cli/commands/create/tag"
 )
 
 var CreateCmd = &cobra.Command{
@@ -19,4 +21,6 @@ var CreateCmd = &cobra.Command{
 
 func init() {
 	CreateCmd.AddCommand(server.CreateServerCmd)
+	CreateCmd.AddCommand(cluster.CreateClusterCmd)
+	CreateCmd.AddCommand(tag.CreateTagCmd)
 }

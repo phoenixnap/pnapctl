@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/commands/edit/quotas"
+	"phoenixnap.com/pnap-cli/commands/edit/tag"
 )
 
 var EditCmd = &cobra.Command{
@@ -19,4 +20,5 @@ var EditCmd = &cobra.Command{
 
 func init() {
 	EditCmd.AddCommand(quotas.EditQuotaCmd)
+	EditCmd.AddCommand(tag.EditTagCmd)
 }

@@ -4,7 +4,9 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnap-cli/commands/delete/cluster"
 	"phoenixnap.com/pnap-cli/commands/delete/server"
+	"phoenixnap.com/pnap-cli/commands/delete/tag"
 )
 
 var DeleteCmd = &cobra.Command{
@@ -19,4 +21,6 @@ var DeleteCmd = &cobra.Command{
 
 func init() {
 	DeleteCmd.AddCommand(server.DeleteServerCmd)
+	DeleteCmd.AddCommand(cluster.DeleteClusterCmd)
+	DeleteCmd.AddCommand(tag.DeleteTagCmd)
 }

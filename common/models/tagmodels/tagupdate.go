@@ -2,6 +2,7 @@ package tagmodels
 
 import (
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
+	files "phoenixnap.com/pnap-cli/common/fileprocessor"
 )
 
 type TagUpdate struct {
@@ -16,4 +17,26 @@ func (tagUpdate *TagUpdate) ToSdk() tagapisdk.TagUpdate {
 		Description:  tagUpdate.Description,
 		IsBillingTag: tagUpdate.IsBillingTag,
 	}
+}
+
+func CreateTagUpdateFromFile(filename string, commandname string) (*tagapisdk.TagUpdate, error) {
+	files.ExpandPath(&filename)
+
+	data, err := files.ReadFile(filename, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var tagUpdate TagUpdate
+
+	err = files.Unmarshal(data, &tagUpdate, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	sdkTagUpdate := tagUpdate.ToSdk()
+
+	return &sdkTagUpdate, nil
 }

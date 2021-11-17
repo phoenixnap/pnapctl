@@ -13,7 +13,7 @@ type Tag struct {
 	ResourceAssignments *[]ResourceAssignment `json:"resourceAssignments" yaml:"resourceAssignments"`
 }
 
-func (tag *Tag) toSdk() *tagapisdk.Tag {
+func (tag *Tag) ToSdk() *tagapisdk.Tag {
 	var assignments *[]tagapisdk.ResourceAssignment
 
 	if tag.ResourceAssignments != nil {
