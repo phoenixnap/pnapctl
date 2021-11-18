@@ -16,7 +16,7 @@ jobs:
     container:
       image: registry.gitlab.com/phoenixnap/docker/golang:1.17.1
       credentials:
-        username: brian_zammit
+        username: ${{secrets.gitlab_registry_username}}
         password: ${{secrets.gitlab_registry_password}}
     steps:
       - name: Checkout the repo
