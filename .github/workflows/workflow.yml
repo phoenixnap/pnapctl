@@ -10,6 +10,7 @@ on:
 
 jobs:
   test:
+    runs-on: ubuntu-18.04
     container: bitnami/golang:1.17.1 # TODO: Change to use the one from gitlab repo?
     steps:
       - name: Checkout the repo
