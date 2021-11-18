@@ -22,7 +22,7 @@ jobs:
       - name: Run tests
         run: make test-coverage COVERAGE_DIR=test/coverage
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v2
+        uses: EnricoMi/publish-unit-test-result-action@v1
         if: always() # always run even if the previous step fails
         with:
           report_paths: 'test/coverage/report.xml'
