@@ -16,20 +16,21 @@ var Filename string
 var commandName = "edit tag"
 
 // CreateServerCmd is the command for creating a server.
-var EditTagCmd = &cobra.Command{
+var PatchTagCmd = &cobra.Command{
 	Use:          "tag [TAG_ID]",
-	Short:        "Submit a tag modification request.",
+	Short:        "Patch/Update a tag.",
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
-	Long: `Submit a tag modification request.
+	Long: `Patch/Update a tag.
 
-Requires a file (yaml or json) containing the information needed to submit the request.`,
-	Example: `# modify an existing tag as per tagModificationRequest.yaml
-pnapctl edit tag  --filename ~/tagModificationRequest.yaml
+Requires a file (yaml or json) containing the information needed to patch the tag.`,
+	Example: `# modify an existing tag as per tagPatch.yaml
+pnapctl patch tag 619510597112855acff508ec --filename ~/tagPatch.yaml
 
-# tagModificationRequest.yaml
-limit: 75
-reason: "My current limit is not enough."`,
+# tagPatch.yaml
+name: "Tag Name",
+description: "The description of the tag.",
+isBillingTag: false`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		tagEdit, err := tagmodels.CreateTagUpdateFromFile(Filename, commandName)
 		if err != nil {
@@ -41,7 +42,7 @@ reason: "My current limit is not enough."`,
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode != 202 {
+		} else if httpResponse.StatusCode != 200 {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		} else {
 			fmt.Println("Tag edit successful.")
@@ -51,6 +52,6 @@ reason: "My current limit is not enough."`,
 }
 
 func init() {
-	EditTagCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	EditTagCmd.MarkFlagRequired("filename")
+	PatchTagCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	PatchTagCmd.MarkFlagRequired("filename")
 }

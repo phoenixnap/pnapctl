@@ -100,9 +100,9 @@ func (mr *MockTagSdkClientMockRecorder) TagPost(tagCreate interface{}) *gomock.C
 }
 
 // TagsGet mocks base method.
-func (m *MockTagSdkClient) TagsGet() ([]tagapi.Tag, *http.Response, error) {
+func (m *MockTagSdkClient) TagsGet(name string) ([]tagapi.Tag, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "TagsGet")
+	ret := m.ctrl.Call(m, "TagsGet", name)
 	ret0, _ := ret[0].([]tagapi.Tag)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -110,7 +110,7 @@ func (m *MockTagSdkClient) TagsGet() ([]tagapi.Tag, *http.Response, error) {
 }
 
 // TagsGet indicates an expected call of TagsGet.
-func (mr *MockTagSdkClientMockRecorder) TagsGet() *gomock.Call {
+func (mr *MockTagSdkClientMockRecorder) TagsGet(name interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TagsGet", reflect.TypeOf((*MockTagSdkClient)(nil).TagsGet))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TagsGet", reflect.TypeOf((*MockTagSdkClient)(nil).TagsGet), name)
 }

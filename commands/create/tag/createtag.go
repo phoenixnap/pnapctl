@@ -35,7 +35,7 @@ pnapctl create server --filename ~/tag.yaml`,
 		// response, httpResponse, err := bmcapi.Client.ServersPost(*tagCreate)
 		response, httpResponse, err := tags.Client.TagPost(*tagCreate)
 
-		if httpResponse.StatusCode != 201 {
+		if httpResponse != nil && httpResponse.StatusCode != 201 {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		} else if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)

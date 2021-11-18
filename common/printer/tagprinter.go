@@ -23,7 +23,7 @@ func PrepareTagForPrinting(tag tagapisdk.Tag) interface{} {
 	case table:
 		return tables.TagFromSdk(tag)
 	default:
-		return tagmodels.TagFromSdk(&tag)
+		return *tagmodels.TagFromSdk(&tag)
 	}
 }
 

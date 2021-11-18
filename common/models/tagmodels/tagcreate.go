@@ -19,6 +19,18 @@ func (tagCreate *TagCreate) ToSdk() tagapisdk.TagCreate {
 	}
 }
 
+func TagCreateFromSdk(tagCreate *tagapisdk.TagCreate) *TagCreate {
+	if tagCreate == nil {
+		return nil
+	}
+
+	return &TagCreate{
+		Name:         tagCreate.Name,
+		Description:  tagCreate.Description,
+		IsBillingTag: tagCreate.IsBillingTag,
+	}
+}
+
 func CreateTagCreateFromFile(filename string, commandname string) (*tagapisdk.TagCreate, error) {
 	files.ExpandPath(&filename)
 

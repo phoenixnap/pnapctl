@@ -17,7 +17,7 @@ type TagTable struct {
 func TagFromSdk(tag tagapisdk.Tag) TagTable {
 	var resourceAssignments []string
 
-	if tag.ResourceAssignments == nil {
+	if tag.ResourceAssignments != nil {
 		for _, x := range *tag.ResourceAssignments {
 			resourceAssignments = append(resourceAssignments, tagmodels.ResourceAssignmentToTableStrings(x))
 		}
