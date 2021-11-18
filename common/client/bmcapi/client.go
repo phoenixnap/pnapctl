@@ -30,6 +30,8 @@ type BmcApiSdkClient interface {
 
 	//Ssh Keys
 	SshKeyPost(sshkeyCreate bmcapisdk.SshKeyCreate) (bmcapisdk.SshKey, *http.Response, error)
+	SshKeysGet() ([]bmcapisdk.SshKey, *http.Response, error)
+	SshKeyGetById(sshKeyId string) (bmcapisdk.SshKey, *http.Response, error)
 
 	//Quotas
 	QuotasGet() ([]bmcapisdk.Quota, *http.Response, error)
@@ -132,6 +134,14 @@ func (m MainClient) ServerPrivateNetworkDelete(serverId string, networkId string
 // SSH Key APIs
 func (m MainClient) SshKeyPost(sshKeyCreate bmcapisdk.SshKeyCreate) (bmcapisdk.SshKey, *http.Response, error) {
 	return m.SshKeysApiClient.SshKeysPost(context.Background()).SshKeyCreate(sshKeyCreate).Execute()
+}
+
+func (m MainClient) SshKeysGet() ([]bmcapisdk.SshKey, *http.Response, error) {
+	return m.SshKeysApiClient.SshKeysGet(context.Background()).Execute()
+}
+
+func (m MainClient) SshKeyGetById(sshKeyId string) (bmcapisdk.SshKey, *http.Response, error) {
+	return m.SshKeysApiClient.SshKeysSshKeyIdGet(context.Background(), sshKeyId).Execute()
 }
 
 // Quota APIs

@@ -276,6 +276,38 @@ func (mr *MockBmcApiSdkClientMockRecorder) SshKeyPost(sshKeyCreate interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeyPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeyPost), sshKeyCreate)
 }
 
+// SshKeyGetById mocks base method.
+func (m *MockBmcApiSdkClient) SshKeyGetById(sshKeyId string) (bmcapisdk.SshKey, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SshKeyGetById", sshKeyId)
+	ret0, _ := ret[0].(bmcapisdk.SshKey)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// SshKeyGetById indicates an expected call of ServerGetById.
+func (mr *MockBmcApiSdkClientMockRecorder) SshKeyGetById(sshKeyId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeyGetById", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeyGetById), sshKeyId)
+}
+
+// SshKeysGet mocks base method.
+func (m *MockBmcApiSdkClient) SshKeysGet() ([]bmcapisdk.SshKey, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SshKeysGet")
+	ret0, _ := ret[0].([]bmcapisdk.SshKey)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// SshKeysGet indicates an expected call of SshKeysGet.
+func (mr *MockBmcApiSdkClientMockRecorder) SshKeysGet() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeysGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeysGet))
+}
+
 /*---- QUOTA -----*/
 // QuotaGetById mocks base method.
 func (m *MockBmcApiSdkClient) QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error) {
