@@ -1,0 +1,20 @@
+name: Build workflow
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    container: bitnami/golang:1.17.1 # TODO: Change to use the one from gitlab repo?
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Install curl, git, zip, make, and golang-x-tools
+        run: apt-get install -y curl git zip make golang-golang-x-tools
+      - name: Run tests
+        run: make test-coverage COVERAGE_DIR=${TEST_COVERAGE_FOLDER}
