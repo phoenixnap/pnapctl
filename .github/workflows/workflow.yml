@@ -13,7 +13,11 @@ jobs:
     env:
       TEST_COVERAGE_FOLDER: test/coverage
     runs-on: ubuntu-latest
-    container: bitnami/golang:1.17.1 # TODO: Change to use the one from gitlab repo?
+    container:
+      image: registry.gitlab.com/phoenixnap/docker/golang:1.17.1
+      credentials:
+        username: brian_zammit
+        password: ${{secrets.gitlab_registry_password}}
     steps:
       - name: Install curl, git, zip, make, and golang-x-tools
         run: |
