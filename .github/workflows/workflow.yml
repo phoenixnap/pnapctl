@@ -25,4 +25,4 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always() # always run even if the previous step fails
         with:
-          report_paths: 'test/coverage/report.xml'
+          files: 'test/coverage/report.xml'
