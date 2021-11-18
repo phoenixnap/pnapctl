@@ -10,6 +10,8 @@ on:
 
 jobs:
   test:
+    env:
+      TEST_COVERAGE_FOLDER: test/coverage
     runs-on: ubuntu-latest
     container: bitnami/golang:1.17.1 # TODO: Change to use the one from gitlab repo?
     steps:
@@ -20,9 +22,9 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Run tests
-        run: make test-coverage COVERAGE_DIR=test/coverage
+        run: make test-coverage COVERAGE_DIR=${env.TEST_COVERAGE_FOLDER}
       - name: Publish Test Report
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always() # always run even if the previous step fails
         with:
-          files: 'test/coverage/report.xml'
+          files: '${env.TEST_COVERAGE_FOLDER}/report.xml'
