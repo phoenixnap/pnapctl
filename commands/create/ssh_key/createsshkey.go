@@ -44,7 +44,7 @@ key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyVGaw1PuEl98f4/7Kq3O9ZIvDw2OFOSXAFVq
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 		} else if httpResponse.StatusCode == 201 {
-			return printer.PrintSshKeyResponse(response, commandName)
+			return printer.PrintSshKeyResponse(response, Full, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		}
