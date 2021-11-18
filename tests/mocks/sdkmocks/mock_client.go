@@ -259,6 +259,23 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkDelete(serverId, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkDelete), serverId, networkId)
 }
 
+/*---- SSH KEYS -----*/
+// SshKeyPost mocks base method.
+func (m *MockBmcApiSdkClient) SshKeyPost(sshKeyCreate bmcapisdk.SshKeyCreate) (bmcapisdk.SshKey, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SshKeyPost", sshKeyCreate)
+	ret0, _ := ret[0].(bmcapisdk.SshKey)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// SshKeyPost indicates an expected call of SshKeyPost.
+func (mr *MockBmcApiSdkClientMockRecorder) SshKeyPost(sshKeyCreate interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeyPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeyPost), sshKeyCreate)
+}
+
 /*---- QUOTA -----*/
 // QuotaGetById mocks base method.
 func (m *MockBmcApiSdkClient) QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error) {

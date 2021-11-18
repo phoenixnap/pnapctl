@@ -60,9 +60,9 @@ func getQuotas(quotaId string) error {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 	} else if httpResponse.StatusCode == 200 {
 		if quotaId == "" {
-			return printer.PrintQuotaListResponse(quotas, true, commandName)
+			return printer.PrintQuotaListResponse(quotas, commandName)
 		} else {
-			return printer.PrintQuotaResponse(quota, true, commandName)
+			return printer.PrintQuotaResponse(quota, commandName)
 		}
 	} else {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)
