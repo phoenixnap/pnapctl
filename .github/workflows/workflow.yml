@@ -19,10 +19,6 @@ jobs:
         username: brian_zammit
         password: ${{secrets.gitlab_registry_password}}
     steps:
-      - name: Install curl, git, zip, make, and golang-x-tools
-        run: |
-          apt-get update && apt-get -y upgrade && apt-get -y autoremove;
-          apt-get install -y curl git zip make golang-golang-x-tools
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Run tests
