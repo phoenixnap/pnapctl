@@ -13,11 +13,7 @@ jobs:
     env:
       TEST_COVERAGE_FOLDER: test/coverage
     runs-on: ubuntu-latest
-    container:
-      image: registry.gitlab.com/phoenixnap/docker/golang:1.17.1
-      credentials:
-        username: ${{secrets.gitlab_registry_username}}
-        password: ${{secrets.gitlab_registry_password}}
+    container: golang:1.17.1
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
