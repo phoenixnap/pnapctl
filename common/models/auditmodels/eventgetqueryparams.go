@@ -25,35 +25,38 @@ func NewEventsGetQueryParams(from string, to string, limit int, order string, us
 	if from != "" {
 		ft, err := time.Parse(time.RFC3339, from)
 		if err != nil {
-			return nil, err
+			return nil, errors.New("'From' (" + from + ") is not a valid date.")
 		}
 		fromTime = &ft
 	}
 	if to != "" {
 		tt, err := time.Parse(time.RFC3339, to)
 		if err != nil {
-			return nil, err
+			return nil, errors.New("'To' (" + to + ") is not a valid date.")
 		}
 		toTime = &tt
 	}
 	switch order {
 	case "ASC":
+		fallthrough
 	case "DESC":
 		validOrder = order
 		break
 	default:
-		return nil, errors.New("Order needs to be one of the following values: 'ASC', 'DESC'. Was " + order + " instead.")
+		return nil, errors.New("Order needs to be one of the following values: 'ASC', 'DESC'. Was '" + order + "' instead.")
 	}
 
 	switch verb {
 	case "POST":
+		fallthrough
 	case "PUT":
+		fallthrough
 	case "PATCH":
+		fallthrough
 	case "DELETE":
 		validVerb = verb
-		break
 	default:
-		return nil, errors.New("Verb needs to be one of the following values: 'POST', 'PUT', 'PATCH', 'DELETE'. Was " + verb + " instead.")
+		return nil, errors.New("Verb needs to be one of the following values: 'POST', 'PUT', 'PATCH', 'DELETE'. Was '" + verb + "' instead.")
 	}
 
 	return &EventsGetQueryParams{

@@ -4,6 +4,7 @@ import (
 	"time"
 
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
+	"phoenixnap.com/pnap-cli/common/models/auditmodels"
 )
 
 func GenerateEvent() auditapisdk.Event {
@@ -24,4 +25,21 @@ func GenerateEvents(n int) []auditapisdk.Event {
 		eventList = append(eventList, GenerateEvent())
 	}
 	return eventList
+}
+
+func GenerateQueryParams() auditmodels.EventsGetQueryParams {
+	now := reprocessTime(time.Now())
+	return auditmodels.EventsGetQueryParams{
+		From:     &now,
+		To:       &now,
+		Limit:    10,
+		Order:    "ASC",
+		Username: randSeq(10),
+		Verb:     "PUT",
+	}
+}
+
+func reprocessTime(t time.Time) time.Time {
+	result, _ := time.Parse(time.RFC3339, t.Format(time.RFC3339))
+	return result
 }

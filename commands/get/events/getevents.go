@@ -1,6 +1,8 @@
 package events
 
 import (
+	"fmt"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/common/client/audit"
@@ -30,7 +32,9 @@ pnapctl get events -o json`,
 
 func getEvents() error {
 	log.Debug("Getting events...")
+	fmt.Println("ALLPARAMS: ", From, To, Limit, Order, Username, Verb)
 	params, err := auditmodels.NewEventsGetQueryParams(From, To, Limit, Order, Username, Verb)
+	fmt.Println("PARAMSOBJ: ", params)
 	if err != nil {
 		return err
 	}
@@ -60,5 +64,5 @@ func init() {
 	GetEventsCmd.PersistentFlags().IntVar(&Limit, "limit", 0, "Limit the number of records returned.")
 	GetEventsCmd.PersistentFlags().StringVar(&Order, "order", "", "Ordering of the event's time. Must be 'ASC' or 'DESC'")
 	GetEventsCmd.PersistentFlags().StringVar(&Username, "username", "", "The username that did the actions.")
-	GetEventsCmd.PersistentFlags().StringVar(&Verb, "from", "", "The HTTP verb corresponding to the action. Must be 'POST', 'PUT', 'PATCH', 'DELETE'")
+	GetEventsCmd.PersistentFlags().StringVar(&Verb, "verb", "", "The HTTP verb corresponding to the action. Must be 'POST', 'PUT', 'PATCH', 'DELETE'")
 }
