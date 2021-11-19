@@ -12,7 +12,7 @@ jobs:
   unit-tests:
     env:
       TEST_COVERAGE_FOLDER: test/coverage
-      GOPATH: ${{GITHUB_WORKSPACE}}/.go
+      GOPATH: $GITHUB_WORKSPACE/.go
     runs-on: ubuntu-latest
     container:
       image: registry.gitlab.com/phoenixnap/docker/golang:1.17.1
