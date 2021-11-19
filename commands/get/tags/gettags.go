@@ -19,7 +19,7 @@ var ID string
 var Name string
 
 var GetTagsCmd = &cobra.Command{
-	Use:          "tags [TAG_ID]",
+	Use:          "tag [TAG_ID]",
 	Short:        "Retrieve one or all tags.",
 	Aliases:      []string{"tags"},
 	SilenceUsage: true,
@@ -74,4 +74,5 @@ func getTags(tagID string) error {
 
 func init() {
 	GetTagsCmd.Flags().StringVar(&Name, "name", "", "Name of the tag")
+	GetTagsCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 }

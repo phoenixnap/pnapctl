@@ -13,8 +13,9 @@ const commandName string = "get events"
 var ID string
 
 var GetEventsCmd = &cobra.Command{
-	Use:          "events",
+	Use:          "event",
 	Short:        "Retrieve all events relating to your account.",
+	Aliases:      []string{"quotas"},
 	SilenceUsage: true,
 	Long: `Retrieve all events relating to your account.
 	
@@ -38,4 +39,8 @@ func getEvents() error {
 	} else {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	}
+}
+
+func init() {
+	GetEventsCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 }

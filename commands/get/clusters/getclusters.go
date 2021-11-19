@@ -17,7 +17,7 @@ const commandName string = "get clusters"
 var ID string
 
 var GetClustersCmd = &cobra.Command{
-	Use:          "clusters [CLUSTER_ID]",
+	Use:          "cluster [CLUSTER_ID]",
 	Short:        "Retrieve one or all clusters.",
 	Aliases:      []string{"clusters"},
 	SilenceUsage: true,
@@ -68,4 +68,8 @@ func getClusters(clusterID string) error {
 	} else {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	}
+}
+
+func init() {
+	GetClustersCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 }
