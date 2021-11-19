@@ -31,7 +31,7 @@ func TestCreateSshKeySuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(sshKey, WithResponse(200, WithBody(sshKey)), nil).
+		Return(sshKey, WithResponse(201, WithBody(sshKey)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,7 +63,7 @@ func TestCreateSshKeySuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(sshKey, WithResponse(200, WithBody(sshKey)), nil).
+		Return(sshKey, WithResponse(201, WithBody(sshKey)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

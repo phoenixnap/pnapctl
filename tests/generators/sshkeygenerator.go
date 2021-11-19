@@ -26,3 +26,11 @@ func GenerateSshKeyCreate() bmcapisdk.SshKeyCreate {
 	}
 
 }
+
+func GenerateSshKeys(n int) []bmcapisdk.SshKey {
+	var sshKeyList []bmcapisdk.SshKey
+	for i := 0; i < n; i++ {
+		sshKeyList = append(sshKeyList, GenerateSshKey())
+	}
+	return sshKeyList
+}

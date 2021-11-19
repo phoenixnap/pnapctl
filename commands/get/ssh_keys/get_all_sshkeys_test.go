@@ -1,74 +1,74 @@
 package ssh_keys
 
-// import (
-// 	"errors"
-// 	"testing"
+import (
+	"errors"
+	"testing"
 
-// 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-// 	"github.com/stretchr/testify/assert"
-// 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-// 	"phoenixnap.com/pnap-cli/common/models/tables"
-// 	"phoenixnap.com/pnap-cli/tests/generators"
-// 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
-// 	"phoenixnap.com/pnap-cli/tests/testutil"
-// )
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	"github.com/stretchr/testify/assert"
+	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnap-cli/common/models/tables"
+	"phoenixnap.com/pnap-cli/tests/generators"
+	. "phoenixnap.com/pnap-cli/tests/mockhelp"
+	"phoenixnap.com/pnap-cli/tests/testutil"
+)
 
-// func TestGetAllQuotasSuccess(test_framework *testing.T) {
-// 	quotaList := generators.GenerateQuotas(2)
+func TestGetAllSshKeysSuccess(test_framework *testing.T) {
+	sshKeyList := generators.GenerateSshKeys(2)
 
-// 	var quotaTables []interface{}
+	var sshKeyTables []interface{}
 
-// 	for _, quota := range quotaList {
-// 		quotaTables = append(quotaTables, tables.ToQuotaTable(quota))
-// 	}
+	for _, sshKey := range sshKeyList {
+		sshKeyTables = append(sshKeyTables, tables.ToSshKeyTable(sshKey))
+	}
 
-// 	// Mocking
-// 	PrepareBmcApiMockClient(test_framework).
-// 		QuotasGet().
-// 		Return(quotaList, WithResponse(200, WithBody(quotaList)), nil)
+	// Mocking
+	PrepareBmcApiMockClient(test_framework).
+		SshKeysGet().
+		Return(sshKeyList, WithResponse(200, WithBody(sshKeyList)), nil)
 
-// 	PrepareMockPrinter(test_framework).
-// 		PrintOutput(quotaTables, "get quotas").
-// 		Return(nil)
+	PrepareMockPrinter(test_framework).
+		PrintOutput(sshKeyTables, "get ssh-keys").
+		Return(nil)
 
-// 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
+	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
 
-// 	// Assertions
-// 	assert.NoError(test_framework, err)
-// }
+	// Assertions
+	assert.NoError(test_framework, err)
+}
 
-// func TestGetAllQuotasKeycloakFailure(test_framework *testing.T) {
-// 	quota := []bmcapisdk.Quota{generators.GenerateQuota()}
-// 	// Mocking
-// 	PrepareBmcApiMockClient(test_framework).
-// 		QuotasGet().
-// 		Return(quota, nil, testutil.TestKeycloakError)
+func TestGetAllSshKeysKeycloakFailure(test_framework *testing.T) {
+	sshKey := []bmcapisdk.SshKey{generators.GenerateSshKey()}
+	// Mocking
+	PrepareBmcApiMockClient(test_framework).
+		SshKeysGet().
+		Return(sshKey, nil, testutil.TestKeycloakError)
 
-// 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
+	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
 
-// 	// Assertions
-// 	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-// }
+	// Assertions
+	assert.Equal(test_framework, testutil.TestKeycloakError, err)
+}
 
-// func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
-// 	quotaList := generators.GenerateQuotas(2)
+func TestGetAllSshKeysPrinterFailure(test_framework *testing.T) {
+	sshKeyList := generators.GenerateSshKeys(2)
 
-// 	var quotaTables []interface{}
+	var sshKeyTables []interface{}
 
-// 	for _, quota := range quotaList {
-// 		quotaTables = append(quotaTables, tables.ToQuotaTable(quota))
-// 	}
+	for _, sshKey := range sshKeyList {
+		sshKeyTables = append(sshKeyTables, tables.ToSshKeyTable(sshKey))
+	}
 
-// 	PrepareBmcApiMockClient(test_framework).
-// 		QuotasGet().
-// 		Return(quotaList, WithResponse(200, WithBody(quotaList)), nil)
+	PrepareBmcApiMockClient(test_framework).
+		SshKeysGet().
+		Return(sshKeyList, WithResponse(200, WithBody(sshKeyList)), nil)
 
-// 	PrepareMockPrinter(test_framework).
-// 		PrintOutput(quotaTables, "get quotas").
-// 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	PrepareMockPrinter(test_framework).
+		PrintOutput(sshKeyTables, "get ssh-keys").
+		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
-// 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
+	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
 
-// 	// Assertions
-// 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
-// }
+	// Assertions
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+}

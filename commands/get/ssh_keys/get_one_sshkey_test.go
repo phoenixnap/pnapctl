@@ -4,14 +4,14 @@ import (
 	"errors"
 	"testing"
 
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/tables"
 	"phoenixnap.com/pnap-cli/tests/generators"
 	. "phoenixnap.com/pnap-cli/tests/mockhelp"
 	"phoenixnap.com/pnap-cli/tests/testutil"
-
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	//bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 )
 
 func TestGetSshKeyByIdFullSuccess(test_framework *testing.T) {
@@ -34,6 +34,7 @@ func TestGetSshKeyByIdFullSuccess(test_framework *testing.T) {
 }
 
 func TestGetSshKeyByIdSuccess(test_framework *testing.T) {
+	Full = false
 	sshKey := generators.GenerateSshKey()
 	sshKeyTable := tables.ToSshKeyTable(sshKey)
 
@@ -89,15 +90,16 @@ func TestGetSshKeyByIdKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetSshKeyByIdPrinterFailure(test_framework *testing.T) {
-	quota := generators.GenerateQuota()
-	tableQuota := tables.ToQuotaTable(quota)
+	Full = false
+	sshKey := generators.GenerateSshKey()
+	sshKeyTable := tables.ToSshKeyTable(sshKey)
 
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyGetById(RESOURCEID).
-		Return(quota, WithResponse(200, WithBody(tableQuota)), nil)
+		Return(sshKey, WithResponse(200, WithBody(sshKey)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tableQuota, "get ssh-keys").
+		PrintOutput(sshKeyTable, "get ssh-keys").
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
