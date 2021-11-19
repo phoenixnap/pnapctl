@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  test:
+  unit-tests:
     env:
       TEST_COVERAGE_FOLDER: test/coverage
     runs-on: ubuntu-latest
@@ -21,6 +21,10 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
+      - name: Go Cache
+        uses: actions/cache@v2
+        with:
+          path: .go/pkg/mod/
       - name: Run tests
         run: make test-coverage COVERAGE_DIR=${{env.TEST_COVERAGE_FOLDER}}
       - name: Publish Test Report
