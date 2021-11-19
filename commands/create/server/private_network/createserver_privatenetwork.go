@@ -44,7 +44,7 @@ statusDescription": in-progress
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 200 {
+		} else if httpResponse.StatusCode == 202 {
 			return printer.PrintServerPrivateNetwork(response, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)

@@ -28,7 +28,7 @@ Pricing Model is to be passed within a YAML or JSON file.`,
 	Example: `# Reserve a server
 pnapctl reserve server 5da891e90ab0c59bd28e34ad --filename serverReserve.yaml
 
-# keys.yaml
+# serverReserve.yaml
 pricingModel: ONE_MONTH_RESERVATION`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		reserveRequest, err := bmcapimodels.CreateReserveRequestFromFile(Filename, commandName)

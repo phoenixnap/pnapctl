@@ -75,7 +75,7 @@ func TestFilteredServersLongSuccess(test_framework *testing.T) {
 
 	// to display full output
 	Full = true
-	tags = []string{generators.RandSeq(10), generators.RandSeq(10)}
+	tags = []string{"tag1.value1", "tag2.value2"}
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
