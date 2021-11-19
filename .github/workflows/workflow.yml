@@ -22,13 +22,13 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Go Cache
-          with:
-            path: |
-              ~/.cache/go-build
-              ~/go/pkg/mod
-            key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-            restore-keys: |
-              ${{ runner.os }}-go-
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
       - name: Run tests
         run: make test-coverage COVERAGE_DIR=${{env.TEST_COVERAGE_FOLDER}}
       - name: Publish Test Report
