@@ -5,6 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/commands/delete/server"
+
+	privatenetwork "phoenixnap.com/pnap-cli/commands/delete/server/private_network"
 )
 
 var DeleteCmd = &cobra.Command{
@@ -19,4 +21,5 @@ var DeleteCmd = &cobra.Command{
 
 func init() {
 	DeleteCmd.AddCommand(server.DeleteServerCmd)
+	DeleteCmd.AddCommand(privatenetwork.DeleteServerPrivateNetworkCmd)
 }

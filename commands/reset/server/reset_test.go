@@ -85,6 +85,25 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestResetServerSuccessNoFile(test_framework *testing.T) {
+	// Setup
+	resetResult := generators.GenerateResetResult()
+
+	Filename = ""
+
+	// Mocking
+	PrepareBmcApiMockClient(test_framework).
+		ServerReset(RESOURCEID, bmcapisdk.ServerReset{}).
+		Return(resetResult, WithResponse(200, WithBody(resetResult)), nil).
+		Times(1)
+
+	// Run command
+	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
+
+	// Assertions
+	assert.NoError(test_framework, err)
+}
+
 func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
