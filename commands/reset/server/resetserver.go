@@ -21,7 +21,7 @@ var ResetServerCmd = &cobra.Command{
 	Use:   "server SERVER_ID",
 	Short: "Resets a specific server.",
 	Long: `Formats the device storage and re-installs the operating system.
-Since SSH keys are not stored, they need to be passed as parameters within a YAML or JSON file.`,
+Since SSH keys are not stored, they need to be passed as parameters within a YAML or JSON file. --filename flag is optional.`,
 	Args:         cobra.ExactArgs(1),
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,

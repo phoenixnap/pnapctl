@@ -29,18 +29,7 @@ var TagServerCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to tag the server.`,
 	Example: `# Tag a server using the contents of serverTag.yaml as request body. 
-pnapctl tag server x78sdkjds879sd7cx8 --filename ~/serverTag.yaml
-
-# serverTag.json
-[
-	{
-		name: tagName
-		value: tagValue
-	},
-	{
-		name: tagName2
-	}
-]
+pnapctl tag server x78sdkjds879sd7cx7 --filename ~/serverTag.yaml
 
 #serverTag.yaml
 - name: tagName
