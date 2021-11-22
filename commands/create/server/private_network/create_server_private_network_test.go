@@ -37,7 +37,7 @@ func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(serverPrivateNetwork, WithResponse(200, WithBody(serverPrivateNetwork)), nil).
+		Return(serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -66,7 +66,7 @@ func TestCreateServerPrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(serverPrivateNetwork, WithResponse(200, WithBody(serverPrivateNetwork)), nil).
+		Return(serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

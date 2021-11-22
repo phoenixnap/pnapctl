@@ -8,11 +8,11 @@ import (
 
 func GenerateSshKey() bmcapisdk.SshKey {
 	return bmcapisdk.SshKey{
-		Id:            RandSeq(10),
+		Id:            randSeq(10),
 		Default:       false,
-		Name:          RandSeq(10),
-		Key:           RandSeq(10),
-		Fingerprint:   RandSeq(10),
+		Name:          randSeq(10),
+		Key:           randSeq(10),
+		Fingerprint:   randSeq(10),
 		CreatedOn:     time.Now(),
 		LastUpdatedOn: time.Now(),
 	}
@@ -21,8 +21,8 @@ func GenerateSshKey() bmcapisdk.SshKey {
 func GenerateSshKeyCreate() bmcapisdk.SshKeyCreate {
 	return bmcapisdk.SshKeyCreate{
 		Default: false,
-		Name:    RandSeq(10),
-		Key:     RandSeq(10),
+		Name:    randSeq(10),
+		Key:     randSeq(10),
 	}
 
 }
@@ -33,4 +33,11 @@ func GenerateSshKeys(n int) []bmcapisdk.SshKey {
 		sshKeyList = append(sshKeyList, GenerateSshKey())
 	}
 	return sshKeyList
+}
+
+func GenerateSshKeyDeleteResult() bmcapisdk.DeleteSshKeyResult {
+	return bmcapisdk.DeleteSshKeyResult{
+		Result:   randSeq(10),
+		SshKeyId: randSeq(10),
+	}
 }
