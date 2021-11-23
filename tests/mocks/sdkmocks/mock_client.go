@@ -147,8 +147,24 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerShutdown(serverId interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerShutdown", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerShutdown), serverId)
 }
 
+// ServerReserve mocks base method.
+func (m *MockBmcApiSdkClient) ServerReserve(serverId string, serverReserve bmcapisdk.ServerReserve) (bmcapisdk.Server, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerReserve", serverReserve)
+	ret0, _ := ret[0].(bmcapisdk.Server)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerReserve indicates an expected call of ServerReserve.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerReserve(serverId, serverReserve interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerReserve", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerReserve), serverReserve)
+}
+
 // ServersGet mocks base method.
-func (m *MockBmcApiSdkClient) ServersGet() ([]bmcapisdk.Server, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServersGet(tags []string) ([]bmcapisdk.Server, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServersGet")
 	ret0, _ := ret[0].([]bmcapisdk.Server)
@@ -158,7 +174,7 @@ func (m *MockBmcApiSdkClient) ServersGet() ([]bmcapisdk.Server, *http.Response, 
 }
 
 // ServersGet indicates an expected call of ServersGet.
-func (mr *MockBmcApiSdkClientMockRecorder) ServersGet() *gomock.Call {
+func (mr *MockBmcApiSdkClientMockRecorder) ServersGet(tags interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersGet))
 }
@@ -177,6 +193,70 @@ func (m *MockBmcApiSdkClient) ServersPost(serverCreate bmcapisdk.ServerCreate) (
 func (mr *MockBmcApiSdkClientMockRecorder) ServersPost(serverCreate interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersPost), serverCreate)
+}
+
+// ServerPatch mocks base method.
+func (m *MockBmcApiSdkClient) ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerPatch", serverPatch)
+	ret0, _ := ret[0].(bmcapisdk.Server)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerPatch indicates an expected call of ServerPatch.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPatch(serverId, serverPatch interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPatch", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPatch), serverPatch)
+}
+
+// ServerTag mocks base method.
+func (m *MockBmcApiSdkClient) ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerTag", tagAssignmentRequests)
+	ret0, _ := ret[0].(bmcapisdk.Server)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerTag indicates an expected call of ServerTag.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerTag(serverId, tagAssignmentRequests interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerTag", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerTag), tagAssignmentRequests)
+}
+
+// ServerPrivateNetworkPost mocks base method.
+func (m *MockBmcApiSdkClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerPrivateNetworkPost", serverPrivateNetwork)
+	ret0, _ := ret[0].(bmcapisdk.ServerPrivateNetwork)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerPrivateNetworkPost indicates an expected call of ServerPrivateNetworkPost.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkPost(serverId, serverPrivateNetwork interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkPost), serverPrivateNetwork)
+}
+
+// ServerPrivateNetworkDelete mocks base method.
+func (m *MockBmcApiSdkClient) ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerPrivateNetworkDelete", serverId, networkId)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerPrivateNetworkDelete indicates an expected call of ServerPrivateNetworkDelete.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkDelete(serverId, networkId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkDelete), serverId, networkId)
 }
 
 /*---- QUOTA -----*/

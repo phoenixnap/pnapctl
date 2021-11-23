@@ -11,13 +11,16 @@ import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/commands/create"
 	"phoenixnap.com/pnap-cli/commands/delete"
-	"phoenixnap.com/pnap-cli/commands/edit"
 	"phoenixnap.com/pnap-cli/commands/get"
+	"phoenixnap.com/pnap-cli/commands/patch"
 	"phoenixnap.com/pnap-cli/commands/poweroff"
 	"phoenixnap.com/pnap-cli/commands/poweron"
 	"phoenixnap.com/pnap-cli/commands/reboot"
+	"phoenixnap.com/pnap-cli/commands/request_edit"
+	"phoenixnap.com/pnap-cli/commands/reserve"
 	"phoenixnap.com/pnap-cli/commands/reset"
 	"phoenixnap.com/pnap-cli/commands/shutdown"
+	"phoenixnap.com/pnap-cli/commands/tag"
 	"phoenixnap.com/pnap-cli/commands/version"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/client/rancher"
@@ -55,14 +58,17 @@ func init() {
 	// add flags here when needed
 	rootCmd.AddCommand(get.GetCmd)
 	rootCmd.AddCommand(create.CreateCmd)
+	rootCmd.AddCommand(patch.PatchCmd)
 	rootCmd.AddCommand(reset.ResetCmd)
 	rootCmd.AddCommand(delete.DeleteCmd)
 	rootCmd.AddCommand(poweroff.PowerOffCmd)
 	rootCmd.AddCommand(poweron.PowerOnCmd)
 	rootCmd.AddCommand(shutdown.ShutdownCmd)
 	rootCmd.AddCommand(reboot.RebootCmd)
+	rootCmd.AddCommand(reserve.ReserveCmd)
 	rootCmd.AddCommand(version.VersionCmd)
-	rootCmd.AddCommand(edit.EditCmd)
+	rootCmd.AddCommand(request_edit.RequestEditCmd)
+	rootCmd.AddCommand(tag.TagCmd)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Warn (default) to Debug.")

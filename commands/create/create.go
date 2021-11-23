@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/commands/create/server"
+	privatenetwork "phoenixnap.com/pnap-cli/commands/create/server/private_network"
 )
 
 var CreateCmd = &cobra.Command{
@@ -19,4 +20,5 @@ var CreateCmd = &cobra.Command{
 
 func init() {
 	CreateCmd.AddCommand(server.CreateServerCmd)
+	CreateCmd.AddCommand(privatenetwork.CreateServerPrivateNetworkCmd)
 }
