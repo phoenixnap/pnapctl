@@ -6,27 +6,27 @@ import (
 	"phoenixnap.com/pnap-cli/common/models/tables"
 )
 
-func PrintQuotaResponse(quota bmcapisdk.Quota, full bool, commandName string) error {
-	quotaToPrint := PrepareQuotaForPrinting(quota, full)
+func PrintQuotaResponse(quota bmcapisdk.Quota, commandName string) error {
+	quotaToPrint := PrepareQuotaForPrinting(quota)
 	return MainPrinter.PrintOutput(quotaToPrint, commandName)
 }
 
-func PrintQuotaListResponse(quotas []bmcapisdk.Quota, full bool, commandName string) error {
-	quotaListToPrint := PrepareQuotaListForPrinting(quotas, full)
+func PrintQuotaListResponse(quotas []bmcapisdk.Quota, commandName string) error {
+	quotaListToPrint := PrepareQuotaListForPrinting(quotas)
 	return MainPrinter.PrintOutput(quotaListToPrint, commandName)
 }
 
-func PrepareQuotaListForPrinting(quotas []bmcapisdk.Quota, full bool) []interface{} {
+func PrepareQuotaListForPrinting(quotas []bmcapisdk.Quota) []interface{} {
 	var quotaList []interface{}
 
 	for _, bmcQuota := range quotas {
-		quotaList = append(quotaList, PrepareQuotaForPrinting(bmcQuota, full))
+		quotaList = append(quotaList, PrepareQuotaForPrinting(bmcQuota))
 	}
 
 	return quotaList
 }
 
-func PrepareQuotaForPrinting(quota bmcapisdk.Quota, full bool) interface{} {
+func PrepareQuotaForPrinting(quota bmcapisdk.Quota) interface{} {
 	table := OutputIsTable()
 
 	switch {

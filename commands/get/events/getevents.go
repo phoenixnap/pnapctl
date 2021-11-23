@@ -1,9 +1,7 @@
 package events
 
 import (
-	"fmt"
-
-	log "github.com/sirupsen/logrus"
+	"github.com/google/martian/log"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/common/client/audit"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
@@ -32,9 +30,7 @@ pnapctl get events -o json`,
 
 func getEvents() error {
 	log.Debug("Getting events...")
-	fmt.Println("ALLPARAMS: ", From, To, Limit, Order, Username, Verb)
 	params, err := auditmodels.NewEventsGetQueryParams(From, To, Limit, Order, Username, Verb)
-	fmt.Println("PARAMSOBJ: ", params)
 	if err != nil {
 		return err
 	}

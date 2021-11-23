@@ -16,8 +16,7 @@ import (
 func TestGetServerShortSuccess(test_framework *testing.T) {
 
 	cluster := generators.GenerateCluster()
-	var clusterTable interface{}
-	clusterTable = tables.ClusterFromSdk(cluster)
+	var clusterTable = tables.ClusterFromSdk(cluster)
 
 	PrepareRancherMockClient(test_framework).
 		ClusterGetById(RESOURCEID).
