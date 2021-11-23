@@ -38,7 +38,7 @@ key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyVGaw1PuEl98f4/7Kq3O9ZIvDw2OFOSXAFVq
 			return err
 		}
 
-		// Create the server
+		// Create the ssh key
 		response, httpResponse, err := bmcapi.Client.SshKeyPost(*sshKeyCreate)
 
 		if err != nil {

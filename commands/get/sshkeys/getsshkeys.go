@@ -23,7 +23,7 @@ var GetSshKeysCmd = &cobra.Command{
 	Args:         cobra.MaximumNArgs(1),
 	Long: `Retrieve one or all ssh-keys for your account.
 
-Prints all ssh-keys assigned to your account.
+Prints one or all ssh-keys assigned to your account.
 By default, the data is printed in table format.
 
 To print a single ssh-key, an ID linked to the resource needs to be passed as an argument.`,
@@ -31,7 +31,7 @@ To print a single ssh-key, an ID linked to the resource needs to be passed as an
 # List all ssh-keys in json format.
 pnapctl get ssh-keys -o json
 
-# List all details of a desired quota in yaml format.
+# List all details of desired ssh-key in yaml format.
 pnapctl get ssh-key 619605811954a568606eb71a -o yaml`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
@@ -68,6 +68,6 @@ func getSshKeys(sshKeyId string) error {
 }
 
 func init() {
-	GetSshKeysCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
+	GetSshKeysCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ssh key details")
 	GetSshKeysCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 }

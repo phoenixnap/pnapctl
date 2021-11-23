@@ -37,7 +37,7 @@ name: default ssh key`,
 			return err
 		}
 
-		// Create the server
+		// update the ssh key
 		response, httpResponse, err := bmcapi.Client.SshKeyPut(args[0], *sshKeyUpdate)
 
 		if err != nil {
