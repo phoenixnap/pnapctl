@@ -16,7 +16,7 @@ import (
 	"phoenixnap.com/pnap-cli/commands/poweroff"
 	"phoenixnap.com/pnap-cli/commands/poweron"
 	"phoenixnap.com/pnap-cli/commands/reboot"
-	"phoenixnap.com/pnap-cli/commands/request_edit"
+	"phoenixnap.com/pnap-cli/commands/requestedit"
 	"phoenixnap.com/pnap-cli/commands/reserve"
 	"phoenixnap.com/pnap-cli/commands/reset"
 	"phoenixnap.com/pnap-cli/commands/shutdown"
@@ -69,7 +69,7 @@ func init() {
 	rootCmd.AddCommand(reboot.RebootCmd)
 	rootCmd.AddCommand(reserve.ReserveCmd)
 	rootCmd.AddCommand(version.VersionCmd)
-	rootCmd.AddCommand(request_edit.RequestEditCmd)
+	rootCmd.AddCommand(requestedit.RequestEditCmd)
 	rootCmd.AddCommand(tag.TagCmd)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
