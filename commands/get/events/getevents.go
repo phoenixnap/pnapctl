@@ -14,7 +14,7 @@ var ID string
 var GetEventsCmd = &cobra.Command{
 	Use:          "event",
 	Short:        "Retrieve all events relating to your account.",
-	Aliases:      []string{"quotas"},
+	Aliases:      []string{"events"},
 	SilenceUsage: true,
 	Long: `Retrieve all events relating to your account.
 	

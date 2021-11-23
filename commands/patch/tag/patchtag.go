@@ -13,7 +13,7 @@ import (
 // Filename is the filename from which to retrieve a complex object
 var Filename string
 
-var commandName = "edit tag"
+var commandName = "patch tag"
 
 // CreateServerCmd is the command for creating a server.
 var PatchTagCmd = &cobra.Command{

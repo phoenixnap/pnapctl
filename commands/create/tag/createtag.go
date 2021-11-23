@@ -22,8 +22,8 @@ var CreateTagCmd = &cobra.Command{
 	Long: `Create a new tag.
 
 Requires a file (yaml or json) containing the information needed to create the tag.`,
-	Example: `# create a new server as described in tag.yaml
-pnapctl create server --filename ~/tag.yaml`,
+	Example: `# create a new tag as described in tag.yaml
+pnapctl create tag --filename ~/tag.yaml`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		tagCreate, err := tagmodels.CreateTagCreateFromFile(Filename, commandName)
 
@@ -31,8 +31,7 @@ pnapctl create server --filename ~/tag.yaml`,
 			return err
 		}
 
-		// Create the server
-		// response, httpResponse, err := bmcapi.Client.ServersPost(*tagCreate)
+		// Create the tag
 		response, httpResponse, err := tags.Client.TagPost(*tagCreate)
 
 		if httpResponse != nil && httpResponse.StatusCode != 201 {

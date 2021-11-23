@@ -105,7 +105,7 @@ func TestSubmitTagEditUnmarshallingFailure(test_framework *testing.T) {
 	// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{})
 
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "edit tag", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "patch tag", err)
 
 	// assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -126,7 +126,7 @@ func TestSubmitTagEditYAMLUnmarshallingFailure(test_framework *testing.T) {
 
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{})
 
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "edit tag", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "patch tag", err)
 
 	// assertions
 	assert.EqualError(test_framework, expectedErr, expectedErr.Error())
@@ -142,14 +142,14 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 	mockFileProcessor.
 		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
-			Message: "Command 'edit tag' has been performed, but something went wrong. Error code: 0503",
+			Message: "Command 'patch tag' has been performed, but something went wrong. Error code: 0503",
 		}).
 		Times(1)
 
 	// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{})
 
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "edit tag", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "patch tag", err)
 
 	// assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -205,7 +205,7 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "edit tag", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "patch tag", ctlerrors.ErrorSendingRequest)
 
 	// assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
