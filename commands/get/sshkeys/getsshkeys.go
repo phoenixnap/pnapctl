@@ -1,10 +1,9 @@
-package ssh_keys
+package sshkeys
 
 import (
 	netHttp "net/http"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
@@ -17,7 +16,7 @@ var ID string
 var Full bool
 
 var GetSshKeysCmd = &cobra.Command{
-	Use:          "ssh-key SSH_KEY_ID",
+	Use:          "ssh-key [SSH_KEY_ID]",
 	Short:        "Retrieve one or all ssh-keys for your account.",
 	Aliases:      []string{"ssh-keys"},
 	SilenceUsage: true,
@@ -44,8 +43,6 @@ pnapctl get ssh-key 619605811954a568606eb71a -o yaml`,
 }
 
 func getSshKeys(sshKeyId string) error {
-	log.Debug("Getting quotas...")
-
 	var httpResponse *netHttp.Response
 	var err error
 	var sshKey bmcapisdk.SshKey

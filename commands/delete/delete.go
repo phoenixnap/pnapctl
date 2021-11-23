@@ -6,9 +6,9 @@ import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/commands/delete/cluster"
 	"phoenixnap.com/pnap-cli/commands/delete/server"
-	sshkey "phoenixnap.com/pnap-cli/commands/delete/ssh_key"
+	"phoenixnap.com/pnap-cli/commands/delete/sshkey"
 
-	privatenetwork "phoenixnap.com/pnap-cli/commands/delete/server/private_network"
+	"phoenixnap.com/pnap-cli/commands/delete/server/privatenetwork"
 )
 
 var DeleteCmd = &cobra.Command{

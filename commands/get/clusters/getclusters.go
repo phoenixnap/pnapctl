@@ -17,7 +17,7 @@ const commandName string = "get clusters"
 var ID string
 
 var GetClustersCmd = &cobra.Command{
-	Use:          "cluster CLUSTER_ID",
+	Use:          "cluster [CLUSTER_ID]",
 	Short:        "Retrieve one or all clusters.",
 	Aliases:      []string{"clusters"},
 	SilenceUsage: true,

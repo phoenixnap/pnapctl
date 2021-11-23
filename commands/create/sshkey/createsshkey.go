@@ -1,4 +1,4 @@
-package ssh_key
+package sshkey
 
 import (
 	"github.com/spf13/cobra"

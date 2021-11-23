@@ -18,7 +18,7 @@ var ID string
 var tags []string
 
 var GetServersCmd = &cobra.Command{
-	Use:          "server SERVER_ID",
+	Use:          "server [SERVER_ID]",
 	Short:        "Retrieve one or all servers.",
 	Aliases:      []string{"servers", "srv"},
 	SilenceUsage: true,

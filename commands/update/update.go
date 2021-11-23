@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	sshkey "phoenixnap.com/pnap-cli/commands/update/ssh_key"
+	"phoenixnap.com/pnap-cli/commands/update/sshkey"
 )
 
 var UpdateCmd = &cobra.Command{

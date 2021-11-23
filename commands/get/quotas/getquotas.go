@@ -4,7 +4,6 @@ import (
 	netHttp "net/http"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
@@ -16,7 +15,7 @@ const commandName string = "get quotas"
 var ID string
 
 var GetQuotasCmd = &cobra.Command{
-	Use:          "quota QUOTA_ID",
+	Use:          "quota [QUOTA_ID]",
 	Short:        "Retrieve one or all quotas for your account.",
 	Aliases:      []string{"quotas"},
 	SilenceUsage: true,
@@ -43,8 +42,6 @@ pnapctl get quota bmc.servers.max_count -o yaml`,
 }
 
 func getQuotas(quotaId string) error {
-	log.Debug("Getting quotas...")
-
 	var httpResponse *netHttp.Response
 	var err error
 	var quota bmcapisdk.Quota

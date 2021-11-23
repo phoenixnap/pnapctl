@@ -1,4 +1,4 @@
-package private_network
+package privatenetwork
 
 import (
 	"github.com/spf13/cobra"

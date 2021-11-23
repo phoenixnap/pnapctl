@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/commands/create/server"
-	privatenetwork "phoenixnap.com/pnap-cli/commands/create/server/private_network"
-	sshkey "phoenixnap.com/pnap-cli/commands/create/ssh_key"
+	"phoenixnap.com/pnap-cli/commands/create/server/privatenetwork"
+	"phoenixnap.com/pnap-cli/commands/create/sshkey"
 )
 
 var CreateCmd = &cobra.Command{

@@ -1,4 +1,4 @@
-package cluster
+package sshkey
 
 import (
 	"testing"
