@@ -32,6 +32,7 @@ type BmcApiSdkClient interface {
 	SshKeyPost(sshkeyCreate bmcapisdk.SshKeyCreate) (bmcapisdk.SshKey, *http.Response, error)
 	SshKeysGet() ([]bmcapisdk.SshKey, *http.Response, error)
 	SshKeyGetById(sshKeyId string) (bmcapisdk.SshKey, *http.Response, error)
+	SshKeyPut(sshKeyId string, sshKeyUpdate bmcapisdk.SshKeyUpdate) (bmcapisdk.SshKey, *http.Response, error)
 	SshKeyDelete(sshKeyId string) (bmcapisdk.DeleteSshKeyResult, *http.Response, error)
 
 	//Quotas
@@ -143,6 +144,10 @@ func (m MainClient) SshKeysGet() ([]bmcapisdk.SshKey, *http.Response, error) {
 
 func (m MainClient) SshKeyGetById(sshKeyId string) (bmcapisdk.SshKey, *http.Response, error) {
 	return m.SshKeysApiClient.SshKeysSshKeyIdGet(context.Background(), sshKeyId).Execute()
+}
+
+func (m MainClient) SshKeyPut(sshKeyId string, sshKeyUpdate bmcapisdk.SshKeyUpdate) (bmcapisdk.SshKey, *http.Response, error) {
+	return m.SshKeysApiClient.SshKeysSshKeyIdPut(context.Background(), sshKeyId).SshKeyUpdate(sshKeyUpdate).Execute()
 }
 
 func (m MainClient) SshKeyDelete(sshKeyId string) (bmcapisdk.DeleteSshKeyResult, *http.Response, error) {

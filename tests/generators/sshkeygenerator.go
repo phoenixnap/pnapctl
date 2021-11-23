@@ -27,6 +27,14 @@ func GenerateSshKeyCreate() bmcapisdk.SshKeyCreate {
 
 }
 
+func GenerateSshKeyUpdate() bmcapisdk.SshKeyUpdate {
+	return bmcapisdk.SshKeyUpdate{
+		Default: false,
+		Name:    randSeq(10),
+	}
+
+}
+
 func GenerateSshKeys(n int) []bmcapisdk.SshKey {
 	var sshKeyList []bmcapisdk.SshKey
 	for i := 0; i < n; i++ {

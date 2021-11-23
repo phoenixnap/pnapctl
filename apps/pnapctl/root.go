@@ -21,6 +21,7 @@ import (
 	"phoenixnap.com/pnap-cli/commands/reset"
 	"phoenixnap.com/pnap-cli/commands/shutdown"
 	"phoenixnap.com/pnap-cli/commands/tag"
+	"phoenixnap.com/pnap-cli/commands/update"
 	"phoenixnap.com/pnap-cli/commands/version"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/client/rancher"
@@ -58,6 +59,7 @@ func init() {
 	// add flags here when needed
 	rootCmd.AddCommand(get.GetCmd)
 	rootCmd.AddCommand(create.CreateCmd)
+	rootCmd.AddCommand(update.UpdateCmd)
 	rootCmd.AddCommand(patch.PatchCmd)
 	rootCmd.AddCommand(reset.ResetCmd)
 	rootCmd.AddCommand(delete.DeleteCmd)
