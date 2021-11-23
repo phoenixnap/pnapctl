@@ -17,7 +17,7 @@ var commandName = "patch tag"
 
 // CreateServerCmd is the command for creating a server.
 var PatchTagCmd = &cobra.Command{
-	Use:          "tag [TAG_ID]",
+	Use:          "tag TAG_ID",
 	Short:        "Patch/Update a tag.",
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
@@ -28,8 +28,8 @@ Requires a file (yaml or json) containing the information needed to patch the ta
 pnapctl patch tag 619510597112855acff508ec --filename ~/tagPatch.yaml
 
 # tagPatch.yaml
-name: "Tag Name",
-description: "The description of the tag.",
+name: "Tag Name"
+description: "The description of the tag."
 isBillingTag: false`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		tagEdit, err := tagmodels.CreateTagUpdateFromFile(Filename, commandName)
@@ -51,6 +51,6 @@ isBillingTag: false`,
 }
 
 func init() {
-	PatchTagCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	PatchTagCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for modification")
 	PatchTagCmd.MarkFlagRequired("filename")
 }
