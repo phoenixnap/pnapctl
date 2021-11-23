@@ -6,6 +6,7 @@ import (
 
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"golang.org/x/oauth2/clientcredentials"
+	"phoenixnap.com/pnap-cli/common/models/auditmodels"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )
 
@@ -13,7 +14,7 @@ var Client AuditSdkClient
 
 type AuditSdkClient interface {
 	// Events
-	EventsGet() ([]auditapisdk.Event, *http.Response, error)
+	EventsGet(queryParams auditmodels.EventsGetQueryParams) ([]auditapisdk.Event, *http.Response, error)
 }
 
 type MainClient struct {
@@ -44,6 +45,8 @@ func NewMainClient(clientId string, clientSecret string) AuditSdkClient {
 }
 
 // Events APIs
-func (m MainClient) EventsGet() ([]auditapisdk.Event, *http.Response, error) {
-	return m.EventsApiClient.EventsGet(context.Background()).Execute()
+func (m MainClient) EventsGet(queryParams auditmodels.EventsGetQueryParams) ([]auditapisdk.Event, *http.Response, error) {
+	request := m.EventsApiClient.EventsGet(context.Background())
+	queryParams.AttachToRequest(request)
+	return request.Execute()
 }
