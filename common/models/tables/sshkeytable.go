@@ -5,20 +5,20 @@ import (
 )
 
 type SshKeyTableFull struct {
-	Id            string  `header:"id"`
-	Default       bool    `header:"default"`
-	Name          string  `header:"name"`
-	Fingerprint   string  `header:"fingerprint"`
+	Id            string  `header:"ID"`
+	Default       bool    `header:"Default"`
+	Name          string  `header:"Name"`
+	Fingerprint   string  `header:"Fingerprint"`
 	CreatedOn     string  `header:"Created On"`
 	LastUpdatedOn string  `header:"Last Updated On"`
-	Key           *string `header:"key"`
+	Key           *string `header:"Key"`
 }
 
 type SshKeyTable struct {
-	Id            string `header:"id"`
-	Default       bool   `header:"default"`
-	Name          string `header:"name"`
-	Fingerprint   string `header:"fingerprint"`
+	Id            string `header:"ID"`
+	Default       bool   `header:"Default"`
+	Name          string `header:"Name"`
+	Fingerprint   string `header:"Fingerprint"`
 	CreatedOn     string `header:"Created On"`
 	LastUpdatedOn string `header:"Last Updated On"`
 }
