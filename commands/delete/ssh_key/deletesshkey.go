@@ -11,7 +11,7 @@ import (
 const commandName = "delete ssh-key"
 
 var DeleteSshKeyCmd = &cobra.Command{
-	Use:          "ssh-key [SSH_KEY_ID]",
+	Use:          "ssh-key SSH_KEY_ID",
 	Short:        "Deletes a specific SSH Key.",
 	Long:         "Deletes a specific SSH Key.",
 	Example:      `pnapctl delete ssh-key 5da891e90ab0c59bd28e34ad`,

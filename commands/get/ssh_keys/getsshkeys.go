@@ -17,7 +17,7 @@ var ID string
 var Full bool
 
 var GetSshKeysCmd = &cobra.Command{
-	Use:          "ssh-key [SSH_KEY_ID]",
+	Use:          "ssh-key SSH_KEY_ID",
 	Short:        "Retrieve one or all ssh-keys for your account.",
 	Aliases:      []string{"ssh-keys"},
 	SilenceUsage: true,

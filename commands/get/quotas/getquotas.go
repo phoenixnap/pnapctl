@@ -16,7 +16,7 @@ const commandName string = "get quotas"
 var ID string
 
 var GetQuotasCmd = &cobra.Command{
-	Use:          "quota [QUOTA_ID]",
+	Use:          "quota QUOTA_ID",
 	Short:        "Retrieve one or all quotas for your account.",
 	Aliases:      []string{"quotas"},
 	SilenceUsage: true,

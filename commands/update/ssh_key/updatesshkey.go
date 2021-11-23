@@ -17,7 +17,7 @@ var Full bool
 
 // UpdateSshKeyCmd is the command for creating a server.
 var UpdateSshKeyCmd = &cobra.Command{
-	Use:          "ssh-key",
+	Use:          "ssh-key SSH_KEY_ID",
 	Short:        "Update an ssh-key.",
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
