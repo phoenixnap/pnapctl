@@ -16,7 +16,7 @@ var commandName = "request-edit quota"
 
 // RequestEditQuotaCmd is the command for requesting a quota modification.
 var RequestEditQuotaCmd = &cobra.Command{
-	Use:          "quota [QUOTA_ID]",
+	Use:          "quota QUOTA_ID",
 	Short:        "Submit a quota modification request.",
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,

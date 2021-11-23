@@ -9,7 +9,7 @@ import (
 	"phoenixnap.com/pnap-cli/tests/mocks"
 )
 
-const FILENAME = "somefile.yaml"
+const FILENAME = "testfile.yaml"
 
 func PrepareMockFileProcessor(test_framework *testing.T) *mocks.MockFileProcessorMockRecorder {
 	ctrl := gomock.NewController(test_framework)

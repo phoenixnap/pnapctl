@@ -28,6 +28,13 @@ type BmcApiSdkClient interface {
 	ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error)
 	ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error)
 
+	//Ssh Keys
+	SshKeyPost(sshkeyCreate bmcapisdk.SshKeyCreate) (bmcapisdk.SshKey, *http.Response, error)
+	SshKeysGet() ([]bmcapisdk.SshKey, *http.Response, error)
+	SshKeyGetById(sshKeyId string) (bmcapisdk.SshKey, *http.Response, error)
+	SshKeyPut(sshKeyId string, sshKeyUpdate bmcapisdk.SshKeyUpdate) (bmcapisdk.SshKey, *http.Response, error)
+	SshKeyDelete(sshKeyId string) (bmcapisdk.DeleteSshKeyResult, *http.Response, error)
+
 	//Quotas
 	QuotasGet() ([]bmcapisdk.Quota, *http.Response, error)
 	QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error)
@@ -36,6 +43,7 @@ type BmcApiSdkClient interface {
 
 type MainClient struct {
 	ServersApiClient bmcapisdk.ServersApi
+	SshKeysApiClient bmcapisdk.SSHKeysApi
 	QuotaApiClient   bmcapisdk.QuotasApi
 }
 
@@ -63,6 +71,7 @@ func NewMainClient(clientId string, clientSecret string) BmcApiSdkClient {
 
 	return MainClient{
 		ServersApiClient: api_client.ServersApi,
+		SshKeysApiClient: api_client.SSHKeysApi,
 		QuotaApiClient:   api_client.QuotasApi,
 	}
 }
@@ -122,6 +131,27 @@ func (m MainClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwo
 
 func (m MainClient) ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error) {
 	return m.ServersApiClient.DeletePrivateNetwork(context.Background(), serverId, networkId).Execute()
+}
+
+// SSH Key APIs
+func (m MainClient) SshKeyPost(sshKeyCreate bmcapisdk.SshKeyCreate) (bmcapisdk.SshKey, *http.Response, error) {
+	return m.SshKeysApiClient.SshKeysPost(context.Background()).SshKeyCreate(sshKeyCreate).Execute()
+}
+
+func (m MainClient) SshKeysGet() ([]bmcapisdk.SshKey, *http.Response, error) {
+	return m.SshKeysApiClient.SshKeysGet(context.Background()).Execute()
+}
+
+func (m MainClient) SshKeyGetById(sshKeyId string) (bmcapisdk.SshKey, *http.Response, error) {
+	return m.SshKeysApiClient.SshKeysSshKeyIdGet(context.Background(), sshKeyId).Execute()
+}
+
+func (m MainClient) SshKeyPut(sshKeyId string, sshKeyUpdate bmcapisdk.SshKeyUpdate) (bmcapisdk.SshKey, *http.Response, error) {
+	return m.SshKeysApiClient.SshKeysSshKeyIdPut(context.Background(), sshKeyId).SshKeyUpdate(sshKeyUpdate).Execute()
+}
+
+func (m MainClient) SshKeyDelete(sshKeyId string) (bmcapisdk.DeleteSshKeyResult, *http.Response, error) {
+	return m.SshKeysApiClient.SshKeysSshKeyIdDelete(context.Background(), sshKeyId).Execute()
 }
 
 // Quota APIs

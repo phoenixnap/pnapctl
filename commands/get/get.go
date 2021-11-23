@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnap-cli/commands/get/clusters"
 	"phoenixnap.com/pnap-cli/commands/get/quotas"
 	"phoenixnap.com/pnap-cli/commands/get/servers"
+	"phoenixnap.com/pnap-cli/commands/get/sshkeys"
 )
 
 var GetCmd = &cobra.Command{
@@ -23,4 +24,5 @@ func init() {
 	GetCmd.AddCommand(servers.GetServersCmd)
 	GetCmd.AddCommand(clusters.GetClustersCmd)
 	GetCmd.AddCommand(quotas.GetQuotasCmd)
+	GetCmd.AddCommand(sshkeys.GetSshKeysCmd)
 }
