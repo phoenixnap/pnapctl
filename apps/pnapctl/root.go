@@ -69,7 +69,6 @@ func init() {
 	rootCmd.AddCommand(reboot.RebootCmd)
 	rootCmd.AddCommand(reserve.ReserveCmd)
 	rootCmd.AddCommand(version.VersionCmd)
-	rootCmd.AddCommand(patch.PatchCmd)
 	rootCmd.AddCommand(request_edit.RequestEditCmd)
 	rootCmd.AddCommand(tag.TagCmd)
 
