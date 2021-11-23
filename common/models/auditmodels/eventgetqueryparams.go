@@ -37,6 +37,8 @@ func NewEventsGetQueryParams(from string, to string, limit int, order string, us
 		toTime = &tt
 	}
 	switch order {
+	case "":
+		break
 	case "ASC":
 		fallthrough
 	case "DESC":
@@ -47,6 +49,8 @@ func NewEventsGetQueryParams(from string, to string, limit int, order string, us
 	}
 
 	switch verb {
+	case "":
+		break
 	case "POST":
 		fallthrough
 	case "PUT":
