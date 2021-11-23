@@ -4,7 +4,6 @@ import (
 	netHttp "net/http"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
@@ -45,8 +44,6 @@ pnapctl get servers NDIid939dfkoDd -o yaml --full`,
 }
 
 func getServers(serverID string) error {
-	log.Debug("Getting servers...")
-
 	var httpResponse *netHttp.Response
 	var err error
 	var server bmcapisdk.Server

@@ -8,7 +8,6 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -44,8 +43,6 @@ pnapctl get cluster NDIid939dfkoDd -o yaml`,
 }
 
 func getClusters(clusterID string) error {
-	log.Debug("Getting clusters...")
-
 	var httpResponse *netHttp.Response
 	var err error
 	var cluster ranchersdk.Cluster
