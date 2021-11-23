@@ -45,7 +45,7 @@ func NewEventsGetQueryParams(from string, to string, limit int, order string, us
 		validOrder = order
 		break
 	default:
-		return nil, errors.New("Order needs to be one of the following values: 'ASC', 'DESC'. Was '" + order + "' instead.")
+		return nil, errors.New("Invalid Order '" + order + "'. Valid values: 'ASC', 'DESC'")
 	}
 
 	switch verb {
@@ -60,7 +60,7 @@ func NewEventsGetQueryParams(from string, to string, limit int, order string, us
 	case "DELETE":
 		validVerb = verb
 	default:
-		return nil, errors.New("Verb needs to be one of the following values: 'POST', 'PUT', 'PATCH', 'DELETE'. Was '" + verb + "' instead.")
+		return nil, errors.New("Invalid Verb '" + verb + "'. Valid values: 'POST', 'PUT', 'PATCH', 'DELETE'")
 	}
 
 	return &EventsGetQueryParams{
