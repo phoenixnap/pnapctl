@@ -1,4 +1,4 @@
-# pnap-cli (test__)
+# pnap-cli
 
 ## Setup
 
