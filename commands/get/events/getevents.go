@@ -1,7 +1,6 @@
 package events
 
 import (
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/common/client/audit"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
@@ -29,7 +28,6 @@ pnapctl get events -o json`,
 }
 
 func getEvents() error {
-	log.Debug("Getting events...")
 	events, httpResponse, err := audit.Client.EventsGet()
 
 	if err != nil {

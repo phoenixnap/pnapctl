@@ -1,4 +1,4 @@
-package private_network
+package privatenetwork
 
 import (
 	"github.com/spf13/cobra"
@@ -15,7 +15,7 @@ var commandName = "create server-private-network"
 
 // CreateServerPrivateNetworkCmd is the command for creating a server.
 var CreateServerPrivateNetworkCmd = &cobra.Command{
-	Use:          "server-private-network [SERVER_ID]",
+	Use:          "server-private-network SERVER_ID",
 	Short:        "Create a new private network for server.",
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,

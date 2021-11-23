@@ -24,7 +24,7 @@ func TestDeleteClusterSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestDeleteServerNotFound(test_framework *testing.T) {
+func TestDeleteClusterNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterDelete(RESOURCEID).
@@ -39,7 +39,7 @@ func TestDeleteServerNotFound(test_framework *testing.T) {
 
 }
 
-func TestDeleteServerError(test_framework *testing.T) {
+func TestDeleteClusterError(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterDelete(RESOURCEID).
@@ -54,7 +54,7 @@ func TestDeleteServerError(test_framework *testing.T) {
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
-func TestDeleteServerClientFailure(test_framework *testing.T) {
+func TestDeleteClusterClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterDelete(RESOURCEID).
@@ -70,7 +70,7 @@ func TestDeleteServerClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestDeleteServerKeycloakFailure(test_framework *testing.T) {
+func TestDeleteClusterKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterDelete(RESOURCEID).

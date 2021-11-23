@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnap-cli/commands/get/events"
 	"phoenixnap.com/pnap-cli/commands/get/quotas"
 	"phoenixnap.com/pnap-cli/commands/get/servers"
+	"phoenixnap.com/pnap-cli/commands/get/sshkeys"
 	"phoenixnap.com/pnap-cli/commands/get/tags"
 )
 
@@ -27,4 +28,5 @@ func init() {
 	GetCmd.AddCommand(quotas.GetQuotasCmd)
 	GetCmd.AddCommand(events.GetEventsCmd)
 	GetCmd.AddCommand(tags.GetTagsCmd)
+	GetCmd.AddCommand(sshkeys.GetSshKeysCmd)
 }

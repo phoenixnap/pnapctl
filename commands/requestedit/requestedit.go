@@ -1,10 +1,10 @@
-package request_edit
+package requestedit
 
 import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/request_edit/quotas"
+	"phoenixnap.com/pnap-cli/commands/requestedit/quotas"
 )
 
 var RequestEditCmd = &cobra.Command{
