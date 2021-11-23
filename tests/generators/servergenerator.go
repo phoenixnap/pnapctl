@@ -25,6 +25,14 @@ func randSeqPointer(n int) *string {
 	return &random
 }
 
+func randListStringPointer(n int) *[]string {
+	b := []string{}
+	for i := range b {
+		b[i] = randSeq(10)
+	}
+	return &b
+}
+
 func GenerateServers(n int) []bmcapisdk.Server {
 	var serverlist []bmcapisdk.Server
 	for i := 0; i < n; i++ {
@@ -137,5 +145,43 @@ func GenerateResetResult() bmcapisdk.ResetResult {
 		Result:          randSeq(10),
 		Password:        nil,
 		OsConfiguration: nil,
+	}
+}
+
+func GenerateServerPatch() bmcapisdk.ServerPatch {
+	return bmcapisdk.ServerPatch{
+		Hostname:    randSeqPointer(10),
+		Description: randSeqPointer(10),
+	}
+}
+
+func GenerateTagAssignmentRequest() bmcapisdk.TagAssignmentRequest {
+	return bmcapisdk.TagAssignmentRequest{
+		Name:  randSeq(10),
+		Value: randSeqPointer(10),
+	}
+}
+
+func GenerateTagAssignmentRequests(n int) []bmcapisdk.TagAssignmentRequest {
+	var list []bmcapisdk.TagAssignmentRequest
+	for i := 0; i < n; i++ {
+		list = append(list, GenerateTagAssignmentRequest())
+	}
+	return list
+}
+
+func GenerateServerReserve() bmcapisdk.ServerReserve {
+	return bmcapisdk.ServerReserve{
+		PricingModel: "ONE_MONTH_RESERVATION",
+	}
+}
+
+func GenerateServerPrivateNetwork() bmcapisdk.ServerPrivateNetwork {
+	dhcp := false
+	return bmcapisdk.ServerPrivateNetwork{
+		Id:                randSeq(10),
+		Ips:               randListStringPointer(10),
+		Dhcp:              &dhcp,
+		StatusDescription: randSeqPointer(10),
 	}
 }

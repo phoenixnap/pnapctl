@@ -14,14 +14,19 @@ var Client BmcApiSdkClient
 type BmcApiSdkClient interface {
 	//Servers
 	ServersPost(serverCreate bmcapisdk.ServerCreate) (bmcapisdk.Server, *http.Response, error)
-	ServersGet() ([]bmcapisdk.Server, *http.Response, error)
+	ServersGet([]string) ([]bmcapisdk.Server, *http.Response, error)
 	ServerGetById(serverId string) (bmcapisdk.Server, *http.Response, error)
 	ServerDelete(serverId string) (bmcapisdk.DeleteResult, *http.Response, error)
 	ServerPowerOff(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
 	ServerPowerOn(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
 	ServerReboot(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
 	ServerReset(serverId string, serverReset bmcapisdk.ServerReset) (bmcapisdk.ResetResult, *http.Response, error)
+	ServerReserve(serverId string, serverReserve bmcapisdk.ServerReserve) (bmcapisdk.Server, *http.Response, error)
 	ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
+	ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error)
+	ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error)
+	ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error)
+	ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error)
 
 	//Quotas
 	QuotasGet() ([]bmcapisdk.Quota, *http.Response, error)
@@ -63,8 +68,8 @@ func (m MainClient) ServersPost(serverCreate bmcapisdk.ServerCreate) (bmcapisdk.
 	return m.ServersApiClient.ServersPost(context.Background()).ServerCreate(serverCreate).Execute()
 }
 
-func (m MainClient) ServersGet() ([]bmcapisdk.Server, *http.Response, error) {
-	return m.ServersApiClient.ServersGet(context.Background()).Execute()
+func (m MainClient) ServersGet(tags []string) ([]bmcapisdk.Server, *http.Response, error) {
+	return m.ServersApiClient.ServersGet(context.Background()).Tag(tags).Execute()
 }
 
 func (m MainClient) ServerGetById(serverId string) (bmcapisdk.Server, *http.Response, error) {
@@ -91,8 +96,28 @@ func (m MainClient) ServerReset(serverId string, serverReset bmcapisdk.ServerRes
 	return m.ServersApiClient.ServersServerIdActionsResetPost(context.Background(), serverId).ServerReset(serverReset).Execute()
 }
 
+func (m MainClient) ServerReserve(serverId string, serverReserve bmcapisdk.ServerReserve) (bmcapisdk.Server, *http.Response, error) {
+	return m.ServersApiClient.ServersServerIdActionsReservePost(context.Background(), serverId).ServerReserve(serverReserve).Execute()
+}
+
 func (m MainClient) ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
 	return m.ServersApiClient.ServersServerIdActionsShutdownPost(context.Background(), serverId).Execute()
+}
+
+func (m MainClient) ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error) {
+	return m.ServersApiClient.ServersServerIdPatch(context.Background(), serverId).ServerPatch(serverPatch).Execute()
+}
+
+func (m MainClient) ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error) {
+	return m.ServersApiClient.ServersServerIdTagsPut(context.Background(), serverId).TagAssignmentRequest(tagAssignmentRequests).Execute()
+}
+
+func (m MainClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error) {
+	return m.ServersApiClient.ServersServerIdPrivateNetworksPost(context.Background(), serverId).ServerPrivateNetwork(serverPrivateNetwork).Execute()
+}
+
+func (m MainClient) ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error) {
+	return m.ServersApiClient.DeletePrivateNetwork(context.Background(), serverId, networkId).Execute()
 }
 
 // Quota APIs

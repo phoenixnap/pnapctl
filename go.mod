@@ -7,10 +7,10 @@ require (
 	github.com/influxdata/influxdb v1.9.4
 	github.com/landoop/tableprinter v0.0.0-20201125135848-89e81fc956e7
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/phoenixnap/go-sdk-bmc/auditapi v0.0.0-20211116133257-cd68de6a4af2
-	github.com/phoenixnap/go-sdk-bmc/bmcapi v0.0.0-20211116133257-cd68de6a4af2
-	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v0.0.0-20211116133257-cd68de6a4af2
-	github.com/phoenixnap/go-sdk-bmc/tagapi v0.0.0-20211116133257-cd68de6a4af2
+	github.com/phoenixnap/go-sdk-bmc/auditapi v1.0.0
+	github.com/phoenixnap/go-sdk-bmc/bmcapi v1.0.0
+	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v1.0.0
+	github.com/phoenixnap/go-sdk-bmc/tagapi v1.0.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.9.0

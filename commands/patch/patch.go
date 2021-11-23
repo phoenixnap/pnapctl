@@ -4,13 +4,14 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnap-cli/commands/patch/server"
 	"phoenixnap.com/pnap-cli/commands/patch/tag"
 )
 
 var PatchCmd = &cobra.Command{
 	Use:   "patch",
-	Short: "Patch a resource.",
-	Long:  `Patch a resource.`,
+	Short: "Modify a resource.",
+	Long:  `Modify a resource.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 		os.Exit(0)
@@ -19,4 +20,5 @@ var PatchCmd = &cobra.Command{
 
 func init() {
 	PatchCmd.AddCommand(tag.PatchTagCmd)
+	PatchCmd.AddCommand(server.PatchServerCmd)
 }

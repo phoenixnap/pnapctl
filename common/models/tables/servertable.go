@@ -41,6 +41,13 @@ type ShortServerTable struct {
 	PublicIPAddresses  []string `header:"Public Ips"`
 }
 
+type ServerPrivateNetworkTable struct {
+	Id                string    `header:"id"`
+	Ips               *[]string `header:"ips"`
+	Dhcp              *bool     `header:"dhcp"`
+	StatusDescription *string   `header:"Status Description"`
+}
+
 func ToShortServerTable(server bmcapisdk.Server) ShortServerTable {
 
 	return ShortServerTable{
@@ -79,5 +86,14 @@ func ToLongServerTable(server bmcapisdk.Server) LongServerTable {
 		ProvisionedOn:        DerefTimeAsString(server.ProvisionedOn),
 		OsConfiguration:      bmcapimodels.OsConfigurationToTableString(server.OsConfiguration),
 		NetworkConfiguration: bmcapimodels.NetworkConfigurationToTableString(&server.NetworkConfiguration),
+	}
+}
+
+func ToServerPrivateNetworkTable(privateNetwork bmcapisdk.ServerPrivateNetwork) ServerPrivateNetworkTable {
+	return ServerPrivateNetworkTable{
+		Id:                privateNetwork.Id,
+		Ips:               privateNetwork.Ips,
+		Dhcp:              privateNetwork.Dhcp,
+		StatusDescription: privateNetwork.StatusDescription,
 	}
 }
