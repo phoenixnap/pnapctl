@@ -37,7 +37,6 @@ isBillingTag: false`,
 			return err
 		}
 
-		// httpResponse, err := bmcapi.Client.TagEditById(args[0], *tagEditRequest)
 		tag, httpResponse, err := tags.Client.TagPatch(args[0], *tagEdit)
 
 		if err != nil {

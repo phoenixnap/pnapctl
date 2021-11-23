@@ -143,7 +143,6 @@ func HandleBMCError(response *http.Response, commandName string) error {
 	err = json.Unmarshal(body, &bmcErr)
 
 	if err != nil || len(bmcErr.Error()) == 0 {
-		// fmt.Println(string(body))
 		return CreateCLIError(UnmarshallingErrorBody, commandName, err)
 	}
 
