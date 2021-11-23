@@ -1,14 +1,14 @@
-package edit
+package patch
 
 import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/edit/quotas"
+	"phoenixnap.com/pnap-cli/commands/patch/server"
 )
 
-var EditCmd = &cobra.Command{
-	Use:   "edit",
+var PatchCmd = &cobra.Command{
+	Use:   "patch",
 	Short: "Modify a resource.",
 	Long:  `Modify a resource.`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -18,5 +18,5 @@ var EditCmd = &cobra.Command{
 }
 
 func init() {
-	EditCmd.AddCommand(quotas.EditQuotaCmd)
+	PatchCmd.AddCommand(server.PatchServerCmd)
 }

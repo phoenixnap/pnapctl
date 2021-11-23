@@ -2,6 +2,7 @@ package bmcapimodels
 
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	files "phoenixnap.com/pnap-cli/common/fileprocessor"
 )
 
 type NetworkConfiguration struct {
@@ -15,10 +16,10 @@ type PrivateNetworkConfiguration struct {
 }
 
 type ServerPrivateNetwork struct {
-	Id                string    `yaml:"id" json:"id"`
-	Ips               *[]string `yaml:"ips" json:"ips"`
-	Dhcp              *bool     `yaml:"dhcp" json:"dhcp"`
-	StatusDescription *string   `yaml:"statusDescription" json:"statusDescription"`
+	Id                string    `yaml:"id,omitempty" json:"id,omitempty"`
+	Ips               *[]string `yaml:"ips,omitempty" json:"ips,omitempty"`
+	Dhcp              *bool     `yaml:"dhcp,omitempty" json:"dhcp,omitempty"`
+	StatusDescription *string   `yaml:"statusDescription,omitempty" json:"statusDescription,omitempty"`
 }
 
 /* DTO to SDK mapping functions*/
@@ -126,4 +127,27 @@ func NetworkConfigurationToTableString(networkConfiguration *bmcapisdk.NetworkCo
 		sdkObj := NetworkConfigurationSdkToDto(networkConfiguration)
 		return sdkObj.ToTableString()
 	}
+}
+
+func CreateServerPrivateNetworkFromFile(filename string, commandname string) (*bmcapisdk.ServerPrivateNetwork, error) {
+	files.ExpandPath(&filename)
+
+	data, err := files.ReadFile(filename, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Marshal file into JSON using the struct
+	var serverPrivateNetwork ServerPrivateNetwork
+
+	err = files.Unmarshal(data, &serverPrivateNetwork, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	serverPrivateNetworkSdk := serverPrivateNetwork.toSdk()
+
+	return &serverPrivateNetworkSdk, nil
 }

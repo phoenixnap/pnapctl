@@ -16,6 +16,16 @@ func PrintServerListResponse(servers []bmcapisdk.Server, full bool, commandName 
 	return MainPrinter.PrintOutput(serverListToPrint, commandName)
 }
 
+func PrintServerPrivateNetwork(serverPrivateNetwork bmcapisdk.ServerPrivateNetwork, commandName string) error {
+	table := OutputIsTable()
+
+	if table {
+		return MainPrinter.PrintOutput(tables.ToServerPrivateNetworkTable(serverPrivateNetwork), commandName)
+	} else {
+		return MainPrinter.PrintOutput(serverPrivateNetwork, commandName)
+	}
+}
+
 func PrepareServerForPrinting(server bmcapisdk.Server, full bool) interface{} {
 	table := OutputIsTable()
 
