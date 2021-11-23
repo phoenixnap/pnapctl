@@ -1,0 +1,246 @@
+package privatenetwork
+
+import (
+	"encoding/json"
+	"errors"
+	"testing"
+
+	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
+	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
+	"phoenixnap.com/pnap-cli/tests/generators"
+	"phoenixnap.com/pnap-cli/tests/testutil"
+
+	"gopkg.in/yaml.v2"
+
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	. "phoenixnap.com/pnap-cli/tests/mockhelp"
+)
+
+func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
+	// What the client should receive.
+	serverPrivateNetwork := generators.GenerateServerPrivateNetwork()
+
+	serverPrivateNetworkModel := bmcapimodels.ServerPrivateNetwork{
+		Id:                serverPrivateNetwork.Id,
+		Ips:               serverPrivateNetwork.Ips,
+		Dhcp:              serverPrivateNetwork.Dhcp,
+		StatusDescription: serverPrivateNetwork.StatusDescription,
+	}
+
+	// Assumed contents of the file.
+	yamlmarshal, _ := yaml.Marshal(serverPrivateNetworkModel)
+
+	Filename = FILENAME
+
+	// Mocking
+	PrepareBmcApiMockClient(test_framework).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		Return(serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
+		Times(1)
+
+	mockFileProcessor := PrepareMockFileProcessor(test_framework)
+
+	mockFileProcessor.
+		ReadFile(FILENAME).
+		Return(yamlmarshal, nil).
+		Times(1)
+
+	// Run command
+	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
+
+	// Assertions
+	assert.NoError(test_framework, err)
+}
+
+func TestCreateServerPrivateNetworkSuccessJSON(test_framework *testing.T) {
+	// What the client should receive.
+	serverPrivateNetwork := generators.GenerateServerPrivateNetwork()
+
+	// Assumed contents of the file.
+	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
+
+	Filename = FILENAME
+
+	// Mocking
+	PrepareBmcApiMockClient(test_framework).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		Return(serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
+		Times(1)
+
+	mockFileProcessor := PrepareMockFileProcessor(test_framework)
+
+	mockFileProcessor.
+		ReadFile(FILENAME).
+		Return(jsonmarshal, nil).
+		Times(1)
+
+	// Run command
+	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
+
+	// Assertions
+	assert.NoError(test_framework, err)
+}
+
+func TestCreateServerPrivateNetworkFileNotFoundFailure(test_framework *testing.T) {
+
+	// Setup
+	Filename = FILENAME
+
+	// Mocking
+	PrepareMockFileProcessor(test_framework).
+		ReadFile(FILENAME).
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
+		Times(1)
+
+	// Run command
+	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
+
+	// Expected command
+	expectedErr := ctlerrors.FileNotExistError(FILENAME)
+
+	// Assertions
+	assert.EqualError(test_framework, expectedErr, err.Error())
+
+}
+
+func TestCreateServerPrivateNetworkUnmarshallingFailure(test_framework *testing.T) {
+	// Invalid contents of the file
+	filecontents := []byte(`Name: desc`)
+
+	Filename = FILENAME
+
+	// Mocking
+	mockFileProcessor := PrepareMockFileProcessor(test_framework)
+
+	mockFileProcessor.
+		ReadFile(FILENAME).
+		Return(filecontents, nil).
+		Times(1)
+
+	// Run command
+	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
+
+	// Expected error
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "create server-private-network", err)
+
+	// Assertions
+	assert.EqualError(test_framework, expectedErr, err.Error())
+}
+
+func TestCreateServerPrivateNetworkFileReadingFailure(test_framework *testing.T) {
+	// Setup
+	Filename = FILENAME
+
+	// Mocking
+	mockFileProcessor := PrepareMockFileProcessor(test_framework)
+
+	mockFileProcessor.
+		ReadFile(FILENAME).
+		Return(nil, ctlerrors.CLIError{
+			Message: "Command 'create server-private-network' has been performed, but something went wrong. Error code: 0503",
+		}).
+		Times(1)
+
+	// Run command
+	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
+
+	// Expected error
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "create server-private-network", err)
+
+	// Assertions
+	assert.EqualError(test_framework, expectedErr, err.Error())
+}
+
+func TestCreateServerPrivateNetworkBackendErrorFailure(test_framework *testing.T) {
+	// Setup
+	serverPrivateNetwork := generators.GenerateServerPrivateNetwork()
+
+	// Assumed contents of the file.
+	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
+	Filename = FILENAME
+
+	// Mocking
+	PrepareBmcApiMockClient(test_framework).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		Return(bmcapisdk.ServerPrivateNetwork{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Times(1)
+
+	mockFileProcessor := PrepareMockFileProcessor(test_framework)
+
+	mockFileProcessor.
+		ReadFile(FILENAME).
+		Return(jsonmarshal, nil).
+		Times(1)
+
+	// Run command
+	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
+
+	// Expected error
+	expectedErr := errors.New(testutil.GenericBMCError.Message)
+
+	// Assertions
+	assert.EqualError(test_framework, expectedErr, err.Error())
+}
+
+func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
+	// Setup
+	serverPrivateNetwork := generators.GenerateServerPrivateNetwork()
+
+	// Assumed contents of the file.
+	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
+
+	Filename = FILENAME
+
+	// Mocking
+	PrepareBmcApiMockClient(test_framework).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		Return(bmcapisdk.ServerPrivateNetwork{}, nil, testutil.TestError).
+		Times(1)
+
+	mockFileProcessor := PrepareMockFileProcessor(test_framework)
+
+	mockFileProcessor.
+		ReadFile(FILENAME).
+		Return(jsonmarshal, nil).
+		Times(1)
+
+	// Run command
+	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
+
+	// Expected error
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "create server-private-network", ctlerrors.ErrorSendingRequest)
+
+	// Assertions
+	assert.EqualError(test_framework, expectedErr, err.Error())
+}
+
+func TestCreateServerPrivateNetworkKeycloakFailure(test_framework *testing.T) {
+	// Setup
+	serverPrivateNetwork := generators.GenerateServerPrivateNetwork()
+
+	// Assumed contents of the file.
+	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
+
+	Filename = FILENAME
+
+	// Mocking
+	PrepareBmcApiMockClient(test_framework).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		Return(bmcapisdk.ServerPrivateNetwork{}, nil, testutil.TestKeycloakError).
+		Times(1)
+
+	mockFileProcessor := PrepareMockFileProcessor(test_framework)
+
+	mockFileProcessor.
+		ReadFile(FILENAME).
+		Return(jsonmarshal, nil).
+		Times(1)
+
+	// Run command
+	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
+
+	// Assertions
+	assert.Equal(test_framework, testutil.TestKeycloakError, err)
+}
