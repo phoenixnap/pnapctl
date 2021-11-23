@@ -1,4 +1,4 @@
-package private_network
+package privatenetwork
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ var commandName = "delete server-private-network"
 
 // DeleteServerPrivateNetworkCmd is the command for creating a server.
 var DeleteServerPrivateNetworkCmd = &cobra.Command{
-	Use:          "server-private-network [SEVER_ID] [PRIVATE_NETWORK_ID]",
+	Use:          "server-private-network SERVER_ID PRIVATE_NETWORK_ID",
 	Short:        "Remove a server from a private network.",
 	Args:         cobra.ExactArgs(2),
 	SilenceUsage: true,

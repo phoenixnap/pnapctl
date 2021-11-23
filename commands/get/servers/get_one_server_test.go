@@ -16,8 +16,7 @@ import (
 func TestGetServerShortSuccess(test_framework *testing.T) {
 
 	server := generators.GenerateServer()
-	var shortServer interface{}
-	shortServer = tables.ToShortServerTable(server)
+	var shortServer = tables.ToShortServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).
@@ -36,8 +35,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 
 func TestGetServerLongSuccess(test_framework *testing.T) {
 	server := generators.GenerateServer()
-	var longServer interface{}
-	longServer = tables.ToLongServerTable(server)
+	var longServer = tables.ToLongServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).

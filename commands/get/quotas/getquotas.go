@@ -4,7 +4,6 @@ import (
 	netHttp "net/http"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
@@ -23,7 +22,7 @@ var GetQuotasCmd = &cobra.Command{
 	Args:         cobra.MaximumNArgs(1),
 	Long: `Retrieve one or all quotas for your account.
 
-Prints brief or detailed information about the quotas assigned to your account.
+Prints all information about the quotas assigned to your account.
 By default, the data is printed in table format.
 
 To print a single quota, a quota ID needs to be passed as an argument.`,
@@ -32,7 +31,7 @@ To print a single quota, a quota ID needs to be passed as an argument.`,
 pnapctl get quotas -o json
 
 # List all details of a desired quota in yaml format.
-pnapctl get quota bmc.servers.max_count -o yaml --full`,
+pnapctl get quota bmc.servers.max_count -o yaml`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
 			ID = args[0]
@@ -43,8 +42,6 @@ pnapctl get quota bmc.servers.max_count -o yaml --full`,
 }
 
 func getQuotas(quotaId string) error {
-	log.Debug("Getting quotas...")
-
 	var httpResponse *netHttp.Response
 	var err error
 	var quota bmcapisdk.Quota
@@ -60,9 +57,9 @@ func getQuotas(quotaId string) error {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 	} else if httpResponse.StatusCode == 200 {
 		if quotaId == "" {
-			return printer.PrintQuotaListResponse(quotas, true, commandName)
+			return printer.PrintQuotaListResponse(quotas, commandName)
 		} else {
-			return printer.PrintQuotaResponse(quota, true, commandName)
+			return printer.PrintQuotaResponse(quota, commandName)
 		}
 	} else {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)

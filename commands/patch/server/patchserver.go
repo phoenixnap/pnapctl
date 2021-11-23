@@ -17,7 +17,7 @@ var Full bool
 
 // PatchServerCmd is the command for patching a server.
 var PatchServerCmd = &cobra.Command{
-	Use:          "server [SERVER_ID]",
+	Use:          "server SERVER_ID",
 	Short:        "Patch a server.",
 	Args:         cobra.ExactArgs(1),
 	Aliases:      []string{"srv"},

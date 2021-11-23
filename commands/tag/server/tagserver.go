@@ -20,7 +20,7 @@ var Full bool
 
 // TagServerCmd is the command for tagging a server.
 var TagServerCmd = &cobra.Command{
-	Use:          "server [SERVER_ID]",
+	Use:          "server SERVER_ID",
 	Short:        "Tag a server.",
 	Args:         cobra.ExactArgs(1),
 	Aliases:      []string{"srv"},

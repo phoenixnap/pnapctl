@@ -8,7 +8,6 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +16,7 @@ const commandName string = "get clusters"
 var ID string
 
 var GetClustersCmd = &cobra.Command{
-	Use:          "clusters [CLUSTER_ID]",
+	Use:          "cluster [CLUSTER_ID]",
 	Short:        "Retrieve one or all clusters.",
 	Aliases:      []string{"clusters"},
 	SilenceUsage: true,
@@ -44,8 +43,6 @@ pnapctl get cluster NDIid939dfkoDd -o yaml`,
 }
 
 func getClusters(clusterID string) error {
-	log.Debug("Getting clusters...")
-
 	var httpResponse *netHttp.Response
 	var err error
 	var cluster ranchersdk.Cluster
