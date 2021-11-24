@@ -1,7 +1,7 @@
 SRC                         = $(CURDIR)/src
 export BIN                  = $(CURDIR)/bin
 export BUILD                = $(CURDIR)/build
-export COVERAGE_DIR         = $(CURDIR)/test
+export COVERAGE_DIR         = $(CURDIR)/test/coverage
 
 # Binaries
 
@@ -12,7 +12,7 @@ build build-simple pack build-and-pack:
 # Tests
 
 .PHONY:
-generate-mock test-bench test-short test-verbose test-race check test tests test-coverage-show test-coverage:
+test-bench test-short test-verbose test-race check test tests test-coverage-show test-coverage:
 	$Q $(MAKE) -C $(SRC) $@
 
 # Misc
