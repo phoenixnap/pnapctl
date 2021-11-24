@@ -1,0 +1,4 @@
+{
+    "description": "This is a server patched from PNAP CLI.",
+    "hostname": "pnap-cli-server"
+}
