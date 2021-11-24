@@ -117,7 +117,7 @@ func TestGetEventsInvalidOrderFormat(test_framework *testing.T) {
 	err := GetEventsCmd.RunE(GetEventsCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Order needs to be one of the following values: 'ASC', 'DESC'. Was 'None' instead."
+	expectedMessage := "Invalid Order 'None'. Valid values: 'ASC', 'DESC'"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
@@ -129,7 +129,7 @@ func TestGetEventsInvalidVerbFormat(test_framework *testing.T) {
 	err := GetEventsCmd.RunE(GetEventsCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Verb needs to be one of the following values: 'POST', 'PUT', 'PATCH', 'DELETE'. Was 'Doing' instead."
+	expectedMessage := "Invalid Verb 'Doing'. Valid values: 'POST', 'PUT', 'PATCH', 'DELETE'"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
