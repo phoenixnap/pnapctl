@@ -8,7 +8,7 @@ import (
 type PrivateNetwork struct {
 	Id              string   `header:"ID"`
 	Name            string   `header:"Name"`
-	Description     *string  `header:"Description"`
+	Description     string   `header:"Description"`
 	VlanId          int32    `header:"Vlan ID"`
 	Type            string   `header:"Type"`
 	Location        string   `header:"Location"`
@@ -27,7 +27,7 @@ func PrivateNetworkFromSdk(network networksdk.PrivateNetwork) PrivateNetwork {
 	return PrivateNetwork{
 		Id:              network.Id,
 		Name:            DerefString(network.Description),
-		Description:     network.Description,
+		Description:     DerefString(network.Description),
 		VlanId:          network.VlanId,
 		Type:            network.Type,
 		Location:        network.Location,

@@ -12,9 +12,8 @@ import (
 
 const commandName string = "get private-networks"
 
-var Full bool
 var ID string
-var tags []string
+var location string
 
 var GetPrivateNetworksCmd = &cobra.Command{
 	Use:          "private-network [SERVER_ID]",
@@ -50,7 +49,7 @@ func getPrivateNetworks(privateNetworkID string) error {
 	var privateNetworks []networkapisdk.PrivateNetwork
 
 	if privateNetworkID == "" {
-		privateNetworks, httpResponse, err = networks.Client.PrivateNetworksGet()
+		privateNetworks, httpResponse, err = networks.Client.PrivateNetworksGet(location)
 	} else {
 		privateNetwork, httpResponse, err = networks.Client.PrivateNetworkGetById(privateNetworkID)
 	}
@@ -69,7 +68,6 @@ func getPrivateNetworks(privateNetworkID string) error {
 }
 
 func init() {
-	GetPrivateNetworksCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all private network details")
 	GetPrivateNetworksCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	GetPrivateNetworksCmd.PersistentFlags().StringArrayVar(&tags, "tag", nil, "Filter by tag")
+	GetPrivateNetworksCmd.PersistentFlags().StringVar(&location, "location", "", "Filter by location")
 }

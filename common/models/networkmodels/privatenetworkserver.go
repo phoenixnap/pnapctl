@@ -34,5 +34,5 @@ func PrivateNetworkServerToTableString(server *networksdk.PrivateNetworkServer) 
 		return ""
 	}
 
-	return fmt.Sprintf("%s : %s", server.Id, server.Ips)
+	return fmt.Sprintf("ID: %s\nIps: %s\n", server.Id, server.Ips)
 }

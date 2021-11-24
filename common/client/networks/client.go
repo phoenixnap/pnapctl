@@ -13,7 +13,7 @@ var Client NetworkSdkClient
 
 type NetworkSdkClient interface {
 	// Private Networks
-	PrivateNetworksGet() ([]networkapisdk.PrivateNetwork, *http.Response, error)
+	PrivateNetworksGet(location string) ([]networkapisdk.PrivateNetwork, *http.Response, error)
 	PrivateNetworkGetById(networkId string) (networkapisdk.PrivateNetwork, *http.Response, error)
 	PrivateNetworksPost(privateNetworkCreate networkapisdk.PrivateNetworkCreate) (networkapisdk.PrivateNetwork, *http.Response, error)
 	PrivateNetworkPut(networkId string, privateNetworkUpdate networkapisdk.PrivateNetworkModify) (networkapisdk.PrivateNetwork, *http.Response, error)
@@ -27,8 +27,8 @@ type MainClient struct {
 func NewMainClient(clientId string, clientSecret string) NetworkSdkClient {
 	networksAPIconfiguration := networkapisdk.NewConfiguration()
 
-	if configuration.BmcApiHostname != "" {
-		networksAPIconfiguration.Servers[0].URL = configuration.BmcApiHostname
+	if configuration.NetworksHostname != "" {
+		networksAPIconfiguration.Servers[0].URL = configuration.NetworksHostname
 	}
 
 	config := clientcredentials.Config{
@@ -47,8 +47,14 @@ func NewMainClient(clientId string, clientSecret string) NetworkSdkClient {
 	}
 }
 
-func (m MainClient) PrivateNetworksGet() ([]networkapisdk.PrivateNetwork, *http.Response, error) {
-	return m.PrivateNetworksClient.PrivateNetworksGet(context.Background()).Execute()
+func (m MainClient) PrivateNetworksGet(location string) ([]networkapisdk.PrivateNetwork, *http.Response, error) {
+	request := m.PrivateNetworksClient.PrivateNetworksGet(context.Background())
+
+	if location != "" {
+		request = request.Location(location)
+	}
+
+	return request.Execute()
 }
 
 func (m MainClient) PrivateNetworkGetById(networkId string) (networkapisdk.PrivateNetwork, *http.Response, error) {
