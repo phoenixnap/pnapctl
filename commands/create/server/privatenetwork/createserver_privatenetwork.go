@@ -26,10 +26,12 @@ Requires a file (yaml or json) containing the information needed to create the s
 pnapctl create server-private-network 5ff5cc9bc1acf144d910621f --filename ./createPrivateNetwork.yaml
 
 # createPrivateNetwork.yaml
-id: 5ff5cc9bc1acf144d9106233,
-ips: [],
-dhcp: false,
-statusDescription": in-progress
+id: 5ff5cc9bc1acf144d9106233
+ips: 
+	- 10.0.0.1
+    - 10.0.0.2
+dhcp: false
+statusDescription: in-progress
 `,
 
 	RunE: func(cmd *cobra.Command, args []string) error {

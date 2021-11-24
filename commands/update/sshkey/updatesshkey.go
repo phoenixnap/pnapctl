@@ -51,6 +51,7 @@ name: default ssh key`,
 }
 
 func init() {
+	UpdateSshKeyCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ssh key details")
 	UpdateSshKeyCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 	UpdateSshKeyCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
 	UpdateSshKeyCmd.MarkFlagRequired("filename")
