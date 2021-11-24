@@ -23,7 +23,7 @@ var CreateTagCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to create the tag.`,
 	Example: `# create a new tag as described in tag.yaml
-pnapctl create tag --filename <FILE_PATH> [--output] <OUTPUT_TYPE>]
+pnapctl create tag --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 #tagCreate.yaml
 name: TagName
