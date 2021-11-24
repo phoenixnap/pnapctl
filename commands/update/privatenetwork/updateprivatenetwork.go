@@ -2,9 +2,9 @@ package privatenetwork
 
 import (
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client/bmcapi"
+	"phoenixnap.com/pnap-cli/common/client/networkapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
+	"phoenixnap.com/pnap-cli/common/models/networkmodels"
 	"phoenixnap.com/pnap-cli/common/printer"
 )
 
@@ -21,24 +21,24 @@ var UpdatePrivateNetworkCmd = &cobra.Command{
 	Short:        "Update a private network.",
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
-	Long: `Update an private-network.
+	Long: `Update a private network.
 
 Requires a file (yaml or json) containing the information needed to modify the private-network.`,
-	Example: `# update an private-network as described in privateNetworkUpdate.yaml
+	Example: `# update a private network as described in privateNetworkUpdate.yaml
 pnapctl update private-network 5da891e90ab0c59bd28e34ad --filename ~/privateNetworkUpdate.yaml
 
 # privateNetworkUpdate.yaml
 default: true
 name: default ssh key`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		sshKeyUpdate, err := bmcapimodels.CreatePrivateNetworkUpdateRequestFromFile(Filename, commandName)
+		sshKeyUpdate, err := networkmodels.CreatePrivateNetworkUpdateFromFile(Filename, commandName)
 
 		if err != nil {
 			return err
 		}
 
 		// update the private network
-		response, httpResponse, err := bmcapi.Client.PrivateNetworkPut(args[0], *sshKeyUpdate)
+		response, httpResponse, err := networkapi.Client.PrivateNetworkPut(args[0], *sshKeyUpdate)
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)

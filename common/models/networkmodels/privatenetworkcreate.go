@@ -2,18 +2,19 @@ package networkmodels
 
 import (
 	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	files "phoenixnap.com/pnap-cli/common/fileprocessor"
 )
 
 type PrivateNetworkCreate struct {
-	Name            string
-	Description     *string
-	Location        string
-	LocationDefault *bool
-	Cidr            string
+	Name            string  `json:"name" yaml:"name"`
+	Description     *string `json:"description" yaml:"description"`
+	Location        string  `json:"location" yaml:"location"`
+	LocationDefault *bool   `json:"locationDefault" yaml:"locationDefault"`
+	Cidr            string  `json:"cidr" yaml:"cidr"`
 }
 
-func (create *PrivateNetworkCreate) toSdk() networksdk.PrivateNetworkCreate {
-	return networksdk.PrivateNetworkCreate{
+func (create *PrivateNetworkCreate) ToSdk() *networksdk.PrivateNetworkCreate {
+	return &networksdk.PrivateNetworkCreate{
 		Name:            create.Name,
 		Description:     create.Description,
 		Location:        create.Location,
@@ -34,4 +35,25 @@ func PrivateNetworkCreateFromSdk(create *networksdk.PrivateNetworkCreate) *Priva
 		LocationDefault: create.LocationDefault,
 		Cidr:            create.Cidr,
 	}
+}
+
+func CreatePrivateNetworkCreateFromFile(filename string, commandname string) (*networksdk.PrivateNetworkCreate, error) {
+	files.ExpandPath(&filename)
+
+	data, err := files.ReadFile(filename, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Marshal file into JSON using the struct
+	var privateNetworkCreate PrivateNetworkCreate
+
+	err = files.Unmarshal(data, &privateNetworkCreate, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return privateNetworkCreate.ToSdk(), nil
 }

@@ -3,10 +3,9 @@ package privatenetwork
 import (
 	netHttp "net/http"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	log "github.com/sirupsen/logrus"
+	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client/bmcapi"
+	"phoenixnap.com/pnap-cli/common/client/networkapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
 )
@@ -45,26 +44,24 @@ pnapctl get private-networks NDIid939dfkoDd -o yaml --full`,
 }
 
 func getPrivateNetworks(privateNetworkID string) error {
-	log.Debug("Getting private networks...")
-
 	var httpResponse *netHttp.Response
 	var err error
-	var private-network bmcapisdk.PrivateNetwork
-	var private-networks []bmcapisdk.PrivateNetwork
+	var privateNetwork networkapisdk.PrivateNetwork
+	var privateNetworks []networkapisdk.PrivateNetwork
 
 	if privateNetworkID == "" {
-		private-networks, httpResponse, err = bmcapi.Client.PrivateNetworksGet(tags)
+		privateNetworks, httpResponse, err = networkapi.Client.PrivateNetworksGet()
 	} else {
-		private-network, httpResponse, err = bmcapi.Client.PrivateNetworkGetById(privateNetworkID)
+		privateNetwork, httpResponse, err = networkapi.Client.PrivateNetworkGetById(privateNetworkID)
 	}
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 	} else if httpResponse.StatusCode == 200 {
 		if privateNetworkID == "" {
-			return printer.PrintPrivateNetworkListResponse(private-networks, Full, commandName)
+			return printer.PrintPrivateNetworkListResponse(privateNetworks, Full, commandName)
 		} else {
-			return printer.PrintPrivateNetworkResponse(private-network, Full, commandName)
+			return printer.PrintPrivateNetworkResponse(privateNetwork, Full, commandName)
 		}
 	} else {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)

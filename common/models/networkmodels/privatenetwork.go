@@ -5,15 +5,15 @@ import (
 )
 
 type PrivateNetwork struct {
-	Id              string
-	Name            string
-	Description     *string
-	VlanId          int32
-	Type            string
-	Location        string
-	LocationDefault bool
-	Cidr            string
-	Servers         []PrivateNetworkServer
+	Id              string                 `json:"id" yaml:"id"`
+	Name            string                 `json:"name" yaml:"name"`
+	Description     *string                `json:"description" yaml:"description"`
+	VlanId          int32                  `json:"vlanId" yaml:"vlanId"`
+	Type            string                 `json:"type" yaml:"type"`
+	Location        string                 `json:"location" yaml:"location"`
+	LocationDefault bool                   `json:"locationDefault" yaml:"locationDefault"`
+	Cidr            string                 `json:"cidr" yaml:"cidr"`
+	Servers         []PrivateNetworkServer `json:"server" yaml:"server"`
 }
 
 func (network *PrivateNetwork) toSdk() networksdk.PrivateNetwork {
