@@ -12,7 +12,7 @@ build build-simple pack build-and-pack:
 # Tests
 
 .PHONY:
-generate-mock test-bench test-short test-verbose test-race check test tests test-coverage-show test-coverage: @ ## Run Tests
+generate-mock test-bench test-short test-verbose test-race check test tests test-coverage-show test-coverage:
 	$Q $(MAKE) -C $(SRC) $@
 
 # Misc
