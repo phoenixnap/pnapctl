@@ -43,7 +43,7 @@ name: default ssh key`,
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 		} else if httpResponse.StatusCode == 200 {
-			return printer.PrintPrivateNetworkResponse(response, Full, commandName)
+			return printer.PrintPrivateNetworkResponse(response, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		}

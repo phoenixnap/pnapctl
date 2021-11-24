@@ -59,9 +59,9 @@ func getPrivateNetworks(privateNetworkID string) error {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 	} else if httpResponse.StatusCode == 200 {
 		if privateNetworkID == "" {
-			return printer.PrintPrivateNetworkListResponse(privateNetworks, Full, commandName)
+			return printer.PrintPrivateNetworkListResponse(privateNetworks, commandName)
 		} else {
-			return printer.PrintPrivateNetworkResponse(privateNetwork, Full, commandName)
+			return printer.PrintPrivateNetworkResponse(privateNetwork, commandName)
 		}
 	} else {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)

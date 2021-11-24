@@ -4,8 +4,9 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnap-cli/commands/create/privatenetwork"
 	"phoenixnap.com/pnap-cli/commands/create/server"
-	"phoenixnap.com/pnap-cli/commands/create/server/privatenetwork"
+	serverprivatenetwork "phoenixnap.com/pnap-cli/commands/create/server/privatenetwork"
 	"phoenixnap.com/pnap-cli/commands/create/sshkey"
 )
 
@@ -21,6 +22,7 @@ var CreateCmd = &cobra.Command{
 
 func init() {
 	CreateCmd.AddCommand(server.CreateServerCmd)
-	CreateCmd.AddCommand(privatenetwork.CreateServerPrivateNetworkCmd)
+	CreateCmd.AddCommand(serverprivatenetwork.CreateServerPrivateNetworkCmd)
 	CreateCmd.AddCommand(sshkey.CreateSshKeyCmd)
+	CreateCmd.AddCommand(privatenetwork.CreatePrivateNetworkCmd)
 }
