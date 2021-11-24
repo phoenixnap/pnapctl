@@ -9,6 +9,24 @@ on:
       - master
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: golang:1.17.1
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Go Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Build
+        run: make build
+  
   unit-tests:
     env:
       TEST_COVERAGE_FOLDER: test/coverage
@@ -33,20 +51,3 @@ jobs:
         if: always() # always run even if the previous step fails
         with:
           files: '${{env.TEST_COVERAGE_FOLDER}}/report.xml'
-  build:
-    runs-on: ubuntu-latest
-    container: golang:1.17.1
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v2
-      - name: Go Cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-      - name: Build
-        run: make build
