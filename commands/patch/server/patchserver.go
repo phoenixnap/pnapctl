@@ -26,11 +26,11 @@ var PatchServerCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to patch the server.`,
 	Example: `# Patch a server using the contents of serverPatch.yaml as request body. 
-pnapctl patch server x78sdkjds879sd7cx8 --filename ~/serverPatch.yaml
+pnapctl patch server <SERVER_ID> --filename [FILE_PATH] [--output <OUTPUT_TYPE>] [--full]
 
 # serverPatch.yaml
-hostname: "patched-server"
-description: "My custom server edit"`,
+hostname: patched-server
+description: My custom server edit`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		patchRequest, err := bmcapimodels.PatchServerRequestFromFile(Filename, commandName)
 		if err != nil {

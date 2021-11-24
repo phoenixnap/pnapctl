@@ -29,10 +29,10 @@ By default, the data is printed in table format.
 To print a single ssh-key, an ID linked to the resource needs to be passed as an argument.`,
 	Example: `
 # List all ssh-keys in json format.
-pnapctl get ssh-keys -o json
+pnapctl get ssh-keys [--full] [--output <OUTPUT_TYPE>]
 
 # List all details of desired ssh-key in yaml format.
-pnapctl get ssh-key 619605811954a568606eb71a -o yaml`,
+pnapctl get ssh-key <SSH_KEY_ID> [--full] [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
 			ID = args[0]

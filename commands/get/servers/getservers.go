@@ -30,10 +30,10 @@ By default, the data is printed in table format.
 To print a single server, an ID needs to be passed as an argument.`,
 	Example: `
 # List all servers in json format.
-pnapctl get servers --tag tagName.tagValue --tag tagName -o json
+pnapctl get servers [--tag <TagName>.<TagValue>] [--tag <TagName>] [--full] [--output <OUTPUT_TYPE>]
 
 # List all details of a single server in yaml format.
-pnapctl get servers NDIid939dfkoDd -o yaml --full`,
+pnapctl get servers <SERVER_ID> [--output <OUTPUT_TYPE>] [--full]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
 			ID = args[0]

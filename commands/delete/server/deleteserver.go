@@ -15,7 +15,7 @@ var DeleteServerCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
 	Short:        "Deletes a specific server.",
 	Long:         "Deletes a specific server.",
-	Example:      `pnapctl delete server 5da891e90ab0c59bd28e34ad`,
+	Example:      `pnapctl delete server <SERVER_ID>`,
 	Args:         cobra.ExactArgs(1),
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,

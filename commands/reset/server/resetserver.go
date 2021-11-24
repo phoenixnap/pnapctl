@@ -26,7 +26,7 @@ Since SSH keys are not stored, they need to be passed as parameters within a YAM
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	Example: `# Reset a server
-pnapctl reset server 5da891e90ab0c59bd28e34ad --filename keys.yaml
+pnapctl reset server <SERVER_ID> [--filename <FILE_PATH>]
 
 # keys.yaml
 sshKeys:

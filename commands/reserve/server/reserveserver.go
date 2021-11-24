@@ -26,7 +26,7 @@ Pricing Model is to be passed within a YAML or JSON file.`,
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	Example: `# Reserve a server
-pnapctl reserve server 5da891e90ab0c59bd28e34ad --filename serverReserve.yaml
+pnapctl reserve server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # serverReserve.yaml
 pricingModel: ONE_MONTH_RESERVATION`,

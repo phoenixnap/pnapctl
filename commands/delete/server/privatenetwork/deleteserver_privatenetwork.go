@@ -23,7 +23,7 @@ var DeleteServerPrivateNetworkCmd = &cobra.Command{
 
 Requires two IDs passed as arguments. First one being the server id and second being the private network id. `,
 	Example: `# remove a server from a private network 
-pnapctl delete server-private-network 5ff5cc9bc1acf144d910621f 5ff5cc9bc1acf144d9106233
+pnapctl delete server-private-network <SERVER_ID> <PRIVATE_NETWORK_ID>
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		result, httpResponse, err := bmcapi.Client.ServerPrivateNetworkDelete(args[0], args[1])
