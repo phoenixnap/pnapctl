@@ -1,0 +1,4 @@
+location: "PHX",
+name: "rancher-cluster-test",
+nodePools:
+  - serverType: "s1.c1.medium"

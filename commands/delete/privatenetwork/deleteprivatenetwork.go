@@ -3,7 +3,7 @@ package privatenetwork
 import (
 	"github.com/spf13/cobra"
 
-	"phoenixnap.com/pnap-cli/common/client/networkapi"
+	"phoenixnap.com/pnap-cli/common/client/networks"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 )
 
@@ -17,7 +17,7 @@ var DeletePrivateNetworkCmd = &cobra.Command{
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		httpResponse, err := networkapi.Client.PrivateNetworkDelete(args[0])
+		httpResponse, err := networks.Client.PrivateNetworkDelete(args[0])
 
 		if err != nil {
 			return err

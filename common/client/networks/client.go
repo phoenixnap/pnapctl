@@ -1,4 +1,4 @@
-package networkapi
+package networks
 
 import (
 	"context"
@@ -27,8 +27,8 @@ type MainClient struct {
 func NewMainClient(clientId string, clientSecret string) NetworkSdkClient {
 	networksAPIconfiguration := networkapisdk.NewConfiguration()
 
-	if configuration.Hostname != "" {
-		networksAPIconfiguration.Servers[0].URL = configuration.Hostname
+	if configuration.BmcApiHostname != "" {
+		networksAPIconfiguration.Servers[0].URL = configuration.BmcApiHostname
 	}
 
 	config := clientcredentials.Config{

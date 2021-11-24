@@ -2,7 +2,7 @@ package privatenetwork
 
 import (
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client/networkapi"
+	"phoenixnap.com/pnap-cli/common/client/networks"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/networkmodels"
 	"phoenixnap.com/pnap-cli/common/printer"
@@ -45,7 +45,7 @@ sshKeys:
 		}
 
 		// Create the private network
-		response, httpResponse, err := networkapi.Client.PrivateNetworksPost(*privateNetworkCreate)
+		response, httpResponse, err := networks.Client.PrivateNetworksPost(*privateNetworkCreate)
 
 		if err != nil {
 			// TODO - Validate way of processing errors.

@@ -5,7 +5,7 @@ import (
 
 	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client/networkapi"
+	"phoenixnap.com/pnap-cli/common/client/networks"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
 )
@@ -50,9 +50,9 @@ func getPrivateNetworks(privateNetworkID string) error {
 	var privateNetworks []networkapisdk.PrivateNetwork
 
 	if privateNetworkID == "" {
-		privateNetworks, httpResponse, err = networkapi.Client.PrivateNetworksGet()
+		privateNetworks, httpResponse, err = networks.Client.PrivateNetworksGet()
 	} else {
-		privateNetwork, httpResponse, err = networkapi.Client.PrivateNetworkGetById(privateNetworkID)
+		privateNetwork, httpResponse, err = networks.Client.PrivateNetworkGetById(privateNetworkID)
 	}
 
 	if err != nil {

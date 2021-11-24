@@ -33,7 +33,7 @@ pnapctl create cluster --filename ./cluster.yaml`,
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 200 {
+		} else if httpResponse.StatusCode == 201 {
 			return printer.PrintClusterResponse(response, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)

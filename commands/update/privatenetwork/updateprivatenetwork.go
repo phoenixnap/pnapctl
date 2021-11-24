@@ -2,7 +2,7 @@ package privatenetwork
 
 import (
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client/networkapi"
+	"phoenixnap.com/pnap-cli/common/client/networks"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/networkmodels"
 	"phoenixnap.com/pnap-cli/common/printer"
@@ -38,7 +38,7 @@ name: default ssh key`,
 		}
 
 		// update the private network
-		response, httpResponse, err := networkapi.Client.PrivateNetworkPut(args[0], *sshKeyUpdate)
+		response, httpResponse, err := networks.Client.PrivateNetworkPut(args[0], *sshKeyUpdate)
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)

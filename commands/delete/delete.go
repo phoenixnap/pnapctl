@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnap-cli/commands/delete/privatenetwork"
 	"phoenixnap.com/pnap-cli/commands/delete/server"
 	"phoenixnap.com/pnap-cli/commands/delete/sshkey"
+	"phoenixnap.com/pnap-cli/commands/delete/tag"
 
 	serverprivatenetwork "phoenixnap.com/pnap-cli/commands/delete/server/privatenetwork"
 )
@@ -25,6 +26,8 @@ var DeleteCmd = &cobra.Command{
 func init() {
 	DeleteCmd.AddCommand(server.DeleteServerCmd)
 	DeleteCmd.AddCommand(serverprivatenetwork.DeleteServerPrivateNetworkCmd)
+	DeleteCmd.AddCommand(cluster.DeleteClusterCmd)
+	DeleteCmd.AddCommand(tag.DeleteTagCmd)
 	DeleteCmd.AddCommand(sshkey.DeleteSshKeyCmd)
 	DeleteCmd.AddCommand(cluster.DeleteClusterCmd)
 	DeleteCmd.AddCommand(privatenetwork.DeletePrivateNetworkCmd)
