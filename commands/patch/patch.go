@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnap-cli/commands/patch/server"
+	"phoenixnap.com/pnap-cli/commands/patch/tag"
 )
 
 var PatchCmd = &cobra.Command{
@@ -18,5 +19,6 @@ var PatchCmd = &cobra.Command{
 }
 
 func init() {
+	PatchCmd.AddCommand(tag.PatchTagCmd)
 	PatchCmd.AddCommand(server.PatchServerCmd)
 }

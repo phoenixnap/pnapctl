@@ -24,8 +24,8 @@ type MainClient struct {
 func NewMainClient(clientId string, clientSecret string) AuditSdkClient {
 	auditAPIconfiguration := auditapisdk.NewConfiguration()
 
-	if configuration.Hostname != "" {
-		auditAPIconfiguration.Servers[0].URL = configuration.Hostname
+	if configuration.AuditHostname != "" {
+		auditAPIconfiguration.Servers[0].URL = configuration.AuditHostname
 	}
 
 	config := clientcredentials.Config{

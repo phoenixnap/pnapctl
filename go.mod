@@ -10,6 +10,7 @@ require (
 	github.com/phoenixnap/go-sdk-bmc/auditapi v1.0.0
 	github.com/phoenixnap/go-sdk-bmc/bmcapi v1.0.0
 	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v1.0.0
+	github.com/phoenixnap/go-sdk-bmc/tagapi v1.0.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.9.0

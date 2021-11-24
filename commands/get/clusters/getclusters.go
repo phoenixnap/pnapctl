@@ -66,3 +66,7 @@ func getClusters(clusterID string) error {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	}
 }
+
+func init() {
+	GetClustersCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+}

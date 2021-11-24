@@ -245,7 +245,37 @@ func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 
 	assert.Equal(test_framework, outputType, "ranchermodels.Cluster")
 	assert.Equal(test_framework, len(prepared), 1)
+}
 
+func TestPrepareTagForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	tag := generators.GenerateTag()
+	prepared := PrepareTagForPrinting(*tag)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.TagTable")
+}
+
+func TestPrepareTagForPrintingTag(test_framework *testing.T) {
+	OutputFormat = "json"
+	tag := *generators.GenerateTag()
+	prepared := PrepareTagForPrinting(tag)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tagmodels.Tag")
+}
+
+func TestPrepareTagListForPrinting(test_framework *testing.T) {
+	OutputFormat = "json"
+	tags := generators.GenerateTags(1)
+	prepared := PrepareTagListForPrinting(tags)
+
+	outputType := fmt.Sprintf("%T", prepared[0])
+
+	assert.Equal(test_framework, outputType, "tagmodels.Tag")
+	assert.Equal(test_framework, len(prepared), 1)
 }
 
 func ExamplePrintOutputTableFormatEmpty() {
