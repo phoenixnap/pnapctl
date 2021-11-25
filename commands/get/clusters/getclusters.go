@@ -32,7 +32,7 @@ To print a single cluster, an ID needs to be passed as an argument.`,
 pnapctl get clusters [-output <OUTPUT_TYPE>]
 
 # List a single cluster in yaml format.
-pnapctl get cluster <CLUSTER_ID> [-output <OUTPUT_TYPE>]`,
+pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
 			ID = args[0]
