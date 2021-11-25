@@ -278,6 +278,37 @@ func TestPrepareTagListForPrinting(test_framework *testing.T) {
 	assert.Equal(test_framework, len(prepared), 1)
 }
 
+func TestPreparePrivateNetworkForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	privateNetwork := generators.GeneratePrivateNetwork()
+	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.PrivateNetworkTable")
+}
+
+func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
+	OutputFormat = "json"
+	privateNetwork := generators.GeneratePrivateNetwork()
+	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "networkmodels.PrivateNetwork")
+}
+
+func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
+	OutputFormat = "json"
+	privateNetworks := generators.GeneratePrivateNetworks(1)
+	prepared := PreparePrivateNetworkListForPrinting(privateNetworks)
+
+	outputType := fmt.Sprintf("%T", prepared[0])
+
+	assert.Equal(test_framework, outputType, "networkmodels.PrivateNetwork")
+	assert.Equal(test_framework, len(prepared), 1)
+}
+
 func ExamplePrintOutputTableFormatEmpty() {
 	printerSetup()
 	OutputFormat = ""

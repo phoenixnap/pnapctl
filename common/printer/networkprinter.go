@@ -6,33 +6,33 @@ import (
 	"phoenixnap.com/pnap-cli/common/models/tables"
 )
 
-func PrintPrivateNetworkResponse(cluster networksdk.PrivateNetwork, commandName string) error {
-	clusterToPrint := PreparePrivateNetworkForPrinting(cluster)
-	return MainPrinter.PrintOutput(clusterToPrint, commandName)
+func PrintPrivateNetworkResponse(network networksdk.PrivateNetwork, commandName string) error {
+	networkToPrint := PreparePrivateNetworkForPrinting(network)
+	return MainPrinter.PrintOutput(networkToPrint, commandName)
 }
 
-func PrintPrivateNetworkListResponse(clusters []networksdk.PrivateNetwork, commandName string) error {
-	clusterListToPrint := PreparePrivateNetworkListForPrinting(clusters)
-	return MainPrinter.PrintOutput(clusterListToPrint, commandName)
+func PrintPrivateNetworkListResponse(networks []networksdk.PrivateNetwork, commandName string) error {
+	networkListToPrint := PreparePrivateNetworkListForPrinting(networks)
+	return MainPrinter.PrintOutput(networkListToPrint, commandName)
 }
 
-func PreparePrivateNetworkForPrinting(cluster networksdk.PrivateNetwork) interface{} {
+func PreparePrivateNetworkForPrinting(network networksdk.PrivateNetwork) interface{} {
 	table := OutputIsTable()
 
 	switch {
 	case table:
-		return tables.PrivateNetworkFromSdk(cluster)
+		return tables.PrivateNetworkFromSdk(network)
 	default:
-		return networkmodels.PrivateNetworkFromSdk(cluster)
+		return networkmodels.PrivateNetworkFromSdk(network)
 	}
 }
 
-func PreparePrivateNetworkListForPrinting(clusters []networksdk.PrivateNetwork) []interface{} {
-	var clusterList []interface{}
+func PreparePrivateNetworkListForPrinting(networks []networksdk.PrivateNetwork) []interface{} {
+	var networkList []interface{}
 
-	for _, cluster := range clusters {
-		clusterList = append(clusterList, PreparePrivateNetworkForPrinting(cluster))
+	for _, network := range networks {
+		networkList = append(networkList, PreparePrivateNetworkForPrinting(network))
 	}
 
-	return clusterList
+	return networkList
 }

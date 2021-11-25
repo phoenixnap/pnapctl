@@ -16,7 +16,7 @@ type PrivateNetwork struct {
 	Servers         []PrivateNetworkServer `json:"server" yaml:"server"`
 }
 
-func (network *PrivateNetwork) toSdk() networksdk.PrivateNetwork {
+func (network *PrivateNetwork) ToSdk() networksdk.PrivateNetwork {
 	var servers []networksdk.PrivateNetworkServer
 
 	for _, server := range network.Servers {

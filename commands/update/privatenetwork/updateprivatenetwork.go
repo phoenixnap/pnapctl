@@ -31,21 +31,21 @@ pnapctl update private-network 5da891e90ab0c59bd28e34ad --filename ~/privateNetw
 default: true
 name: default ssh key`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		sshKeyUpdate, err := networkmodels.CreatePrivateNetworkUpdateFromFile(Filename, commandName)
+		privateNetworkUpdate, err := networkmodels.CreatePrivateNetworkUpdateFromFile(Filename, commandName)
 
 		if err != nil {
 			return err
 		}
 
 		// update the private network
-		response, httpResponse, err := networks.Client.PrivateNetworkPut(args[0], *sshKeyUpdate)
+		response, httpResponse, err := networks.Client.PrivateNetworkPut(args[0], *privateNetworkUpdate)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 200 {
-			return printer.PrintPrivateNetworkResponse(response, commandName)
-		} else {
+		if httpResponse != nil && httpResponse.StatusCode != 200 {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			return printer.PrintPrivateNetworkResponse(response, commandName)
 		}
 	},
 }

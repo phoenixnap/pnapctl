@@ -5,7 +5,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/models/networkmodels"
 )
 
-type PrivateNetwork struct {
+type PrivateNetworkTable struct {
 	Id              string   `header:"ID"`
 	Name            string   `header:"Name"`
 	Description     string   `header:"Description"`
@@ -17,16 +17,16 @@ type PrivateNetwork struct {
 	Servers         []string `header:"Servers"`
 }
 
-func PrivateNetworkFromSdk(network networksdk.PrivateNetwork) PrivateNetwork {
+func PrivateNetworkFromSdk(network networksdk.PrivateNetwork) PrivateNetworkTable {
 	var servers []string
 
 	for _, server := range network.Servers {
 		servers = append(servers, networkmodels.PrivateNetworkServerToTableString(&server))
 	}
 
-	return PrivateNetwork{
+	return PrivateNetworkTable{
 		Id:              network.Id,
-		Name:            DerefString(network.Description),
+		Name:            network.Name,
 		Description:     DerefString(network.Description),
 		VlanId:          network.VlanId,
 		Type:            network.Type,

@@ -47,13 +47,12 @@ sshKeys:
 		// Create the private network
 		response, httpResponse, err := networks.Client.PrivateNetworksPost(*privateNetworkCreate)
 
-		if err != nil {
-			// TODO - Validate way of processing errors.
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 200 {
-			return printer.PrintPrivateNetworkResponse(response, commandName)
-		} else {
+		if httpResponse != nil && httpResponse.StatusCode != 201 {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			return printer.PrintPrivateNetworkResponse(response, commandName)
 		}
 	},
 }

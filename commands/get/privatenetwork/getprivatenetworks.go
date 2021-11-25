@@ -10,7 +10,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/printer"
 )
 
-const commandName string = "get private-networks"
+const commandName string = "get private-network"
 
 var ID string
 var location string
@@ -54,16 +54,16 @@ func getPrivateNetworks(privateNetworkID string) error {
 		privateNetwork, httpResponse, err = networks.Client.PrivateNetworkGetById(privateNetworkID)
 	}
 
-	if err != nil {
+	if httpResponse != nil && httpResponse.StatusCode != 200 {
+		return ctlerrors.HandleBMCError(httpResponse, commandName)
+	} else if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else {
 		if privateNetworkID == "" {
 			return printer.PrintPrivateNetworkListResponse(privateNetworks, commandName)
 		} else {
 			return printer.PrintPrivateNetworkResponse(privateNetwork, commandName)
 		}
-	} else {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	}
 }
 

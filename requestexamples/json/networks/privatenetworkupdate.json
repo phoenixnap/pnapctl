@@ -1,5 +1,5 @@
 {
-    "name": "My Default Backend Network",
-    "description": "My Default Backend Network",
-    "locationDefault": true
+    "name": "Example CLI Network Updated",
+    "description": "Example CLI Network (Updated Description)",
+    "locationDefault": false
 }
