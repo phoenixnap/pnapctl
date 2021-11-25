@@ -33,7 +33,7 @@ To print a single server, an ID needs to be passed as an argument.`,
 pnapctl get servers [--tag <TagName>.<TagValue>] [--tag <TagName>] [--full] [--output <OUTPUT_TYPE>]
 
 # List all details of a single server in yaml format.
-pnapctl get servers <SERVER_ID> [--output <OUTPUT_TYPE>] [--full]`,
+pnapctl get servers <SERVER_ID> [--full] [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
 			ID = args[0]
