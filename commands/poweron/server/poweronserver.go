@@ -14,7 +14,7 @@ var PowerOnServerCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
 	Short:        "Powers on a specific server.",
 	Long:         "Powers on a specific server.",
-	Example:      `pnapctl power-on server 5da891e90ab0c59bd28e34ad`,
+	Example:      `pnapctl power-on server <SERVER_ID>`,
 	Args:         cobra.ExactArgs(1),
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,

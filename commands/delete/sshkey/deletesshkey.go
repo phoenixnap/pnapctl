@@ -14,7 +14,7 @@ var DeleteSshKeyCmd = &cobra.Command{
 	Use:          "ssh-key SSH_KEY_ID",
 	Short:        "Deletes a specific SSH Key.",
 	Long:         "Deletes a specific SSH Key.",
-	Example:      `pnapctl delete ssh-key 5da891e90ab0c59bd28e34ad`,
+	Example:      `pnapctl delete ssh-key <SSH_KEY_ID>`,
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {

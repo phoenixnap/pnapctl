@@ -25,7 +25,8 @@ var UpdateSshKeyCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to modify the ssh-key.`,
 	Example: `# update an ssh-key as described in sshKeyEdit.yaml
-pnapctl update ssh-key 5da891e90ab0c59bd28e34ad --filename ~/sshKeyUpdate.yaml
+
+pnapctl update ssh-key <SSH_KEY_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # sshKeyUpdate.yaml
 default: true

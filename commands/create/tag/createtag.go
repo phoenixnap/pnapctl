@@ -23,7 +23,13 @@ var CreateTagCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to create the tag.`,
 	Example: `# create a new tag as described in tag.yaml
-pnapctl create tag --filename ~/tag.yaml`,
+pnapctl create tag --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
+
+# tagCreate.yaml
+name: TagName
+description: The description of the tag.
+isBillingTag: false
+`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		tagCreate, err := tagmodels.CreateTagCreateFromFile(Filename, commandName)
 

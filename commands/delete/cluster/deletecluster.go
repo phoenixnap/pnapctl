@@ -14,7 +14,7 @@ var DeleteClusterCmd = &cobra.Command{
 	Use:          "cluster CLUSTER_ID",
 	Short:        "Deletes a specific cluster.",
 	Long:         "Deletes a specific cluster.",
-	Example:      `pnapctl delete cluster 5da891e90ab0c59bd28e34ad`,
+	Example:      `pnapctl delete cluster <CLUSTER_ID>`,
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {

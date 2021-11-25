@@ -20,8 +20,15 @@ var CreateClusterCmd = &cobra.Command{
 	Long: `Create a new cluster.
 	
 Requires a file (yaml or json) containing the information needed to create the cluster.`,
-	Example: `# create a new cluster as described in cluster.yaml
-pnapctl create cluster --filename ./cluster.yaml`,
+	Example: `# create a new cluster as described in clusterCreate.yaml
+pnapctl create cluster --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
+
+# clusterCreate.yaml
+location: PHX
+name: rancher-cluster-test
+nodePools:
+  - serverType: s1.c1.medium
+`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cluster, err := ranchermodels.CreateClusterFromFile(Filename, commandName)
 
