@@ -26,7 +26,7 @@ Requires a file (yaml or json) containing the information needed to submit the r
 	Example: `# modify an existing quota as per quotaModificationRequest.yaml
 pnapctl request-edit quota <QUOTA_ID> --filename <FILE_PATH>
 
-# quotaEditRequest.yaml
+# quotaRequestEdit.yaml
 limit: 75
 reason: My current limit is not enough.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
