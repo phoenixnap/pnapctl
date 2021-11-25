@@ -24,6 +24,10 @@ test-bench test-short test-verbose test-race check test tests test-coverage-show
 
 # Misc
 
+.PHONY:
+version:
+	$Q $(MAKE) -C $(SRC) $@
+
 .PHONY: clean
 clean: ; $(info $(M) cleaning…)	@ ## Cleanup bin, build, and test result directories
 	@rm -rf $(BIN)
