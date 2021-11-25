@@ -32,10 +32,10 @@ By default, the data is printed in table format.
 To print a single tag, an ID needs to be passed as an argument.`,
 	Example: `
 # List all tags in json format.
-pnapctl get tags -o json
+pnapctl get tags [--output <OUTPUT_TYPE>]
 
 # List a single tag in yaml format.
-pnapctl get tag NDIid939dfkoDd -o yaml`,
+pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
 			ID = args[0]

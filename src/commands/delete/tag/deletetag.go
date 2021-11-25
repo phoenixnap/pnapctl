@@ -14,7 +14,7 @@ var DeleteTagCmd = &cobra.Command{
 	Use:          "tag TAG_ID",
 	Short:        "Deletes a specific tag.",
 	Long:         "Deletes a specific tag.",
-	Example:      `pnapctl delete tag 5da891e90ab0c59bd28e34ad`,
+	Example:      `pnapctl delete tag <TAG_ID>`,
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {

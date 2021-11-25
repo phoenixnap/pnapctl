@@ -25,7 +25,7 @@ var CreateSshKeyCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to create the ssh-key.`,
 	Example: `# create a new ssh-key as described in sshKeyCreate.yaml
-pnapctl create ssh-key --filename ~/sshKeyCreate.yaml
+pnapctl create ssh-key --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # sshKeyCreate.yaml
 default: true

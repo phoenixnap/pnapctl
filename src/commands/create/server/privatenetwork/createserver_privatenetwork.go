@@ -23,9 +23,9 @@ var CreateServerPrivateNetworkCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to create the server.`,
 	Example: `# Add a server to a private network as defined in createPrivateNetwork.yaml
-pnapctl create server-private-network 5ff5cc9bc1acf144d910621f --filename ./createPrivateNetwork.yaml
+pnapctl create server-private-network <SERVER_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
-# createPrivateNetwork.yaml
+# serverPrivateNetworkCreate.yaml
 id: 5ff5cc9bc1acf144d9106233
 ips: 
   - 10.0.0.1

@@ -29,10 +29,10 @@ By default, the data is printed in table format.
 To print a single cluster, an ID needs to be passed as an argument.`,
 	Example: `
 # List all clusters in json format.
-pnapctl get clusters -o json
+pnapctl get clusters [--output <OUTPUT_TYPE>]
 
 # List a single cluster in yaml format.
-pnapctl get cluster NDIid939dfkoDd -o yaml`,
+pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
 			ID = args[0]

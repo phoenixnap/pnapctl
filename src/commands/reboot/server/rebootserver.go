@@ -14,7 +14,7 @@ var RebootCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
 	Short:        "Perform a soft reboot on a specific server.",
 	Long:         "Perform a soft reboot on a specific server.",
-	Example:      "pnapctl reboot server 5da891e90ab0c59bd28e34ad",
+	Example:      "pnapctl reboot server <SERVER_ID>",
 	Args:         cobra.ExactArgs(1),
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
