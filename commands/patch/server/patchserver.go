@@ -26,7 +26,7 @@ var PatchServerCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to patch the server.`,
 	Example: `# Patch a server using the contents of serverPatch.yaml as request body. 
-pnapctl patch server <SERVER_ID> --filename [FILE_PATH] [--output <OUTPUT_TYPE>] [--full]
+pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # serverPatch.yaml
 hostname: patched-server
