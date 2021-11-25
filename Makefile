@@ -6,8 +6,6 @@ export BIN                  = $(CURDIR)/bin
 export BUILD                = $(CURDIR)/build
 export COVERAGE_DIR         = $(TEST_RESULTS_DIR)/coverage
 
-BATS                        = bats
-
 V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
@@ -23,10 +21,6 @@ build build-simple pack build-and-pack:
 .PHONY:
 test-bench test-short test-verbose test-race check test tests test-coverage-show test-coverage:
 	$Q $(MAKE) -C $(SRC) $@
-
-.PHONY:
-component-tests: build-simple ; $(info $(M) running component tests) ## Builds the app and runs component tests
-	$Q $(BATS) -r $(COMPONENT_TESTS)
 
 # Misc
 
