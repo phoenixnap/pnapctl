@@ -25,7 +25,7 @@ Requires a file (yaml or json) containing the information needed to create the t
 	Example: `# create a new tag as described in tag.yaml
 pnapctl create tag --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
-#tagCreate.yaml
+# tagCreate.yaml
 name: TagName
 description: The description of the tag.
 isBillingTag: false
