@@ -29,7 +29,7 @@ By default, the data is printed in table format.
 To print a single cluster, an ID needs to be passed as an argument.`,
 	Example: `
 # List all clusters in json format.
-pnapctl get clusters [-output <OUTPUT_TYPE>]
+pnapctl get clusters [--output <OUTPUT_TYPE>]
 
 # List a single cluster in yaml format.
 pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
