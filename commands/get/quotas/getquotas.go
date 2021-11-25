@@ -28,7 +28,7 @@ By default, the data is printed in table format.
 To print a single quota, a quota ID needs to be passed as an argument.`,
 	Example: `
 # List all quotas in json format.
-pnapctl get quotas [-output <OUTPUT_TYPE>]
+pnapctl get quotas [--output <OUTPUT_TYPE>]
 
 # List all details of a desired quota in yaml format.
 pnapctl get quota <QUOTA_ID> [--output <OUTPUT_TYPE>]`,
