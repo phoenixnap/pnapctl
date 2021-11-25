@@ -31,7 +31,7 @@ To print a single quota, a quota ID needs to be passed as an argument.`,
 pnapctl get quotas [-output <OUTPUT_TYPE>]
 
 # List all details of a desired quota in yaml format.
-pnapctl get quota <QUOTA_ID> [-output <OUTPUT_TYPE>]`,
+pnapctl get quota <QUOTA_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
 			ID = args[0]
