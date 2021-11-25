@@ -109,6 +109,11 @@ test-coverage: test-coverage-tools ; $(info $(M) running coverage tests…) @ ##
 
 # Misc
 
+.PHONY: clean-build
+clean-build: ; $(info $(M) cleaning build directory…)	@ ## Cleanup build directory
+	@rm -rf $(ARTIFACT_FOLDER)
+
+
 .PHONY: help
 help:
 	@grep -E '^[ a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
