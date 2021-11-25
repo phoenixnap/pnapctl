@@ -31,7 +31,7 @@ Requires a file (yaml or json) containing the information needed to tag the serv
 	Example: `# Tag a server using the contents of serverTag.yaml as request body. 
 pnapctl tag server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
-#serverTag.yaml
+# serverTag.yaml
 - name: tagName
   value: tagValue
 - name: tagName2
