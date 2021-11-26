@@ -53,6 +53,7 @@ func Unmarshal(data []byte, construct interface{}, commandName string) error {
 	if err != nil {
 		err = yaml.UnmarshalStrict(data, construct)
 
+		if err != nil {
 			return ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, commandName, err)
 		}
 	}
