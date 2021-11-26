@@ -1,0 +1,5 @@
+{
+    "name": "sample-sshkey",
+    "default": false,
+    "key":"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0ka0GHA13Vlgfj45Z0PeTaywwNWMscr7ePdgKBOtzmzCwGGt1teu6HcQ86KjUsHdVqhEzt9+41i5QYkWfaQ8UUDBCHOP5ADPWpl3ZF9ncmXo+k5bqyoTTd+63Uwigyjv4/dduuZDGHWX9aEN7RusAIjJB3C8rDqdV94or3zDskqi6yfal/Y7QhjWae/ssUva4sSGTZVitJs2AFso1eJZSeXfR2OtbsHU8iZ+yRkIPQds6xkcUy4RfpztSVxO0yI4yYmXxx/aI5GUpuo9uT2DevPIkEZXX4Tw/IiY9KtMvpq/jZ/HRmgDrI4Lh2hIrRAYNLTDtpiquiawQeaKG3TW3 "
+}
