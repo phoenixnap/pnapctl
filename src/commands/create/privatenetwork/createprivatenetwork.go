@@ -30,7 +30,7 @@ name: Example CLI Network,
 location: PHX,
 locationDefault: false,
 description: Example CLI Network,
-cidr: "10.0.0.0/24"`,
+cidr: 10.0.0.0/24`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		privateNetworkCreate, err := networkmodels.CreatePrivateNetworkCreateFromFile(Filename, commandName)
 
