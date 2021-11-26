@@ -13,8 +13,6 @@ var Filename string
 
 var commandName = "update private-network"
 
-var Full bool
-
 // UpdatePrivateNetworkCmd is the command for creating a private network.
 var UpdatePrivateNetworkCmd = &cobra.Command{
 	Use:          "private-network PRIVATE_NETWORK_ID",
@@ -25,11 +23,12 @@ var UpdatePrivateNetworkCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to modify the private-network.`,
 	Example: `# update a private network as described in privateNetworkUpdate.yaml
-pnapctl update private-network 5da891e90ab0c59bd28e34ad --filename ~/privateNetworkUpdate.yaml
+pnapctl update private-network <PRIVATE_NETWORK_ID> --filename <FILENAME> [--output <OUTPUT_TYPE>]
 
 # privateNetworkUpdate.yaml
-default: true
-name: default ssh key`,
+name: Example CLI Network Updated,
+description: Example CLI Network (Updated Description),
+locationDefault: true`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		privateNetworkUpdate, err := networkmodels.CreatePrivateNetworkUpdateFromFile(Filename, commandName)
 

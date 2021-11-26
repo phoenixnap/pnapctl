@@ -16,7 +16,7 @@ var ID string
 var location string
 
 var GetPrivateNetworksCmd = &cobra.Command{
-	Use:          "private-network [SERVER_ID]",
+	Use:          "private-network [PRIVATE_NETWORK_ID]",
 	Short:        "Retrieve one or all private networks.",
 	Aliases:      []string{"private-networks"},
 	SilenceUsage: true,
@@ -28,11 +28,11 @@ By default, the data is printed in table format.
 
 To print a single private network, an ID needs to be passed as an argument.`,
 	Example: `
-# List all private networks in json format.
-pnapctl get private-networks --tag tagName.tagValue --tag tagName -o json
+# List all private networks.
+pnapctl get private-networks [--full] [--output <OUTPUT_TYPE>] [--location <LOCATION>]
 
-# List all details of a single private network in yaml format.
-pnapctl get private-networks NDIid939dfkoDd -o yaml --full`,
+# List all details of a single private network.
+pnapctl get private-networks <PRIVATE_NETWORK_ID> [--full] [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
 			ID = args[0]

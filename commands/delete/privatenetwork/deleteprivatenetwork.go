@@ -10,10 +10,10 @@ import (
 const commandName = "delete private-network"
 
 var DeletePrivateNetworkCmd = &cobra.Command{
-	Use:          "private-network SERVER_ID",
+	Use:          "private-network PRIVATE_NETWORK_ID",
 	Short:        "Deletes a specific private network.",
 	Long:         "Deletes a specific private network.",
-	Example:      `pnapctl delete private-network 5da891e90ab0c59bd28e34ad`,
+	Example:      `pnapctl delete private-network <PRIVATE_NETWORK_ID>`,
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {

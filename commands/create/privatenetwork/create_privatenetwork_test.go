@@ -33,7 +33,7 @@ func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(sdkRequest)).
-		Return(createdPrivateNetwork, WithResponse(200, WithBody(createdPrivateNetwork)), nil).
+		Return(createdPrivateNetwork, WithResponse(201, WithBody(createdPrivateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -66,7 +66,7 @@ func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(sdkRequest)).
-		Return(createdPrivateNetwork, WithResponse(200, WithBody(createdPrivateNetwork)), nil).
+		Return(createdPrivateNetwork, WithResponse(201, WithBody(createdPrivateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

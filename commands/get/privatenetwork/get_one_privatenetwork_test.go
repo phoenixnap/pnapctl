@@ -13,7 +13,7 @@ import (
 	"phoenixnap.com/pnap-cli/tests/testutil"
 )
 
-func TestGetPrivateNetworkShortSuccess(test_framework *testing.T) {
+func TestGetPrivateNetworkSuccess(test_framework *testing.T) {
 
 	privateNetwork := generators.GeneratePrivateNetwork()
 	var privateNetworkTable = tables.PrivateNetworkFromSdk(privateNetwork)
