@@ -140,4 +140,5 @@ func setQueryParams(queryparams auditmodels.EventsGetQueryParams) {
 	Order = queryparams.Order
 	Username = queryparams.Username
 	Verb = queryparams.Verb
+	Uri = queryparams.Uri
 }

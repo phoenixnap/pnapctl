@@ -36,6 +36,7 @@ func GenerateQueryParams() auditmodels.EventsGetQueryParams {
 		Order:    "ASC",
 		Username: randSeq(10),
 		Verb:     "PUT",
+		Uri:      randSeq(10),
 	}
 }
 

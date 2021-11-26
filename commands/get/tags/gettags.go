@@ -8,7 +8,6 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -46,8 +45,6 @@ pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getTags(tagID string) error {
-	log.Debug("Getting tags...")
-
 	var httpResponse *netHttp.Response
 	var err error
 	var tag tagapisdk.Tag
