@@ -3,6 +3,8 @@ package auditmodels
 import (
 	"errors"
 	"time"
+
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 )
 
 type EventsGetQueryParams struct {
@@ -71,4 +73,28 @@ func NewEventsGetQueryParams(from string, to string, limit int, order string, us
 		Verb:     validVerb,
 		Uri:      uri,
 	}, nil
+}
+
+func (queries EventsGetQueryParams) AttachToRequest(request auditapisdk.ApiEventsGetRequest) *auditapisdk.ApiEventsGetRequest {
+
+	if queries.From != nil {
+		request = request.From(*queries.From)
+	}
+	if queries.To != nil {
+		request = request.To(*queries.To)
+	}
+	if queries.Limit != 0 {
+		request = request.Limit(int32(queries.Limit))
+	}
+	if queries.Order != "" {
+		request = request.Order(queries.Order)
+	}
+	if queries.Username != "" {
+		request = request.Username(queries.Username)
+	}
+	if queries.Verb != "" {
+		request = request.Verb(queries.Verb)
+	}
+
+	return &request
 }

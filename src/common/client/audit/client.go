@@ -47,28 +47,7 @@ func NewMainClient(clientId string, clientSecret string) AuditSdkClient {
 // Events APIs
 func (m MainClient) EventsGet(queryParams auditmodels.EventsGetQueryParams) ([]auditapisdk.Event, *http.Response, error) {
 	request := m.EventsApiClient.EventsGet(context.Background())
-
-	if queryParams.From != nil {
-		request = request.From(*queryParams.From)
-	}
-	if queryParams.To != nil {
-		request = request.To(*queryParams.To)
-	}
-	if queryParams.Limit != 0 {
-		request = request.Limit(int32(queryParams.Limit))
-	}
-	if queryParams.Order != "" {
-		request = request.Order(queryParams.Order)
-	}
-	if queryParams.Username != "" {
-		request = request.Username(queryParams.Username)
-	}
-	if queryParams.Verb != "" {
-		request = request.Verb(queryParams.Verb)
-	}
-	if queryParams.Uri != "" {
-		request = request.Uri(queryParams.Uri)
-	}
+	request = *queryParams.AttachToRequest(request)
 
 	return request.Execute()
 }
