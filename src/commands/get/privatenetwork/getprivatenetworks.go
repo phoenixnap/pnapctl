@@ -26,12 +26,12 @@ var GetPrivateNetworksCmd = &cobra.Command{
 Prints brief or detailed information about the private networks.
 By default, the data is printed in table format.
 
-To print a single private network, an ID needs to be passed as an argument.`,
+To print a specific private network, an ID needs to be passed as an argument.`,
 	Example: `
 # List all private networks.
 pnapctl get private-networks [--full] [--output <OUTPUT_TYPE>] [--location <LOCATION>]
 
-# List all details of a single private network.
+# List all details of a specific private network.
 pnapctl get private-networks <PRIVATE_NETWORK_ID> [--full] [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
