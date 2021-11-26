@@ -13,7 +13,7 @@ func TestDeletePrivateNetworkSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkDelete(RESOURCEID).
-		Return(WithResponse(200, nil), nil)
+		Return(WithResponse(204, nil), nil)
 
 	// Run command
 	err := DeletePrivateNetworkCmd.RunE(DeletePrivateNetworkCmd, []string{RESOURCEID})

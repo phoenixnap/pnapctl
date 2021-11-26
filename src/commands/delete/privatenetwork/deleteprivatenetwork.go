@@ -19,7 +19,7 @@ var DeletePrivateNetworkCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		httpResponse, err := networks.Client.PrivateNetworkDelete(args[0])
 
-		if httpResponse != nil && httpResponse.StatusCode != 200 {
+		if httpResponse != nil && httpResponse.StatusCode != 204 {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		} else if err != nil {
 			return err
