@@ -20,7 +20,7 @@ var CreateClusterCmd = &cobra.Command{
 	Long: `Create a new cluster.
 	
 Requires a file (yaml or json) containing the information needed to create the cluster.`,
-	Example: `# create a new cluster as described in clusterCreate.yaml
+	Example: `# Create a new cluster as described in clusterCreate.yaml
 pnapctl create cluster --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 # clusterCreate.yaml

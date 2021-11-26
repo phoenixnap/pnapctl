@@ -21,7 +21,7 @@ var GetEventsCmd = &cobra.Command{
 	
 By default, the data is printed in table format.`,
 	Example: `
-# List all events in json format.
+# List all events.
 pnapctl get events [--from <FROM>] [--to <TO>] [--limit <LIMIT>] [--order <ORDER>] [--username <USERNAME>] [--verb <VERB>] [--uri <URI>] [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return getEvents()

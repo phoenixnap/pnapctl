@@ -28,12 +28,12 @@ var GetTagsCmd = &cobra.Command{
 Prints information about the tags.
 By default, the data is printed in table format.
 
-To print a single tag, an ID needs to be passed as an argument.`,
+To print a specific tag, an ID needs to be passed as an argument.`,
 	Example: `
-# List all tags in json format.
+# List all tags.
 pnapctl get tags [--output <OUTPUT_TYPE>]
 
-# List a single tag in yaml format.
+# List a specific tag.
 pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
