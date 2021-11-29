@@ -23,10 +23,10 @@ var RequestEditQuotaCmd = &cobra.Command{
 	Long: `Submit a quota modification request.
 
 Requires a file (yaml or json) containing the information needed to submit a quota edit request.`,
-	Example: `# Submit an edit request on an existing quota as per quotaEditRequest.yaml
+	Example: `# Submit an edit request on an existing quota as per requestEditQuota.yaml
 pnapctl request-edit quota <QUOTA_ID> --filename <FILE_PATH>
 
-# quotaEditRequest.yaml
+# requestEditQuota.yaml
 limit: 75
 reason: My current limit is not enough.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
