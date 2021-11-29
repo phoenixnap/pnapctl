@@ -1,0 +1,7 @@
+# =====================================================
+# Sample yaml config file; Rename and move to ~/pnap.yaml
+# =====================================================
+
+# Authentication
+clientId: <CLIENT_ID>
+clientSecret: <CLIENT_SECRET>

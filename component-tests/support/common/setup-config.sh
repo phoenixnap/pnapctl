@@ -1,0 +1,1 @@
+export PNAPCTL_HOME=$(dirname "${BASH_SOURCE[0]}")/../../../sample-config.yaml
