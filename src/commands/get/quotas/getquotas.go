@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 const commandName string = "get quotas"
@@ -55,7 +56,7 @@ func getQuotas(quotaId string) error {
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		if quotaId == "" {
 			return printer.PrintQuotaListResponse(quotas, commandName)
 		} else {

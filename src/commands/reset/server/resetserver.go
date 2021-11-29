@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
+	"phoenixnap.com/pnap-cli/common/utils"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/spf13/cobra"
@@ -48,7 +49,7 @@ sshKeyIds:
 		if err != nil {
 			// TODO - Process error from SDK in ctlerrors.
 			return err
-		} else if httpResponse.StatusCode != 200 {
+		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		}
 

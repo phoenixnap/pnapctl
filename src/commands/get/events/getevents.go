@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/auditmodels"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 const commandName string = "get events"
@@ -38,7 +39,7 @@ func getEvents() error {
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		return printer.PrintEventListResponse(events, commandName)
 	} else {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)
