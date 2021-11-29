@@ -85,7 +85,7 @@ Setup:
             "mode": "debug",
             "program": "<reaplace_with_path_to_your_workspace>/pnapctl/src",
             "env": {},
-            "args": ["get", "servers"], // replace args accordingly             
+            "args": ["get", "servers"] // replace args accordingly             
         }
     ]
   }
