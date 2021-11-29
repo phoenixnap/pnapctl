@@ -1,5 +1,5 @@
 SRC                         = $(CURDIR)/src
-COMPONENT_TESTS             = $(CURDIR)/componenttests
+COMPONENT_TESTS             = $(CURDIR)/component-tests
 TEST_RESULTS_DIR            = $(CURDIR)/test
 
 export BIN                  = $(CURDIR)/bin
