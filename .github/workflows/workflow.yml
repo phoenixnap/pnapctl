@@ -44,11 +44,11 @@ jobs:
             ${{ runner.os }}-go-
       - name: Run tests
         run: make test-coverage
-      - name: Publish Test Report
+      - name: Unit Test Report
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always() # always run even if the previous step fails
         with:
-          files: 'test/coverage/report.xml'
+          files: 'out/unit-tests/report.xml'
 
   component-tests:
     runs-on: ubuntu-latest
@@ -74,3 +74,8 @@ jobs:
             ${{ runner.os }}-go-
       - name: Run tests
         run: make component-tests
+      - name: Component Test Report
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always() # always run even if the previous step fails
+        with:
+          files: 'out/component-tests/report.xml'

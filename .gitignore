@@ -1,4 +1,4 @@
 # Build artifacts and test results
 bin/
 build/
-test/
+out/

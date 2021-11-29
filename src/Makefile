@@ -76,7 +76,7 @@ build-and-pack: ; @ ## Build cross compilation binaries ready for deployment and
 # Tests
 
 COVERAGE_MODE    = atomic
-COVERAGE_PROFILE = $(COVERAGE_DIR)/profile.out
+COVERAGE_PROFILE = $(UNIT_TEST_RESULTS_DIR)/profile.out
 
 TEST_TARGETS := test-default test-bench test-short test-verbose test-race
 .PHONY: $(TEST_TARGETS) test-xml check test tests test-tparse
@@ -96,7 +96,7 @@ test-coverage-show: ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
 	 $Q $(GO) test -vet=off -coverprofile cover.out $(ARGS) $(TESTPKGS) && go tool cover -html=cover.out && rm cover.out
 test-coverage-tools: | $(GO_JUNIT_REPORT)
 test-coverage: test-coverage-tools ; $(info $(M) running coverage tests…) @ ## Run coverage tests
-	$Q mkdir -p $(COVERAGE_DIR)
+	$Q mkdir -p $(UNIT_TEST_RESULTS_DIR)
 	$Q $(GO) test \
 		-v \
 		-vet=off \
@@ -105,7 +105,7 @@ test-coverage: test-coverage-tools ; $(info $(M) running coverage tests…) @ ##
 					tr '\n' ',' | sed 's/,$$//') \
 		-covermode=$(COVERAGE_MODE) \
 		-coverprofile="$(COVERAGE_PROFILE)" $(TESTPKGS) 2>&1 | \
-		$(GO_JUNIT_REPORT) > $(COVERAGE_DIR)/report.xml
+		$(GO_JUNIT_REPORT) > $(UNIT_TEST_RESULTS_DIR)/report.xml
 
 # Misc
 
