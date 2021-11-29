@@ -26,12 +26,12 @@ var GetClustersCmd = &cobra.Command{
 Prints information about the clusters.
 By default, the data is printed in table format.
 
-To print a single cluster, an ID needs to be passed as an argument.`,
+To print a specific cluster, an ID needs to be passed as an argument.`,
 	Example: `
-# List all clusters in json format.
+# List all clusters.
 pnapctl get clusters [--output <OUTPUT_TYPE>]
 
-# List a single cluster in yaml format.
+# List a specific cluster.
 pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {

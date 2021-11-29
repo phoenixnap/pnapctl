@@ -32,7 +32,7 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(cluster.ToSdk())).
-		Return(createdCluster, WithResponse(200, WithBody(createdCluster)), nil).
+		Return(createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -64,7 +64,7 @@ func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(cluster.ToSdk())).
-		Return(createdCluster, WithResponse(200, WithBody(createdCluster)), nil).
+		Return(createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

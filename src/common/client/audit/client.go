@@ -47,6 +47,7 @@ func NewMainClient(clientId string, clientSecret string) AuditSdkClient {
 // Events APIs
 func (m MainClient) EventsGet(queryParams auditmodels.EventsGetQueryParams) ([]auditapisdk.Event, *http.Response, error) {
 	request := m.EventsApiClient.EventsGet(context.Background())
-	queryParams.AttachToRequest(request)
+	request = *queryParams.AttachToRequest(request)
+
 	return request.Execute()
 }
