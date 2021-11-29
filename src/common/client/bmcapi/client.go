@@ -52,7 +52,11 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	bmcAPIconfiguration := bmcapisdk.NewConfiguration()
 
 	if customUrl != "" {
-		bmcAPIconfiguration.Servers[0].URL = customUrl
+		bmcAPIconfiguration.Servers = bmcapisdk.ServerConfigurations{
+			{
+				URL: customUrl,
+			},
+		}
 	}
 
 	tokenUrl := configuration.TokenURL

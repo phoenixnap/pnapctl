@@ -28,7 +28,11 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	tagConfiguration := tagapisdk.NewConfiguration()
 
 	if customUrl != "" {
-		tagConfiguration.Servers[0].URL = customUrl
+		tagConfiguration.Servers = tagapisdk.ServerConfigurations{
+			{
+				URL: customUrl,
+			},
+		}
 	}
 
 	tokenUrl := configuration.TokenURL

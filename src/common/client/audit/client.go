@@ -26,7 +26,11 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	auditAPIconfiguration := auditapisdk.NewConfiguration()
 
 	if customUrl != "" {
-		auditAPIconfiguration.Servers[0].URL = customUrl
+		auditAPIconfiguration.Servers = auditapisdk.ServerConfigurations{
+			{
+				URL: customUrl,
+			},
+		}
 	}
 
 	tokenUrl := configuration.TokenURL

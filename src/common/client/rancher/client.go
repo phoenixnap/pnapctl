@@ -27,7 +27,11 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	rancherConfiguration := ranchersdk.NewConfiguration()
 
 	if customUrl != "" {
-		rancherConfiguration.Servers[0].URL = customUrl
+		rancherConfiguration.Servers = ranchersdk.ServerConfigurations{
+			{
+				URL: customUrl,
+			},
+		}
 	}
 
 	tokenUrl := configuration.TokenURL
