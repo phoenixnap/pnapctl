@@ -84,7 +84,6 @@ jobs:
           path: 'out/component-tests/*'
 
   publish-test-results:
-    name: "Publish Tests Results"
     needs:
       - 'unit-tests'
       - 'component-tests'
@@ -100,3 +99,4 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v1
         with:
           files: test-results/**/*.xml
+          check_name: "Test Results"
