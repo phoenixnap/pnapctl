@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/ranchermodels"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 var Filename string
@@ -40,7 +41,7 @@ nodePools:
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 201 {
+		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return printer.PrintClusterResponse(response, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
