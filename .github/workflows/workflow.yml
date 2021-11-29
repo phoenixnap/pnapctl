@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    name: Build Simple
     runs-on: ubuntu-latest
     container: golang:1.17.1
     steps:
@@ -28,6 +29,7 @@ jobs:
         run: make build
   
   unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
     container: golang:1.17.1
     steps:
@@ -53,6 +55,7 @@ jobs:
 
 
   component-tests:
+    name: Component Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
@@ -84,9 +87,10 @@ jobs:
           path: 'out/component-tests/*'
 
   publish-test-results:
+    name: Publish Test Results
     needs:
-      - 'unit-tests'
-      - 'component-tests'
+      - unit-tests
+      - component-tests
     runs-on: ubuntu-latest
     if: always()
     steps:
@@ -94,7 +98,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           path: test-results
-
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         with:
