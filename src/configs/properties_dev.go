@@ -13,4 +13,5 @@ const (
 	TokenURL = "https://auth-dev.phoenixnap.com/auth/realms/BMC/protocol/openid-connect/token"
 	// KnowledgeBaseURL represents the URL of the public knowledge base for pnapCTL
 	KnowledgeBaseURL = "https://developers-dev.phoenixnap.com/cli"
+	UserAgentPrefix  = "pnapctl/"
 )

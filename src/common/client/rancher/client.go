@@ -6,6 +6,7 @@ import (
 
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"golang.org/x/oauth2/clientcredentials"
+	"phoenixnap.com/pnap-cli/commands/version"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )
 
@@ -37,6 +38,7 @@ func NewMainClient(clientId string, clientSecret string) RancherSdkClient {
 	}
 
 	rancherConfiguration.HTTPClient = config.Client(context.Background())
+	rancherConfiguration.UserAgent = configuration.UserAgentPrefix + version.AppVersion.Version
 
 	api_client := ranchersdk.NewAPIClient(rancherConfiguration)
 
