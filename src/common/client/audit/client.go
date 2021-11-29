@@ -6,7 +6,6 @@ import (
 
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"golang.org/x/oauth2/clientcredentials"
-	"phoenixnap.com/pnap-cli/commands/version"
 	"phoenixnap.com/pnap-cli/common/models/auditmodels"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )
@@ -37,7 +36,6 @@ func NewMainClient(clientId string, clientSecret string) AuditSdkClient {
 	}
 
 	auditAPIconfiguration.HTTPClient = config.Client(context.Background())
-	auditAPIconfiguration.UserAgent = configuration.UserAgentPrefix + version.AppVersion.Version
 
 	api_client := auditapisdk.NewAPIClient(auditAPIconfiguration)
 
