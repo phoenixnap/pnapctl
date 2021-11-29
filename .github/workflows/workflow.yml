@@ -77,11 +77,11 @@ jobs:
       - name: Run tests
         run: make component-tests
       - name: Upload Component Test Results
-         if: always()
-         uses: actions/upload-artifact@v2
-         with:
-           name: Component Test Results
-           path: 'out/component-tests/*'
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Component Test Results
+          path: 'out/component-tests/*'
 
     publish-test-results:
       name: "Publish Tests Results"
