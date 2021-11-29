@@ -53,7 +53,7 @@ build: $(GOX) ; $(info $(M) building executable…) @ ## Build cross compilation
 
 .PHONY: build-simple
 build-simple: $(BIN) ; $(info $(M) building executable…) @ ## Simple build process used for local development
-	 $Q $(GO) build \
+	$Q $(GO) build \
 		-ldflags '-X $(MODULE)/commands/version.Version=$(VERSION) -X $(MODULE)/commands/version.BuildDate=$(DATE) -X $(MODULE)/commands/version.BuildCommit=$(REVISION)' \
 		-o $(BIN)/$(basename $(CLI_NAME)) main.go
 

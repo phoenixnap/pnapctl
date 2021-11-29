@@ -53,7 +53,6 @@ jobs:
           name: Unit Test Results
           path: 'out/unit-tests/*'
 
-
   component-tests:
     name: Component Tests
     runs-on: ubuntu-latest
