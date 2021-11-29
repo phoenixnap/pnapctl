@@ -22,17 +22,26 @@ type MainClient struct {
 	EventsApiClient auditapisdk.EventsApi
 }
 
-func NewMainClient(clientId string, clientSecret string) AuditSdkClient {
+func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) AuditSdkClient {
 	auditAPIconfiguration := auditapisdk.NewConfiguration()
 
-	if configuration.AuditHostname != "" {
-		auditAPIconfiguration.Servers[0].URL = configuration.AuditHostname
+	if customUrl != "" {
+		auditAPIconfiguration.Servers = auditapisdk.ServerConfigurations{
+			{
+				URL: customUrl,
+			},
+		}
+	}
+
+	tokenUrl := configuration.TokenURL
+	if customTokenURL != "" {
+		tokenUrl = customTokenURL
 	}
 
 	config := clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
-		TokenURL:     configuration.TokenURL,
+		TokenURL:     tokenUrl,
 		Scopes:       []string{"bmc", "bmc.read"},
 	}
 

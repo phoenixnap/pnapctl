@@ -24,17 +24,26 @@ type MainClient struct {
 	TagSdkClient tagapisdk.TagsApi
 }
 
-func NewMainClient(clientId string, clientSecret string) TagSdkClient {
+func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) TagSdkClient {
 	tagConfiguration := tagapisdk.NewConfiguration()
 
-	if configuration.TagsHostname != "" {
-		tagConfiguration.Servers[0].URL = configuration.TagsHostname
+	if customUrl != "" {
+		tagConfiguration.Servers = tagapisdk.ServerConfigurations{
+			{
+				URL: customUrl,
+			},
+		}
+	}
+
+	tokenUrl := configuration.TokenURL
+	if customTokenURL != "" {
+		tokenUrl = customTokenURL
 	}
 
 	config := clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
-		TokenURL:     configuration.TokenURL,
+		TokenURL:     tokenUrl,
 		Scopes:       []string{"tags", "tags.read"},
 	}
 
