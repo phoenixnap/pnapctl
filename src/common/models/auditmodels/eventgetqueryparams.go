@@ -95,6 +95,9 @@ func (queries EventsGetQueryParams) AttachToRequest(request auditapisdk.ApiEvent
 	if queries.Verb != "" {
 		request = request.Verb(queries.Verb)
 	}
+	if queries.Uri != "" {
+		request = request.Uri(queries.Uri)
+	}
 
 	return &request
 }
