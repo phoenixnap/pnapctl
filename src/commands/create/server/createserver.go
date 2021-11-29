@@ -25,7 +25,7 @@ var CreateServerCmd = &cobra.Command{
 	Long: `Create a new server.
 
 Requires a file (yaml or json) containing the information needed to create the server.`,
-	Example: `# create a new server as described in server.yaml
+	Example: `# Create a new server as described in serverCreate.yaml
 pnapctl create server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # serverCreate.yaml

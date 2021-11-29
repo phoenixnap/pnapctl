@@ -24,7 +24,7 @@ var PatchTagCmd = &cobra.Command{
 	Long: `Patch/Update a tag.
 
 Requires a file (yaml or json) containing the information needed to patch the tag.`,
-	Example: `# modify an existing tag as per tagPatch.yaml
+	Example: `# Modify an existing tag as per tagPatch.yaml
 pnapctl patch tag <TAG_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 # tagPatch.yaml

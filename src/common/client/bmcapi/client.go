@@ -6,6 +6,7 @@ import (
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"golang.org/x/oauth2/clientcredentials"
+	"phoenixnap.com/pnap-cli/commands/version"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )
 
@@ -47,21 +48,31 @@ type MainClient struct {
 	QuotaApiClient   bmcapisdk.QuotasApi
 }
 
-func NewMainClient(clientId string, clientSecret string) BmcApiSdkClient {
+func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) BmcApiSdkClient {
 	bmcAPIconfiguration := bmcapisdk.NewConfiguration()
 
-	if configuration.BmcApiHostname != "" {
-		bmcAPIconfiguration.Servers[0].URL = configuration.BmcApiHostname
+	if customUrl != "" {
+		bmcAPIconfiguration.Servers = bmcapisdk.ServerConfigurations{
+			{
+				URL: customUrl,
+			},
+		}
+	}
+
+	tokenUrl := configuration.TokenURL
+	if customTokenURL != "" {
+		tokenUrl = customTokenURL
 	}
 
 	config := clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
-		TokenURL:     configuration.TokenURL,
+		TokenURL:     tokenUrl,
 		Scopes:       []string{"bmc", "bmc.read"},
 	}
 
 	bmcAPIconfiguration.HTTPClient = config.Client(context.Background())
+	bmcAPIconfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
 
 	api_client := bmcapisdk.NewAPIClient(bmcAPIconfiguration)
 

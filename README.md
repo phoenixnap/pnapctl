@@ -8,7 +8,7 @@
     `sudo apt-get install build-essential`
 
 3. Clone this repository.
-4. Go into the `pnap-cli` folder.
+4. Go into the `pnapctl` folder.
 5. Move the `sample-config.yaml` file to `$HOME/.pnap/config.yaml` and add your client credentials (ID and secret)
 6. Run `make build-simple` to build.
 
@@ -22,22 +22,6 @@ We are using `gox` for multi os build. Note that unless otherwise specified `gox
 
 * `make build` -> build a version for all supported OS architectures.
 * `make build BUILD_PLATFORMS="linux/amd64 windows/amd64"` -> build a version for linux and windows, 64 bit.
-
-## Multi Environment Build
-
-We are building two versions of `pnapctl` executable. Default one for `prod` environment and one for `dev` environment. They are uploaded to `prod/dev` environment of Apigee portal. 
-You can change `dev` environment specific properties by editing `./pnapctl/configuration/properties_dev.go` file. By
-default build is executed for `dev` environment but you can specify different environment by overriding build variable `ENVIRONMENT_NAME`, e.g:
-
-```
-make build-simple ENVIRONMENT_NAME=prod
-```
-
-or
-
-```
-make build ENVIRONMENT_NAME=dev
-```
 
 ## Running Tests
 
@@ -99,10 +83,9 @@ Setup:
             "type": "go",
             "request": "launch",
             "mode": "debug",
-            "program": "<reaplace_with_path_to_your_workspace>/pnap-cli/",
+            "program": "<reaplace_with_path_to_your_workspace>/pnapctl/src",
             "env": {},
-            "args": ["get", "servers"], // replace args accordingly 
-            "buildFlags": "-tags dev"            
+            "args": ["get", "servers"] // replace args accordingly             
         }
     ]
   }

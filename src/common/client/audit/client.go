@@ -6,6 +6,7 @@ import (
 
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"golang.org/x/oauth2/clientcredentials"
+	"phoenixnap.com/pnap-cli/commands/version"
 	"phoenixnap.com/pnap-cli/common/models/auditmodels"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )
@@ -21,21 +22,31 @@ type MainClient struct {
 	EventsApiClient auditapisdk.EventsApi
 }
 
-func NewMainClient(clientId string, clientSecret string) AuditSdkClient {
+func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) AuditSdkClient {
 	auditAPIconfiguration := auditapisdk.NewConfiguration()
 
-	if configuration.AuditHostname != "" {
-		auditAPIconfiguration.Servers[0].URL = configuration.AuditHostname
+	if customUrl != "" {
+		auditAPIconfiguration.Servers = auditapisdk.ServerConfigurations{
+			{
+				URL: customUrl,
+			},
+		}
+	}
+
+	tokenUrl := configuration.TokenURL
+	if customTokenURL != "" {
+		tokenUrl = customTokenURL
 	}
 
 	config := clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
-		TokenURL:     configuration.TokenURL,
+		TokenURL:     tokenUrl,
 		Scopes:       []string{"bmc", "bmc.read"},
 	}
 
 	auditAPIconfiguration.HTTPClient = config.Client(context.Background())
+	auditAPIconfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
 
 	api_client := auditapisdk.NewAPIClient(auditAPIconfiguration)
 
@@ -47,6 +58,7 @@ func NewMainClient(clientId string, clientSecret string) AuditSdkClient {
 // Events APIs
 func (m MainClient) EventsGet(queryParams auditmodels.EventsGetQueryParams) ([]auditapisdk.Event, *http.Response, error) {
 	request := m.EventsApiClient.EventsGet(context.Background())
-	queryParams.AttachToRequest(request)
+	request = *queryParams.AttachToRequest(request)
+
 	return request.Execute()
 }

@@ -27,12 +27,12 @@ var GetServersCmd = &cobra.Command{
 Prints brief or detailed information about the servers.
 By default, the data is printed in table format.
 
-To print a single server, an ID needs to be passed as an argument.`,
+To print a specific server, an ID needs to be passed as an argument.`,
 	Example: `
-# List all servers in json format.
+# List all servers.
 pnapctl get servers [--tag <TagName>.<TagValue>] [--tag <TagName>] [--full] [--output <OUTPUT_TYPE>]
 
-# List all details of a single server in yaml format.
+# List all specific server.
 pnapctl get servers <SERVER_ID> [--full] [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {

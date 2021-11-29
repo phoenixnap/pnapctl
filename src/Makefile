@@ -11,7 +11,6 @@ BRANCH            := $(shell git show-ref | grep "$(REVISION)" | grep -v HEAD | 
 PKGS               = $(or $(PKG),$(shell env GO111MODULE=on $(GO) list ./...))
 
 BUILD_PLATFORMS  = linux/amd64 darwin/amd64 windows/amd64
-ENVIRONMENT_NAME = dev
 
 TESTPKGS = $(shell env GO111MODULE=on $(GO) list -f \
 			'{{ if or .TestGoFiles .XTestGoFiles }}{{ .ImportPath }}{{ end }}' \
@@ -24,7 +23,7 @@ V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
 
-ARTIFACT_FOLDER      = $(BUILD)/$(ENVIRONMENT_NAME)
+ARTIFACT_FOLDER      = $(BUILD)
 ARTIFACT_DIST_FOLDER = $(ARTIFACT_FOLDER)/dist
 
 export GO111MODULE=on
@@ -49,14 +48,12 @@ $(BIN)/go-junit-report: PACKAGE = github.com/jstemmer/go-junit-report
 
 .PHONY: build
 build: $(GOX) ; $(info $(M) building executable…) @ ## Build cross compilation binaries ready for deployment
-	$Q $(GOX) -osarch="$(BUILD_PLATFORMS)" -output="$(ARTIFACT_FOLDER)/$(CLI_NAME)-{{.OS}}-{{.Arch}}" -tags="$(ENVIRONMENT_NAME)" \
-		-tags $(ENVIRONMENT_NAME) \
+	$Q $(GOX) -osarch="$(BUILD_PLATFORMS)" -output="$(ARTIFACT_FOLDER)/$(CLI_NAME)-{{.OS}}-{{.Arch}}" \
 		-ldflags '-X $(MODULE)/commands/version.Version=$(VERSION) -X $(MODULE)/commands/version.BuildDate=$(DATE) -X $(MODULE)/commands/version.BuildCommit=$(REVISION)'
 
 .PHONY: build-simple
 build-simple: $(BIN) ; $(info $(M) building executable…) @ ## Simple build process used for local development
 	$Q $(GO) build \
-		-tags $(ENVIRONMENT_NAME) \
 		-ldflags '-X $(MODULE)/commands/version.Version=$(VERSION) -X $(MODULE)/commands/version.BuildDate=$(DATE) -X $(MODULE)/commands/version.BuildCommit=$(REVISION)' \
 		-o $(BIN)/$(basename $(CLI_NAME)) main.go
 
