@@ -48,7 +48,7 @@ $(BIN)/go-junit-report: PACKAGE = github.com/jstemmer/go-junit-report
 
 .PHONY: build
 build: $(GOX) ; $(info $(M) building executable…) @ ## Build cross compilation binaries ready for deployment
-	$Q $(GOX) -osarch="$(BUILD_PLATFORMS)" -output="$(ARTIFACT_FOLDER)/$(CLI_NAME)-{{.OS}}-{{.Arch}}" \		
+	$Q $(GOX) -osarch="$(BUILD_PLATFORMS)" -output="$(ARTIFACT_FOLDER)/$(CLI_NAME)-{{.OS}}-{{.Arch}}" \
 		-ldflags '-X $(MODULE)/commands/version.Version=$(VERSION) -X $(MODULE)/commands/version.BuildDate=$(DATE) -X $(MODULE)/commands/version.BuildCommit=$(REVISION)'
 
 .PHONY: build-simple
