@@ -14,9 +14,10 @@ type EventsGetQueryParams struct {
 	Order    string
 	Username string
 	Verb     string
+	Uri      string
 }
 
-func NewEventsGetQueryParams(from string, to string, limit int, order string, username string, verb string) (*EventsGetQueryParams, error) {
+func NewEventsGetQueryParams(from string, to string, limit int, order string, username string, verb string, uri string) (*EventsGetQueryParams, error) {
 	var fromTime *time.Time
 	var toTime *time.Time
 	var validOrder string
@@ -70,26 +71,33 @@ func NewEventsGetQueryParams(from string, to string, limit int, order string, us
 		Order:    validOrder,
 		Username: username,
 		Verb:     validVerb,
+		Uri:      uri,
 	}, nil
 }
 
-func (queries EventsGetQueryParams) AttachToRequest(request auditapisdk.ApiEventsGetRequest) {
+func (queries EventsGetQueryParams) AttachToRequest(request auditapisdk.ApiEventsGetRequest) *auditapisdk.ApiEventsGetRequest {
+
 	if queries.From != nil {
-		request.From(*queries.From)
+		request = request.From(*queries.From)
 	}
 	if queries.To != nil {
-		request.To(*queries.To)
+		request = request.To(*queries.To)
 	}
 	if queries.Limit != 0 {
-		request.Limit(int32(queries.Limit))
+		request = request.Limit(int32(queries.Limit))
 	}
 	if queries.Order != "" {
-		request.Order(queries.Order)
+		request = request.Order(queries.Order)
 	}
 	if queries.Username != "" {
-		request.Username(queries.Username)
+		request = request.Username(queries.Username)
 	}
 	if queries.Verb != "" {
-		request.Verb(queries.Verb)
+		request = request.Verb(queries.Verb)
 	}
+	if queries.Uri != "" {
+		request = request.Uri(queries.Uri)
+	}
+
+	return &request
 }

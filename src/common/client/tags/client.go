@@ -6,6 +6,7 @@ import (
 
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"golang.org/x/oauth2/clientcredentials"
+	"phoenixnap.com/pnap-cli/commands/version"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )
 
@@ -43,6 +44,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	}
 
 	tagConfiguration.HTTPClient = config.Client(context.Background())
+	tagConfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
 
 	api_client := tagapisdk.NewAPIClient(tagConfiguration)
 

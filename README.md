@@ -83,7 +83,7 @@ Setup:
             "type": "go",
             "request": "launch",
             "mode": "debug",
-            "program": "<reaplace_with_path_to_your_workspace>/pnap-cli/",
+            "program": "<reaplace_with_path_to_your_workspace>/pnapctl/src",
             "env": {},
             "args": ["get", "servers"], // replace args accordingly             
         }

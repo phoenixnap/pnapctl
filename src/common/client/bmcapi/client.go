@@ -6,6 +6,7 @@ import (
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"golang.org/x/oauth2/clientcredentials"
+	"phoenixnap.com/pnap-cli/commands/version"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )
 
@@ -67,6 +68,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	}
 
 	bmcAPIconfiguration.HTTPClient = config.Client(context.Background())
+	bmcAPIconfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
 
 	api_client := bmcapisdk.NewAPIClient(bmcAPIconfiguration)
 
