@@ -22,17 +22,22 @@ type MainClient struct {
 	RancherSdkClient ranchersdk.ClustersApi
 }
 
-func NewMainClient(clientId string, clientSecret string) RancherSdkClient {
+func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) RancherSdkClient {
 	rancherConfiguration := ranchersdk.NewConfiguration()
 
-	if configuration.RancherHostname != "" {
-		rancherConfiguration.Servers[0].URL = configuration.RancherHostname
+	if customUrl != "" {
+		rancherConfiguration.Servers[0].URL = customUrl
+	}
+
+	tokenUrl := configuration.TokenURL
+	if customTokenURL != "" {
+		tokenUrl = customTokenURL
 	}
 
 	config := clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
-		TokenURL:     configuration.TokenURL,
+		TokenURL:     tokenUrl,
 		Scopes:       []string{"bmc", "bmc.read"},
 	}
 
