@@ -40,6 +40,8 @@ load "./support/common/load.bash"
 }
 
 @test "Create Server Invalid Request Fails" {
+    skip "Component tests cannot hit backend yet"
+
     echo { } >> test.json
 
     run pnapctl create server --filename test.json
