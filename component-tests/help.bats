@@ -4,7 +4,7 @@ load "./support/common/load.bash"
 
 @test "No Input displays help" {
   run pnapctl
-  assert_failure
+  assert_success
 
   assert_line --index 0 'pnapctl creates new and manages existing bare metal servers provided by the phoenixNAP Bare Metal Cloud service.'
   # We can add more assertions here

@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build Simple
+    name: Build
     runs-on: ubuntu-latest
     container: golang:1.17.1
     steps:
