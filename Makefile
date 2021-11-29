@@ -17,7 +17,7 @@ M = $(shell printf "\033[34;1m▶\033[0m")
 
 # Dirs
 $(COMPONENT_TEST_RESULTS_DIR):
-	mkdir -p $(COMPONENT_TEST_RESULTS_DIR)
+	$Q mkdir -p $(COMPONENT_TEST_RESULTS_DIR)
 
 # Binaries
 
