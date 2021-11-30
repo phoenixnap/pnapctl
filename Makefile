@@ -28,8 +28,7 @@ $(COMPONENT_TEST_RESULTS_DIR):
 # Dependencies
 
 $(BATS_SUPPORT_LOADER) $(BATS_ASSERT_LOADER): ; $(info $(M) fetching bats libraries...)
-	$Q $(GIT) submodules init;
-	   $(GIT) submodules update
+	$Q $(GIT) submodules update --init
 
 
 # Binaries
