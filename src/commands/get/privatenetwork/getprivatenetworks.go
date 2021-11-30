@@ -29,7 +29,7 @@ By default, the data is printed in table format.
 To print a specific private network, an ID needs to be passed as an argument.`,
 	Example: `
 # List all private networks.
-pnapctl get private-networks [--output <OUTPUT_TYPE>] [--location <LOCATION>]
+pnapctl get private-networks [--location <LOCATION>] [--output <OUTPUT_TYPE>]
 
 # List all details of a specific private network.
 pnapctl get private-networks <PRIVATE_NETWORK_ID> [--full] [--output <OUTPUT_TYPE>]`,
