@@ -1,7 +1,10 @@
 name: Release workflow
 
 on:
-  release
+  release:
+    types:
+      - created
+      - edited
 
 jobs:
   build:
