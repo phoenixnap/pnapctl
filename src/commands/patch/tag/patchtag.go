@@ -4,11 +4,11 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client/tags"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models/tagmodels"
-	"phoenixnap.com/pnap-cli/common/printer"
-	"phoenixnap.com/pnap-cli/common/utils"
+	"phoenixnap.com/pnapctl/common/client/tags"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 )
 
 // Filename is the filename from which to retrieve a complex object

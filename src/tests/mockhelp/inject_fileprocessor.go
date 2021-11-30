@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"phoenixnap.com/pnap-cli/common/fileprocessor"
+	"phoenixnap.com/pnapctl/common/fileprocessor"
 
-	"phoenixnap.com/pnap-cli/tests/mocks"
+	"phoenixnap.com/pnapctl/tests/mocks"
 )
 
 const FILENAME = "testfile.yaml"

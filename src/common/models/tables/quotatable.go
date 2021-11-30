@@ -2,7 +2,7 @@ package tables
 
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
 )
 
 type Quota struct {

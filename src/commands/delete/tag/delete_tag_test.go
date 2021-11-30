@@ -5,10 +5,10 @@ import (
 
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/tests/generators"
-	. "phoenixnap.com/pnap-cli/tests/mockhelp"
-	"phoenixnap.com/pnap-cli/tests/testutil"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/tests/generators"
+	. "phoenixnap.com/pnapctl/tests/mockhelp"
+	"phoenixnap.com/pnapctl/tests/testutil"
 )
 
 func TestDeleteTagSuccess(test_framework *testing.T) {

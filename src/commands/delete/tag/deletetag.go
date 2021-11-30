@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client/tags"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/utils"
+	"phoenixnap.com/pnapctl/common/client/tags"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/utils"
 )
 
 const commandName = "delete tag"

@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/requestedit/quotas"
+	"phoenixnap.com/pnapctl/commands/requestedit/quotas"
 )
 
 var RequestEditCmd = &cobra.Command{

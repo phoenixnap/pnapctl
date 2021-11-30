@@ -4,12 +4,12 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/get/clusters"
-	"phoenixnap.com/pnap-cli/commands/get/events"
-	"phoenixnap.com/pnap-cli/commands/get/quotas"
-	"phoenixnap.com/pnap-cli/commands/get/servers"
-	"phoenixnap.com/pnap-cli/commands/get/sshkeys"
-	"phoenixnap.com/pnap-cli/commands/get/tags"
+	"phoenixnap.com/pnapctl/commands/get/clusters"
+	"phoenixnap.com/pnapctl/commands/get/events"
+	"phoenixnap.com/pnapctl/commands/get/quotas"
+	"phoenixnap.com/pnapctl/commands/get/servers"
+	"phoenixnap.com/pnapctl/commands/get/sshkeys"
+	"phoenixnap.com/pnapctl/commands/get/tags"
 )
 
 var GetCmd = &cobra.Command{

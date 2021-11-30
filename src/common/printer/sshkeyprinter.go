@@ -2,8 +2,8 @@ package printer
 
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	sshKeyModel "phoenixnap.com/pnap-cli/common/models/bmcapimodels"
-	"phoenixnap.com/pnap-cli/common/models/tables"
+	sshKeyModel "phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
 func PrintSshKeyResponse(sshKey bmcapisdk.SshKey, full bool, commandName string) error {

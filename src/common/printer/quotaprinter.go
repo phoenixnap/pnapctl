@@ -2,8 +2,8 @@ package printer
 
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	quotaModel "phoenixnap.com/pnap-cli/common/models/bmcapimodels"
-	"phoenixnap.com/pnap-cli/common/models/tables"
+	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
 func PrintQuotaResponse(quota bmcapisdk.Quota, commandName string) error {

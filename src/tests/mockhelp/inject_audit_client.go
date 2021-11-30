@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"phoenixnap.com/pnap-cli/common/client/audit"
-	"phoenixnap.com/pnap-cli/tests/mocks/sdkmocks"
+	"phoenixnap.com/pnapctl/common/client/audit"
+	"phoenixnap.com/pnapctl/tests/mocks/sdkmocks"
 )
 
 func PrepareAuditMockClient(test_framework *testing.T) *sdkmocks.MockAuditSdkClientMockRecorder {
