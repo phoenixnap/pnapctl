@@ -32,7 +32,7 @@ To print a specific private network, an ID needs to be passed as an argument.`,
 pnapctl get private-networks [--location <LOCATION>] [--output <OUTPUT_TYPE>]
 
 # List all details of a specific private network.
-pnapctl get private-networks <PRIVATE_NETWORK_ID> [--full] [--output <OUTPUT_TYPE>]`,
+pnapctl get private-networks <PRIVATE_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
 			ID = args[0]
