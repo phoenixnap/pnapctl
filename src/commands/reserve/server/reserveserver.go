@@ -41,12 +41,12 @@ pricingModel: ONE_MONTH_RESERVATION`,
 
 		serverResponse, httpResponse, err := bmcapi.Client.ServerReserve(args[0], *reserveRequest)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return printer.PrintServerResponse(serverResponse, Full, commandName)
-		} else {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			return printer.PrintServerResponse(serverResponse, Full, commandName)
 		}
 	},
 }

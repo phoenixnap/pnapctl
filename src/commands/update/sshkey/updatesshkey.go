@@ -41,12 +41,12 @@ name: default ssh key`,
 		// update the ssh key
 		response, httpResponse, err := bmcapi.Client.SshKeyPut(args[0], *sshKeyUpdate)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return printer.PrintSshKeyResponse(response, Full, commandName)
-		} else {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			return printer.PrintSshKeyResponse(response, Full, commandName)
 		}
 	},
 }

@@ -57,16 +57,16 @@ func getTags(tagID string) error {
 		tag, httpResponse, err = tagclient.Client.TagGetById(tagID)
 	}
 
-	if err != nil {
+	if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
+		return ctlerrors.HandleBMCError(httpResponse, commandName)
+	} else if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
+	} else {
 		if tagID == "" {
 			return printer.PrintTagListResponse(tags, commandName)
 		} else {
 			return printer.PrintTagResponse(tag, commandName)
 		}
-	} else {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	}
 }
 

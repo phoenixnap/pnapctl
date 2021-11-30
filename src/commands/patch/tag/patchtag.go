@@ -1,8 +1,6 @@
 package tag
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/tags"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
@@ -40,12 +38,11 @@ isBillingTag: false`,
 
 		tag, httpResponse, err := tags.Client.TagPatch(args[0], *tagEdit)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 		} else {
-			fmt.Println("Tag edit successful.")
 			return printer.PrintTagResponse(tag, commandName)
 		}
 	},

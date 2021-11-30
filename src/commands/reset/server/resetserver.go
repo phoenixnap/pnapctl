@@ -46,16 +46,14 @@ sshKeyIds:
 
 		result, httpResponse, err := bmcapi.Client.ServerReset(args[0], *resetRequest)
 
-		if err != nil {
-			// TODO - Process error from SDK in ctlerrors.
-			return err
-		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			fmt.Println(result.Result)
+			return err
 		}
-
-		fmt.Println(result.Result)
-
-		return err
 	},
 }
 

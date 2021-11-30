@@ -21,13 +21,13 @@ var DeleteClusterCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		result, httpResponse, err := rancher.Client.ClusterDelete(args[0])
 
-		if err != nil {
-			return err
-		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			fmt.Println(result.Result, result.ClusterId)
+			return nil
 		}
-
-		fmt.Println(result.Result, result.ClusterId)
-		return nil
 	},
 }

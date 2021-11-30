@@ -56,16 +56,16 @@ func getServers(serverID string) error {
 		server, httpResponse, err = bmcapi.Client.ServerGetById(serverID)
 	}
 
-	if err != nil {
+	if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
+		return ctlerrors.HandleBMCError(httpResponse, commandName)
+	} else if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
+	} else {
 		if serverID == "" {
 			return printer.PrintServerListResponse(servers, Full, commandName)
 		} else {
 			return printer.PrintServerResponse(server, Full, commandName)
 		}
-	} else {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	}
 }
 

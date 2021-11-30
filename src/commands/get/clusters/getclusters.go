@@ -55,16 +55,16 @@ func getClusters(clusterID string) error {
 		cluster, httpResponse, err = rancher.Client.ClusterGetById(clusterID)
 	}
 
-	if err != nil {
+	if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
+		return ctlerrors.HandleBMCError(httpResponse, commandName)
+	} else if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
+	} else {
 		if clusterID == "" {
 			return printer.PrintClusterListResponse(clusters, commandName)
 		} else {
 			return printer.PrintClusterResponse(cluster, commandName)
 		}
-	} else {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	}
 }
 

@@ -40,12 +40,12 @@ description: My custom server edit`,
 
 		serverResponse, httpResponse, err := bmcapi.Client.ServerPatch(args[0], *patchRequest)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return printer.PrintServerResponse(serverResponse, Full, commandName)
-		} else {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			return printer.PrintServerResponse(serverResponse, Full, commandName)
 		}
 	},
 }

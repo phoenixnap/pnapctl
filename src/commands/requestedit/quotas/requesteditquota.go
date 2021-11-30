@@ -38,14 +38,14 @@ reason: My current limit is not enough.`,
 
 		httpResponse, err := bmcapi.Client.QuotaEditById(args[0], *quotaEditRequest)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			fmt.Println("Quota Edit Limit Request Accepted.")
+			return nil
 		}
-
-		fmt.Println("Quota Edit Limit Request Accepted.")
-		return nil
 	},
 }
 

@@ -55,16 +55,16 @@ func getSshKeys(sshKeyId string) error {
 		sshKey, httpResponse, err = bmcapi.Client.SshKeyGetById(sshKeyId)
 	}
 
-	if err != nil {
+	if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
+		return ctlerrors.HandleBMCError(httpResponse, commandName)
+	} else if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
+	} else {
 		if sshKeyId == "" {
 			return printer.PrintSshKeyListResponse(sshKeys, Full, commandName)
 		} else {
 			return printer.PrintSshKeyResponse(sshKey, Full, commandName)
 		}
-	} else {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	}
 }
 

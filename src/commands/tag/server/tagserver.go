@@ -45,12 +45,12 @@ pnapctl tag server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 		serverResponse, httpResponse, err := performTagRequest(args[0], tagRequests)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return printer.PrintServerResponse(serverResponse, Full, commandName)
-		} else {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			return printer.PrintServerResponse(serverResponse, Full, commandName)
 		}
 	},
 }

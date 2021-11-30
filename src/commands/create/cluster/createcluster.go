@@ -39,12 +39,12 @@ nodePools:
 
 		response, httpResponse, err := rancher.Client.ClusterPost(*cluster)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return printer.PrintClusterResponse(response, commandName)
-		} else {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			return printer.PrintClusterResponse(response, commandName)
 		}
 	},
 }

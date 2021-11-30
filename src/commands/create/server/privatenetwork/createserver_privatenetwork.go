@@ -45,12 +45,12 @@ statusDescription: in-progress
 		// Create the server private network
 		response, httpResponse, err := bmcapi.Client.ServerPrivateNetworkPost(args[0], *serverPrivateNetwork)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return printer.PrintServerPrivateNetwork(response, commandName)
-		} else {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			return printer.PrintServerPrivateNetwork(response, commandName)
 		}
 	},
 }

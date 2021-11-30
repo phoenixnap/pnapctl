@@ -48,13 +48,12 @@ sshKeys:
 		// Create the server
 		response, httpResponse, err := bmcapi.Client.ServersPost(*serverCreate)
 
-		if err != nil {
-			// TODO - Validate way of processing errors.
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return printer.PrintServerResponse(response, Full, commandName)
-		} else {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			return printer.PrintServerResponse(response, Full, commandName)
 		}
 	},
 }

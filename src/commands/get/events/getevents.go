@@ -37,12 +37,12 @@ func getEvents() error {
 
 	events, httpResponse, err := audit.Client.EventsGet(*params)
 
-	if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
-		return printer.PrintEventListResponse(events, commandName)
-	} else {
+	if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)
+	} else if err != nil {
+		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+	} else {
+		return printer.PrintEventListResponse(events, commandName)
 	}
 }
 
