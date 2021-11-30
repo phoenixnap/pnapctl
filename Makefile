@@ -4,8 +4,8 @@ TEST_RESULTS_DIR             = $(CURDIR)/out
 COMPONENT_TEST_RESULTS_DIR   = $(TEST_RESULTS_DIR)/component-tests
 
 COMPONENT_TEST_SUPPORT_LIB   = $(COMPONENT_TESTS)/support/lib
-BATS_SUPPORT_LOADER          = $(COMPONENT_TEST_SUPPORT_LIB)/bats-support
-BATS_ASSERT_LOADER           = $(COMPONENT_TEST_SUPPORT_LIB)/bats-assert
+BATS_SUPPORT_LOADER          = $(COMPONENT_TEST_SUPPORT_LIB)/bats-support/load/bash
+BATS_ASSERT_LOADER           = $(COMPONENT_TEST_SUPPORT_LIB)/bats-assert/load.bash
 
 export BIN                   = $(CURDIR)/bin
 export BUILD                 = $(CURDIR)/build
@@ -28,7 +28,7 @@ $(COMPONENT_TEST_RESULTS_DIR):
 # Dependencies
 
 $(BATS_SUPPORT_LOADER) $(BATS_ASSERT_LOADER): ; $(info $(M) fetching bats libraries...)
-	$Q $(GIT) submodules update --init
+	$Q $(GIT) submodule update --init
 
 
 # Binaries
