@@ -2,7 +2,7 @@ package bmcapimodels
 
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	files "phoenixnap.com/pnap-cli/common/fileprocessor"
+	files "phoenixnap.com/pnapctl/common/fileprocessor"
 )
 
 type SshKeyCreate struct {

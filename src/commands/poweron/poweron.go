@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/poweron/server"
+	"phoenixnap.com/pnapctl/commands/poweron/server"
 )
 
 var PowerOnCmd = &cobra.Command{

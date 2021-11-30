@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/reset/server"
+	"phoenixnap.com/pnapctl/commands/reset/server"
 )
 
 var ResetCmd = &cobra.Command{

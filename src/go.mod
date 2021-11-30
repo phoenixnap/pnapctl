@@ -1,4 +1,4 @@
-module phoenixnap.com/pnap-cli
+module phoenixnap.com/pnapctl
 
 go 1.17
 

@@ -7,7 +7,7 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
-	"phoenixnap.com/pnap-cli/tests/generators"
+	"phoenixnap.com/pnapctl/tests/generators"
 )
 
 type ExampleStruct1 struct {

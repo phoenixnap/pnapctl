@@ -8,7 +8,7 @@ import (
 
 	"github.com/landoop/tableprinter"
 	"gopkg.in/yaml.v2"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 )
 
 // The main printer used by the application.

@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/reboot/server"
+	"phoenixnap.com/pnapctl/commands/reboot/server"
 )
 
 var RebootCmd = &cobra.Command{

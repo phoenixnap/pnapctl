@@ -4,10 +4,10 @@ import (
 	netHttp "net/http"
 
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
-	tagclient "phoenixnap.com/pnap-cli/common/client/tags"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/printer"
-	"phoenixnap.com/pnap-cli/common/utils"
+	tagclient "phoenixnap.com/pnapctl/common/client/tags"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 
 	"github.com/spf13/cobra"
 )

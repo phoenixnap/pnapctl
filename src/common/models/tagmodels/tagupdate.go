@@ -2,7 +2,7 @@ package tagmodels
 
 import (
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
-	files "phoenixnap.com/pnap-cli/common/fileprocessor"
+	files "phoenixnap.com/pnapctl/common/fileprocessor"
 )
 
 type TagUpdate struct {
