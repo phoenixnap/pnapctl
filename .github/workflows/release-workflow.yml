@@ -100,7 +100,7 @@ jobs:
           name: dist
           path: build/dist
 
-  publish-artifacts:
+  publish-release-assets:
     name: Publish Release Assets
     needs:
       - build-artifacts
