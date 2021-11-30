@@ -97,7 +97,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: build/dist
+          name: dist
           path: build/dist
 
   publish-artifacts:
@@ -112,6 +112,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            build/dist/pnapctl-darwin-amd64.tar.gz
-            build/dist/pnapctl-linux-amd64.tar.gz
-            build/dist/pnapctl-windows-amd64.zip
+            dist/pnapctl-darwin-amd64.tar.gz
+            dist/pnapctl-linux-amd64.tar.gz
+            dist/pnapctl-windows-amd64.zip
