@@ -4,8 +4,12 @@ TEST_RESULTS_DIR             = $(CURDIR)/out
 COMPONENT_TEST_RESULTS_DIR   = $(TEST_RESULTS_DIR)/component-tests
 
 COMPONENT_TEST_SUPPORT_LIB   = $(COMPONENT_TESTS)/support/lib
-BATS_SUPPORT_LOADER          = $(COMPONENT_TEST_SUPPORT_LIB)/bats-support/load/bash
-BATS_ASSERT_LOADER           = $(COMPONENT_TEST_SUPPORT_LIB)/bats-assert/load.bash
+BATS_SUPPORT                 = $(COMPONENT_TEST_SUPPORT_LIB)/bats-support
+BATS_SUPPORT_LOADER          = $(BATS_SUPPORT)/load.bash
+BATS_ASSERT                  = $(COMPONENT_TEST_SUPPORT_LIB)/bats-assert
+BATS_ASSERT_LOADER           = $(BATS_ASSERT)/load.bash
+BATS_SUPPORT_VERSION         = v0.3.0
+BATS_ASSERT_VERSION          = v2.0.0
 
 export BIN                   = $(CURDIR)/bin
 export BUILD                 = $(CURDIR)/build
@@ -29,8 +33,12 @@ $(COMPONENT_TEST_RESULTS_DIR):
 
 $(BATS_SUPPORT_LOADER) $(BATS_ASSERT_LOADER): ; $(info $(M) fetching bats libraries...)
 	$Q $(GIT) submodule update --init ;
-	$Q cd $(COMPONENT_TEST_SUPPORT_LIB)/bats-support && git checkout v0.3.0 ;
-	$Q cd $(COMPONENT_TEST_SUPPORT_LIB)/bats-assert && git checkout v2.0.0
+
+bats-support-verify-version: $(BATS_SUPPORT_LOADER) ; $(info $(M) verifying bats-support version '$(BATS_SUPPORT_VERSION)'...)
+	$Q cd $(BATS_SUPPORT) && git checkout $(BATS_SUPPORT_VERSION)
+
+bats-assert-verify-version: $(BATS_ASSERT_LOADER) ; $(info $(M) verifying bats-assert version '$(BATS_ASSERT_VERSION)'...)
+	$Q cd $(BATS_ASSERT) && git checkout $(BATS_ASSERT_VERSION)
 
 # Binaries
 
@@ -45,7 +53,7 @@ test-bench test-short test-verbose test-race check test tests test-coverage-show
 	$Q $(MAKE) $(MAKE_FLAGS) -C $(SRC) $@
 
 .PHONY: component-tests
-component-tests: build-simple $(BATS_SUPPORT_LOADER) $(BATS_ASSERT_LOADER) $(COMPONENT_TEST_RESULTS_DIR) ; $(info $(M) running component tests…) @ ## Run Component Tests
+component-tests: build-simple bats-support-verify-version bats-assert-verify-version $(COMPONENT_TEST_RESULTS_DIR) ; $(info $(M) running component tests…) @ ## Run Component Tests
 	$Q cd $(COMPONENT_TESTS) && $(BATS) --report-formatter junit -o $(TEST_RESULTS_DIR)/component-tests/ .
 
 # Misc
