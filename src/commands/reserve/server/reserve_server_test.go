@@ -7,15 +7,15 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
-	"phoenixnap.com/pnap-cli/tests/generators"
-	"phoenixnap.com/pnap-cli/tests/testutil"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/tests/generators"
+	"phoenixnap.com/pnapctl/tests/testutil"
 
 	"gopkg.in/yaml.v2"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	. "phoenixnap.com/pnap-cli/tests/mockhelp"
+	. "phoenixnap.com/pnapctl/tests/mockhelp"
 )
 
 func TestReserveServerSuccessYAML(test_framework *testing.T) {

@@ -4,9 +4,10 @@ import (
 	netHttp "net/http"
 
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
-	tagclient "phoenixnap.com/pnap-cli/common/client/tags"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/printer"
+	tagclient "phoenixnap.com/pnapctl/common/client/tags"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -58,7 +59,7 @@ func getTags(tagID string) error {
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		if tagID == "" {
 			return printer.PrintTagListResponse(tags, commandName)
 		} else {

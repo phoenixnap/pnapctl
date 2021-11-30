@@ -2,10 +2,11 @@ package events
 
 import (
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client/audit"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models/auditmodels"
-	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnapctl/common/client/audit"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/auditmodels"
+	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 )
 
 const commandName string = "get events"
@@ -38,7 +39,7 @@ func getEvents() error {
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		return printer.PrintEventListResponse(events, commandName)
 	} else {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)

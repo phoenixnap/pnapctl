@@ -5,12 +5,12 @@ import (
 	"testing"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"phoenixnap.com/pnap-cli/tests/generators"
-	. "phoenixnap.com/pnap-cli/tests/mockhelp"
-	"phoenixnap.com/pnap-cli/tests/testutil"
+	"phoenixnap.com/pnapctl/tests/generators"
+	. "phoenixnap.com/pnapctl/tests/mockhelp"
+	"phoenixnap.com/pnapctl/tests/testutil"
 
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 )
 
 // Each test needs to have a name like `TestXXX`

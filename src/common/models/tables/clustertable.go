@@ -2,7 +2,7 @@ package tables
 
 import (
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
-	"phoenixnap.com/pnap-cli/common/models/ranchermodels"
+	"phoenixnap.com/pnapctl/common/models/ranchermodels"
 )
 
 type ClusterTable struct {

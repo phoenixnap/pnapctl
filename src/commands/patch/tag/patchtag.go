@@ -4,10 +4,11 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client/tags"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models/tagmodels"
-	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnapctl/common/client/tags"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 )
 
 // Filename is the filename from which to retrieve a complex object
@@ -41,7 +42,7 @@ isBillingTag: false`,
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode != 200 {
+		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		} else {
 			fmt.Println("Tag edit successful.")

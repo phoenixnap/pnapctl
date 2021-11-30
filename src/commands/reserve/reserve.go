@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/reserve/server"
+	"phoenixnap.com/pnapctl/commands/reserve/server"
 )
 
 var ReserveCmd = &cobra.Command{

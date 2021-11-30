@@ -2,8 +2,8 @@ package printer
 
 import (
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
-	"phoenixnap.com/pnap-cli/common/models/tables"
-	"phoenixnap.com/pnap-cli/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/models/tagmodels"
 )
 
 func PrintTagResponse(tag tagapisdk.Tag, commandName string) error {

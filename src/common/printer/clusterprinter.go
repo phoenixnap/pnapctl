@@ -2,8 +2,8 @@ package printer
 
 import (
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
-	"phoenixnap.com/pnap-cli/common/models/ranchermodels"
-	"phoenixnap.com/pnap-cli/common/models/tables"
+	"phoenixnap.com/pnapctl/common/models/ranchermodels"
+	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
 func PrintClusterResponse(cluster ranchersdk.Cluster, commandName string) error {

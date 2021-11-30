@@ -49,7 +49,7 @@ build build-simple pack build-and-pack:
 # Tests
 
 .PHONY:
-test-bench test-short test-verbose test-race check test tests test-coverage-show test-coverage:
+test-bench test-short test-verbose test-race check test tests test-tparse test-coverage-show test-coverage:
 	$Q $(MAKE) $(MAKE_FLAGS) -C $(SRC) $@
 
 .PHONY: component-tests
