@@ -3,7 +3,6 @@ package privatenetwork
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -45,10 +44,10 @@ statusDescription: in-progress
 		// Create the server private network
 		response, httpResponse, err := bmcapi.Client.ServerPrivateNetworkPost(args[0], *serverPrivateNetwork)
 
-		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
-		} else if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+		if *generatedError != nil {
+			return *generatedError
 		} else {
 			return printer.PrintServerPrivateNetwork(response, commandName)
 		}

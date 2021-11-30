@@ -3,7 +3,6 @@ package sshkey
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -40,11 +39,10 @@ name: default ssh key`,
 
 		// update the ssh key
 		response, httpResponse, err := bmcapi.Client.SshKeyPut(args[0], *sshKeyUpdate)
+		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
-		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
-		} else if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		if *generatedError != nil {
+			return *generatedError
 		} else {
 			return printer.PrintSshKeyResponse(response, Full, commandName)
 		}

@@ -6,7 +6,6 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -44,11 +43,10 @@ pnapctl tag server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 		}
 
 		serverResponse, httpResponse, err := performTagRequest(args[0], tagRequests)
+		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
-		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
-		} else if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		if *generatedError != nil {
+			return *generatedError
 		} else {
 			return printer.PrintServerResponse(serverResponse, Full, commandName)
 		}

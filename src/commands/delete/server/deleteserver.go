@@ -6,7 +6,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
@@ -22,11 +21,10 @@ var DeleteServerCmd = &cobra.Command{
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		result, httpResponse, err := bmcapi.Client.ServerDelete(args[0])
+		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
-		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
-		} else if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		if *generatedError != nil {
+			return *generatedError
 		} else {
 			fmt.Println(result.Result, result.ServerId)
 			return nil

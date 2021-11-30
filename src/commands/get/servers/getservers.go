@@ -6,7 +6,6 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -56,10 +55,10 @@ func getServers(serverID string) error {
 		server, httpResponse, err = bmcapi.Client.ServerGetById(serverID)
 	}
 
-	if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
-	} else if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
 	} else {
 		if serverID == "" {
 			return printer.PrintServerListResponse(servers, Full, commandName)

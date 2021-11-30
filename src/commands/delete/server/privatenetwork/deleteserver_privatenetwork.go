@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
@@ -28,11 +27,10 @@ pnapctl delete server-private-network <SERVER_ID> <PRIVATE_NETWORK_ID>
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		result, httpResponse, err := bmcapi.Client.ServerPrivateNetworkDelete(args[0], args[1])
+		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
-		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
-		} else if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		if *generatedError != nil {
+			return *generatedError
 		} else {
 			fmt.Println(result)
 			return nil
