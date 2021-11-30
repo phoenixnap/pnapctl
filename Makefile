@@ -44,7 +44,7 @@ test-bench test-short test-verbose test-race check test tests test-coverage-show
 	$Q $(MAKE) $(MAKE_FLAGS) -C $(SRC) $@
 
 .PHONY: component-tests
-component-tests: build-simple $(COMPONENT_TEST_RESULTS_DIR) ; $(info $(M) running component tests…) @ ## Run Component Tests
+component-tests: build-simple $(BATS_SUPPORT_LOADER) $(BATS_ASSERT_LOADER) $(COMPONENT_TEST_RESULTS_DIR) ; $(info $(M) running component tests…) @ ## Run Component Tests
 	$Q cd $(COMPONENT_TESTS) && $(BATS) --report-formatter junit -o $(TEST_RESULTS_DIR)/component-tests/ .
 
 # Misc
