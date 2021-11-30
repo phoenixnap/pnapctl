@@ -28,7 +28,9 @@ $(COMPONENT_TEST_RESULTS_DIR):
 # Dependencies
 
 $(BATS_SUPPORT_LOADER) $(BATS_ASSERT_LOADER): ; $(info $(M) fetching bats libraries...)
-	$Q $(GIT) submodule update --init
+	$Q $(GIT) submodule update --init ;
+	$Q cd $(COMPONENT_TEST_SUPPORT_LIB)/bats-support && git checkout v0.3.0 ;
+	$Q cd $(COMPONENT_TEST_SUPPORT_LIB)/bats-assert && git checkout v2.0.0
 
 # Binaries
 
