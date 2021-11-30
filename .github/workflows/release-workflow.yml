@@ -118,7 +118,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Dist Packages
-          path: build/dist/*
+          path: dist-packages
 
   publish-artifacts:
     name: Publish Release Assets
@@ -134,6 +134,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            build/dist/pnapctl-darwin-amd64.tar.gz
-            build/dist/pnapctl-linux-amd64.tar.gz
-            build/dist/pnapctl-windows-amd64.zip
+            assets/dist-packages/pnapctl-darwin-amd64.tar.gz
+            assets/dist-packages/pnapctl-linux-amd64.tar.gz
+            assets/dist-packages/pnapctl-windows-amd64.zip
