@@ -121,7 +121,7 @@ jobs:
           path: build/dist/*
 
   publish-artifacts:
-    name: Publish Artifacts
+    name: Publish Release Assets
     needs:
       - build-artifacts
     runs-on: ubuntu-latest
@@ -134,6 +134,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            artifacts/pnapctl-darwin-amd64.tar.gz
-            artifacts/pnapctl-linux-amd64.tar.gz
-            artifacts/pnapctl-windows-amd64.zip
+            build/dist/pnapctl-darwin-amd64.tar.gz
+            build/dist/pnapctl-linux-amd64.tar.gz
+            build/dist/pnapctl-windows-amd64.zip
