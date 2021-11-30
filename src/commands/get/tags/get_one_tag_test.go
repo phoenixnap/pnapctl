@@ -8,14 +8,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/tests/generators"
+	"phoenixnap.com/pnapctl/common/models/tagmodels"
 	. "phoenixnap.com/pnapctl/tests/mockhelp"
 	"phoenixnap.com/pnapctl/tests/testutil"
 )
 
 func TestGetTagSuccess(test_framework *testing.T) {
 
-	tag := generators.GenerateTag()
+	tag := tagmodels.GenerateTag()
 	var tagTable interface{}
 	tagTable = tables.TagFromSdk(*tag)
 
@@ -71,7 +71,7 @@ func TestGetTagKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetTagPrinterFailure(test_framework *testing.T) {
-	tag := generators.GenerateTag()
+	tag := tagmodels.GenerateTag()
 	tagTable := tables.TagFromSdk(*tag)
 
 	PrepareTagMockClient(test_framework).

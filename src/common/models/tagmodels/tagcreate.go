@@ -11,8 +11,8 @@ type TagCreate struct {
 	IsBillingTag bool    `json:"isBillingTag" yaml:"isBillingTag"`
 }
 
-func (tagCreate *TagCreate) ToSdk() tagapisdk.TagCreate {
-	return tagapisdk.TagCreate{
+func (tagCreate *TagCreate) ToSdk() *tagapisdk.TagCreate {
+	return &tagapisdk.TagCreate{
 		Name:         tagCreate.Name,
 		Description:  tagCreate.Description,
 		IsBillingTag: tagCreate.IsBillingTag,
@@ -50,5 +50,5 @@ func CreateTagCreateFromFile(filename string, commandname string) (*tagapisdk.Ta
 
 	sdkTagCreate := tagCreate.ToSdk()
 
-	return &sdkTagCreate, nil
+	return sdkTagCreate, nil
 }

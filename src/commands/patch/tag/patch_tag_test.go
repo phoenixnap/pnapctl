@@ -11,15 +11,14 @@ import (
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
-	"phoenixnap.com/pnapctl/tests/generators"
 	. "phoenixnap.com/pnapctl/tests/mockhelp"
 	"phoenixnap.com/pnapctl/tests/testutil"
 )
 
 func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 	// setup
-	tag := *generators.GenerateTag()
-	tagEdit := *generators.GenerateTagUpdate()
+	tag := *tagmodels.GenerateTag()
+	tagEdit := *tagmodels.GenerateTagUpdate()
 	yamlmarshal, _ := yaml.Marshal(tagmodels.TagUpdateFromSdk(&tagEdit))
 
 	Filename = FILENAME
@@ -45,8 +44,8 @@ func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 
 func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
 	//setup
-	tag := *generators.GenerateTag()
-	tagEdit := *generators.GenerateTagUpdate()
+	tag := *tagmodels.GenerateTag()
+	tagEdit := *tagmodels.GenerateTagUpdate()
 	jsonmarshal, _ := json.Marshal(tagEdit)
 	Filename = FILENAME
 
@@ -157,7 +156,7 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := *generators.GenerateTagUpdate()
+	tagEdit := *tagmodels.GenerateTagUpdate()
 	yamlmarshal, _ := yaml.Marshal(tagmodels.TagUpdateFromSdk(&tagEdit))
 	Filename = FILENAME
 
@@ -185,7 +184,7 @@ func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// setup
-	editTag := *generators.GenerateTagUpdate()
+	editTag := *tagmodels.GenerateTagUpdate()
 	yamlmarshal, _ := yaml.Marshal(tagmodels.TagUpdateFromSdk(&editTag))
 	Filename = FILENAME
 
@@ -213,7 +212,7 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditKeycloakFailure(test_framework *testing.T) {
 	// setup
-	editTag := *generators.GenerateTagUpdate()
+	editTag := *tagmodels.GenerateTagUpdate()
 	yamlmarshal, _ := yaml.Marshal(tagmodels.TagUpdateFromSdk(&editTag))
 	Filename = FILENAME
 

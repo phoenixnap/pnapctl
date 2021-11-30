@@ -11,8 +11,8 @@ type ResourceAssignment struct {
 	Value        *string `json:"value" yaml:"value"`
 }
 
-func (resourceAssignment *ResourceAssignment) ToSdk() tagapisdk.ResourceAssignment {
-	return tagapisdk.ResourceAssignment{
+func (resourceAssignment *ResourceAssignment) ToSdk() *tagapisdk.ResourceAssignment {
+	return &tagapisdk.ResourceAssignment{
 		ResourceName: resourceAssignment.ResourceName,
 		Value:        resourceAssignment.Value,
 	}

@@ -8,12 +8,12 @@ import (
 
 func GenerateQuota() bmcapisdk.Quota {
 	return bmcapisdk.Quota{
-		Id:                           randSeq(10),
-		Name:                         randSeq(10),
-		Description:                  randSeq(10),
-		Status:                       randSeq(10),
+		Id:                           RandSeq(10),
+		Name:                         RandSeq(10),
+		Description:                  RandSeq(10),
+		Status:                       RandSeq(10),
 		Limit:                        int32(rand.Int()),
-		Unit:                         randSeq(10),
+		Unit:                         RandSeq(10),
 		Used:                         int32(rand.Int()),
 		QuotaEditLimitRequestDetails: []bmcapisdk.QuotaEditLimitRequestDetails{},
 	}
@@ -30,6 +30,6 @@ func GenerateQuotas(n int) []bmcapisdk.Quota {
 func GenerateQuotaEditLimitRequest() bmcapisdk.QuotaEditLimitRequest {
 	return bmcapisdk.QuotaEditLimitRequest{
 		Limit:  int32(rand.Int()),
-		Reason: randSeq(10),
+		Reason: RandSeq(10),
 	}
 }

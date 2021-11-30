@@ -12,7 +12,7 @@ import (
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-func randSeq(n int) string {
+func RandSeq(n int) string {
 	b := make([]rune, n)
 	for i := range b {
 		b[i] = letters[rand.Intn(len(letters))]
@@ -20,15 +20,15 @@ func randSeq(n int) string {
 	return string(b)
 }
 
-func randSeqPointer(n int) *string {
-	random := randSeq(n)
+func RandSeqPointer(n int) *string {
+	random := RandSeq(n)
 	return &random
 }
 
-func randListStringPointer(n int) *[]string {
+func RandListStringPointer(n int) *[]string {
 	b := []string{}
 	for i := range b {
-		b[i] = randSeq(10)
+		b[i] = RandSeq(10)
 	}
 	return &b
 }
@@ -44,26 +44,26 @@ func GenerateServers(n int) []bmcapisdk.Server {
 func GenerateServer() bmcapisdk.Server {
 	provisionedOn := time.Now()
 	return bmcapisdk.Server{
-		Id:                 randSeq(10),
-		Status:             randSeq(10),
-		Hostname:           randSeq(10),
-		Description:        randSeqPointer(10),
-		Os:                 randSeq(10),
-		Type:               randSeq(10),
-		Location:           randSeq(10),
-		Cpu:                randSeq(10),
+		Id:                 RandSeq(10),
+		Status:             RandSeq(10),
+		Hostname:           RandSeq(10),
+		Description:        RandSeqPointer(10),
+		Os:                 RandSeq(10),
+		Type:               RandSeq(10),
+		Location:           RandSeq(10),
+		Cpu:                RandSeq(10),
 		CpuCount:           int32(rand.Int()),
 		CoresPerCpu:        int32(rand.Int()),
 		CpuFrequency:       rand.Float32(),
-		Ram:                randSeq(10),
-		Storage:            randSeq(10),
+		Ram:                RandSeq(10),
+		Storage:            RandSeq(10),
 		PrivateIpAddresses: []string{},
 		PublicIpAddresses:  []string{},
-		ReservationId:      randSeqPointer(10),
-		PricingModel:       randSeq(10),
-		Password:           randSeqPointer(10),
-		NetworkType:        randSeqPointer(10),
-		ClusterId:          randSeqPointer(10),
+		ReservationId:      RandSeqPointer(10),
+		PricingModel:       RandSeq(10),
+		Password:           RandSeqPointer(10),
+		NetworkType:        RandSeqPointer(10),
+		ClusterId:          RandSeqPointer(10),
 		Tags:               nil,
 		ProvisionedOn:      &provisionedOn,
 		OsConfiguration:    nil,
@@ -72,17 +72,17 @@ func GenerateServer() bmcapisdk.Server {
 
 func GenerateServerCreate() bmcapimodels.ServerCreate {
 	return bmcapimodels.ServerCreate{
-		Hostname:              randSeq(10),
-		Description:           randSeqPointer(10),
-		Os:                    randSeq(10),
-		Type:                  randSeq(10),
-		Location:              randSeq(10),
+		Hostname:              RandSeq(10),
+		Description:           RandSeqPointer(10),
+		Os:                    RandSeq(10),
+		Type:                  RandSeq(10),
+		Location:              RandSeq(10),
 		InstallDefaultSshKeys: nil,
 		SshKeys:               nil,
 		SshKeyIds:             nil,
-		ReservationId:         randSeqPointer(10),
-		PricingModel:          randSeqPointer(10),
-		NetworkType:           randSeqPointer(10),
+		ReservationId:         RandSeqPointer(10),
+		PricingModel:          RandSeqPointer(10),
+		NetworkType:           RandSeqPointer(10),
 		OsConfiguration:       nil,
 		Tags:                  nil,
 		NetworkConfiguration:  nil,
@@ -99,35 +99,35 @@ func GenerateClusters(n int) []ranchersdk.Cluster {
 
 func GenerateCluster() ranchersdk.Cluster {
 	return ranchersdk.Cluster{
-		Id:                    randSeqPointer(10),
-		Name:                  randSeqPointer(10),
-		Description:           randSeqPointer(10),
-		Location:              randSeq(10),
-		InitialClusterVersion: randSeqPointer(10),
+		Id:                    RandSeqPointer(10),
+		Name:                  RandSeqPointer(10),
+		Description:           RandSeqPointer(10),
+		Location:              RandSeq(10),
+		InitialClusterVersion: RandSeqPointer(10),
 		NodePools:             nil,
 		Configuration:         nil,
 		Metadata:              nil,
-		StatusDescription:     randSeqPointer(10),
+		StatusDescription:     RandSeqPointer(10),
 	}
 }
 
 func GenerateRancherDeleteResult() ranchersdk.DeleteResult {
 	return ranchersdk.DeleteResult{
-		Result:    randSeq(10),
-		ClusterId: randSeqPointer(10),
+		Result:    RandSeq(10),
+		ClusterId: RandSeqPointer(10),
 	}
 }
 
 func GenerateBmcApiDeleteResult() bmcapisdk.DeleteResult {
 	return bmcapisdk.DeleteResult{
-		Result:   randSeq(10),
-		ServerId: randSeq(10),
+		Result:   RandSeq(10),
+		ServerId: RandSeq(10),
 	}
 }
 
 func GenerateActionResult() bmcapisdk.ActionResult {
 	return bmcapisdk.ActionResult{
-		Result: randSeq(10),
+		Result: RandSeq(10),
 	}
 }
 
@@ -142,7 +142,7 @@ func GenerateServerReset() bmcapisdk.ServerReset {
 
 func GenerateResetResult() bmcapisdk.ResetResult {
 	return bmcapisdk.ResetResult{
-		Result:          randSeq(10),
+		Result:          RandSeq(10),
 		Password:        nil,
 		OsConfiguration: nil,
 	}
@@ -150,15 +150,15 @@ func GenerateResetResult() bmcapisdk.ResetResult {
 
 func GenerateServerPatch() bmcapisdk.ServerPatch {
 	return bmcapisdk.ServerPatch{
-		Hostname:    randSeqPointer(10),
-		Description: randSeqPointer(10),
+		Hostname:    RandSeqPointer(10),
+		Description: RandSeqPointer(10),
 	}
 }
 
 func GenerateTagAssignmentRequest() bmcapisdk.TagAssignmentRequest {
 	return bmcapisdk.TagAssignmentRequest{
-		Name:  randSeq(10),
-		Value: randSeqPointer(10),
+		Name:  RandSeq(10),
+		Value: RandSeqPointer(10),
 	}
 }
 
@@ -179,9 +179,9 @@ func GenerateServerReserve() bmcapisdk.ServerReserve {
 func GenerateServerPrivateNetwork() bmcapisdk.ServerPrivateNetwork {
 	dhcp := false
 	return bmcapisdk.ServerPrivateNetwork{
-		Id:                randSeq(10),
-		Ips:               randListStringPointer(10),
+		Id:                RandSeq(10),
+		Ips:               RandListStringPointer(10),
 		Dhcp:              &dhcp,
-		StatusDescription: randSeqPointer(10),
+		StatusDescription: RandSeqPointer(10),
 	}
 }

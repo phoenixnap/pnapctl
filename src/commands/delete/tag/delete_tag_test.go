@@ -6,7 +6,7 @@ import (
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/tests/generators"
+	"phoenixnap.com/pnapctl/common/models/tagmodels"
 	. "phoenixnap.com/pnapctl/tests/mockhelp"
 	"phoenixnap.com/pnapctl/tests/testutil"
 )
@@ -15,7 +15,7 @@ func TestDeleteTagSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagDelete(RESOURCEID).
-		Return(generators.GenerateTagsDeleteResult(), WithResponse(200, nil), nil)
+		Return(tagmodels.GenerateTagsDeleteResult(), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})

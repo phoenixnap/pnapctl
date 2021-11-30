@@ -11,8 +11,8 @@ type TagUpdate struct {
 	IsBillingTag bool    `json:"isBillingTag" yaml:"isBillingTag"`
 }
 
-func (tagUpdate *TagUpdate) ToSdk() tagapisdk.TagUpdate {
-	return tagapisdk.TagUpdate{
+func (tagUpdate *TagUpdate) ToSdk() *tagapisdk.TagUpdate {
+	return &tagapisdk.TagUpdate{
 		Name:         tagUpdate.Name,
 		Description:  tagUpdate.Description,
 		IsBillingTag: tagUpdate.IsBillingTag,
@@ -50,5 +50,5 @@ func CreateTagUpdateFromFile(filename string, commandname string) (*tagapisdk.Ta
 
 	sdkTagUpdate := tagUpdate.ToSdk()
 
-	return &sdkTagUpdate, nil
+	return sdkTagUpdate, nil
 }

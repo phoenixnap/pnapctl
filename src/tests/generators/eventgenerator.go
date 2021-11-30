@@ -9,12 +9,12 @@ import (
 
 func GenerateEvent() auditapisdk.Event {
 	return auditapisdk.Event{
-		Name:      randSeqPointer(10),
+		Name:      RandSeqPointer(10),
 		Timestamp: time.Now(),
 		UserInfo: auditapisdk.UserInfo{
-			AccountId: randSeq(10),
-			ClientId:  randSeqPointer(10),
-			Username:  randSeq(10),
+			AccountId: RandSeq(10),
+			ClientId:  RandSeqPointer(10),
+			Username:  RandSeq(10),
 		},
 	}
 }
@@ -34,9 +34,9 @@ func GenerateQueryParams() auditmodels.EventsGetQueryParams {
 		To:       &now,
 		Limit:    10,
 		Order:    "ASC",
-		Username: randSeq(10),
+		Username: RandSeq(10),
 		Verb:     "PUT",
-		Uri:      randSeq(10),
+		Uri:      RandSeq(10),
 	}
 }
 
