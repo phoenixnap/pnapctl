@@ -35,7 +35,12 @@ func (tag *Tag) ToSdk() *tagapisdk.Tag {
 func TagFromSdk(tag *tagapisdk.Tag) *Tag {
 	var assignments *[]ResourceAssignment
 
+	if tag == nil {
+		return nil
+	}
+
 	if tag.ResourceAssignments != nil {
+		assignments = &[]ResourceAssignment{}
 		for _, assignment := range *tag.ResourceAssignments {
 			*assignments = append(*assignments, *ResourceAssignmentFromSdk(&assignment))
 		}
