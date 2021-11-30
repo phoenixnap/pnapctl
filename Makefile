@@ -3,11 +3,16 @@ COMPONENT_TESTS              = $(CURDIR)/component-tests
 TEST_RESULTS_DIR             = $(CURDIR)/out
 COMPONENT_TEST_RESULTS_DIR   = $(TEST_RESULTS_DIR)/component-tests
 
+COMPONENT_TEST_SUPPORT_LIB   = $(COMPONENT_TESTS)/support/lib
+BATS_SUPPORT_LOADER          = $(COMPONENT_TEST_SUPPORT_LIB)/bats-support
+BATS_ASSERT_LOADER           = $(COMPONENT_TEST_SUPPORT_LIB)/bats-assert
+
 export BIN                   = $(CURDIR)/bin
 export BUILD                 = $(CURDIR)/build
 export UNIT_TEST_RESULTS_DIR = $(TEST_RESULTS_DIR)/unit-tests
 
 BATS = bats
+GIT  = git
 
 MAKE_FLAGS = -s
 
@@ -19,6 +24,13 @@ M = $(shell printf "\033[34;1m▶\033[0m")
 
 $(COMPONENT_TEST_RESULTS_DIR):
 	$Q mkdir -p $(COMPONENT_TEST_RESULTS_DIR)
+
+# Dependencies
+
+$(BATS_SUPPORT_LOADER) $(BATS_ASSERT_LOADER): ; $(info $(M) fetching bats libraries...)
+	$Q $(GIT) submodules init;
+	   $(GIT) submodules update
+
 
 # Binaries
 
