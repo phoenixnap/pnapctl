@@ -2,28 +2,34 @@
 
 load "./support/common/load.bash"
 
-@test "No Input displays help" {
-  run pnapctl
-  assert_success
+runCommand="run pnapctl"
 
-  assert_line --index 0 'pnapctl creates new and manages existing bare metal servers provided by the phoenixNAP Bare Metal Cloud service.'
+@test "No Input displays help" {
+  $runCommand
+  assert_success
+  assert_line --index 0 "$outputHelp"
   # We can add more assertions here
 }
 
 @test "Help" {
-  run pnapctl help
+  
+  $runCommand help
   assert_success
+  assert_output "$outputHelpLong"
 }
 
 @test "Get command Help" {
-  run pnapctl get
+  $runCommand get
   
-  assert_line --index 0 'Display one or many resources.'
+  assert_success
+  assert_output "$outputHelpGet"
 }
 
 @test "Create Command Help" {
-  run pnapctl create
+
+  $runCommand create
   
-  assert_line --index 0 'Create a resource.'
+  assert_success
+  assert_output "$outputHelpCreate"
 }
 
