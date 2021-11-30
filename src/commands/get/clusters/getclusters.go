@@ -5,7 +5,6 @@ import (
 
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"phoenixnap.com/pnapctl/common/client/rancher"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 
@@ -55,16 +54,16 @@ func getClusters(clusterID string) error {
 		cluster, httpResponse, err = rancher.Client.ClusterGetById(clusterID)
 	}
 
-	if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
 		if clusterID == "" {
 			return printer.PrintClusterListResponse(clusters, commandName)
 		} else {
 			return printer.PrintClusterResponse(cluster, commandName)
 		}
-	} else {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	}
 }
 

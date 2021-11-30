@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -37,15 +36,14 @@ reason: My current limit is not enough.`,
 		}
 
 		httpResponse, err := bmcapi.Client.QuotaEditById(args[0], *quotaEditRequest)
+		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		if *generatedError != nil {
+			return *generatedError
+		} else {
+			fmt.Println("Quota Edit Limit Request Accepted.")
+			return nil
 		}
-
-		fmt.Println("Quota Edit Limit Request Accepted.")
-		return nil
 	},
 }
 

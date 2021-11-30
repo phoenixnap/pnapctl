@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
 	"phoenixnap.com/pnapctl/common/utils"
 
@@ -45,17 +44,14 @@ sshKeyIds:
 		}
 
 		result, httpResponse, err := bmcapi.Client.ServerReset(args[0], *resetRequest)
+		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
-		if err != nil {
-			// TODO - Process error from SDK in ctlerrors.
+		if *generatedError != nil {
+			return *generatedError
+		} else {
+			fmt.Println(result.Result)
 			return err
-		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		}
-
-		fmt.Println(result.Result)
-
-		return err
 	},
 }
 

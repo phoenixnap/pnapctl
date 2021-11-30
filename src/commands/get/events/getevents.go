@@ -3,7 +3,6 @@ package events
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/audit"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/auditmodels"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -36,13 +35,12 @@ func getEvents() error {
 	}
 
 	events, httpResponse, err := audit.Client.EventsGet(*params)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
-	if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
-		return printer.PrintEventListResponse(events, commandName)
+	if *generatedError != nil {
+		return *generatedError
 	} else {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
+		return printer.PrintEventListResponse(events, commandName)
 	}
 }
 
