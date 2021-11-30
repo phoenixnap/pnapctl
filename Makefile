@@ -30,7 +30,6 @@ $(COMPONENT_TEST_RESULTS_DIR):
 $(BATS_SUPPORT_LOADER) $(BATS_ASSERT_LOADER): ; $(info $(M) fetching bats libraries...)
 	$Q $(GIT) submodule update --init
 
-
 # Binaries
 
 .PHONY: build
