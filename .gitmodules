@@ -1,0 +1,6 @@
+[submodule "component-tests/support/lib/bats-assert"]
+	path = component-tests/support/lib/bats-assert
+	url = https://github.com/bats-core/bats-assert.git
+[submodule "component-tests/support/lib/bats-support"]
+	path = component-tests/support/lib/bats-support
+	url = https://github.com/bats-core/bats-support.git
