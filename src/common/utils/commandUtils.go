@@ -6,7 +6,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 )
 
-func Is2xxSuccessful(statusCode int) bool {
+func is2xxSuccessful(statusCode int) bool {
 	if statusCode >= 200 && statusCode < 300 {
 		return true
 	} else {
@@ -16,7 +16,7 @@ func Is2xxSuccessful(statusCode int) bool {
 
 func CheckForErrors(httpResponse *http.Response, err error, commandName string) *error {
 	var generatedError error = nil
-	if httpResponse != nil && !Is2xxSuccessful(httpResponse.StatusCode) {
+	if httpResponse != nil && !is2xxSuccessful(httpResponse.StatusCode) {
 		generatedError = ctlerrors.HandleBMCError(httpResponse, commandName)
 	} else if err != nil {
 		generatedError = ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
