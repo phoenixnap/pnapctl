@@ -25,6 +25,7 @@ import (
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client/audit"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
+	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/client/rancher"
 	"phoenixnap.com/pnapctl/common/client/tags"
 	"phoenixnap.com/pnapctl/common/fileprocessor"
@@ -138,12 +139,14 @@ func initConfig() {
 		customRancherHostname := viper.GetString("rancherHostname")
 		customAuditHostname := viper.GetString("auditHostname")
 		customTagsHostname := viper.GetString("tagsHostname")
+		customNetworksHostname := viper.GetString("networksHostname")
 		customTokenUrl := viper.GetString("tokenURL")
 
 		bmcapi.Client = bmcapi.NewMainClient(clientId, clientSecret, customBmcApiHostname, customTokenUrl)
 		rancher.Client = rancher.NewMainClient(clientId, clientSecret, customRancherHostname, customTokenUrl)
 		audit.Client = audit.NewMainClient(clientId, clientSecret, customAuditHostname, customTokenUrl)
 		tags.Client = tags.NewMainClient(clientId, clientSecret, customTagsHostname, customTokenUrl)
+		networks.Client = networks.NewMainClient(clientId, clientSecret, customNetworksHostname, customTokenUrl)
 	}
 }
 
