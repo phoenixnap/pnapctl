@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 // Filename is the filename from which to retrieve a complex object
@@ -22,11 +23,11 @@ var RequestEditQuotaCmd = &cobra.Command{
 	SilenceUsage: true,
 	Long: `Submit a quota modification request.
 
-Requires a file (yaml or json) containing the information needed to submit the request.`,
-	Example: `# modify an existing quota as per quotaModificationRequest.yaml
+Requires a file (yaml or json) containing the information needed to submit a quota edit request.`,
+	Example: `# Submit an edit request on an existing quota as per requestEditQuota.yaml
 pnapctl request-edit quota <QUOTA_ID> --filename <FILE_PATH>
 
-# quotaRequestEdit.yaml
+# requestEditQuota.yaml
 limit: 75
 reason: My current limit is not enough.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -39,7 +40,7 @@ reason: My current limit is not enough.`,
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode != 202 {
+		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		}
 

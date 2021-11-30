@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 // Filename is the filename from which to retrieve a complex object
@@ -24,8 +25,7 @@ var UpdateSshKeyCmd = &cobra.Command{
 	Long: `Update an ssh-key.
 
 Requires a file (yaml or json) containing the information needed to modify the ssh-key.`,
-	Example: `# update an ssh-key as described in sshKeyEdit.yaml
-
+	Example: `# Update an ssh-key as per sshKeyUpdate.yaml
 pnapctl update ssh-key <SSH_KEY_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # sshKeyUpdate.yaml
@@ -43,7 +43,7 @@ name: default ssh key`,
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 200 {
+		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return printer.PrintSshKeyResponse(response, Full, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)

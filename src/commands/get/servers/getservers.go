@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 const commandName string = "get servers"
@@ -27,12 +28,12 @@ var GetServersCmd = &cobra.Command{
 Prints brief or detailed information about the servers.
 By default, the data is printed in table format.
 
-To print a single server, an ID needs to be passed as an argument.`,
+To print a specific server, an ID needs to be passed as an argument.`,
 	Example: `
-# List all servers in json format.
+# List all servers.
 pnapctl get servers [--tag <TagName>.<TagValue>] [--tag <TagName>] [--full] [--output <OUTPUT_TYPE>]
 
-# List all details of a single server in yaml format.
+# List all specific server.
 pnapctl get servers <SERVER_ID> [--full] [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
@@ -57,7 +58,7 @@ func getServers(serverID string) error {
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		if serverID == "" {
 			return printer.PrintServerListResponse(servers, Full, commandName)
 		} else {

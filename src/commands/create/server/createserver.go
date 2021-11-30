@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 // Filename is the filename from which to retrieve a complex object
@@ -25,7 +26,7 @@ var CreateServerCmd = &cobra.Command{
 	Long: `Create a new server.
 
 Requires a file (yaml or json) containing the information needed to create the server.`,
-	Example: `# create a new server as described in server.yaml
+	Example: `# Create a new server as described in serverCreate.yaml
 pnapctl create server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # serverCreate.yaml
@@ -50,7 +51,7 @@ sshKeys:
 		if err != nil {
 			// TODO - Validate way of processing errors.
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 200 {
+		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return printer.PrintServerResponse(response, Full, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)

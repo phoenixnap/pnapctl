@@ -7,8 +7,8 @@ import (
 	tagclient "phoenixnap.com/pnap-cli/common/client/tags"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -29,12 +29,12 @@ var GetTagsCmd = &cobra.Command{
 Prints information about the tags.
 By default, the data is printed in table format.
 
-To print a single tag, an ID needs to be passed as an argument.`,
+To print a specific tag, an ID needs to be passed as an argument.`,
 	Example: `
-# List all tags in json format.
+# List all tags.
 pnapctl get tags [--output <OUTPUT_TYPE>]
 
-# List a single tag in yaml format.
+# List a specific tag.
 pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
@@ -46,8 +46,6 @@ pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getTags(tagID string) error {
-	log.Debug("Getting tags...")
-
 	var httpResponse *netHttp.Response
 	var err error
 	var tag tagapisdk.Tag
@@ -61,7 +59,7 @@ func getTags(tagID string) error {
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		if tagID == "" {
 			return printer.PrintTagListResponse(tags, commandName)
 		} else {

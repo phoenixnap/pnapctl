@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/ranchermodels"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 var Filename string
@@ -20,7 +21,7 @@ var CreateClusterCmd = &cobra.Command{
 	Long: `Create a new cluster.
 	
 Requires a file (yaml or json) containing the information needed to create the cluster.`,
-	Example: `# create a new cluster as described in clusterCreate.yaml
+	Example: `# Create a new cluster as described in clusterCreate.yaml
 pnapctl create cluster --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 # clusterCreate.yaml
@@ -40,7 +41,7 @@ nodePools:
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 201 {
+		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return printer.PrintClusterResponse(response, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)

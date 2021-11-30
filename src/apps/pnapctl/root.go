@@ -135,11 +135,18 @@ func initConfig() {
 		clientId := viper.GetString("clientId")
 		clientSecret := viper.GetString("clientSecret")
 
-		bmcapi.Client = bmcapi.NewMainClient(clientId, clientSecret)
-		rancher.Client = rancher.NewMainClient(clientId, clientSecret)
-		audit.Client = audit.NewMainClient(clientId, clientSecret)
-		tags.Client = tags.NewMainClient(clientId, clientSecret)
-		networks.Client = networks.NewMainClient(clientId, clientSecret)
+		customBmcApiHostname := viper.GetString("bmcApiHostname")
+		customRancherHostname := viper.GetString("rancherHostname")
+		customAuditHostname := viper.GetString("auditHostname")
+		customTagsHostname := viper.GetString("tagsHostname")
+		customNetworksHostname := viper.GetString("networksHostname")
+		customTokenUrl := viper.GetString("tokenURL")
+
+		bmcapi.Client = bmcapi.NewMainClient(clientId, clientSecret, customBmcApiHostname, customTokenUrl)
+		rancher.Client = rancher.NewMainClient(clientId, clientSecret, customRancherHostname, customTokenUrl)
+		audit.Client = audit.NewMainClient(clientId, clientSecret, customAuditHostname, customTokenUrl)
+		tags.Client = tags.NewMainClient(clientId, clientSecret, customTagsHostname, customTokenUrl)
+		networks.Client = networks.NewMainClient(clientId, clientSecret, customNetworksHostname, customTokenUrl)
 	}
 }
 

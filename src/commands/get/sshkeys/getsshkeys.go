@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 const commandName string = "get ssh-keys"
@@ -26,12 +27,12 @@ var GetSshKeysCmd = &cobra.Command{
 Prints one or all ssh-keys assigned to your account.
 By default, the data is printed in table format.
 
-To print a single ssh-key, an ID linked to the resource needs to be passed as an argument.`,
+To print a specific ssh-key, an ID linked to the resource needs to be passed as an argument.`,
 	Example: `
-# List all ssh-keys in json format.
+# List all ssh-keys.
 pnapctl get ssh-keys [--full] [--output <OUTPUT_TYPE>]
 
-# List all details of desired ssh-key in yaml format.
+# List a specific ssh-key.
 pnapctl get ssh-key <SSH_KEY_ID> [--full] [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
@@ -56,7 +57,7 @@ func getSshKeys(sshKeyId string) error {
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		if sshKeyId == "" {
 			return printer.PrintSshKeyListResponse(sshKeys, Full, commandName)
 		} else {

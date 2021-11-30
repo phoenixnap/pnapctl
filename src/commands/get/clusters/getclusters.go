@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/client/rancher"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -26,12 +27,12 @@ var GetClustersCmd = &cobra.Command{
 Prints information about the clusters.
 By default, the data is printed in table format.
 
-To print a single cluster, an ID needs to be passed as an argument.`,
+To print a specific cluster, an ID needs to be passed as an argument.`,
 	Example: `
-# List all clusters in json format.
+# List all clusters.
 pnapctl get clusters [--output <OUTPUT_TYPE>]
 
-# List a single cluster in yaml format.
+# List a specific cluster.
 pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
@@ -56,7 +57,7 @@ func getClusters(clusterID string) error {
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		if clusterID == "" {
 			return printer.PrintClusterListResponse(clusters, commandName)
 		} else {

@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 // Filename is the filename from which to retrieve a complex object
@@ -24,7 +25,7 @@ var CreateSshKeyCmd = &cobra.Command{
 	Long: `Create a new ssh-key.
 
 Requires a file (yaml or json) containing the information needed to create the ssh-key.`,
-	Example: `# create a new ssh-key as described in sshKeyCreate.yaml
+	Example: `# Create a new ssh-key as described in sshKeyCreate.yaml
 pnapctl create ssh-key --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # sshKeyCreate.yaml
@@ -43,7 +44,7 @@ key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyVGaw1PuEl98f4/7Kq3O9ZIvDw2OFOSXAFVq
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 201 {
+		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return printer.PrintSshKeyResponse(response, Full, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)

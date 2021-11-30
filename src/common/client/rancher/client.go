@@ -6,6 +6,7 @@ import (
 
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"golang.org/x/oauth2/clientcredentials"
+	"phoenixnap.com/pnap-cli/commands/version"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )
 
@@ -22,21 +23,31 @@ type MainClient struct {
 	RancherSdkClient ranchersdk.ClustersApi
 }
 
-func NewMainClient(clientId string, clientSecret string) RancherSdkClient {
+func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) RancherSdkClient {
 	rancherConfiguration := ranchersdk.NewConfiguration()
 
-	if configuration.RancherHostname != "" {
-		rancherConfiguration.Servers[0].URL = configuration.RancherHostname
+	if customUrl != "" {
+		rancherConfiguration.Servers = ranchersdk.ServerConfigurations{
+			{
+				URL: customUrl,
+			},
+		}
+	}
+
+	tokenUrl := configuration.TokenURL
+	if customTokenURL != "" {
+		tokenUrl = customTokenURL
 	}
 
 	config := clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
-		TokenURL:     configuration.TokenURL,
+		TokenURL:     tokenUrl,
 		Scopes:       []string{"bmc", "bmc.read"},
 	}
 
 	rancherConfiguration.HTTPClient = config.Client(context.Background())
+	rancherConfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
 
 	api_client := ranchersdk.NewAPIClient(rancherConfiguration)
 

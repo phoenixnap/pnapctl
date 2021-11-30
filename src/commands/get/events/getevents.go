@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/auditmodels"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 const commandName string = "get events"
@@ -21,15 +22,15 @@ var GetEventsCmd = &cobra.Command{
 	
 By default, the data is printed in table format.`,
 	Example: `
-# List all events in json format.
-pnapctl get events [--from <FROM>] [--to <TO>] [--limit <LIMIT>] [--order <ORDER>] [--username <USERNAME>] [--verb <VERB>] [--output <OUTPUT_TYPE>]`,
+# List all events.
+pnapctl get events [--from <FROM>] [--to <TO>] [--limit <LIMIT>] [--order <ORDER>] [--username <USERNAME>] [--verb <VERB>] [--uri <URI>] [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return getEvents()
 	},
 }
 
 func getEvents() error {
-	params, err := auditmodels.NewEventsGetQueryParams(From, To, Limit, Order, Username, Verb)
+	params, err := auditmodels.NewEventsGetQueryParams(From, To, Limit, Order, Username, Verb, Uri)
 	if err != nil {
 		return err
 	}
@@ -38,7 +39,7 @@ func getEvents() error {
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		return printer.PrintEventListResponse(events, commandName)
 	} else {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)
@@ -51,6 +52,7 @@ var Limit int
 var Order string
 var Username string
 var Verb string
+var Uri string
 
 func init() {
 	GetEventsCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
@@ -60,4 +62,5 @@ func init() {
 	GetEventsCmd.PersistentFlags().StringVar(&Order, "order", "", "Ordering of the event's time. Must be 'ASC' or 'DESC'")
 	GetEventsCmd.PersistentFlags().StringVar(&Username, "username", "", "The username that did the actions.")
 	GetEventsCmd.PersistentFlags().StringVar(&Verb, "verb", "", "The HTTP verb corresponding to the action. Must be 'POST', 'PUT', 'PATCH', 'DELETE'")
+	GetEventsCmd.PersistentFlags().StringVar(&Uri, "uri", "", "The request URI.")
 }

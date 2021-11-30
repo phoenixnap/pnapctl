@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/tagmodels"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 // Filename is the filename from which to retrieve a complex object
@@ -22,7 +23,7 @@ var CreateTagCmd = &cobra.Command{
 	Long: `Create a new tag.
 
 Requires a file (yaml or json) containing the information needed to create the tag.`,
-	Example: `# create a new tag as described in tag.yaml
+	Example: `# Create a new tag as described in tagCreate.yaml
 pnapctl create tag --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 # tagCreate.yaml
@@ -40,7 +41,7 @@ isBillingTag: false
 		// Create the tag
 		response, httpResponse, err := tags.Client.TagPost(*tagCreate)
 
-		if httpResponse != nil && httpResponse.StatusCode != 201 {
+		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		} else if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)

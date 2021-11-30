@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/client/bmcapi"
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 const commandName string = "get quotas"
@@ -25,12 +26,12 @@ var GetQuotasCmd = &cobra.Command{
 Prints all information about the quotas assigned to your account.
 By default, the data is printed in table format.
 
-To print a single quota, a quota ID needs to be passed as an argument.`,
+To print a specific quota, a quota ID needs to be passed as an argument.`,
 	Example: `
-# List all quotas in json format.
+# List all quotas in.
 pnapctl get quotas [--output <OUTPUT_TYPE>]
 
-# List all details of a desired quota in yaml format.
+# List a specific quota.
 pnapctl get quota <QUOTA_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) >= 1 {
@@ -55,7 +56,7 @@ func getQuotas(quotaId string) error {
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		if quotaId == "" {
 			return printer.PrintQuotaListResponse(quotas, commandName)
 		} else {

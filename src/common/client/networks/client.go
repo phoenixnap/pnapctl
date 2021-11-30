@@ -24,17 +24,26 @@ type MainClient struct {
 	PrivateNetworksClient networkapisdk.PrivateNetworksApi
 }
 
-func NewMainClient(clientId string, clientSecret string) NetworkSdkClient {
+func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) NetworkSdkClient {
 	networksAPIconfiguration := networkapisdk.NewConfiguration()
 
-	if configuration.NetworksHostname != "" {
-		networksAPIconfiguration.Servers[0].URL = configuration.NetworksHostname
+	if customUrl != "" {
+		networksAPIconfiguration.Servers = networkapisdk.ServerConfigurations{
+			{
+				URL: customUrl,
+			},
+		}
+	}
+
+	tokenUrl := configuration.TokenURL
+	if customTokenURL != "" {
+		tokenUrl = customTokenURL
 	}
 
 	config := clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
-		TokenURL:     configuration.TokenURL,
+		TokenURL:     tokenUrl,
 		Scopes:       []string{"bmc", "bmc.read"},
 	}
 

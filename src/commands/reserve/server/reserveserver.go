@@ -5,6 +5,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -18,14 +19,15 @@ var Full bool
 
 // ResetServerCmd is the command for resetting a server.
 var ReserveServerCmd = &cobra.Command{
-	Use:   "server SERVER_ID",
-	Short: "Reserve a specific server.",
-	Long: `Reserve a specific server for future use.
-Pricing Model is to be passed within a YAML or JSON file.`,
+	Use:          "server SERVER_ID",
+	Short:        "Reserve a specific server.",
 	Args:         cobra.ExactArgs(1),
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
-	Example: `# Reserve a server
+	Long: `Reserve a specific server for future use.
+
+Requires a file (yaml or json) containing the information needed to reserve the specific server.`,
+	Example: `# Reserve a specific server with pricing model described in serverReserve.yaml
 pnapctl reserve server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # serverReserve.yaml
@@ -41,7 +43,7 @@ pricingModel: ONE_MONTH_RESERVATION`,
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 200 {
+		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return printer.PrintServerResponse(serverResponse, Full, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)

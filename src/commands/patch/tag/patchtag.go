@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/tagmodels"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 // Filename is the filename from which to retrieve a complex object
@@ -24,7 +25,7 @@ var PatchTagCmd = &cobra.Command{
 	Long: `Patch/Update a tag.
 
 Requires a file (yaml or json) containing the information needed to patch the tag.`,
-	Example: `# modify an existing tag as per tagPatch.yaml
+	Example: `# Modify an existing tag as per tagPatch.yaml
 pnapctl patch tag <TAG_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 # tagPatch.yaml
@@ -41,7 +42,7 @@ isBillingTag: false`,
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode != 200 {
+		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		} else {
 			fmt.Println("Tag edit successful.")

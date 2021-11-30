@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnap-cli/common/ctlerrors"
 	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
 	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnap-cli/common/utils"
 )
 
 // Filename is the filename from which to retrieve a complex object
@@ -21,8 +22,8 @@ var CreateServerPrivateNetworkCmd = &cobra.Command{
 	SilenceUsage: true,
 	Long: `Create a new private network for server.
 
-Requires a file (yaml or json) containing the information needed to create the server.`,
-	Example: `# Add a server to a private network as defined in createPrivateNetwork.yaml
+Requires a file (yaml or json) containing the information needed to create the server private network.`,
+	Example: `# Add a server to a private network as defined in serverPrivateNetworkCreate.yaml
 pnapctl create server-private-network <SERVER_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 # serverPrivateNetworkCreate.yaml
@@ -46,7 +47,7 @@ statusDescription: in-progress
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 202 {
+		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return printer.PrintServerPrivateNetwork(response, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
