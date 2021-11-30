@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/commands/get/clusters"
 	"phoenixnap.com/pnapctl/commands/get/events"
+	"phoenixnap.com/pnapctl/commands/get/privatenetwork"
 	"phoenixnap.com/pnapctl/commands/get/quotas"
 	"phoenixnap.com/pnapctl/commands/get/servers"
 	"phoenixnap.com/pnapctl/commands/get/sshkeys"
@@ -29,4 +30,5 @@ func init() {
 	GetCmd.AddCommand(events.GetEventsCmd)
 	GetCmd.AddCommand(tags.GetTagsCmd)
 	GetCmd.AddCommand(sshkeys.GetSshKeysCmd)
+	GetCmd.AddCommand(privatenetwork.GetPrivateNetworksCmd)
 }
