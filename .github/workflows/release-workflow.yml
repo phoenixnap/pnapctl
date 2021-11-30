@@ -106,7 +106,7 @@ jobs:
     container: golang:1.17.1
     steps:
       - name: Install zip
-        run: apt-get install -y zip
+        run: apt-get update && apt-get install -y zip
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Build and Pack
