@@ -2,7 +2,7 @@ package tables
 
 import (
 	auditsdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
-	auditmodels "phoenixnap.com/pnap-cli/common/models/auditmodels"
+	auditmodels "phoenixnap.com/pnapctl/common/models/auditmodels"
 )
 
 type Event struct {

@@ -4,8 +4,9 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client/bmcapi"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/client/bmcapi"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/utils"
 )
 
 const commandName string = "power-on server"
@@ -24,7 +25,7 @@ var PowerOnServerCmd = &cobra.Command{
 		if err != nil {
 			// TODO - Process error from SDK in ctlerrors.
 			return err
-		} else if httpResponse.StatusCode != 200 {
+		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		}
 

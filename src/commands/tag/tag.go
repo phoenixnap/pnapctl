@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/tag/server"
+	"phoenixnap.com/pnapctl/commands/tag/server"
 )
 
 var TagCmd = &cobra.Command{

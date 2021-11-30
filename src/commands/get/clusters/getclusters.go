@@ -4,9 +4,10 @@ import (
 	netHttp "net/http"
 
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
-	"phoenixnap.com/pnap-cli/common/client/rancher"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnapctl/common/client/rancher"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -56,7 +57,7 @@ func getClusters(clusterID string) error {
 
 	if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	} else if httpResponse.StatusCode == 200 {
+	} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 		if clusterID == "" {
 			return printer.PrintClusterListResponse(clusters, commandName)
 		} else {

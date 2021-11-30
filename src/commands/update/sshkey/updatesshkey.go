@@ -2,10 +2,11 @@ package sshkey
 
 import (
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/common/client/bmcapi"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
-	"phoenixnap.com/pnap-cli/common/printer"
+	"phoenixnap.com/pnapctl/common/client/bmcapi"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 )
 
 // Filename is the filename from which to retrieve a complex object
@@ -42,7 +43,7 @@ name: default ssh key`,
 
 		if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if httpResponse.StatusCode == 200 {
+		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return printer.PrintSshKeyResponse(response, Full, commandName)
 		} else {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)

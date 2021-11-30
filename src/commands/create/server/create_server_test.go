@@ -8,14 +8,14 @@ import (
 	"github.com/golang/mock/gomock"
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnap-cli/tests/generators"
+	"phoenixnap.com/pnapctl/tests/generators"
 
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 
 	"gopkg.in/yaml.v2"
-	"phoenixnap.com/pnap-cli/tests/testutil"
+	"phoenixnap.com/pnapctl/tests/testutil"
 
-	. "phoenixnap.com/pnap-cli/tests/mockhelp"
+	. "phoenixnap.com/pnapctl/tests/mockhelp"
 )
 
 func TestCreateServerSuccessYAML(test_framework *testing.T) {

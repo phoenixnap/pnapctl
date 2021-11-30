@@ -5,8 +5,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"phoenixnap.com/pnap-cli/common/client/bmcapi"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/client/bmcapi"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/utils"
 )
 
 const commandName = "delete server"
@@ -24,7 +25,7 @@ var DeleteServerCmd = &cobra.Command{
 
 		if err != nil {
 			return err
-		} else if httpResponse.StatusCode != 200 {
+		} else if !utils.Is2xxSuccessful(httpResponse.StatusCode) {
 			return ctlerrors.HandleBMCError(httpResponse, commandName)
 		}
 

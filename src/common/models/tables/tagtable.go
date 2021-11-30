@@ -2,7 +2,7 @@ package tables
 
 import (
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
-	"phoenixnap.com/pnap-cli/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/common/models/tagmodels"
 )
 
 type TagTable struct {
