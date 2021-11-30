@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	. "phoenixnap.com/pnap-cli/tests/mockhelp"
-	"phoenixnap.com/pnap-cli/tests/testutil"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	. "phoenixnap.com/pnapctl/tests/mockhelp"
+	"phoenixnap.com/pnapctl/tests/testutil"
 )
 
 func TestDeletePrivateNetworkSuccess(test_framework *testing.T) {

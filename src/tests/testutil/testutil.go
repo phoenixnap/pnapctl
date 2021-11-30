@@ -3,7 +3,7 @@ package testutil
 import (
 	"errors"
 
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 )
 
 // A generic test error.

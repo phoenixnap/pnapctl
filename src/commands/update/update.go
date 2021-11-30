@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/update/privatenetwork"
-	"phoenixnap.com/pnap-cli/commands/update/sshkey"
+	"phoenixnap.com/pnapctl/commands/update/privatenetwork"
+	"phoenixnap.com/pnapctl/commands/update/sshkey"
 )
 
 var UpdateCmd = &cobra.Command{

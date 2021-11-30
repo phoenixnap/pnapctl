@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"phoenixnap.com/pnap-cli/common/client/networks"
-	"phoenixnap.com/pnap-cli/tests/mocks/sdkmocks"
+	"phoenixnap.com/pnapctl/common/client/networks"
+	"phoenixnap.com/pnapctl/tests/mocks/sdkmocks"
 )
 
 const NETWORKID = "mock_id"

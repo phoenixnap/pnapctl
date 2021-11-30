@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/patch/server"
-	"phoenixnap.com/pnap-cli/commands/patch/tag"
+	"phoenixnap.com/pnapctl/commands/patch/server"
+	"phoenixnap.com/pnapctl/commands/patch/tag"
 )
 
 var PatchCmd = &cobra.Command{

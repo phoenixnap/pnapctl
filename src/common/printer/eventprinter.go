@@ -2,8 +2,8 @@ package printer
 
 import (
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
-	"phoenixnap.com/pnap-cli/common/models/auditmodels"
-	"phoenixnap.com/pnap-cli/common/models/tables"
+	"phoenixnap.com/pnapctl/common/models/auditmodels"
+	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
 func PrintEventListResponse(events []auditapisdk.Event, commandName string) error {

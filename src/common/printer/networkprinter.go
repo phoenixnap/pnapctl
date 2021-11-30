@@ -2,8 +2,8 @@ package printer
 
 import (
 	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
-	"phoenixnap.com/pnap-cli/common/models/networkmodels"
-	"phoenixnap.com/pnap-cli/common/models/tables"
+	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
 func PrintPrivateNetworkResponse(network networksdk.PrivateNetwork, commandName string) error {

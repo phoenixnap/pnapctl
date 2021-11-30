@@ -3,8 +3,8 @@ package privatenetwork
 import (
 	"github.com/spf13/cobra"
 
-	"phoenixnap.com/pnap-cli/common/client/networks"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/client/networks"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 )
 
 const commandName = "delete private-network"

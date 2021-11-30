@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnap-cli/commands/shutdown/server"
+	"phoenixnap.com/pnapctl/commands/shutdown/server"
 )
 
 var ShutdownCmd = &cobra.Command{

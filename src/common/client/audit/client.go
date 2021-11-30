@@ -6,9 +6,9 @@ import (
 
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"golang.org/x/oauth2/clientcredentials"
-	"phoenixnap.com/pnap-cli/commands/version"
-	"phoenixnap.com/pnap-cli/common/models/auditmodels"
-	configuration "phoenixnap.com/pnap-cli/configs"
+	"phoenixnap.com/pnapctl/commands/version"
+	"phoenixnap.com/pnapctl/common/models/auditmodels"
+	configuration "phoenixnap.com/pnapctl/configs"
 )
 
 var Client AuditSdkClient

@@ -8,11 +8,11 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models/networkmodels"
-	"phoenixnap.com/pnap-cli/tests/generators"
-	. "phoenixnap.com/pnap-cli/tests/mockhelp"
-	"phoenixnap.com/pnap-cli/tests/testutil"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/tests/generators"
+	. "phoenixnap.com/pnapctl/tests/mockhelp"
+	"phoenixnap.com/pnapctl/tests/testutil"
 
 	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
 )

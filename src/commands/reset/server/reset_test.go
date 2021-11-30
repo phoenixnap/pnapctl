@@ -6,15 +6,15 @@ import (
 	"testing"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
 
 	"gopkg.in/yaml.v2"
-	"phoenixnap.com/pnap-cli/tests/generators"
-	"phoenixnap.com/pnap-cli/tests/testutil"
+	"phoenixnap.com/pnapctl/tests/generators"
+	"phoenixnap.com/pnapctl/tests/testutil"
 
 	"github.com/stretchr/testify/assert"
-	. "phoenixnap.com/pnap-cli/tests/mockhelp"
+	. "phoenixnap.com/pnapctl/tests/mockhelp"
 )
 
 func TestResetServerSuccessYAML(test_framework *testing.T) {

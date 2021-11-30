@@ -2,7 +2,7 @@ package ranchermodels
 
 import (
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
-	files "phoenixnap.com/pnap-cli/common/fileprocessor"
+	files "phoenixnap.com/pnapctl/common/fileprocessor"
 )
 
 type Cluster struct {

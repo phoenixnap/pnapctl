@@ -2,7 +2,7 @@ package tables
 
 import (
 	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
-	"phoenixnap.com/pnap-cli/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models/networkmodels"
 )
 
 type PrivateNetworkTable struct {

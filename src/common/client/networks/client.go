@@ -6,8 +6,8 @@ import (
 
 	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"golang.org/x/oauth2/clientcredentials"
-	"phoenixnap.com/pnap-cli/commands/version"
-	configuration "phoenixnap.com/pnap-cli/configs"
+	"phoenixnap.com/pnapctl/commands/version"
+	configuration "phoenixnap.com/pnapctl/configs"
 )
 
 var Client NetworkSdkClient

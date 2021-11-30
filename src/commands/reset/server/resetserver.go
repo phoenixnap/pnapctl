@@ -3,10 +3,10 @@ package server
 import (
 	"fmt"
 
-	"phoenixnap.com/pnap-cli/common/client/bmcapi"
-	"phoenixnap.com/pnap-cli/common/ctlerrors"
-	"phoenixnap.com/pnap-cli/common/models/bmcapimodels"
-	"phoenixnap.com/pnap-cli/common/utils"
+	"phoenixnap.com/pnapctl/common/client/bmcapi"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/utils"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/spf13/cobra"

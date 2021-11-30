@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"phoenixnap.com/pnap-cli/common/client/rancher"
-	"phoenixnap.com/pnap-cli/tests/mocks/sdkmocks"
+	"phoenixnap.com/pnapctl/common/client/rancher"
+	"phoenixnap.com/pnapctl/tests/mocks/sdkmocks"
 )
 
 const CLUSTERID = "mock_id"

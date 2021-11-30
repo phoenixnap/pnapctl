@@ -2,7 +2,7 @@ package networkmodels
 
 import (
 	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
-	files "phoenixnap.com/pnap-cli/common/fileprocessor"
+	files "phoenixnap.com/pnapctl/common/fileprocessor"
 )
 
 type PrivateNetworkModify struct {
