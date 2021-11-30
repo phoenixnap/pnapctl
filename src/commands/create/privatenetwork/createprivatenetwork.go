@@ -22,8 +22,8 @@ var CreatePrivateNetworkCmd = &cobra.Command{
 	Long: `Create a new private-network.
 
 Requires a file (yaml or json) containing the information needed to create the private network.`,
-	Example: `# Create a new private network as per inprivateNetworkCreate.yaml
-pnapctl create private-network --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
+	Example: `# Create a new private network as per privateNetworkCreate.yaml
+pnapctl create private-network --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 # privateNetworkCreate.yaml
 name: Example CLI Network,

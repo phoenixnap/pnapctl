@@ -6,6 +6,7 @@ import (
 
 	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"golang.org/x/oauth2/clientcredentials"
+	"phoenixnap.com/pnap-cli/commands/version"
 	configuration "phoenixnap.com/pnap-cli/configs"
 )
 
@@ -48,6 +49,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	}
 
 	networksAPIconfiguration.HTTPClient = config.Client(context.Background())
+	networksAPIconfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
 
 	api_client := networkapisdk.NewAPIClient(networksAPIconfiguration)
 

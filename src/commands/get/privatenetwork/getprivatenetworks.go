@@ -23,13 +23,13 @@ var GetPrivateNetworksCmd = &cobra.Command{
 	Args:         cobra.MaximumNArgs(1),
 	Long: `Retrieve one or all private networks.
 
-Prints brief or detailed information about the private networks.
+Prints detailed information about the private networks.
 By default, the data is printed in table format.
 
 To print a specific private network, an ID needs to be passed as an argument.`,
 	Example: `
 # List all private networks.
-pnapctl get private-networks [--full] [--output <OUTPUT_TYPE>] [--location <LOCATION>]
+pnapctl get private-networks [--output <OUTPUT_TYPE>] [--location <LOCATION>]
 
 # List all details of a specific private network.
 pnapctl get private-networks <PRIVATE_NETWORK_ID> [--full] [--output <OUTPUT_TYPE>]`,

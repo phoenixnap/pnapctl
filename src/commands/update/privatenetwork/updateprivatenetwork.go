@@ -22,7 +22,7 @@ var UpdatePrivateNetworkCmd = &cobra.Command{
 	Long: `Update a private network.
 
 Requires a file (yaml or json) containing the information needed to modify the private-network.`,
-	Example: `# Update a private network as per in privateNetworkUpdate.yaml
+	Example: `# Update a private network as per privateNetworkUpdate.yaml
 pnapctl update private-network <PRIVATE_NETWORK_ID> --filename <FILENAME> [--output <OUTPUT_TYPE>]
 
 # privateNetworkUpdate.yaml
