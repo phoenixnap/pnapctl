@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build and Pack
+    name: Build
     runs-on: ubuntu-latest
     container: golang:1.17.1
     steps:
@@ -105,6 +105,8 @@ jobs:
     runs-on: ubuntu-latest
     container: golang:1.17.1
     steps:
+      - name: Install zip
+        run: apt-get install -y zip
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Build and Pack
