@@ -130,8 +130,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           path: artifacts
-      - name: Upload Release Artifacts
-        uses: actions/upload-artifact@v2
+      - name: Release Assets
+        uses: softprops/action-gh-release@v1
         with:
-          name: packages
-          path: artifacts
+          files: |
+            artifacts/pnapctl-darwin-amd64.tar.gz
+            artifacts/pnapctl-linux-amd64.tar.gz
+            artifacts/pnapctl-windows-amd64.zip
