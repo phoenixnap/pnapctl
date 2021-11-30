@@ -99,8 +99,8 @@ jobs:
           files: test-results/**/*.xml
           check_name: "Test Results"
 
-  build-packages:
-    name: Build Packages
+  build-artifacts:
+    name: Build Artifacts
     needs:
       - build
       - unit-tests
@@ -114,3 +114,24 @@ jobs:
         uses: actions/checkout@v2
       - name: Build and Pack
         run: make build-and-pack
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Dist Packages
+          path: build/dist/*
+
+  publish-artifacts:
+    name: Publish Artifacts
+    needs:
+      - build-artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+      - name: Upload Release Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: packages
+          path: artifacts
