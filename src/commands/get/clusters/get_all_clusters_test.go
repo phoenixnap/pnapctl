@@ -7,14 +7,14 @@ import (
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/ranchermodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/tests/generators"
 	. "phoenixnap.com/pnapctl/tests/mockhelp"
 	"phoenixnap.com/pnapctl/tests/testutil"
 )
 
 func TestGetAllServersShortSuccess(test_framework *testing.T) {
-	clusters := generators.GenerateClusters(5)
+	clusters := ranchermodels.GenerateClusters(5)
 
 	var clusterlist []interface{}
 
@@ -65,7 +65,7 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
-	clusters := generators.GenerateClusters(5)
+	clusters := ranchermodels.GenerateClusters(5)
 
 	var clusterlist []interface{}
 

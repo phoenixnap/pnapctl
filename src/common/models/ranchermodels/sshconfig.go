@@ -11,6 +11,10 @@ type SshConfig struct {
 }
 
 func (s *SshConfig) ToSdk() *ranchersdk.SshConfig {
+	if s == nil {
+		return nil
+	}
+
 	return &ranchersdk.SshConfig{
 		InstallDefaultKeys: s.InstallDefaultKeys,
 		Keys:               s.Keys,
@@ -19,6 +23,10 @@ func (s *SshConfig) ToSdk() *ranchersdk.SshConfig {
 }
 
 func SshConfigFromSdk(config *ranchersdk.SshConfig) *SshConfig {
+	if config == nil {
+		return nil
+	}
+
 	return &SshConfig{
 		InstallDefaultKeys: config.InstallDefaultKeys,
 		Keys:               config.Keys,

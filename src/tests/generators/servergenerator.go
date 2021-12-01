@@ -6,8 +6,6 @@ import (
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
-
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -86,35 +84,6 @@ func GenerateServerCreate() bmcapimodels.ServerCreate {
 		OsConfiguration:       nil,
 		Tags:                  nil,
 		NetworkConfiguration:  nil,
-	}
-}
-
-func GenerateClusters(n int) []ranchersdk.Cluster {
-	var clusterlist []ranchersdk.Cluster
-	for i := 0; i < n; i++ {
-		clusterlist = append(clusterlist, GenerateCluster())
-	}
-	return clusterlist
-}
-
-func GenerateCluster() ranchersdk.Cluster {
-	return ranchersdk.Cluster{
-		Id:                    RandSeqPointer(10),
-		Name:                  RandSeqPointer(10),
-		Description:           RandSeqPointer(10),
-		Location:              RandSeq(10),
-		InitialClusterVersion: RandSeqPointer(10),
-		NodePools:             nil,
-		Configuration:         nil,
-		Metadata:              nil,
-		StatusDescription:     RandSeqPointer(10),
-	}
-}
-
-func GenerateRancherDeleteResult() ranchersdk.DeleteResult {
-	return ranchersdk.DeleteResult{
-		Result:    RandSeq(10),
-		ClusterId: RandSeqPointer(10),
 	}
 }
 

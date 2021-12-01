@@ -22,6 +22,7 @@ func (n NodePool) ToSdk() *ranchersdk.NodePool {
 	var nodes *[]ranchersdk.Node
 
 	if n.Nodes != nil {
+		nodes = &[]ranchersdk.Node{}
 		for _, node := range *n.Nodes {
 			*nodes = append(*nodes, *node.ToSdk())
 		}
@@ -45,7 +46,8 @@ func (n Node) ToSdk() *ranchersdk.Node {
 func NodePoolFromSdk(nodepool ranchersdk.NodePool) NodePool {
 	var nodes *[]Node
 
-	if nodepool.Nodes == nil {
+	if nodepool.Nodes != nil {
+		nodes = &[]Node{}
 		for _, node := range *nodepool.Nodes {
 			*nodes = append(*nodes, NodeFromSdk(node))
 		}

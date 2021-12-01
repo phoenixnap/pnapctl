@@ -20,7 +20,8 @@ type Cluster struct {
 func (c Cluster) ToSdk() ranchersdk.Cluster {
 	var nodepools *[]ranchersdk.NodePool
 
-	if nodepools != nil {
+	if c.NodePools != nil {
+		nodepools = &[]ranchersdk.NodePool{}
 		for _, nodepool := range *c.NodePools {
 			*nodepools = append(*nodepools, *nodepool.ToSdk())
 		}
@@ -53,7 +54,8 @@ func (c Cluster) ToSdk() ranchersdk.Cluster {
 func ClusterFromSdk(cluster ranchersdk.Cluster) Cluster {
 	var nodepools *[]NodePool
 
-	if nodepools != nil {
+	if cluster.NodePools != nil {
+		nodepools = &[]NodePool{}
 		for _, nodepool := range *cluster.NodePools {
 			*nodepools = append(*nodepools, NodePoolFromSdk(nodepool))
 		}

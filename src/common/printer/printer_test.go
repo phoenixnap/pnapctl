@@ -7,6 +7,7 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
+	"phoenixnap.com/pnapctl/common/models/ranchermodels"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
 	"phoenixnap.com/pnapctl/tests/generators"
 )
@@ -219,7 +220,7 @@ func TestPrepareEventListForPrinting(test_framework *testing.T) {
 
 func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	cluster := generators.GenerateCluster()
+	cluster := ranchermodels.GenerateCluster()
 	prepared := PrepareClusterForPrinting(cluster)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -229,7 +230,7 @@ func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
 	OutputFormat = "json"
-	cluster := generators.GenerateCluster()
+	cluster := ranchermodels.GenerateCluster()
 	prepared := PrepareClusterForPrinting(cluster)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -239,7 +240,7 @@ func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
 
 func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	clusters := generators.GenerateClusters(1)
+	clusters := ranchermodels.GenerateClusters(1)
 	prepared := PrepareClusterListForPrinting(clusters)
 
 	outputType := fmt.Sprintf("%T", prepared[0])

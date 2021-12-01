@@ -6,7 +6,7 @@ import (
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/tests/generators"
+	"phoenixnap.com/pnapctl/common/models/ranchermodels"
 	. "phoenixnap.com/pnapctl/tests/mockhelp"
 	"phoenixnap.com/pnapctl/tests/testutil"
 )
@@ -15,7 +15,7 @@ func TestDeleteClusterSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterDelete(RESOURCEID).
-		Return(generators.GenerateRancherDeleteResult(), WithResponse(200, nil), nil)
+		Return(ranchermodels.GenerateRancherDeleteResult(), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteClusterCmd.RunE(DeleteClusterCmd, []string{RESOURCEID})
