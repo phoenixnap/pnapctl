@@ -3,5 +3,5 @@
 # =====================================================
 
 # Authentication
-clientId: 
-clientSecret: 
+clientId: <CLIENT_ID>
+clientSecret: <CLIENT_SECRET>

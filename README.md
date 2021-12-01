@@ -30,7 +30,7 @@ Usage:
 * `make test` to run tests
 * `make test-verbose` to run tests in verbose mode
 * `make test-race` for race tests
-* `make test-coverage` for test coverage (will output report.xml in test/coverage/).
+* `make test-coverage` for test coverage (will output report.xml in out/unit-tests/).
 * `make test-coverage-show` for showing a GUI with coverage information (will output `cover.out`)
 * `make test-tparse` to run tests in a pretty format (requires `tparse` to be installed)
 * `make test PKG=./commands/create` to restrict test to a package
@@ -54,6 +54,17 @@ TParse can show you the total coverage%, but there's a way to find the exact lin
 2. Run `go tool cover -html=cover.out`. This will use the `cover.out` you just generated to display coverage information in your browser.
 
 **NOTE:** You can also run `make test-coverage-show`, which will run both of the mentioned commands. It works with `PKG` as well.
+
+## Running Component Tests
+
+Component tests are executed using [`bats`](https://bats-core.readthedocs.io/en/stable/). To install bats using `npm` run:
+
+```
+$ npm install -g bats
+```
+
+Usage:
+* `make component-tests` to fetch and verify versions of required libraries and run the component tests (will output junit report in out/component-tests/).
 
 ## Debugging 
 

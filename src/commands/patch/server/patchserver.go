@@ -3,7 +3,6 @@ package server
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -39,13 +38,12 @@ description: My custom server edit`,
 		}
 
 		serverResponse, httpResponse, err := bmcapi.Client.ServerPatch(args[0], *patchRequest)
+		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
-		if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else if utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return printer.PrintServerResponse(serverResponse, Full, commandName)
+		if *generatedError != nil {
+			return *generatedError
 		} else {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
+			return printer.PrintServerResponse(serverResponse, Full, commandName)
 		}
 	},
 }
