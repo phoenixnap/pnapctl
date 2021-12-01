@@ -4,68 +4,63 @@ load "./support/common/load.bash"
 source "./support/constants/create-error-output.sh"
 
 runCommand="run pnapctl create server"
-runCommandWithFilename="$runCommand --filename test.json"
+runCommandWithJsonFile="$runCommand --filename $jsonFile"
+runCommandWithYamlFile="$runCommand --filename $yamlFile"
 
-@test "Run server provision command without specifying json file" {
+@test "Run server provision command without specifying filename" {
     $runCommand
     
     assert_failure
-    assert_output 'Error: required flag(s) "filename" not set'
+    assert_output "$expectedOutputNotSpecifiedFilename"
 }
 
 @test "Run server provision command with nonexistent json file" {
-    $runCommandWithFilename
+    $runCommandWithJsonFile
     
     assert_failure
-    assert_output "Error: The file 'test.json' does not exist."
+    assert_output "$expectedOutputNonexistentJsonFile"
+}
+
+@test "Run server provision command with nonexistent yaml file" {
+    $runCommandWithYamlFile
+    
+    assert_failure
+    assert_output "$expectedOutputNonexistentYamlFile"
 }
 
 @test "Run server provision command with invalid json payload" {
-    echo { "unknownField" : "anc" } >> test.json
-    $runCommandWithFilename
+    echo { "unknownField" : "anc" } >> $jsonFile
+    $runCommandWithJsonFile
     
     assert_failure
     assert_output "$expectedOutputWrongFile"
 }
 
-@test "Run server provision command with invalid json payload command" {
-    echo { "unknownField" : "anc" } >> test.json
-    $runCommand -- filename test.json
+@test "Run server provision command with invalid filename command" {
+    echo { "unknownField" : "anc" } >> $jsonFile
+    $runCommand -- filename $jsonFile
     
     assert_failure
-    assert_output "Error: accepts 0 arg(s), received 2"
+    assert_output "$expectedOutputInvalidFilenameCommand"
 }
 
 @test "Run server provision command with invalid yaml payload" {
-    echo { a } >> test.yaml
-    $runCommand --filename test.yaml
+    echo  "test:test"  >> $yamlFile
+    $runCommandWithYamlFile
     
     assert_failure
     assert_output "$expectedOutputWrongFile"
 }
 
 @test "Run server provision command with invalid credentials" {
-    echo { } >> test.json
+    echo { } >> $jsonFile
+    echo "clientId: <CLIENT_ID>
+clientSecret: <CLIENT_SECRET>" >> $configFile
     
-    $runCommandWithFilename
+    $runCommandWithJsonFile --config=$configFile
 
     assert_failure
     assert_output "$expectedOutputCredentialError"
-}
-
-@test "Run server provision command with invalid command input" {
-
-    run pnapctl $invalidCommandCreate server 
-
-    assert_failure
-    assert_output "$expectedOutputWrongCommandError"
-}
-
-@test "Run server provision command with nonexitant command" {
-    run pnapctl $invalidCommandPost server 
-
-    assert_failure
-    assert_output "$expectedOutputInvalidPostError"
 }
 
 @test "Run server provision command with without specifying the resource" {    
@@ -76,6 +71,7 @@ runCommandWithFilename="$runCommand --filename test.json"
 }
 
 teardown() {
-    rm -f test.json
-    rm -f test.yaml
+    rm -f $jsonFile
+    rm -f $yamlFile
+    rm -f $configFile
 }
