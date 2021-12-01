@@ -1,6 +1,7 @@
 #!/usr/bin/env bats
 
 load "./support/common/load.bash"
+source "./support/constants/create-error-output.sh"
 
 runCommand="run pnapctl create server"
 runCommandWithFilename="$runCommand --filename test.json"
@@ -9,7 +10,6 @@ runCommandWithFilename="$runCommand --filename test.json"
     $runCommand
     
     assert_failure
-
     assert_output 'Error: required flag(s) "filename" not set'
 }
 
@@ -17,75 +17,65 @@ runCommandWithFilename="$runCommand --filename test.json"
     $runCommandWithFilename
     
     assert_failure
-
     assert_output "Error: The file 'test.json' does not exist."
 }
 
 @test "Run server provision command with invalid json payload" {
     echo { "unknownField" : "anc" } >> test.json
-
     $runCommandWithFilename
     
     assert_failure
-
-    assert_output "Error: Command 'create server' has been performed, but something went wrong. Error code: 0303"
-
+    assert_output "$expectedOutputWrongFile"
 }
 
-@test "Run server provision command with empty json payload" {
+@test "Run server provision command with invalid json payload command" {
+    echo { "unknownField" : "anc" } >> test.json
+    $runCommand -- filename test.json
+    
+    assert_failure
+    assert_output "Error: accepts 0 arg(s), received 2"
+}
+
+@test "Run server provision command with invalid yaml payload" {
+    echo { a } >> test.yaml
+    $runCommand --filename test.yaml
+    
+    assert_failure
+    assert_output "$expectedOutputWrongFile"
+}
+
+@test "Run server provision command with invalid credentials" {
     echo { } >> test.json
-    expectedOutputError="Error: Post \"https://api.phoenixnap.com/bmc/v0/servers\": oauth2: cannot fetch token: 400 Bad Request
-Response: {\"error\":\"invalid_client\",\"error_description\":\"Invalid client credentials\"}"
     
     $runCommandWithFilename
 
     assert_failure
-
-    assert_output "$expectedOutputError"
-    
+    assert_output "$expectedOutputCredentialError"
 }
 
 @test "Run server provision command with invalid command input" {
-    invalidCommand="createe"
-    expectedOutputError="Error: unknown command \"$invalidCommand\" for \"pnapctl\"
 
-Did you mean this?
-	create
-
-Run 'pnapctl --help' for usage."
-    
-    run pnapctl $invalidCommand server 
+    run pnapctl $invalidCommandCreate server 
 
     assert_failure
-
-    assert_output "$expectedOutputError"
-    
+    assert_output "$expectedOutputWrongCommandError"
 }
 
 @test "Run server provision command with nonexitant command" {
-    invalidCommand="post"
-    expectedOutputError="Error: unknown command \"$invalidCommand\" for \"pnapctl\"
-Run 'pnapctl --help' for usage."
-    
-    run pnapctl $invalidCommand server 
+    run pnapctl $invalidCommandPost server 
 
     assert_failure
-
-    assert_output "$expectedOutputError"
-    
+    assert_output "$expectedOutputInvalidPostError"
 }
 
-@test "Run server provision command with without specifying the resource" {
-    expectedOutputError="Error: required flag(s) \"filename\" not set"
-    
+@test "Run server provision command with without specifying the resource" {    
     $runCommand
 
     assert_failure
-
-    assert_output "$expectedOutputError"
-    
+    assert_output "$expectedOutputFileNotSetError"
 }
 
 teardown() {
     rm -f test.json
+    rm -f test.yaml
 }
