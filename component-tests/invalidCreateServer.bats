@@ -63,13 +63,6 @@ clientSecret: <CLIENT_SECRET>" >> $configFile
     assert_output "$expectedOutputCredentialError"
 }
 
-@test "Run server provision command with without specifying the resource" {    
-    $runCommand
-
-    assert_failure
-    assert_output "$expectedOutputFileNotSetError"
-}
-
 teardown() {
     rm -f $jsonFile
     rm -f $yamlFile
