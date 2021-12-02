@@ -8,8 +8,8 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels/quota"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	. "phoenixnap.com/pnapctl/tests/mockhelp"
-	"phoenixnap.com/pnapctl/tests/testutil"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 )

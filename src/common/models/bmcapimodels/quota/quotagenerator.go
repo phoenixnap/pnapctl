@@ -5,7 +5,7 @@ import (
 	"time"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	generators "phoenixnap.com/pnapctl/tests/generators"
+	generators "phoenixnap.com/pnapctl/testsupport/generators"
 )
 
 func GenerateQuotaSdk() bmcapisdk.Quota {
@@ -21,7 +21,7 @@ func GenerateQuotaSdk() bmcapisdk.Quota {
 	}
 }
 
-func GenerateQuotaDto() Quota {
+func GenerateQuotaCli() Quota {
 	return Quota{
 		ID:                           generators.RandSeq(10),
 		Name:                         generators.RandSeq(10),
@@ -34,7 +34,7 @@ func GenerateQuotaDto() Quota {
 	}
 }
 
-func GenerateQuotas(n int) []bmcapisdk.Quota {
+func GenerateQuotaSdkList(n int) []bmcapisdk.Quota {
 	var quotaList []bmcapisdk.Quota
 	for i := 0; i < n; i++ {
 		quotaList = append(quotaList, GenerateQuotaSdk())
@@ -49,7 +49,7 @@ func GenerateQuotaEditLimitRequestSdk() bmcapisdk.QuotaEditLimitRequest {
 	}
 }
 
-func GenerateQuotaEditLimitRequestDto() QuotaEditRequest {
+func GenerateQuotaEditLimitRequestCli() QuotaEditRequest {
 	return QuotaEditRequest{
 		Limit:  int32(rand.Int()),
 		Reason: generators.RandSeq(10),

@@ -9,12 +9,12 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels/quota"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	. "phoenixnap.com/pnapctl/tests/mockhelp"
-	"phoenixnap.com/pnapctl/tests/testutil"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllQuotasSuccess(test_framework *testing.T) {
-	quotaList := quotaModel.GenerateQuotas(2)
+	quotaList := quotaModel.GenerateQuotaSdkList(2)
 
 	var quotaTables []interface{}
 
@@ -51,7 +51,7 @@ func TestGetAllQuotasKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
-	quotaList := quotaModel.GenerateQuotas(2)
+	quotaList := quotaModel.GenerateQuotaSdkList(2)
 
 	var quotaTables []interface{}
 

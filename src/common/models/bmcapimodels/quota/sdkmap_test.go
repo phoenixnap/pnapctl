@@ -9,7 +9,7 @@ import (
 )
 
 func TestQuotaEditRequestToSdk(test_framework *testing.T) {
-	quotaEditLimitRequest := GenerateQuotaEditLimitRequestDto()
+	quotaEditLimitRequest := GenerateQuotaEditLimitRequestCli()
 	sdkModel := quotaEditLimitRequest.toSdk()
 
 	assert.Equal(test_framework, quotaEditLimitRequest.Limit, sdkModel.Limit)

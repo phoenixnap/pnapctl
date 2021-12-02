@@ -5,7 +5,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"phoenixnap.com/pnapctl/common/client/tags"
-	"phoenixnap.com/pnapctl/tests/mocks/sdkmocks"
+	"phoenixnap.com/pnapctl/testsupport/mocks/sdkmocks"
 )
 
 const TAGID = "mock_id"

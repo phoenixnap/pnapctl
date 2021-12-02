@@ -10,11 +10,11 @@ import (
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
 
 	"gopkg.in/yaml.v2"
-	"phoenixnap.com/pnapctl/tests/generators"
-	"phoenixnap.com/pnapctl/tests/testutil"
+	"phoenixnap.com/pnapctl/testsupport/generators"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"github.com/stretchr/testify/assert"
-	. "phoenixnap.com/pnapctl/tests/mockhelp"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
 func TestResetServerSuccessYAML(test_framework *testing.T) {

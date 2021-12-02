@@ -2,7 +2,7 @@ package tagmodels
 
 import (
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
-	"phoenixnap.com/pnapctl/tests/generators"
+	"phoenixnap.com/pnapctl/testsupport/generators"
 )
 
 func GenerateTag() *tagapisdk.Tag {
