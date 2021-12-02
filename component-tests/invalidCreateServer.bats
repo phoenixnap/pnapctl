@@ -62,9 +62,3 @@ clientSecret: <CLIENT_SECRET>" >> $configFile
     assert_failure
     assert_output "$expectedOutputCredentialError"
 }
-
-teardown() {
-    rm -f $jsonFile
-    rm -f $yamlFile
-    rm -f $configFile
-}

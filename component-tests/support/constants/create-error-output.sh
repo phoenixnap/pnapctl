@@ -1,6 +1,6 @@
-jsonFile="test.json"
-yamlFile="test.yaml"
-configFile="config.yaml"
+jsonFile="$BATS_TEST_TMPDIR/test.json"
+yamlFile="$BATS_TEST_TMPDIR/test.yaml"
+configFile="$BATS_TEST_TMPDIR/config.yaml"
 
 expectedOutputCredentialError="Error: Post \"https://api.phoenixnap.com/bmc/v0/servers\": oauth2: cannot fetch token: 400 Bad Request
 Response: {\"error\":\"invalid_client\",\"error_description\":\"Invalid client credentials\"}"
