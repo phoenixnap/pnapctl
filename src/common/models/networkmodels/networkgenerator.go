@@ -1,39 +1,40 @@
-package generators
+package networkmodels
 
 import (
 	"math/rand"
 
 	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	"phoenixnap.com/pnapctl/tests/generators"
 )
 
 func GeneratePrivateNetwork() networkapisdk.PrivateNetwork {
 	return networkapisdk.PrivateNetwork{
-		Id:              RandSeq(10),
-		Name:            RandSeq(10),
-		Description:     RandSeqPointer(10),
+		Id:              generators.RandSeq(10),
+		Name:            generators.RandSeq(10),
+		Description:     generators.RandSeqPointer(10),
 		VlanId:          int32(rand.Int()),
-		Type:            RandSeq(10),
-		Location:        RandSeq(10),
+		Type:            generators.RandSeq(10),
+		Location:        generators.RandSeq(10),
 		LocationDefault: false,
-		Cidr:            RandSeq(10),
+		Cidr:            generators.RandSeq(10),
 		Servers:         []networkapisdk.PrivateNetworkServer{},
 	}
 }
 
 func GeneratePrivateNetworkCreate() networkapisdk.PrivateNetworkCreate {
 	return networkapisdk.PrivateNetworkCreate{
-		Name:            RandSeq(10),
-		Description:     RandSeqPointer(10),
-		Location:        RandSeq(10),
+		Name:            generators.RandSeq(10),
+		Description:     generators.RandSeqPointer(10),
+		Location:        generators.RandSeq(10),
 		LocationDefault: nil,
-		Cidr:            RandSeq(10),
+		Cidr:            generators.RandSeq(10),
 	}
 }
 
 func GeneratePrivateNetworkModify() networkapisdk.PrivateNetworkModify {
 	return networkapisdk.PrivateNetworkModify{
-		Name:            RandSeq(10),
-		Description:     RandSeqPointer(10),
+		Name:            generators.RandSeq(10),
+		Description:     generators.RandSeqPointer(10),
 		LocationDefault: false,
 	}
 }

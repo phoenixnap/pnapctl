@@ -10,7 +10,6 @@ import (
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
-	"phoenixnap.com/pnapctl/tests/generators"
 	. "phoenixnap.com/pnapctl/tests/mockhelp"
 	"phoenixnap.com/pnapctl/tests/testutil"
 
@@ -19,7 +18,7 @@ import (
 
 func TestUpdatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	sdkRequest := generators.GeneratePrivateNetworkModify()
+	sdkRequest := networkmodels.GeneratePrivateNetworkModify()
 	privateNetworkUpdate := networkmodels.PrivateNetworkModifyFromSdk(&sdkRequest)
 
 	// Assumed contents of the file.
@@ -28,7 +27,7 @@ func TestUpdatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	privateNetwork := generators.GeneratePrivateNetwork()
+	privateNetwork := networkmodels.GeneratePrivateNetwork()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -52,7 +51,7 @@ func TestUpdatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestUpdatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	sdkRequest := generators.GeneratePrivateNetworkModify()
+	sdkRequest := networkmodels.GeneratePrivateNetworkModify()
 	privateNetworkUpdate := networkmodels.PrivateNetworkModifyFromSdk(&sdkRequest)
 
 	// Assumed contents of the file.
@@ -61,7 +60,7 @@ func TestUpdatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	privateNetwork := generators.GeneratePrivateNetwork()
+	privateNetwork := networkmodels.GeneratePrivateNetwork()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -154,7 +153,7 @@ func TestUpdatePrivateNetworkFileReadingFailure(test_framework *testing.T) {
 
 func TestUpdatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	sdkRequest := generators.GeneratePrivateNetworkModify()
+	sdkRequest := networkmodels.GeneratePrivateNetworkModify()
 	privateNetworkUpdate := networkmodels.PrivateNetworkModifyFromSdk(&sdkRequest)
 
 	// Assumed contents of the file.
@@ -187,7 +186,7 @@ func TestUpdatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 
 func TestUpdatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// Setup
-	sdkRequest := generators.GeneratePrivateNetworkModify()
+	sdkRequest := networkmodels.GeneratePrivateNetworkModify()
 	privateNetworkUpdate := networkmodels.PrivateNetworkModifyFromSdk(&sdkRequest)
 
 	// Assumed contents of the file.
@@ -220,7 +219,7 @@ func TestUpdatePrivateNetworkClientFailure(test_framework *testing.T) {
 
 func TestUpdatePrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	sdkRequest := generators.GeneratePrivateNetworkModify()
+	sdkRequest := networkmodels.GeneratePrivateNetworkModify()
 	privateNetworkUpdate := networkmodels.PrivateNetworkModifyFromSdk(&sdkRequest)
 
 	// Assumed contents of the file.

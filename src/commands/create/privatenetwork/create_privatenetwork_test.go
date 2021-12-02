@@ -10,7 +10,6 @@ import (
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
-	"phoenixnap.com/pnapctl/tests/generators"
 	. "phoenixnap.com/pnapctl/tests/mockhelp"
 	"phoenixnap.com/pnapctl/tests/testutil"
 
@@ -19,7 +18,7 @@ import (
 
 func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	sdkRequest := generators.GeneratePrivateNetworkCreate()
+	sdkRequest := networkmodels.GeneratePrivateNetworkCreate()
 	privateNetworkCreate := networkmodels.PrivateNetworkCreateFromSdk(&sdkRequest)
 
 	// Assumed contents of the file.
@@ -28,7 +27,7 @@ func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdPrivateNetwork := generators.GeneratePrivateNetwork()
+	createdPrivateNetwork := networkmodels.GeneratePrivateNetwork()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -52,7 +51,7 @@ func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	sdkRequest := generators.GeneratePrivateNetworkCreate()
+	sdkRequest := networkmodels.GeneratePrivateNetworkCreate()
 	privateNetworkCreate := networkmodels.PrivateNetworkCreateFromSdk(&sdkRequest)
 
 	// Assumed contents of the file.
@@ -61,7 +60,7 @@ func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdPrivateNetwork := generators.GeneratePrivateNetwork()
+	createdPrivateNetwork := networkmodels.GeneratePrivateNetwork()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -125,7 +124,7 @@ func TestCreatePrivateNetworkUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	sdkRequest := generators.GeneratePrivateNetworkCreate()
+	sdkRequest := networkmodels.GeneratePrivateNetworkCreate()
 	privateNetworkCreate := networkmodels.PrivateNetworkCreateFromSdk(&sdkRequest)
 
 	// Assumed contents of the file.
@@ -156,7 +155,7 @@ func TestCreatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	sdkRequest := generators.GeneratePrivateNetworkCreate()
+	sdkRequest := networkmodels.GeneratePrivateNetworkCreate()
 	privateNetworkCreate := networkmodels.PrivateNetworkCreateFromSdk(&sdkRequest)
 
 	// Assumed contents of the file.
@@ -187,7 +186,7 @@ func TestCreatePrivateNetworkClientFailure(test_framework *testing.T) {
 
 func TestCreatePrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	sdkRequest := generators.GeneratePrivateNetworkCreate()
+	sdkRequest := networkmodels.GeneratePrivateNetworkCreate()
 	privateNetworkCreate := networkmodels.PrivateNetworkCreateFromSdk(&sdkRequest)
 
 	// Assumed contents of the file.
