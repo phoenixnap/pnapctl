@@ -45,13 +45,13 @@ func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
 	//setup
 	tag := *tagmodels.GenerateTag()
-	tagEdit := *tagmodels.GenerateTagUpdate()
+	tagEdit := *tagmodels.GenerateCLITagUpdate()
 	jsonmarshal, _ := json.Marshal(tagEdit)
 	Filename = FILENAME
 
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
-		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
+		TagPatch(RESOURCEID, gomock.Eq(*tagEdit.ToSdk())).
 		Return(tag, WithResponse(200, WithBody(nil)), nil).
 		Times(1)
 
