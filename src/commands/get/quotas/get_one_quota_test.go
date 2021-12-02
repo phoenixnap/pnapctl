@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels/quota"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/tests/generators"
 	. "phoenixnap.com/pnapctl/tests/mockhelp"
 	"phoenixnap.com/pnapctl/tests/testutil"
 
@@ -16,7 +16,7 @@ import (
 
 func TestGetQuotaSuccess(test_framework *testing.T) {
 
-	quota := generators.GenerateQuota()
+	quota := quotaModel.GenerateQuota()
 	tableQuota := tables.ToQuotaTable(quota)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -71,7 +71,7 @@ func TestGetQuotaKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetQuotaPrinterFailure(test_framework *testing.T) {
-	quota := generators.GenerateQuota()
+	quota := quotaModel.GenerateQuota()
 	tableQuota := tables.ToQuotaTable(quota)
 
 	PrepareBmcApiMockClient(test_framework).

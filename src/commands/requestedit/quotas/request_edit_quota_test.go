@@ -9,14 +9,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/tests/generators"
+	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels/quota"
 	. "phoenixnap.com/pnapctl/tests/mockhelp"
 	"phoenixnap.com/pnapctl/tests/testutil"
 )
 
 func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 	// setup
-	quotaEditLimitRequest := generators.GenerateQuotaEditLimitRequest()
+	quotaEditLimitRequest := quotaModel.GenerateQuotaEditLimitRequest()
 	yamlmarshal, _ := yaml.Marshal(quotaEditLimitRequest)
 
 	Filename = FILENAME
@@ -42,7 +42,7 @@ func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 
 func TestSubmitQuotaEditRequestSuccessJSON(test_framework *testing.T) {
 	//setup
-	quotaEditLimitRequest := generators.GenerateQuotaEditLimitRequest()
+	quotaEditLimitRequest := quotaModel.GenerateQuotaEditLimitRequest()
 	jsonmarshal, _ := json.Marshal(quotaEditLimitRequest)
 	Filename = FILENAME
 
@@ -122,9 +122,8 @@ func TestSubmitQuotaEditRequestYAMLUnmarshallingFailure(test_framework *testing.
 
 	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{})
 
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "request-edit quota", err)
-
-	// assertions
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.Unmarshalling
+		"phoenixnap.com/pnapctl/tests/generators"
 	assert.EqualError(test_framework, expectedErr, expectedErr.Error())
 }
 
@@ -153,7 +152,7 @@ func TestSubmitQuotaEditFileReadingFailure(test_framework *testing.T) {
 
 func TestSubmitQuotaEditBackendErrorFailure(test_framework *testing.T) {
 	// setup
-	quotaEditLimitRequest := generators.GenerateQuotaEditLimitRequest()
+	quotaEditLimitRequest := quotaModel.GenerateQuotaEditLimitRequest()
 	yamlmarshal, _ := yaml.Marshal(quotaEditLimitRequest)
 	Filename = FILENAME
 
@@ -181,7 +180,7 @@ func TestSubmitQuotaEditBackendErrorFailure(test_framework *testing.T) {
 
 func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 	// setup
-	editQuotaRequest := generators.GenerateQuotaEditLimitRequest()
+	editQuotaRequest := quotaModel.GenerateQuotaEditLimitRequest()
 	yamlmarshal, _ := yaml.Marshal(editQuotaRequest)
 	Filename = FILENAME
 
@@ -209,7 +208,7 @@ func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 
 func TestSubmitQuotaEditKeycloakFailure(test_framework *testing.T) {
 	// setup
-	editQuotaRequest := generators.GenerateQuotaEditLimitRequest()
+	editQuotaRequest := quotaModel.GenerateQuotaEditLimitRequest()
 	yamlmarshal, _ := yaml.Marshal(editQuotaRequest)
 	Filename = FILENAME
 

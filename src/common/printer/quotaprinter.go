@@ -2,7 +2,7 @@ package printer
 
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels/quota"
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 

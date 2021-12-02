@@ -1,4 +1,4 @@
-package bmcapimodels
+package quota
 
 import (
 	"fmt"
