@@ -3,7 +3,6 @@ package tag
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/tags"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -40,11 +39,10 @@ isBillingTag: false
 
 		// Create the tag
 		response, httpResponse, err := tags.Client.TagPost(*tagCreate)
+		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
-		if httpResponse != nil && !utils.Is2xxSuccessful(httpResponse.StatusCode) {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
-		} else if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		if *generatedError != nil {
+			return *generatedError
 		} else {
 			return printer.PrintTagResponse(response, commandName)
 		}
