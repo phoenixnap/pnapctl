@@ -18,7 +18,7 @@ import (
 
 func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := *tagmodels.TagCreateFromSdk(tagmodels.GenerateTagCreate())
+	tagCreate := tagmodels.GenerateCLITagCreate()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -50,7 +50,7 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 
 func TestCreateTagSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := *tagmodels.TagCreateFromSdk(tagmodels.GenerateTagCreate())
+	tagCreate := tagmodels.GenerateCLITagCreate()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(tagCreate)
@@ -122,7 +122,7 @@ func TestCreateTagUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := *tagmodels.TagCreateFromSdk(tagmodels.GenerateTagCreate())
+	tagCreate := tagmodels.GenerateCLITagCreate()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -152,7 +152,7 @@ func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateTagClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := *tagmodels.TagCreateFromSdk(tagmodels.GenerateTagCreate())
+	tagCreate := tagmodels.GenerateCLITagCreate()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -182,7 +182,7 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 
 func TestCreateTagKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := *tagmodels.TagCreateFromSdk(tagmodels.GenerateTagCreate())
+	tagCreate := tagmodels.GenerateCLITagCreate()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
