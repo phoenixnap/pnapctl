@@ -18,10 +18,3 @@ runCommand="run pnapctl"
     assert_failure
     assert_output "$expectedOutputInvalidPostError"
 }
-
-@test "Run create server command without specifying the resource" {    
-    $runCommand create server
-
-    assert_failure
-    assert_output "$expectedOutputFileNotSetError"
-}
