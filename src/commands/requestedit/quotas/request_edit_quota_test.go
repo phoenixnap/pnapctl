@@ -16,7 +16,7 @@ import (
 
 func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 	// setup
-	quotaEditLimitRequest := quotaModel.GenerateQuotaEditLimitRequest()
+	quotaEditLimitRequest := quotaModel.GenerateQuotaEditLimitRequestSdk()
 	yamlmarshal, _ := yaml.Marshal(quotaEditLimitRequest)
 
 	Filename = FILENAME
@@ -42,7 +42,7 @@ func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 
 func TestSubmitQuotaEditRequestSuccessJSON(test_framework *testing.T) {
 	//setup
-	quotaEditLimitRequest := quotaModel.GenerateQuotaEditLimitRequest()
+	quotaEditLimitRequest := quotaModel.GenerateQuotaEditLimitRequestSdk()
 	jsonmarshal, _ := json.Marshal(quotaEditLimitRequest)
 	Filename = FILENAME
 
@@ -122,8 +122,9 @@ func TestSubmitQuotaEditRequestYAMLUnmarshallingFailure(test_framework *testing.
 
 	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{})
 
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.Unmarshalling
-		"phoenixnap.com/pnapctl/tests/generators"
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "request-edit quota", err)
+
+	// assertions
 	assert.EqualError(test_framework, expectedErr, expectedErr.Error())
 }
 
@@ -152,7 +153,7 @@ func TestSubmitQuotaEditFileReadingFailure(test_framework *testing.T) {
 
 func TestSubmitQuotaEditBackendErrorFailure(test_framework *testing.T) {
 	// setup
-	quotaEditLimitRequest := quotaModel.GenerateQuotaEditLimitRequest()
+	quotaEditLimitRequest := quotaModel.GenerateQuotaEditLimitRequestSdk()
 	yamlmarshal, _ := yaml.Marshal(quotaEditLimitRequest)
 	Filename = FILENAME
 
@@ -180,7 +181,7 @@ func TestSubmitQuotaEditBackendErrorFailure(test_framework *testing.T) {
 
 func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 	// setup
-	editQuotaRequest := quotaModel.GenerateQuotaEditLimitRequest()
+	editQuotaRequest := quotaModel.GenerateQuotaEditLimitRequestSdk()
 	yamlmarshal, _ := yaml.Marshal(editQuotaRequest)
 	Filename = FILENAME
 
@@ -208,7 +209,7 @@ func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 
 func TestSubmitQuotaEditKeycloakFailure(test_framework *testing.T) {
 	// setup
-	editQuotaRequest := quotaModel.GenerateQuotaEditLimitRequest()
+	editQuotaRequest := quotaModel.GenerateQuotaEditLimitRequestSdk()
 	yamlmarshal, _ := yaml.Marshal(editQuotaRequest)
 	Filename = FILENAME
 

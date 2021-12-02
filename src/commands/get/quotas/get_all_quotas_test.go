@@ -38,7 +38,7 @@ func TestGetAllQuotasSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllQuotasKeycloakFailure(test_framework *testing.T) {
-	quota := []bmcapisdk.Quota{quotaModel.GenerateQuota()}
+	quota := []bmcapisdk.Quota{quotaModel.GenerateQuotaSdk()}
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		QuotasGet().

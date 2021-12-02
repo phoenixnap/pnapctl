@@ -15,8 +15,7 @@ import (
 )
 
 func TestGetQuotaSuccess(test_framework *testing.T) {
-
-	quota := quotaModel.GenerateQuota()
+	quota := quotaModel.GenerateQuotaSdk()
 	tableQuota := tables.ToQuotaTable(quota)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -71,7 +70,7 @@ func TestGetQuotaKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetQuotaPrinterFailure(test_framework *testing.T) {
-	quota := quotaModel.GenerateQuota()
+	quota := quotaModel.GenerateQuotaSdk()
 	tableQuota := tables.ToQuotaTable(quota)
 
 	PrepareBmcApiMockClient(test_framework).
