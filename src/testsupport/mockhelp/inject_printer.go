@@ -5,7 +5,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"phoenixnap.com/pnapctl/common/printer"
-	"phoenixnap.com/pnapctl/tests/mocks"
+	"phoenixnap.com/pnapctl/testsupport/mocks"
 )
 
 func PrepareMockPrinter(test_framework *testing.T) *mocks.MockPrinterMockRecorder {

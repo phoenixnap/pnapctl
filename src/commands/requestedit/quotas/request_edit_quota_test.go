@@ -9,14 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/tests/generators"
-	. "phoenixnap.com/pnapctl/tests/mockhelp"
-	"phoenixnap.com/pnapctl/tests/testutil"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 	// setup
-	quotaEditLimitRequest := generators.GenerateQuotaEditLimitRequest()
+	quotaEditLimitRequest := GenerateQuotaEditLimitRequest()
 	yamlmarshal, _ := yaml.Marshal(quotaEditLimitRequest)
 
 	Filename = FILENAME
