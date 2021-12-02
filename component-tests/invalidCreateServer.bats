@@ -29,7 +29,7 @@ runCommandWithYamlFile="$runCommand --filename $yamlFile"
 }
 
 @test "Run server provision command with invalid json payload" {
-    echo { "unknownField" : "anc" } >> $jsonFile
+    echo { "unknownField" : "unknownValue" } >> $jsonFile
     $runCommandWithJsonFile
     
     assert_failure
@@ -37,7 +37,6 @@ runCommandWithYamlFile="$runCommand --filename $yamlFile"
 }
 
 @test "Run server provision command with invalid filename command" {
-    echo { "unknownField" : "anc" } >> $jsonFile
     $runCommand -- filename $jsonFile
     
     assert_failure
@@ -45,7 +44,7 @@ runCommandWithYamlFile="$runCommand --filename $yamlFile"
 }
 
 @test "Run server provision command with invalid yaml payload" {
-    echo  "test:test"  >> $yamlFile
+    echo  "unknownField:unknownValue"  >> $yamlFile
     $runCommandWithYamlFile
     
     assert_failure

@@ -1,5 +1,5 @@
-invalidCommandPost="post"
 invalidCommandCreate="createe" 
+invalidCommandPost="post"
 
 expectedOutputWrongCommandError="Error: unknown command \"$invalidCommandCreate\" for \"pnapctl\"
 
@@ -10,6 +10,3 @@ Run 'pnapctl --help' for usage."
 
 expectedOutputInvalidPostError="Error: unknown command \"$invalidCommandPost\" for \"pnapctl\"
 Run 'pnapctl --help' for usage."
-
-expectedOutputFileNotSetError="Error: required flag(s) \"filename\" not set"
-

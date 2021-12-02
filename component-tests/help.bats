@@ -5,21 +5,21 @@ source "./support/constants/help-outputs.sh"
 
 runCommand="run pnapctl"
 
-@test "No Input displays help" {
+@test "pncpctl command" {
   $runCommand
 
   assert_success
   assert_output "$outputHelpLong"
 }
 
-@test "Run help command" {
+@test "help command" {
   $runCommand help
 
   assert_success
   assert_output "$outputHelpLong"
 }
 
-@test "Run completion command" {
+@test "completion command" {
   $runCommand completion
 
   assert_success
