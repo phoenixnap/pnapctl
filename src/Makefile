@@ -102,7 +102,7 @@ test-coverage: test-coverage-tools ; $(info $(M) running coverage tests…) @ ##
 					tr '\n' ',' | sed 's/,$$//') \
 		-covermode=$(COVERAGE_MODE) \
 		-coverprofile="$(COVERAGE_PROFILE)" $(TESTPKGS) 2>&1 | \
-		$(GO_JUNIT_REPORT) > $(UNIT_TEST_RESULTS_DIR)/report.xml
+		$(GO_JUNIT_REPORT) -set-exit-code > $(UNIT_TEST_RESULTS_DIR)/report.xml
 
 # Misc
 
