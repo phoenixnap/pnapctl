@@ -1,4 +1,4 @@
-package bmcapimodels
+package sshkeyModels
 
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"

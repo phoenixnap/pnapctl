@@ -3,7 +3,7 @@ package server
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/serverModels"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -32,7 +32,7 @@ pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTP
 hostname: patched-server
 description: My custom server edit`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		patchRequest, err := bmcapimodels.PatchServerRequestFromFile(Filename, commandName)
+		patchRequest, err := serverModels.PatchServerRequestFromFile(Filename, commandName)
 		if err != nil {
 			return err
 		}

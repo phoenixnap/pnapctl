@@ -3,7 +3,7 @@ package privatenetwork
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/serverModels"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -35,7 +35,7 @@ statusDescription: in-progress
 `,
 
 	RunE: func(cmd *cobra.Command, args []string) error {
-		serverPrivateNetwork, err := bmcapimodels.CreateServerPrivateNetworkFromFile(Filename, commandName)
+		serverPrivateNetwork, err := serverModels.CreateServerPrivateNetworkFromFile(Filename, commandName)
 
 		if err != nil {
 			return err

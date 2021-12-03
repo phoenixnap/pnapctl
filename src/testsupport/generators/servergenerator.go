@@ -5,7 +5,7 @@ import (
 	"time"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/serverModels"
 
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 )
@@ -47,8 +47,8 @@ func GenerateServer() bmcapisdk.Server {
 	}
 }
 
-func GenerateServerCreate() bmcapimodels.ServerCreate {
-	return bmcapimodels.ServerCreate{
+func GenerateServerCreate() serverModels.ServerCreate {
+	return serverModels.ServerCreate{
 		Hostname:              RandSeq(10),
 		Description:           RandSeqPointer(10),
 		Os:                    RandSeq(10),

@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels/quota"
+	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels/quotaModels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )

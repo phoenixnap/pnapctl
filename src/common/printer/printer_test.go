@@ -163,7 +163,7 @@ func TestPrepareServerForPrintingLongServer(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.LongServer")
+	assert.Equal(test_framework, outputType, "serverModels.LongServer")
 }
 
 func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
@@ -173,7 +173,7 @@ func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.ShortServer")
+	assert.Equal(test_framework, outputType, "serverModels.ShortServer")
 }
 
 func TestPrepareServerListForPrinting(test_framework *testing.T) {
@@ -183,7 +183,7 @@ func TestPrepareServerListForPrinting(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared[0])
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.ShortServer")
+	assert.Equal(test_framework, outputType, "serverModels.ShortServer")
 	assert.Equal(test_framework, len(prepared), 1)
 }
 

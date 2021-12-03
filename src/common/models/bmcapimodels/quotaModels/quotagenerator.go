@@ -1,4 +1,4 @@
-package quota
+package quotaModels
 
 import (
 	"math/rand"

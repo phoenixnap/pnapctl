@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels/quota"
+	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels/quotaModels"
 	"phoenixnap.com/pnapctl/common/utils"
 )
 

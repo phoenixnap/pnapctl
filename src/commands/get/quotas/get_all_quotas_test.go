@@ -7,7 +7,7 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels/quota"
+	quotaModel "phoenixnap.com/pnapctl/common/models/bmcapimodels/quotaModels"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
