@@ -1,4 +1,4 @@
-package sshkeyModels
+package sshkeymodels
 
 import (
 	"time"

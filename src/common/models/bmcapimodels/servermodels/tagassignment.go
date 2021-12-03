@@ -1,4 +1,4 @@
-package serverModels
+package servermodels
 
 import (
 	"fmt"

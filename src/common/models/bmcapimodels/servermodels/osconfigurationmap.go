@@ -1,4 +1,4 @@
-package serverModels
+package servermodels
 
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
