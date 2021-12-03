@@ -15,7 +15,7 @@ func TestDeleteClusterSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterDelete(RESOURCEID).
-		Return(ranchermodels.GenerateRancherDeleteResult(), WithResponse(200, nil), nil)
+		Return(ranchermodels.GenerateRancherDeleteResultSdk(), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteClusterCmd.RunE(DeleteClusterCmd, []string{RESOURCEID})

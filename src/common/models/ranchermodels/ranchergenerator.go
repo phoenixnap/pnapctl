@@ -5,15 +5,15 @@ import (
 	"phoenixnap.com/pnapctl/tests/generators"
 )
 
-func GenerateClusters(n int) []ranchersdk.Cluster {
+func GenerateClustersSdk(n int) []ranchersdk.Cluster {
 	var clusterlist []ranchersdk.Cluster
 	for i := 0; i < n; i++ {
-		clusterlist = append(clusterlist, GenerateCluster())
+		clusterlist = append(clusterlist, GenerateClusterSdk())
 	}
 	return clusterlist
 }
 
-func GenerateCluster() ranchersdk.Cluster {
+func GenerateClusterSdk() ranchersdk.Cluster {
 	return ranchersdk.Cluster{
 		Id:                    generators.RandSeqPointer(10),
 		Name:                  generators.RandSeqPointer(10),
@@ -27,7 +27,7 @@ func GenerateCluster() ranchersdk.Cluster {
 	}
 }
 
-func GenerateCLICluster() Cluster {
+func GenerateClusterCli() Cluster {
 	return Cluster{
 		Id:                    generators.RandSeqPointer(10),
 		Name:                  generators.RandSeqPointer(10),
@@ -41,7 +41,7 @@ func GenerateCLICluster() Cluster {
 	}
 }
 
-func GenerateNodePool() ranchersdk.NodePool {
+func GenerateNodePoolSdk() ranchersdk.NodePool {
 	return ranchersdk.NodePool{
 		Name:       generators.RandSeqPointer(10),
 		NodeCount:  nil,
@@ -51,7 +51,7 @@ func GenerateNodePool() ranchersdk.NodePool {
 	}
 }
 
-func GenerateCLINodePool() NodePool {
+func GenerateNodePoolCli() NodePool {
 	return NodePool{
 		Name:       generators.RandSeqPointer(10),
 		NodeCount:  nil,
@@ -61,19 +61,19 @@ func GenerateCLINodePool() NodePool {
 	}
 }
 
-func GenerateNode() ranchersdk.Node {
+func GenerateNodeSdk() ranchersdk.Node {
 	return ranchersdk.Node{
 		ServerId: generators.RandSeqPointer(10),
 	}
 }
 
-func GenerateCLINode() Node {
+func GenerateNodeCli() Node {
 	return Node{
 		ServerId: generators.RandSeqPointer(10),
 	}
 }
 
-func GenerateRancherClusterCertificates() ranchersdk.RancherClusterCertificates {
+func GenerateRancherClusterCertificatesSdk() ranchersdk.RancherClusterCertificates {
 	return ranchersdk.RancherClusterCertificates{
 		CaCertificate:  generators.RandSeqPointer(10),
 		Certificate:    generators.RandSeqPointer(10),
@@ -81,7 +81,7 @@ func GenerateRancherClusterCertificates() ranchersdk.RancherClusterCertificates 
 	}
 }
 
-func GenerateCLIRancherClusterCertificates() RancherClusterCertificates {
+func GenerateRancherClusterCertificatesCli() RancherClusterCertificates {
 	return RancherClusterCertificates{
 		CaCertificate:  generators.RandSeqPointer(10),
 		Certificate:    generators.RandSeqPointer(10),
@@ -89,7 +89,7 @@ func GenerateCLIRancherClusterCertificates() RancherClusterCertificates {
 	}
 }
 
-func GenerateRancherClusterConfig() ranchersdk.RancherClusterConfig {
+func GenerateRancherClusterConfigSdk() ranchersdk.RancherClusterConfig {
 	return ranchersdk.RancherClusterConfig{
 		Token:                    generators.RandSeqPointer(10),
 		TlsSan:                   generators.RandSeqPointer(10),
@@ -101,7 +101,7 @@ func GenerateRancherClusterConfig() ranchersdk.RancherClusterConfig {
 	}
 }
 
-func GenerateCLIRancherClusterConfig() RancherClusterConfig {
+func GenerateRancherClusterConfigCli() RancherClusterConfig {
 	return RancherClusterConfig{
 		Token:                    generators.RandSeqPointer(10),
 		TlsSan:                   generators.RandSeqPointer(10),
@@ -113,7 +113,7 @@ func GenerateCLIRancherClusterConfig() RancherClusterConfig {
 	}
 }
 
-func GenerateRancherServerMetadata() ranchersdk.RancherServerMetadata {
+func GenerateRancherServerMetadataSdk() ranchersdk.RancherServerMetadata {
 	return ranchersdk.RancherServerMetadata{
 		Url:      generators.RandSeqPointer(10),
 		Username: generators.RandSeqPointer(10),
@@ -121,7 +121,7 @@ func GenerateRancherServerMetadata() ranchersdk.RancherServerMetadata {
 	}
 }
 
-func GenerateCLIRancherServerMetadata() RancherServerMetadata {
+func GenerateRancherServerMetadataCli() RancherServerMetadata {
 	return RancherServerMetadata{
 		Url:      generators.RandSeqPointer(10),
 		Username: generators.RandSeqPointer(10),
@@ -129,7 +129,7 @@ func GenerateCLIRancherServerMetadata() RancherServerMetadata {
 	}
 }
 
-func GenerateSshConfig() ranchersdk.SshConfig {
+func GenerateSshConfigSdk() ranchersdk.SshConfig {
 	return ranchersdk.SshConfig{
 		InstallDefaultKeys: nil,
 		Keys:               generators.RandListStringPointer(3),
@@ -137,7 +137,7 @@ func GenerateSshConfig() ranchersdk.SshConfig {
 	}
 }
 
-func GenerateCLISshConfig() SshConfig {
+func GenerateSshConfigCli() SshConfig {
 	return SshConfig{
 		InstallDefaultKeys: nil,
 		Keys:               generators.RandListStringPointer(3),
@@ -145,7 +145,7 @@ func GenerateCLISshConfig() SshConfig {
 	}
 }
 
-func GenerateRancherDeleteResult() ranchersdk.DeleteResult {
+func GenerateRancherDeleteResultSdk() ranchersdk.DeleteResult {
 	return ranchersdk.DeleteResult{
 		Result:    generators.RandSeq(10),
 		ClusterId: generators.RandSeqPointer(10),

@@ -15,7 +15,7 @@ import (
 
 func TestGetServerShortSuccess(test_framework *testing.T) {
 
-	cluster := ranchermodels.GenerateCluster()
+	cluster := ranchermodels.GenerateClusterSdk()
 	var clusterTable = tables.ClusterFromSdk(cluster)
 
 	PrepareRancherMockClient(test_framework).
@@ -70,7 +70,7 @@ func TestGetServerKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
-	cluster := ranchermodels.GenerateCluster()
+	cluster := ranchermodels.GenerateClusterSdk()
 	clusterTable := tables.ClusterFromSdk(cluster)
 
 	PrepareRancherMockClient(test_framework).

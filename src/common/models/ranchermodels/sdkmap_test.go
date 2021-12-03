@@ -21,18 +21,18 @@ SSH CONFIG						:
 
 // tests
 func TestClusterToSdk(test_framework *testing.T) {
-	cluster := GenerateCLICluster()
+	cluster := GenerateClusterCli()
 	sdkCluster := cluster.ToSdk()
 
 	assertEqualCluster(test_framework, cluster, sdkCluster)
 }
 
 func TestClusterFullToSdk(test_framework *testing.T) {
-	cluster := GenerateCLICluster()
+	cluster := GenerateClusterCli()
 
-	config := GenerateCLIRancherClusterConfig()
-	metadata := GenerateCLIRancherServerMetadata()
-	nodepools := []NodePool{GenerateCLINodePool()}
+	config := GenerateRancherClusterConfigCli()
+	metadata := GenerateRancherServerMetadataCli()
+	nodepools := []NodePool{GenerateNodePoolCli()}
 
 	cluster.Configuration = &config
 	cluster.Metadata = &metadata
@@ -44,18 +44,18 @@ func TestClusterFullToSdk(test_framework *testing.T) {
 }
 
 func TestClusterFromSdk(test_framework *testing.T) {
-	sdkCluster := GenerateCluster()
+	sdkCluster := GenerateClusterSdk()
 	cluster := ClusterFromSdk(sdkCluster)
 
 	assertEqualCluster(test_framework, cluster, sdkCluster)
 }
 
 func TestClusterFullFromSdk(test_framework *testing.T) {
-	sdkCluster := GenerateCluster()
+	sdkCluster := GenerateClusterSdk()
 
-	config := GenerateRancherClusterConfig()
-	metadata := GenerateRancherServerMetadata()
-	nodepools := []ranchersdk.NodePool{GenerateNodePool()}
+	config := GenerateRancherClusterConfigSdk()
+	metadata := GenerateRancherServerMetadataSdk()
+	nodepools := []ranchersdk.NodePool{GenerateNodePoolSdk()}
 
 	sdkCluster.Configuration = &config
 	sdkCluster.Metadata = &metadata
@@ -67,100 +67,100 @@ func TestClusterFullFromSdk(test_framework *testing.T) {
 }
 
 func TestNodePoolToSdk(test_framework *testing.T) {
-	nodePool := GenerateCLINodePool()
+	nodePool := GenerateNodePoolCli()
 	sdkNodePool := *nodePool.ToSdk()
 
 	assertEqualNodePool(test_framework, nodePool, sdkNodePool)
 }
 
 func TestFullNodePoolToSdk(test_framework *testing.T) {
-	nodePool := GenerateCLINodePool()
-	nodePool.Nodes = &[]Node{GenerateCLINode()}
+	nodePool := GenerateNodePoolCli()
+	nodePool.Nodes = &[]Node{GenerateNodeCli()}
 	sdkNodePool := *nodePool.ToSdk()
 
 	assertEqualNodePool(test_framework, nodePool, sdkNodePool)
 }
 
 func TestNodePoolFromSdk(test_framework *testing.T) {
-	sdkNodePool := GenerateNodePool()
+	sdkNodePool := GenerateNodePoolSdk()
 	nodePool := NodePoolFromSdk(sdkNodePool)
 
 	assertEqualNodePool(test_framework, nodePool, sdkNodePool)
 }
 
 func TestFullNodePoolFromSdk(test_framework *testing.T) {
-	sdkNodePool := GenerateNodePool()
-	sdkNodePool.Nodes = &[]ranchersdk.Node{GenerateNode()}
+	sdkNodePool := GenerateNodePoolSdk()
+	sdkNodePool.Nodes = &[]ranchersdk.Node{GenerateNodeSdk()}
 	nodePool := NodePoolFromSdk(sdkNodePool)
 
 	assertEqualNodePool(test_framework, nodePool, sdkNodePool)
 }
 
 func TestNodeToSdk(test_framework *testing.T) {
-	node := GenerateCLINode()
+	node := GenerateNodeCli()
 	sdkNode := *node.ToSdk()
 
 	assertEqualNode(test_framework, node, sdkNode)
 }
 
 func TestNodeFromSdk(test_framework *testing.T) {
-	sdkNode := GenerateNode()
+	sdkNode := GenerateNodeSdk()
 	node := NodeFromSdk(sdkNode)
 
 	assertEqualNode(test_framework, node, sdkNode)
 }
 
 func TestRancherClusterCertificateToSdk(test_framework *testing.T) {
-	rancherRancherClusterCertificates := GenerateCLIRancherClusterCertificates()
+	rancherRancherClusterCertificates := GenerateRancherClusterCertificatesCli()
 	sdkRancherClusterCertificates := *rancherRancherClusterCertificates.toSdk()
 
 	assertEqualRancherClusterCertificates(test_framework, rancherRancherClusterCertificates, sdkRancherClusterCertificates)
 }
 
 func TestRancherClusterCertificateFromSdk(test_framework *testing.T) {
-	sdkRancherClusterCertificates := GenerateRancherClusterCertificates()
+	sdkRancherClusterCertificates := GenerateRancherClusterCertificatesSdk()
 	rancherRancherClusterCertificates := *RancherClusterCertificatesFromSdk(&sdkRancherClusterCertificates)
 
 	assertEqualRancherClusterCertificates(test_framework, rancherRancherClusterCertificates, sdkRancherClusterCertificates)
 }
 
 func TestRancherClusterConfigToSdk(test_framework *testing.T) {
-	rancherClusterConfig := GenerateCLIRancherClusterConfig()
+	rancherClusterConfig := GenerateRancherClusterConfigCli()
 	sdkRancherClusterConfig := *rancherClusterConfig.ToSdk()
 
 	assertEqualRancherClusterConfig(test_framework, rancherClusterConfig, sdkRancherClusterConfig)
 }
 
 func TestRancherClusterConfigFromSdk(test_framework *testing.T) {
-	sdkRancherClusterConfig := GenerateRancherClusterConfig()
+	sdkRancherClusterConfig := GenerateRancherClusterConfigSdk()
 	rancherClusterConfig := *RancherClusterConfigFromSdk(&sdkRancherClusterConfig)
 
 	assertEqualRancherClusterConfig(test_framework, rancherClusterConfig, sdkRancherClusterConfig)
 }
 
 func TestRancherServerMetadataToSdk(test_framework *testing.T) {
-	rancherServerMetadata := GenerateCLIRancherServerMetadata()
+	rancherServerMetadata := GenerateRancherServerMetadataCli()
 	sdkRancherServerMetadata := *rancherServerMetadata.ToSdk()
 
 	assertEqualRancherServerMetadata(test_framework, rancherServerMetadata, sdkRancherServerMetadata)
 }
 
 func TestRancherServerMetadataFromSdk(test_framework *testing.T) {
-	sdkRancherServerMetadata := GenerateRancherServerMetadata()
+	sdkRancherServerMetadata := GenerateRancherServerMetadataSdk()
 	rancherServerMetadata := *RancherServerMetadataFromSdk(&sdkRancherServerMetadata)
 
 	assertEqualRancherServerMetadata(test_framework, rancherServerMetadata, sdkRancherServerMetadata)
 }
 
 func TestSshConfigToSdk(test_framework *testing.T) {
-	sshConfig := GenerateCLISshConfig()
+	sshConfig := GenerateSshConfigCli()
 	sdkSshConfig := *sshConfig.ToSdk()
 
 	assertEqualSshConfig(test_framework, sshConfig, sdkSshConfig)
 }
 
 func TestSshConfigFromSdk(test_framework *testing.T) {
-	sdkSshConfig := GenerateSshConfig()
+	sdkSshConfig := GenerateSshConfigSdk()
 	sshConfig := *SshConfigFromSdk(&sdkSshConfig)
 
 	assertEqualSshConfig(test_framework, sshConfig, sdkSshConfig)
