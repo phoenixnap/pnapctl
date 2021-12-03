@@ -17,8 +17,8 @@ import (
 
 func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 	// setup
-	tag := *tagmodels.GenerateTag()
-	tagEdit := *tagmodels.GenerateCLITagUpdate()
+	tag := *tagmodels.GenerateTagSdk()
+	tagEdit := *tagmodels.GenerateTagUpdateCli()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 
 	Filename = FILENAME
@@ -44,8 +44,8 @@ func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 
 func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
 	//setup
-	tag := *tagmodels.GenerateTag()
-	tagEdit := *tagmodels.GenerateCLITagUpdate()
+	tag := *tagmodels.GenerateTagSdk()
+	tagEdit := *tagmodels.GenerateTagUpdateCli()
 	jsonmarshal, _ := json.Marshal(tagEdit)
 	Filename = FILENAME
 
@@ -156,7 +156,7 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := *tagmodels.GenerateCLITagUpdate()
+	tagEdit := *tagmodels.GenerateTagUpdateCli()
 	yamlmarshal, _ := yaml.Marshal(&tagEdit)
 	Filename = FILENAME
 
@@ -184,7 +184,7 @@ func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := *tagmodels.GenerateCLITagUpdate()
+	tagEdit := *tagmodels.GenerateTagUpdateCli()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 	Filename = FILENAME
 
@@ -212,7 +212,7 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditKeycloakFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := *tagmodels.GenerateCLITagUpdate()
+	tagEdit := *tagmodels.GenerateTagUpdateCli()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 	Filename = FILENAME
 

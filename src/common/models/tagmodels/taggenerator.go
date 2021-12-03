@@ -5,7 +5,7 @@ import (
 	"phoenixnap.com/pnapctl/tests/generators"
 )
 
-func GenerateTag() *tagapisdk.Tag {
+func GenerateTagSdk() *tagapisdk.Tag {
 	values := []string{generators.RandSeq(10)}
 
 	return &tagapisdk.Tag{
@@ -16,7 +16,7 @@ func GenerateTag() *tagapisdk.Tag {
 	}
 }
 
-func GenerateCLITagCreate() *TagCreate {
+func GenerateTagCreateCli() *TagCreate {
 	return &TagCreate{
 		Name:         generators.RandSeq(10),
 		Description:  generators.RandSeqPointer(10),
@@ -24,7 +24,7 @@ func GenerateCLITagCreate() *TagCreate {
 	}
 }
 
-func GenerateCLITagUpdate() *TagUpdate {
+func GenerateTagUpdateCli() *TagUpdate {
 	return &TagUpdate{
 		Name:         generators.RandSeq(10),
 		Description:  generators.RandSeqPointer(10),
@@ -32,22 +32,22 @@ func GenerateCLITagUpdate() *TagUpdate {
 	}
 }
 
-func GenerateTags(n int) []tagapisdk.Tag {
+func GenerateTagsSdk(n int) []tagapisdk.Tag {
 	var tagList []tagapisdk.Tag
 	for i := 0; i < n; i++ {
-		tagList = append(tagList, *GenerateTag())
+		tagList = append(tagList, *GenerateTagSdk())
 	}
 	return tagList
 }
 
-func GenerateTagsDeleteResult() tagapisdk.DeleteResult {
+func GenerateTagsDeleteResultSdk() tagapisdk.DeleteResult {
 	return tagapisdk.DeleteResult{
 		Result: generators.RandSeq(10),
 		TagId:  generators.RandSeq(10),
 	}
 }
 
-func GenerateResourceAssignment() *tagapisdk.ResourceAssignment {
+func GenerateResourceAssignmentSdk() *tagapisdk.ResourceAssignment {
 	return &tagapisdk.ResourceAssignment{
 		ResourceName: generators.RandSeq(10),
 		Value:        generators.RandSeqPointer(10),

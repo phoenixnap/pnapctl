@@ -15,7 +15,7 @@ func TestDeleteTagSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagDelete(RESOURCEID).
-		Return(tagmodels.GenerateTagsDeleteResult(), WithResponse(200, nil), nil)
+		Return(tagmodels.GenerateTagsDeleteResultSdk(), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})
