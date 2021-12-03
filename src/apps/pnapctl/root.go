@@ -32,6 +32,9 @@ import (
 	configuration "phoenixnap.com/pnapctl/configs"
 )
 
+const HOME_ENV_VAR = "PNAPCTL_HOME"
+const DEFAULT_CFG_NAME = "config"
+
 var (
 	verbose bool
 	cfgFile string
@@ -82,28 +85,33 @@ func init() {
 }
 
 func initConfig() {
-	var configPath string
-	envHome := os.Getenv("PNAPCTL_HOME")
-	if envHome != "" && cfgFile == "" {
-		cfgFile = envHome
+	var defaultHomeDir string
+
+	// Find home directory
+	home, err := homedir.Dir()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
+
+	defaultHomeDir = home + configuration.DefaultConfigPath
 
 	if cfgFile != "" {
 		// Use config file from the flag
 		fileprocessor.ExpandPath(&cfgFile)
 		viper.SetConfigFile(cfgFile)
 	} else {
-		// Find home directory
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+		// Use the configured Home from env var
+		cfgPath := os.Getenv(HOME_ENV_VAR)
+
+		if cfgPath == "" {
+			// Use the default home
+			cfgPath = defaultHomeDir
 		}
 
-		configPath = home + configuration.DefaultConfigPath
-		// Search config in home directory with name "config" (without extension)
-		viper.AddConfigPath(configPath)
-		viper.SetConfigName("config")
+		// Search config in home directory (without extension)
+		viper.AddConfigPath(cfgPath)
+		viper.SetConfigName(DEFAULT_CFG_NAME)
 	}
 
 	// If a config file is found, read it in.
@@ -112,9 +120,9 @@ func initConfig() {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			fmt.Println("A config file is required to run this program.\n" +
 				"There are 3 approaches to specify the path of a configuration file (in order of priority)\n" +
-				"\t1. --config flag: Specify the path and file name for the configuration file (ex. pnapctl get servers --config=~/myconfig.yml)\n" +
-				"\t2. Environmental variable: Create an environmental variable called PNAPCTL_HOME specifying the path and filename\n" +
-				"\t3. Default: The default config file path is the home directory (" + configPath + "config.yaml)\n\n" +
+				"\t1. --config flag: Specify the path and file name for the configuration file (ex. pnapctl get servers --config=~/myconfig.yaml)\n" +
+				"\t2. Environmental variable: Create an environmental variable called " + HOME_ENV_VAR + " specifying the path containing the configuration file (" + DEFAULT_CFG_NAME + ".yaml)\n" +
+				"\t3. Default: The default config file path is the home directory (" + defaultHomeDir + "config.yaml)\n\n" +
 				"Find More information at: " + configuration.KnowledgeBaseURL + "\n\n" +
 				"The following shows a sample config file:\n\n" +
 				"# =====================================================\n" +
