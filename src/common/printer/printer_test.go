@@ -240,7 +240,7 @@ func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
 
 func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	clusters := ranchermodels.GenerateClustersSdk(1)
+	clusters := ranchermodels.GenerateClusterListSdk(1)
 	prepared := PrepareClusterListForPrinting(clusters)
 
 	outputType := fmt.Sprintf("%T", prepared[0])

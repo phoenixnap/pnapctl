@@ -5,7 +5,7 @@ import (
 	"phoenixnap.com/pnapctl/tests/generators"
 )
 
-func GenerateClustersSdk(n int) []ranchersdk.Cluster {
+func GenerateClusterListSdk(n int) []ranchersdk.Cluster {
 	var clusterlist []ranchersdk.Cluster
 	for i := 0; i < n; i++ {
 		clusterlist = append(clusterlist, GenerateClusterSdk())
