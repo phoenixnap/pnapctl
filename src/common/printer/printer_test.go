@@ -251,7 +251,7 @@ func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	tag := tagmodels.GenerateTag()
+	tag := tagmodels.GenerateTagSdk()
 	prepared := PrepareTagForPrinting(*tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -261,7 +261,7 @@ func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 	OutputFormat = "json"
-	tag := *tagmodels.GenerateTag()
+	tag := *tagmodels.GenerateTagSdk()
 	prepared := PrepareTagForPrinting(tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -271,7 +271,7 @@ func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 
 func TestPrepareTagListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	tags := tagmodels.GenerateTags(1)
+	tags := tagmodels.GenerateTagsSdk(1)
 	prepared := PrepareTagListForPrinting(tags)
 
 	outputType := fmt.Sprintf("%T", prepared[0])

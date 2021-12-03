@@ -9,15 +9,15 @@ import (
 
 //tests
 func TestTagFromSdk(test_framework *testing.T) {
-	sdkTag := GenerateTag()
+	sdkTag := GenerateTagSdk()
 	tag := TagFromSdk(sdkTag)
 
 	assertEqualTag(test_framework, *tag, *sdkTag)
 }
 
 func TestTagWithResourceAssignmentsFromSdk(test_framework *testing.T) {
-	sdkTag := GenerateTag()
-	sdkTag.ResourceAssignments = &[]tagapisdk.ResourceAssignment{*GenerateResourceAssignment()}
+	sdkTag := GenerateTagSdk()
+	sdkTag.ResourceAssignments = &[]tagapisdk.ResourceAssignment{*GenerateResourceAssignmentSdk()}
 	tag := TagFromSdk(sdkTag)
 
 	assertEqualTag(test_framework, *tag, *sdkTag)
@@ -30,21 +30,21 @@ func TestNilTagFromSdk(test_framework *testing.T) {
 }
 
 func TestTagCreateToSdk(test_framework *testing.T) {
-	tagCreate := GenerateCLITagCreate()
+	tagCreate := GenerateTagCreateCli()
 	sdkTagCreate := tagCreate.ToSdk()
 
 	assertEqualTagCreate(test_framework, *tagCreate, *sdkTagCreate)
 }
 
 func TestTagUpdateToSdk(test_framework *testing.T) {
-	tagUpdate := GenerateCLITagUpdate()
+	tagUpdate := GenerateTagUpdateCli()
 	sdkTagUpdate := tagUpdate.ToSdk()
 
 	assertEqualTagUpdate(test_framework, *tagUpdate, *sdkTagUpdate)
 }
 
 func TestResourceAssignmentFromSdk(test_framework *testing.T) {
-	sdkResourceAssignment := GenerateResourceAssignment()
+	sdkResourceAssignment := GenerateResourceAssignmentSdk()
 	resourceAssignment := ResourceAssignmentFromSdk(sdkResourceAssignment)
 
 	assertEqualResourceAssignment(test_framework, *resourceAssignment, *sdkResourceAssignment)
