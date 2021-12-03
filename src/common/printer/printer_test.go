@@ -339,16 +339,6 @@ func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
 	assert.Equal(test_framework, outputType, "tables.Quota")
 }
 
-func TestPrepareQuotaListForPrintingNonTable(test_framework *testing.T) {
-	OutputFormat = "json"
-	quotas := generators.GenerateQuotas(1)
-	prepared := PrepareQuotaListForPrinting(quotas)
-
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "[]interface {}")
-}
-
 func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
 	sshkey := generators.GenerateSshKey()
@@ -397,16 +387,6 @@ func TestPrepareSshkeyListForPrintingTable(test_framework *testing.T) {
 	outputType := fmt.Sprintf("%T", prepared[0])
 
 	assert.Equal(test_framework, outputType, "tables.SshKeyTable")
-}
-
-func TestPrepareSshkeyListForPrintingNonTable(test_framework *testing.T) {
-	OutputFormat = "json"
-	sshkeys := generators.GenerateSshKeys(1)
-	prepared := PrepareSshKeyListForPrinting(sshkeys, true)
-
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "[]interface {}")
 }
 
 func ExamplePrintOutputTableFormatEmpty() {
