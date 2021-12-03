@@ -7,7 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/tests/generators"
 )
 
-func GeneratePrivateNetwork() networkapisdk.PrivateNetwork {
+func GeneratePrivateNetworkSdk() networkapisdk.PrivateNetwork {
 	return networkapisdk.PrivateNetwork{
 		Id:              generators.RandSeq(10),
 		Name:            generators.RandSeq(10),
@@ -21,8 +21,15 @@ func GeneratePrivateNetwork() networkapisdk.PrivateNetwork {
 	}
 }
 
-func GeneratePrivateNetworkCreate() networkapisdk.PrivateNetworkCreate {
-	return networkapisdk.PrivateNetworkCreate{
+func GeneratePrivateNetworkServerSdk() networkapisdk.PrivateNetworkServer {
+	return networkapisdk.PrivateNetworkServer{
+		Id:  generators.RandSeq(10),
+		Ips: []string{generators.RandSeq(10)},
+	}
+}
+
+func GeneratePrivateNetworkCreateCli() PrivateNetworkCreate {
+	return PrivateNetworkCreate{
 		Name:            generators.RandSeq(10),
 		Description:     generators.RandSeqPointer(10),
 		Location:        generators.RandSeq(10),
@@ -31,18 +38,18 @@ func GeneratePrivateNetworkCreate() networkapisdk.PrivateNetworkCreate {
 	}
 }
 
-func GeneratePrivateNetworkModify() networkapisdk.PrivateNetworkModify {
-	return networkapisdk.PrivateNetworkModify{
+func GeneratePrivateNetworkModifyCli() PrivateNetworkModify {
+	return PrivateNetworkModify{
 		Name:            generators.RandSeq(10),
 		Description:     generators.RandSeqPointer(10),
 		LocationDefault: false,
 	}
 }
 
-func GeneratePrivateNetworks(n int) []networkapisdk.PrivateNetwork {
+func GeneratePrivateNetworksSdk(n int) []networkapisdk.PrivateNetwork {
 	var privateNetworkList []networkapisdk.PrivateNetwork
 	for i := 0; i < n; i++ {
-		privateNetworkList = append(privateNetworkList, GeneratePrivateNetwork())
+		privateNetworkList = append(privateNetworkList, GeneratePrivateNetworkSdk())
 	}
 	return privateNetworkList
 }

@@ -15,7 +15,7 @@ import (
 
 func TestGetPrivateNetworkSuccess(test_framework *testing.T) {
 
-	privateNetwork := networkmodels.GeneratePrivateNetwork()
+	privateNetwork := networkmodels.GeneratePrivateNetworkSdk()
 	var privateNetworkTable = tables.PrivateNetworkFromSdk(privateNetwork)
 
 	PrepareNetworkMockClient(test_framework).
@@ -70,7 +70,7 @@ func TestGetPrivateNetworkKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetPrivateNetworkPrinterFailure(test_framework *testing.T) {
-	privateNetwork := networkmodels.GeneratePrivateNetwork()
+	privateNetwork := networkmodels.GeneratePrivateNetworkSdk()
 	privateNetworkTable := tables.PrivateNetworkFromSdk(privateNetwork)
 
 	PrepareNetworkMockClient(test_framework).
