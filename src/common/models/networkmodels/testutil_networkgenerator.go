@@ -46,7 +46,7 @@ func GeneratePrivateNetworkModifyCli() PrivateNetworkModify {
 	}
 }
 
-func GeneratePrivateNetworksSdk(n int) []networkapisdk.PrivateNetwork {
+func GeneratePrivateNetworkListSdk(n int) []networkapisdk.PrivateNetwork {
 	var privateNetworkList []networkapisdk.PrivateNetwork
 	for i := 0; i < n; i++ {
 		privateNetworkList = append(privateNetworkList, GeneratePrivateNetworkSdk())
