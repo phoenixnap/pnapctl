@@ -15,7 +15,7 @@ func TestDeleteSshKeySuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyDelete(RESOURCEID).
-		Return(sshkeymodels.GenerateSshKeyDeleteResult(), WithResponse(200, nil), nil)
+		Return(sshkeymodels.GenerateSshKeyDeleteResultSdk(), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteSshKeyCmd.RunE(DeleteSshKeyCmd, []string{RESOURCEID})

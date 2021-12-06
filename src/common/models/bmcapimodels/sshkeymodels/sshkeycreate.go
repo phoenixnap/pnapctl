@@ -3,7 +3,6 @@ package sshkeymodels
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	files "phoenixnap.com/pnapctl/common/fileprocessor"
-	"phoenixnap.com/pnapctl/testsupport/generators"
 )
 
 type SshKeyCreate struct {
@@ -39,22 +38,4 @@ func CreateSshKeyCreateRequestFromFile(filename string, commandname string) (*bm
 	}
 
 	return sshKeyCreate.toSdk(), nil
-}
-
-func GenerateSshKeyCreateSdk() bmcapisdk.SshKeyCreate {
-	return bmcapisdk.SshKeyCreate{
-		Default: false,
-		Name:    generators.RandSeq(10),
-		Key:     generators.RandSeq(10),
-	}
-
-}
-
-func GenerateSshKeyCreateCli() SshKeyCreate {
-	return SshKeyCreate{
-		Default: false,
-		Name:    generators.RandSeq(10),
-		Key:     generators.RandSeq(10),
-	}
-
 }
