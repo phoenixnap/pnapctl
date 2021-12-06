@@ -57,14 +57,27 @@ var (
 // Execute adds all child commands to the root command, setting flags appropriately.
 // Called by main.main(), only needing to happen once.
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		var _ = fmt.Errorf("%s", err)
-		os.Exit(1)
-	}
 
-	err := doc.GenMarkdownTree(rootCmd, "./docs")
-	if err != nil {
-		log.Fatal(err)
+	argsWithProg := os.Args
+	argsWithoutProg := os.Args[1:]
+
+	fmt.Println(argsWithProg)
+	fmt.Println(argsWithoutProg)
+
+	// Generate Docs
+	if argsWithoutProg[0] == "_generate_docs" {
+		err := doc.GenMarkdownTree(rootCmd, "./docs")
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Docs generated")
+
+		// Run commands
+	} else {
+		if err := rootCmd.Execute(); err != nil {
+			var _ = fmt.Errorf("%s", err)
+			os.Exit(1)
+		}
 	}
 }
 

@@ -22,7 +22,6 @@ pnapctl [flags]
 
 ### SEE ALSO
 
-* [pnapctl completion](pnapctl_completion.md)	 - generate the autocompletion script for the specified shell
 * [pnapctl create](pnapctl_create.md)	 - Create a resource.
 * [pnapctl delete](pnapctl_delete.md)	 - Delete a resource.
 * [pnapctl get](pnapctl_get.md)	 - Display one or many resources.

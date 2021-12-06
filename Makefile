@@ -76,4 +76,4 @@ help:
 
 .PHONY:
 generate-docs: build-simple ; $(info $(M) generating docs...) @
-	@$(BIN)/pnapctl version
+	@$(BIN)/pnapctl _generate_docs
