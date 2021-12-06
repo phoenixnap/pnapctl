@@ -25,7 +25,7 @@ type QuotaEditLimitRequestDetails struct {
 	RequestedOn time.Time `json:"requestedOn" yaml:"requestedOn"`
 }
 
-func QuotaSdkToDto(quota bmcapisdk.Quota) Quota {
+func QuotaFromSdk(quota bmcapisdk.Quota) Quota {
 	return Quota{
 		ID:                           quota.Id,
 		Name:                         quota.Name,
@@ -34,11 +34,11 @@ func QuotaSdkToDto(quota bmcapisdk.Quota) Quota {
 		Limit:                        quota.Limit,
 		Unit:                         quota.Unit,
 		Used:                         quota.Used,
-		QuotaEditLimitRequestDetails: quotaEditLimitRequestDetailsListSdkToDto(quota.QuotaEditLimitRequestDetails),
+		QuotaEditLimitRequestDetails: quotaEditLimitRequestDetailsListFromSdk(quota.QuotaEditLimitRequestDetails),
 	}
 }
 
-func quotaEditLimitRequestDetailsListSdkToDto(requestDetailsList []bmcapisdk.QuotaEditLimitRequestDetails) []QuotaEditLimitRequestDetails {
+func quotaEditLimitRequestDetailsListFromSdk(requestDetailsList []bmcapisdk.QuotaEditLimitRequestDetails) []QuotaEditLimitRequestDetails {
 	if len(requestDetailsList) < 1 {
 		return nil
 	}
@@ -46,13 +46,13 @@ func quotaEditLimitRequestDetailsListSdkToDto(requestDetailsList []bmcapisdk.Quo
 	var bmcRequestDetails []QuotaEditLimitRequestDetails
 
 	for _, request := range requestDetailsList {
-		bmcRequestDetails = append(bmcRequestDetails, quotaEditLimitRequestDetailsSdkToDto(request))
+		bmcRequestDetails = append(bmcRequestDetails, quotaEditLimitRequestDetailsFromSdk(request))
 	}
 
 	return bmcRequestDetails
 }
 
-func quotaEditLimitRequestDetailsSdkToDto(requestDetails bmcapisdk.QuotaEditLimitRequestDetails) QuotaEditLimitRequestDetails {
+func quotaEditLimitRequestDetailsFromSdk(requestDetails bmcapisdk.QuotaEditLimitRequestDetails) QuotaEditLimitRequestDetails {
 	return QuotaEditLimitRequestDetails{
 		Limit:       requestDetails.Limit,
 		Reason:      requestDetails.Reason,
@@ -65,7 +65,7 @@ func QuotaEditLimitRequestDetailsToTableString(requestDetails []bmcapisdk.QuotaE
 	if len(requestDetails) < 1 {
 		detailsAsStrings = []string{"N/A"}
 	} else {
-		dtoDetails := quotaEditLimitRequestDetailsListSdkToDto(requestDetails)
+		dtoDetails := quotaEditLimitRequestDetailsListFromSdk(requestDetails)
 		for _, details := range dtoDetails {
 			detailsAsStrings = append(detailsAsStrings, quotaEditLimitRequestDetailsToString(details))
 		}

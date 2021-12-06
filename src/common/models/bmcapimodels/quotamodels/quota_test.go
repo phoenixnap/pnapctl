@@ -10,7 +10,7 @@ import (
 
 func TestQuotaSdkToDto(test_framework *testing.T) {
 	sdkModel := GenerateQuotaSdk()
-	quota := QuotaSdkToDto(sdkModel)
+	quota := QuotaFromSdk(sdkModel)
 
 	assert.Equal(test_framework, sdkModel.Id, quota.ID)
 	assert.Equal(test_framework, sdkModel.Name, quota.Name)

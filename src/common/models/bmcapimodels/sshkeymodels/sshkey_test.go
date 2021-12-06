@@ -8,7 +8,7 @@ import (
 
 func TestSshKeySdkToDto(test_framework *testing.T) {
 	sdkModel := GenerateSshKeySdk()
-	sshkey := SshKeySdkToDto(sdkModel)
+	sshkey := SshKeyFromSdk(sdkModel)
 
 	assert.Equal(test_framework, sdkModel.Id, sshkey.Id)
 	assert.Equal(test_framework, sdkModel.Default, sshkey.Default)

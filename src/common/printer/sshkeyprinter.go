@@ -35,6 +35,6 @@ func PrepareSshKeyForPrinting(sshKey bmcapisdk.SshKey, full bool) interface{} {
 	case !full && table:
 		return tables.ToSshKeyTable(sshKey)
 	default:
-		return sshkeymodels.SshKeySdkToDto(sshKey)
+		return sshkeymodels.SshKeyFromSdk(sshKey)
 	}
 }
