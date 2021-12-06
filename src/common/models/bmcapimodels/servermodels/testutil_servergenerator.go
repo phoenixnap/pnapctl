@@ -139,6 +139,13 @@ func GenerateTagAssignmentRequestSdk() bmcapisdk.TagAssignmentRequest {
 	}
 }
 
+func GenerateTagAssignmentRequestCli() TagAssignmentRequest {
+	return TagAssignmentRequest{
+		Name:  generators.RandSeq(10),
+		Value: generators.RandSeqPointer(10),
+	}
+}
+
 func GenerateTagAssignmentRequestListSdk(n int) []bmcapisdk.TagAssignmentRequest {
 	var list []bmcapisdk.TagAssignmentRequest
 	for i := 0; i < n; i++ {
