@@ -303,7 +303,7 @@ func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	privateNetworks := networkmodels.GeneratePrivateNetworksSdk(1)
+	privateNetworks := networkmodels.GeneratePrivateNetworkListSdk(1)
 	prepared := PreparePrivateNetworkListForPrinting(privateNetworks)
 
 	outputType := fmt.Sprintf("%T", prepared[0])

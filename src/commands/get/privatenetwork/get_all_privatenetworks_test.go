@@ -14,7 +14,7 @@ import (
 )
 
 func TestGetAllPrivateNetworksShortSuccess(test_framework *testing.T) {
-	privateNetworks := networkmodels.GeneratePrivateNetworksSdk(5)
+	privateNetworks := networkmodels.GeneratePrivateNetworkListSdk(5)
 
 	var privateNetworkList []interface{}
 
@@ -65,7 +65,7 @@ func TestGetAllPrivateNetworksKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllPrivateNetworksPrinterFailure(test_framework *testing.T) {
-	privateNetworks := networkmodels.GeneratePrivateNetworksSdk(5)
+	privateNetworks := networkmodels.GeneratePrivateNetworkListSdk(5)
 
 	var privateNetworkList []interface{}
 
