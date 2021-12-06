@@ -22,7 +22,6 @@ type ServerPrivateNetwork struct {
 	StatusDescription *string   `yaml:"statusDescription,omitempty" json:"statusDescription,omitempty"`
 }
 
-/* DTO to SDK mapping functions*/
 func (networkconfiguration *NetworkConfiguration) toSdk() *bmcapisdk.NetworkConfiguration {
 	if networkconfiguration == nil {
 		return nil
@@ -70,18 +69,17 @@ func (serverPrivateNetwork ServerPrivateNetwork) toSdk() bmcapisdk.ServerPrivate
 	return serverPrivateNetworkSdk
 }
 
-/* SDK to DTO mapping functions */
-func NetworkConfigurationSdkToDto(networkConf *bmcapisdk.NetworkConfiguration) *NetworkConfiguration {
+func NetworkConfigurationFromSdk(networkConf *bmcapisdk.NetworkConfiguration) *NetworkConfiguration {
 	if networkConf == nil {
 		return nil
 	}
 
 	return &NetworkConfiguration{
-		PrivateNetworkConfiguration: privateNetworkConfigurationSdkToDto(networkConf.PrivateNetworkConfiguration),
+		PrivateNetworkConfiguration: privateNetworkConfigurationFromSdk(networkConf.PrivateNetworkConfiguration),
 	}
 }
 
-func privateNetworkConfigurationSdkToDto(privateNetworkConfnfiguration *bmcapisdk.PrivateNetworkConfiguration) *PrivateNetworkConfiguration {
+func privateNetworkConfigurationFromSdk(privateNetworkConfnfiguration *bmcapisdk.PrivateNetworkConfiguration) *PrivateNetworkConfiguration {
 	if privateNetworkConfnfiguration == nil {
 		return nil
 	}
@@ -89,11 +87,11 @@ func privateNetworkConfigurationSdkToDto(privateNetworkConfnfiguration *bmcapisd
 	return &PrivateNetworkConfiguration{
 		GatewayAddress:    privateNetworkConfnfiguration.GatewayAddress,
 		ConfigurationType: privateNetworkConfnfiguration.ConfigurationType,
-		PrivateNetworks:   privateNetworksSdkToDto(privateNetworkConfnfiguration.PrivateNetworks),
+		PrivateNetworks:   privateNetworksFromSdk(privateNetworkConfnfiguration.PrivateNetworks),
 	}
 }
 
-func privateNetworksSdkToDto(privateNetworks *[]bmcapisdk.ServerPrivateNetwork) *[]ServerPrivateNetwork {
+func privateNetworksFromSdk(privateNetworks *[]bmcapisdk.ServerPrivateNetwork) *[]ServerPrivateNetwork {
 	if privateNetworks == nil {
 		return nil
 	}
@@ -124,7 +122,7 @@ func NetworkConfigurationToTableString(networkConfiguration *bmcapisdk.NetworkCo
 	if networkConfiguration == nil {
 		return ""
 	} else {
-		sdkObj := NetworkConfigurationSdkToDto(networkConfiguration)
+		sdkObj := NetworkConfigurationFromSdk(networkConfiguration)
 		return sdkObj.ToTableString()
 	}
 }

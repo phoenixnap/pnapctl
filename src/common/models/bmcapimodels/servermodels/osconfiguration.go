@@ -38,20 +38,20 @@ func (osConfigurationWindows *OsConfigurationWindows) toSdk() *bmcapisdk.OsConfi
 	}
 }
 
-func OsConfigurationSdkToDto(osConfiguration *bmcapisdk.OsConfiguration) *OsConfiguration {
+func OsConfigurationFromSdk(osConfiguration *bmcapisdk.OsConfiguration) *OsConfiguration {
 	if osConfiguration == nil {
 		return nil
 	}
 
 	return &OsConfiguration{
-		Windows:                    osConfigurationWindowsSdkToDto(osConfiguration.Windows),
+		Windows:                    osConfigurationWindowsFromSdk(osConfiguration.Windows),
 		RootPassword:               osConfiguration.RootPassword,
 		ManagementUiUrl:            osConfiguration.ManagementUiUrl,
 		ManagementAccessAllowedIps: osConfiguration.ManagementAccessAllowedIps,
 	}
 }
 
-func osConfigurationWindowsSdkToDto(osConfigurationWindows *bmcapisdk.OsConfigurationWindows) *OsConfigurationWindows {
+func osConfigurationWindowsFromSdk(osConfigurationWindows *bmcapisdk.OsConfigurationWindows) *OsConfigurationWindows {
 	if osConfigurationWindows == nil {
 		return nil
 	}
@@ -73,7 +73,7 @@ func OsConfigurationToTableString(osConfiguration *bmcapisdk.OsConfiguration) st
 	if osConfiguration == nil {
 		return ""
 	} else {
-		sdkObj := OsConfigurationSdkToDto(osConfiguration)
+		sdkObj := OsConfigurationFromSdk(osConfiguration)
 		return sdkObj.ToTableString()
 	}
 }
