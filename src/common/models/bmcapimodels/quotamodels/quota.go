@@ -1,4 +1,4 @@
-package bmcapimodels
+package quotamodels
 
 import (
 	"fmt"
@@ -30,6 +30,13 @@ type QuotaEditRequest struct {
 	Reason string `json:"reason" yaml:"reason"`
 }
 
+func (quotaEditRequest QuotaEditRequest) toSdk() *bmcapisdk.QuotaEditLimitRequest {
+	return &bmcapisdk.QuotaEditLimitRequest{
+		Limit:  quotaEditRequest.Limit,
+		Reason: quotaEditRequest.Reason,
+	}
+}
+
 func QuotaSdkToDto(quota bmcapisdk.Quota) Quota {
 	return Quota{
 		ID:                           quota.Id,
@@ -40,13 +47,6 @@ func QuotaSdkToDto(quota bmcapisdk.Quota) Quota {
 		Unit:                         quota.Unit,
 		Used:                         quota.Used,
 		QuotaEditLimitRequestDetails: quotaEditLimitRequestDetailsListSdkToDto(quota.QuotaEditLimitRequestDetails),
-	}
-}
-
-func (quotaEditRequest QuotaEditRequest) toSdk() *bmcapisdk.QuotaEditLimitRequest {
-	return &bmcapisdk.QuotaEditLimitRequest{
-		Limit:  quotaEditRequest.Limit,
-		Reason: quotaEditRequest.Reason,
 	}
 }
 

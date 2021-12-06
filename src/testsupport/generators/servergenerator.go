@@ -5,33 +5,10 @@ import (
 	"time"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 )
-
-var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
-func RandSeq(n int) string {
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(b)
-}
-
-func RandSeqPointer(n int) *string {
-	random := RandSeq(n)
-	return &random
-}
-
-func RandListStringPointer(n int) *[]string {
-	b := []string{}
-	for i := range b {
-		b[i] = RandSeq(10)
-	}
-	return &b
-}
 
 func GenerateServers(n int) []bmcapisdk.Server {
 	var serverlist []bmcapisdk.Server
@@ -70,8 +47,8 @@ func GenerateServer() bmcapisdk.Server {
 	}
 }
 
-func GenerateServerCreate() bmcapimodels.ServerCreate {
-	return bmcapimodels.ServerCreate{
+func GenerateServerCreate() servermodels.ServerCreate {
+	return servermodels.ServerCreate{
 		Hostname:              RandSeq(10),
 		Description:           RandSeqPointer(10),
 		Os:                    RandSeq(10),

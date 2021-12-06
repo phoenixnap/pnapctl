@@ -5,7 +5,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/tests/mocks/sdkmocks"
+	"phoenixnap.com/pnapctl/testsupport/mocks/sdkmocks"
 )
 
 const RESOURCEID = "mock_id"
