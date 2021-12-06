@@ -15,7 +15,7 @@ import (
 )
 
 func TestGetAllEventsSuccess(test_framework *testing.T) {
-	eventList := auditmodels.GenerateEvents(2)
+	eventList := auditmodels.GenerateEventListSdk(2)
 	queryParams := auditmodels.GenerateQueryParams()
 	setQueryParams(queryParams)
 
@@ -41,7 +41,7 @@ func TestGetAllEventsSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
-	event := []auditapisdk.Event{auditmodels.GenerateEvent()}
+	event := []auditapisdk.Event{auditmodels.GenerateEventSdk()}
 	queryParams := auditmodels.GenerateQueryParams()
 	setQueryParams(queryParams)
 
@@ -57,7 +57,7 @@ func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
-	eventList := auditmodels.GenerateEvents(2)
+	eventList := auditmodels.GenerateEventListSdk(2)
 	queryParams := auditmodels.GenerateQueryParams()
 	setQueryParams(queryParams)
 
