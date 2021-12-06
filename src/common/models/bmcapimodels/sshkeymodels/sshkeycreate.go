@@ -3,13 +3,8 @@ package sshkeymodels
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	files "phoenixnap.com/pnapctl/common/fileprocessor"
+	"phoenixnap.com/pnapctl/testsupport/generators"
 )
-
-type SshKeyCreate struct {
-	Default bool   `json:"default" yaml:"default"`
-	Name    string `json:"name" yaml:"name"`
-	Key     string `json:"key" yaml:"key"`
-}
 
 type SshKeyUpdate struct {
 	Default bool   `json:"default" yaml:"default"`
@@ -21,13 +16,6 @@ func (sshKeyCreate SshKeyCreate) toSdk() *bmcapisdk.SshKeyCreate {
 		Default: sshKeyCreate.Default,
 		Name:    sshKeyCreate.Name,
 		Key:     sshKeyCreate.Key,
-	}
-}
-
-func (sshKeyUpdate SshKeyUpdate) toSdk() *bmcapisdk.SshKeyUpdate {
-	return &bmcapisdk.SshKeyUpdate{
-		Default: sshKeyUpdate.Default,
-		Name:    sshKeyUpdate.Name,
 	}
 }
 
@@ -52,23 +40,11 @@ func CreateSshKeyCreateRequestFromFile(filename string, commandname string) (*bm
 	return sshKeyCreate.toSdk(), nil
 }
 
-func CreateSshKeyUpdateRequestFromFile(filename string, commandname string) (*bmcapisdk.SshKeyUpdate, error) {
-	files.ExpandPath(&filename)
-
-	data, err := files.ReadFile(filename, commandname)
-
-	if err != nil {
-		return nil, err
+func GenerateSshKeyCreateSdk() bmcapisdk.SshKeyCreate {
+	return bmcapisdk.SshKeyCreate{
+		Default: false,
+		Name:    generators.RandSeq(10),
+		Key:     generators.RandSeq(10),
 	}
 
-	// Marshal file into JSON using the struct
-	var sshKeyUpdate SshKeyUpdate
-
-	err = files.Unmarshal(data, &sshKeyUpdate, commandname)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return sshKeyUpdate.toSdk(), nil
 }

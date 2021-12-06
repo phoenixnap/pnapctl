@@ -7,15 +7,15 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/testsupport/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetSshKeyByIdFullSuccess(test_framework *testing.T) {
 	Full = true
-	sshKey := generators.GenerateSshKey()
+	sshKey := sshkeymodels.GenerateSshKeySdk()
 	sshKeyTable := tables.ToSshKeyTableFull(sshKey)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -34,7 +34,7 @@ func TestGetSshKeyByIdFullSuccess(test_framework *testing.T) {
 
 func TestGetSshKeyByIdSuccess(test_framework *testing.T) {
 	Full = false
-	sshKey := generators.GenerateSshKey()
+	sshKey := sshkeymodels.GenerateSshKeySdk()
 	sshKeyTable := tables.ToSshKeyTable(sshKey)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -90,7 +90,7 @@ func TestGetSshKeyByIdKeycloakFailure(test_framework *testing.T) {
 
 func TestGetSshKeyByIdPrinterFailure(test_framework *testing.T) {
 	Full = false
-	sshKey := generators.GenerateSshKey()
+	sshKey := sshkeymodels.GenerateSshKeySdk()
 	sshKeyTable := tables.ToSshKeyTable(sshKey)
 
 	PrepareBmcApiMockClient(test_framework).
