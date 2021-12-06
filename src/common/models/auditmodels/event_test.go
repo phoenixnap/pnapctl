@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Tests
+// tests
 func TestEventFromSdk(test_framework *testing.T) {
 	sdkEvent := GenerateEventSdk()
 	event := EventFromSdk(sdkEvent)
