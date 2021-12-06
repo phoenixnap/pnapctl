@@ -32,7 +32,7 @@ func GenerateTagUpdateCli() *TagUpdate {
 	}
 }
 
-func GenerateTagsSdk(n int) []tagapisdk.Tag {
+func GenerateTagListSdk(n int) []tagapisdk.Tag {
 	var tagList []tagapisdk.Tag
 	for i := 0; i < n; i++ {
 		tagList = append(tagList, *GenerateTagSdk())
