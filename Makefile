@@ -75,5 +75,5 @@ help:
 	$Q $(MAKE) $(MAKE_FLAGS) -C $(SRC) $@
 
 .PHONY:
-generate-docs: build-simple ; $(info $(M) generating docs...)
+generate-docs: build-simple ; $(info $(M) generating docs...) @
 	@$(BIN)/pnapctl version
