@@ -25,18 +25,6 @@ type QuotaEditLimitRequestDetails struct {
 	RequestedOn time.Time `json:"requestedOn" yaml:"requestedOn"`
 }
 
-type QuotaEditRequest struct {
-	Limit  int32  `json:"limit" yaml:"limit"`
-	Reason string `json:"reason" yaml:"reason"`
-}
-
-func (quotaEditRequest QuotaEditRequest) toSdk() *bmcapisdk.QuotaEditLimitRequest {
-	return &bmcapisdk.QuotaEditLimitRequest{
-		Limit:  quotaEditRequest.Limit,
-		Reason: quotaEditRequest.Reason,
-	}
-}
-
 func QuotaSdkToDto(quota bmcapisdk.Quota) Quota {
 	return Quota{
 		ID:                           quota.Id,
