@@ -2,7 +2,7 @@ package ranchermodels
 
 import (
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
-	"phoenixnap.com/pnapctl/tests/generators"
+	"phoenixnap.com/pnapctl/testsupport/generators"
 )
 
 func GenerateClusterListSdk(n int) []ranchersdk.Cluster {

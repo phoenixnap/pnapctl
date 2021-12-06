@@ -9,12 +9,12 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
-	. "phoenixnap.com/pnapctl/tests/mockhelp"
-	"phoenixnap.com/pnapctl/tests/testutil"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllTagsSuccess(test_framework *testing.T) {
-	tags := tagmodels.GenerateTags(5)
+	tags := tagmodels.GenerateTagListSdk(5)
 
 	var taglist []interface{}
 
@@ -65,7 +65,7 @@ func TestGetAllTagsKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllTagsPrinterFailure(test_framework *testing.T) {
-	tags := tagmodels.GenerateTags(5)
+	tags := tagmodels.GenerateTagListSdk(5)
 
 	var taglist []interface{}
 
