@@ -14,7 +14,7 @@ import (
 )
 
 func TestGetAllTagsSuccess(test_framework *testing.T) {
-	tags := tagmodels.GenerateTagsSdk(5)
+	tags := tagmodels.GenerateTagListSdk(5)
 
 	var taglist []interface{}
 
@@ -65,7 +65,7 @@ func TestGetAllTagsKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllTagsPrinterFailure(test_framework *testing.T) {
-	tags := tagmodels.GenerateTagsSdk(5)
+	tags := tagmodels.GenerateTagListSdk(5)
 
 	var taglist []interface{}
 
