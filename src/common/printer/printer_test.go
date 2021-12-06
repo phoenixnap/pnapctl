@@ -7,6 +7,7 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/quotamodels"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
 	"phoenixnap.com/pnapctl/testsupport/generators"
 )
@@ -270,7 +271,7 @@ func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 
 func TestPrepareTagListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	tags := tagmodels.GenerateTagsSdk(1)
+	tags := tagmodels.GenerateTagListSdk(1)
 	prepared := PrepareTagListForPrinting(tags)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -308,6 +309,86 @@ func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
 
 	assert.Equal(test_framework, outputType, "networkmodels.PrivateNetwork")
 	assert.Equal(test_framework, len(prepared), 1)
+}
+
+func TestPrepareQuotaForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	quota := quotamodels.GenerateQuotaSdk()
+	prepared := PrepareQuotaForPrinting(quota)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.Quota")
+}
+
+func TestPrepareQuotaForPrintingNonTable(test_framework *testing.T) {
+	OutputFormat = "json"
+	quota := quotamodels.GenerateQuotaSdk()
+	prepared := PrepareQuotaForPrinting(quota)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "quotamodels.Quota")
+}
+
+func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	quotas := quotamodels.GenerateQuotaSdkList(1)
+	prepared := PrepareQuotaListForPrinting(quotas)
+
+	outputType := fmt.Sprintf("%T", prepared[0])
+
+	assert.Equal(test_framework, outputType, "tables.Quota")
+}
+
+func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	sshkey := generators.GenerateSshKey()
+	prepared := PrepareSshKeyForPrinting(sshkey, true)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.SshKeyTableFull")
+}
+
+func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	sshkey := generators.GenerateSshKey()
+	prepared := PrepareSshKeyForPrinting(sshkey, false)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.SshKeyTable")
+}
+
+func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
+	OutputFormat = "json"
+	sshkey := generators.GenerateSshKey()
+	prepared := PrepareSshKeyForPrinting(sshkey, true)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "sshkeymodels.SshKey")
+}
+
+func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	sshkeys := generators.GenerateSshKeys(1)
+	prepared := PrepareSshKeyListForPrinting(sshkeys, true)
+
+	outputType := fmt.Sprintf("%T", prepared[0])
+
+	assert.Equal(test_framework, outputType, "tables.SshKeyTableFull")
+}
+
+func TestPrepareSshkeyListForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	sshkeys := generators.GenerateSshKeys(1)
+	prepared := PrepareSshKeyListForPrinting(sshkeys, false)
+
+	outputType := fmt.Sprintf("%T", prepared[0])
+
+	assert.Equal(test_framework, outputType, "tables.SshKeyTable")
 }
 
 func ExamplePrintOutputTableFormatEmpty() {
