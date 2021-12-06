@@ -73,7 +73,7 @@ func OsConfigurationToTableString(osConfiguration *bmcapisdk.OsConfiguration) st
 	if osConfiguration == nil {
 		return ""
 	} else {
-		sdkObj := OsConfigurationFromSdk(osConfiguration)
-		return sdkObj.ToTableString()
+		cliObj := OsConfigurationFromSdk(osConfiguration)
+		return cliObj.ToTableString()
 	}
 }
