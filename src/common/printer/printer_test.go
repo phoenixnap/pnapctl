@@ -8,8 +8,9 @@ import (
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
 	"phoenixnap.com/pnapctl/common/models/auditmodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/quotamodels"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
-	"phoenixnap.com/pnapctl/tests/generators"
+	"phoenixnap.com/pnapctl/testsupport/generators"
 )
 
 type ExampleStruct1 struct {
@@ -164,7 +165,7 @@ func TestPrepareServerForPrintingLongServer(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.LongServer")
+	assert.Equal(test_framework, outputType, "servermodels.LongServer")
 }
 
 func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
@@ -174,7 +175,7 @@ func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.ShortServer")
+	assert.Equal(test_framework, outputType, "servermodels.ShortServer")
 }
 
 func TestPrepareServerListForPrinting(test_framework *testing.T) {
@@ -184,7 +185,7 @@ func TestPrepareServerListForPrinting(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared[0])
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.ShortServer")
+	assert.Equal(test_framework, outputType, "servermodels.ShortServer")
 	assert.Equal(test_framework, len(prepared), 1)
 }
 
@@ -313,7 +314,7 @@ func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
 
 func TestPrepareQuotaForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	quota := generators.GenerateQuota()
+	quota := quotamodels.GenerateQuotaSdk()
 	prepared := PrepareQuotaForPrinting(quota)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -323,17 +324,17 @@ func TestPrepareQuotaForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareQuotaForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	quota := generators.GenerateQuota()
+	quota := quotamodels.GenerateQuotaSdk()
 	prepared := PrepareQuotaForPrinting(quota)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.Quota")
+	assert.Equal(test_framework, outputType, "quotamodels.Quota")
 }
 
 func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	quotas := generators.GenerateQuotas(1)
+	quotas := quotamodels.GenerateQuotaSdkList(1)
 	prepared := PrepareQuotaListForPrinting(quotas)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -368,7 +369,7 @@ func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.SshKey")
+	assert.Equal(test_framework, outputType, "sshkeymodels.SshKey")
 }
 
 func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {

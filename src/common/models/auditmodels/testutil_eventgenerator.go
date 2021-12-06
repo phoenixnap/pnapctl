@@ -4,7 +4,7 @@ import (
 	"time"
 
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
-	"phoenixnap.com/pnapctl/tests/generators"
+	"phoenixnap.com/pnapctl/testsupport/generators"
 )
 
 func GenerateEventSdk() *auditapisdk.Event {
