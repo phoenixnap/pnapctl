@@ -49,7 +49,7 @@ func GenerateSshKeyListSdk(n int) []bmcapisdk.SshKey {
 	return sshKeyList
 }
 
-func GenerateSshKeyDeleteResult() bmcapisdk.DeleteSshKeyResult {
+func GenerateSshKeyDeleteResultSdk() bmcapisdk.DeleteSshKeyResult {
 	return bmcapisdk.DeleteSshKeyResult{
 		Result:   generators.RandSeq(10),
 		SshKeyId: generators.RandSeq(10),
