@@ -191,7 +191,7 @@ func TestPrepareServerListForPrinting(test_framework *testing.T) {
 func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
 	event := auditmodels.GenerateEventSdk()
-	prepared := PrepareEventForPrinting(event)
+	prepared := PrepareEventForPrinting(*event)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -201,7 +201,7 @@ func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 func TestPrepareEventForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
 	event := auditmodels.GenerateEventSdk()
-	prepared := PrepareEventForPrinting(event)
+	prepared := PrepareEventForPrinting(*event)
 
 	outputType := fmt.Sprintf("%T", prepared)
 

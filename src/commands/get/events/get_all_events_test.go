@@ -41,7 +41,7 @@ func TestGetAllEventsSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
-	event := []auditapisdk.Event{auditmodels.GenerateEventSdk()}
+	event := []auditapisdk.Event{*auditmodels.GenerateEventSdk()}
 	queryParams := auditmodels.GenerateQueryParamsCli()
 	setQueryParams(queryParams)
 

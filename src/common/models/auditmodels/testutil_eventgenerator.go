@@ -7,8 +7,8 @@ import (
 	"phoenixnap.com/pnapctl/tests/generators"
 )
 
-func GenerateEventSdk() auditapisdk.Event {
-	return auditapisdk.Event{
+func GenerateEventSdk() *auditapisdk.Event {
+	return &auditapisdk.Event{
 		Name:      generators.RandSeqPointer(10),
 		Timestamp: time.Now(),
 		UserInfo: auditapisdk.UserInfo{
@@ -22,7 +22,7 @@ func GenerateEventSdk() auditapisdk.Event {
 func GenerateEventListSdk(n int) []auditapisdk.Event {
 	var eventList []auditapisdk.Event
 	for i := 0; i < n; i++ {
-		eventList = append(eventList, GenerateEventSdk())
+		eventList = append(eventList, *GenerateEventSdk())
 	}
 	return eventList
 }
