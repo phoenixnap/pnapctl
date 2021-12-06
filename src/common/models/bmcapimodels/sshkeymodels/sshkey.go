@@ -1,4 +1,4 @@
-package bmcapimodels
+package sshkeymodels
 
 import (
 	"time"

@@ -5,7 +5,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"phoenixnap.com/pnapctl/common/client/audit"
-	"phoenixnap.com/pnapctl/tests/mocks/sdkmocks"
+	"phoenixnap.com/pnapctl/testsupport/mocks/sdkmocks"
 )
 
 func PrepareAuditMockClient(test_framework *testing.T) *sdkmocks.MockAuditSdkClientMockRecorder {

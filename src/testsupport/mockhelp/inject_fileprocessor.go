@@ -6,7 +6,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"phoenixnap.com/pnapctl/common/fileprocessor"
 
-	"phoenixnap.com/pnapctl/tests/mocks"
+	"phoenixnap.com/pnapctl/testsupport/mocks"
 )
 
 const FILENAME = "testfile.yaml"

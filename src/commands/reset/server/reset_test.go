@@ -7,14 +7,14 @@ import (
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 
 	"gopkg.in/yaml.v2"
-	"phoenixnap.com/pnapctl/tests/generators"
-	"phoenixnap.com/pnapctl/tests/testutil"
+	"phoenixnap.com/pnapctl/testsupport/generators"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"github.com/stretchr/testify/assert"
-	. "phoenixnap.com/pnapctl/tests/mockhelp"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
 func TestResetServerSuccessYAML(test_framework *testing.T) {
@@ -23,7 +23,7 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 	resetResult := generators.GenerateResetResult()
 
 	// to be used for marshaling only
-	serverResetModel := bmcapimodels.ServerReset{
+	serverResetModel := servermodels.ServerReset{
 		InstallDefaultSshKeys: nil,
 		SshKeys:               nil,
 		SshKeyIds:             nil,
