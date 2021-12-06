@@ -270,7 +270,7 @@ func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 
 func TestPrepareTagListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	tags := tagmodels.GenerateTagsSdk(1)
+	tags := tagmodels.GenerateTagListSdk(1)
 	prepared := PrepareTagListForPrinting(tags)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
