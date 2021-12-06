@@ -11,11 +11,7 @@ func GenerateEventSdk() *auditapisdk.Event {
 	return &auditapisdk.Event{
 		Name:      generators.RandSeqPointer(10),
 		Timestamp: time.Now(),
-		UserInfo: auditapisdk.UserInfo{
-			AccountId: generators.RandSeq(10),
-			ClientId:  generators.RandSeqPointer(10),
-			Username:  generators.RandSeq(10),
-		},
+		UserInfo:  GenerateUserInfoSdk(),
 	}
 }
 
@@ -37,6 +33,14 @@ func GenerateQueryParamsCli() EventsGetQueryParams {
 		Username: generators.RandSeq(10),
 		Verb:     "PUT",
 		Uri:      generators.RandSeq(10),
+	}
+}
+
+func GenerateUserInfoSdk() auditapisdk.UserInfo {
+	return auditapisdk.UserInfo{
+		AccountId: generators.RandSeq(10),
+		ClientId:  generators.RandSeqPointer(10),
+		Username:  generators.RandSeq(10),
 	}
 }
 

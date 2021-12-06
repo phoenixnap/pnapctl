@@ -28,9 +28,3 @@ func assertEqualEvent(test_framework *testing.T, event Event, sdkEvent auditapis
 
 	assertEqualUserInfo(test_framework, event.UserInfo, sdkEvent.UserInfo)
 }
-
-func assertEqualUserInfo(test_framework *testing.T, userInfo UserInfo, sdkUserInfo auditapisdk.UserInfo) {
-	assert.Equal(test_framework, userInfo.AccountId, sdkUserInfo.AccountId)
-	assert.Equal(test_framework, userInfo.ClientId, sdkUserInfo.ClientId)
-	assert.Equal(test_framework, userInfo.Username, sdkUserInfo.Username)
-}
