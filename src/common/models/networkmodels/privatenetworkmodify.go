@@ -19,18 +19,6 @@ func (modify *PrivateNetworkModify) ToSdk() *networksdk.PrivateNetworkModify {
 	}
 }
 
-func PrivateNetworkModifyFromSdk(modify *networksdk.PrivateNetworkModify) *PrivateNetworkModify {
-	if modify == nil {
-		return nil
-	}
-
-	return &PrivateNetworkModify{
-		Name:            modify.Name,
-		Description:     modify.Description,
-		LocationDefault: modify.LocationDefault,
-	}
-}
-
 func CreatePrivateNetworkUpdateFromFile(filename string, commandname string) (*networksdk.PrivateNetworkModify, error) {
 	files.ExpandPath(&filename)
 

@@ -9,6 +9,7 @@ import (
 	"github.com/landoop/tableprinter"
 	"phoenixnap.com/pnapctl/common/models/auditmodels"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/quotamodels"
+	"phoenixnap.com/pnapctl/common/models/networkmodels"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
 	"phoenixnap.com/pnapctl/testsupport/generators"
 )
@@ -283,7 +284,7 @@ func TestPrepareTagListForPrinting(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	privateNetwork := generators.GeneratePrivateNetwork()
+	privateNetwork := networkmodels.GeneratePrivateNetworkSdk()
 	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -293,7 +294,7 @@ func TestPreparePrivateNetworkForPrintingTable(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	privateNetwork := generators.GeneratePrivateNetwork()
+	privateNetwork := networkmodels.GeneratePrivateNetworkSdk()
 	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -303,7 +304,7 @@ func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	privateNetworks := generators.GeneratePrivateNetworks(1)
+	privateNetworks := networkmodels.GeneratePrivateNetworkListSdk(1)
 	prepared := PreparePrivateNetworkListForPrinting(privateNetworks)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
