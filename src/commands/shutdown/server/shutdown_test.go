@@ -13,7 +13,7 @@ import (
 )
 
 func TestShutdownServerSuccess(test_framework *testing.T) {
-	actionResult := servermodels.GenerateActionResult()
+	actionResult := servermodels.GenerateActionResultSdk()
 	PrepareBmcApiMockClient(test_framework).
 		ServerShutdown(RESOURCEID).
 		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)

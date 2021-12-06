@@ -10,15 +10,15 @@ import (
 	generators "phoenixnap.com/pnapctl/testsupport/generators"
 )
 
-func GenerateServers(n int) []bmcapisdk.Server {
+func GenerateServerListSdk(n int) []bmcapisdk.Server {
 	var serverlist []bmcapisdk.Server
 	for i := 0; i < n; i++ {
-		serverlist = append(serverlist, GenerateServer())
+		serverlist = append(serverlist, GenerateServerSdk())
 	}
 	return serverlist
 }
 
-func GenerateServer() bmcapisdk.Server {
+func GenerateServerSdk() bmcapisdk.Server {
 	provisionedOn := time.Now()
 	return bmcapisdk.Server{
 		Id:                 generators.RandSeq(10),
@@ -47,7 +47,7 @@ func GenerateServer() bmcapisdk.Server {
 	}
 }
 
-func GenerateServerCreate() ServerCreate {
+func GenerateServerCreateCli() ServerCreate {
 	return ServerCreate{
 		Hostname:              generators.RandSeq(10),
 		Description:           generators.RandSeqPointer(10),
@@ -66,15 +66,15 @@ func GenerateServerCreate() ServerCreate {
 	}
 }
 
-func GenerateClusters(n int) []ranchersdk.Cluster {
+func GenerateClusterListSdk(n int) []ranchersdk.Cluster {
 	var clusterlist []ranchersdk.Cluster
 	for i := 0; i < n; i++ {
-		clusterlist = append(clusterlist, GenerateCluster())
+		clusterlist = append(clusterlist, GenerateClusterSdk())
 	}
 	return clusterlist
 }
 
-func GenerateCluster() ranchersdk.Cluster {
+func GenerateClusterSdk() ranchersdk.Cluster {
 	return ranchersdk.Cluster{
 		Id:                    generators.RandSeqPointer(10),
 		Name:                  generators.RandSeqPointer(10),
@@ -88,27 +88,27 @@ func GenerateCluster() ranchersdk.Cluster {
 	}
 }
 
-func GenerateRancherDeleteResult() ranchersdk.DeleteResult {
+func GenerateRancherDeleteResultSdk() ranchersdk.DeleteResult {
 	return ranchersdk.DeleteResult{
 		Result:    generators.RandSeq(10),
 		ClusterId: generators.RandSeqPointer(10),
 	}
 }
 
-func GenerateBmcApiDeleteResult() bmcapisdk.DeleteResult {
+func GenerateBmcApiDeleteResultSdk() bmcapisdk.DeleteResult {
 	return bmcapisdk.DeleteResult{
 		Result:   generators.RandSeq(10),
 		ServerId: generators.RandSeq(10),
 	}
 }
 
-func GenerateActionResult() bmcapisdk.ActionResult {
+func GenerateActionResultSdk() bmcapisdk.ActionResult {
 	return bmcapisdk.ActionResult{
 		Result: generators.RandSeq(10),
 	}
 }
 
-func GenerateServerReset() bmcapisdk.ServerReset {
+func GenerateServerResetSdk() bmcapisdk.ServerReset {
 	return bmcapisdk.ServerReset{
 		InstallDefaultSshKeys: nil,
 		SshKeys:               nil,
@@ -117,7 +117,7 @@ func GenerateServerReset() bmcapisdk.ServerReset {
 	}
 }
 
-func GenerateResetResult() bmcapisdk.ResetResult {
+func GenerateResetResultSdk() bmcapisdk.ResetResult {
 	return bmcapisdk.ResetResult{
 		Result:          generators.RandSeq(10),
 		Password:        nil,
@@ -125,35 +125,35 @@ func GenerateResetResult() bmcapisdk.ResetResult {
 	}
 }
 
-func GenerateServerPatch() bmcapisdk.ServerPatch {
+func GenerateServerPatchSdk() bmcapisdk.ServerPatch {
 	return bmcapisdk.ServerPatch{
 		Hostname:    generators.RandSeqPointer(10),
 		Description: generators.RandSeqPointer(10),
 	}
 }
 
-func GenerateTagAssignmentRequest() bmcapisdk.TagAssignmentRequest {
+func GenerateTagAssignmentRequestSdk() bmcapisdk.TagAssignmentRequest {
 	return bmcapisdk.TagAssignmentRequest{
 		Name:  generators.RandSeq(10),
 		Value: generators.RandSeqPointer(10),
 	}
 }
 
-func GenerateTagAssignmentRequests(n int) []bmcapisdk.TagAssignmentRequest {
+func GenerateTagAssignmentRequestListSdk(n int) []bmcapisdk.TagAssignmentRequest {
 	var list []bmcapisdk.TagAssignmentRequest
 	for i := 0; i < n; i++ {
-		list = append(list, GenerateTagAssignmentRequest())
+		list = append(list, GenerateTagAssignmentRequestSdk())
 	}
 	return list
 }
 
-func GenerateServerReserve() bmcapisdk.ServerReserve {
+func GenerateServerReserveSdk() bmcapisdk.ServerReserve {
 	return bmcapisdk.ServerReserve{
 		PricingModel: "ONE_MONTH_RESERVATION",
 	}
 }
 
-func GenerateServerPrivateNetwork() bmcapisdk.ServerPrivateNetwork {
+func GenerateServerPrivateNetworkSdk() bmcapisdk.ServerPrivateNetwork {
 	dhcp := false
 	return bmcapisdk.ServerPrivateNetwork{
 		Id:                generators.RandSeq(10),

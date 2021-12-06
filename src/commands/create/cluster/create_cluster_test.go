@@ -19,7 +19,7 @@ import (
 
 func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	cluster := ranchermodels.ClusterFromSdk(servermodels.GenerateCluster())
+	cluster := ranchermodels.ClusterFromSdk(servermodels.GenerateClusterSdk())
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(cluster)
@@ -27,7 +27,7 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdCluster := servermodels.GenerateCluster()
+	createdCluster := servermodels.GenerateClusterSdk()
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
@@ -51,7 +51,7 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 
 func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	cluster := ranchermodels.ClusterFromSdk(servermodels.GenerateCluster())
+	cluster := ranchermodels.ClusterFromSdk(servermodels.GenerateClusterSdk())
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(cluster)
@@ -59,7 +59,7 @@ func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdCluster := servermodels.GenerateCluster()
+	createdCluster := servermodels.GenerateClusterSdk()
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
@@ -123,7 +123,7 @@ func TestCreateClusterUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	cluster := ranchermodels.ClusterFromSdk(servermodels.GenerateCluster())
+	cluster := ranchermodels.ClusterFromSdk(servermodels.GenerateClusterSdk())
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(cluster)
@@ -153,7 +153,7 @@ func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateClusterClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	cluster := ranchermodels.ClusterFromSdk(servermodels.GenerateCluster())
+	cluster := ranchermodels.ClusterFromSdk(servermodels.GenerateClusterSdk())
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(cluster)
@@ -183,7 +183,7 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 
 func TestCreateClusterKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	cluster := ranchermodels.ClusterFromSdk(servermodels.GenerateCluster())
+	cluster := ranchermodels.ClusterFromSdk(servermodels.GenerateClusterSdk())
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(cluster)

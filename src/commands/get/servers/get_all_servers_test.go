@@ -14,7 +14,7 @@ import (
 )
 
 func TestGetAllServersShortSuccess(test_framework *testing.T) {
-	serverlist := servermodels.GenerateServers(5)
+	serverlist := servermodels.GenerateServerListSdk(5)
 
 	var shortServers []interface{}
 
@@ -38,7 +38,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllServersLongSuccess(test_framework *testing.T) {
-	serverlist := servermodels.GenerateServers(5)
+	serverlist := servermodels.GenerateServerListSdk(5)
 
 	var longServers []interface{}
 
@@ -65,7 +65,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 }
 
 func TestFilteredServersLongSuccess(test_framework *testing.T) {
-	serverlist := servermodels.GenerateServers(5)
+	serverlist := servermodels.GenerateServerListSdk(5)
 
 	var longServers []interface{}
 
@@ -108,7 +108,7 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
-	server := []bmcapisdk.Server{servermodels.GenerateServer()}
+	server := []bmcapisdk.Server{servermodels.GenerateServerSdk()}
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersGet(tags).
@@ -121,7 +121,7 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
-	serverlist := servermodels.GenerateServers(5)
+	serverlist := servermodels.GenerateServerListSdk(5)
 
 	var shortServers []interface{}
 

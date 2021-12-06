@@ -14,7 +14,7 @@ import (
 
 func TestRebootServerSuccess(test_framework *testing.T) {
 	// Mocking
-	actionResult := servermodels.GenerateActionResult()
+	actionResult := servermodels.GenerateActionResultSdk()
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(RESOURCEID).
 		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)

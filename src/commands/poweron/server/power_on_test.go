@@ -13,7 +13,7 @@ import (
 )
 
 func TestPowerOnServerSuccess(test_framework *testing.T) {
-	actionResult := servermodels.GenerateActionResult()
+	actionResult := servermodels.GenerateActionResultSdk()
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOn(RESOURCEID).

@@ -14,7 +14,7 @@ import (
 )
 
 func TestGetAllServersShortSuccess(test_framework *testing.T) {
-	clusters := servermodels.GenerateClusters(5)
+	clusters := servermodels.GenerateClusterListSdk(5)
 
 	var clusterlist []interface{}
 
@@ -65,7 +65,7 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
-	clusters := servermodels.GenerateClusters(5)
+	clusters := servermodels.GenerateClusterListSdk(5)
 
 	var clusterlist []interface{}
 

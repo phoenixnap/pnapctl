@@ -42,7 +42,7 @@ func (tagAssignmentRequest TagAssignmentRequest) toSdk() bmcapisdk.TagAssignment
 	return tagAssignmentRequestSdk
 }
 
-func TagAssignmentSdkToDto(tagAssignment *[]bmcapisdk.TagAssignment) *[]TagAssignment {
+func TagAssignmentFromSdk(tagAssignment *[]bmcapisdk.TagAssignment) *[]TagAssignment {
 	if tagAssignment == nil {
 		return nil
 	}
@@ -79,8 +79,8 @@ func TagsToTableStrings(tags *[]bmcapisdk.TagAssignment) []string {
 	if tags == nil {
 		tagStrings = []string{}
 	} else {
-		dtoTags := TagAssignmentSdkToDto(tags)
-		for _, tag := range *dtoTags {
+		tagDetails := TagAssignmentFromSdk(tags)
+		for _, tag := range *tagDetails {
 			tagStrings = append(tagStrings, tag.ToTableString())
 		}
 	}

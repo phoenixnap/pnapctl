@@ -142,7 +142,7 @@ func TestPrintOutputTableFormat(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	server := servermodels.GenerateServer()
+	server := servermodels.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -152,7 +152,7 @@ func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	server := servermodels.GenerateServer()
+	server := servermodels.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -162,7 +162,7 @@ func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingLongServer(test_framework *testing.T) {
 	OutputFormat = "json"
-	server := servermodels.GenerateServer()
+	server := servermodels.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -172,7 +172,7 @@ func TestPrepareServerForPrintingLongServer(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
 	OutputFormat = "json"
-	server := servermodels.GenerateServer()
+	server := servermodels.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -182,7 +182,7 @@ func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
 
 func TestPrepareServerListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	servers := servermodels.GenerateServers(1)
+	servers := servermodels.GenerateServerListSdk(1)
 	prepared := PrepareServerListForPrinting(servers, false)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -223,7 +223,7 @@ func TestPrepareEventListForPrinting(test_framework *testing.T) {
 
 func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	cluster := servermodels.GenerateCluster()
+	cluster := servermodels.GenerateClusterSdk()
 	prepared := PrepareClusterForPrinting(cluster)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -233,7 +233,7 @@ func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
 	OutputFormat = "json"
-	cluster := servermodels.GenerateCluster()
+	cluster := servermodels.GenerateClusterSdk()
 	prepared := PrepareClusterForPrinting(cluster)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -243,7 +243,7 @@ func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
 
 func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	clusters := servermodels.GenerateClusters(1)
+	clusters := servermodels.GenerateClusterListSdk(1)
 	prepared := PrepareClusterListForPrinting(clusters)
 
 	outputType := fmt.Sprintf("%T", prepared[0])

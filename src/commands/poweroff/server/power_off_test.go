@@ -16,7 +16,7 @@ import (
 // Each test needs to have a name like `TestXXX`
 // They also need a parameter of `*testing.T`
 func TestPowerOffServerSuccess(test_framework *testing.T) {
-	actionResult := servermodels.GenerateActionResult()
+	actionResult := servermodels.GenerateActionResultSdk()
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(RESOURCEID).
 		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)

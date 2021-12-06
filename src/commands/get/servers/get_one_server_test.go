@@ -15,7 +15,7 @@ import (
 
 func TestGetServerShortSuccess(test_framework *testing.T) {
 
-	server := servermodels.GenerateServer()
+	server := servermodels.GenerateServerSdk()
 	var shortServer = tables.ToShortServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -34,7 +34,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetServerLongSuccess(test_framework *testing.T) {
-	server := servermodels.GenerateServer()
+	server := servermodels.GenerateServerSdk()
 	var longServer = tables.ToLongServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -90,7 +90,7 @@ func TestGetServerKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
-	server := servermodels.GenerateServer()
+	server := servermodels.GenerateServerSdk()
 	shortServer := tables.ToShortServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
