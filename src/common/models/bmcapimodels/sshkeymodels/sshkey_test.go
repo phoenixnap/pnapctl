@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSshKeySdkToDto(test_framework *testing.T) {
+func TestSshKeyFromSdk(test_framework *testing.T) {
 	sdkModel := GenerateSshKeySdk()
 	sshkey := SshKeyFromSdk(sdkModel)
 

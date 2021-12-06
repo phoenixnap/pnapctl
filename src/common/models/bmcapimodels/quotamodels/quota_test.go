@@ -8,7 +8,7 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 )
 
-func TestQuotaSdkToDto(test_framework *testing.T) {
+func TestQuotaFromSdk(test_framework *testing.T) {
 	sdkModel := GenerateQuotaSdk()
 	quota := QuotaFromSdk(sdkModel)
 
@@ -46,12 +46,12 @@ func TestQuotaEditLimitRequestDetailsToTableString_witRequests(test_framework *t
 	assert.Equal(test_framework, result[1], generateResultString(sdkModel_2))
 }
 
-func assertEqualQuotaEditLimitRequestDetails(test_framework *testing.T, sdkList []bmcapisdk.QuotaEditLimitRequestDetails, dtoList []QuotaEditLimitRequestDetails) {
+func assertEqualQuotaEditLimitRequestDetails(test_framework *testing.T, sdkList []bmcapisdk.QuotaEditLimitRequestDetails, cliList []QuotaEditLimitRequestDetails) {
 
 	for i, sdkModel := range sdkList {
-		assert.Equal(test_framework, sdkModel.Limit, dtoList[i].Limit)
-		assert.Equal(test_framework, sdkModel.Reason, dtoList[i].Reason)
-		assert.Equal(test_framework, sdkModel.RequestedOn, dtoList[i].RequestedOn)
+		assert.Equal(test_framework, sdkModel.Limit, cliList[i].Limit)
+		assert.Equal(test_framework, sdkModel.Reason, cliList[i].Reason)
+		assert.Equal(test_framework, sdkModel.RequestedOn, cliList[i].RequestedOn)
 	}
 }
 

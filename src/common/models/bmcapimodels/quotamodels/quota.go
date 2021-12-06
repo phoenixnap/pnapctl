@@ -65,8 +65,8 @@ func QuotaEditLimitRequestDetailsToTableString(requestDetails []bmcapisdk.QuotaE
 	if len(requestDetails) < 1 {
 		detailsAsStrings = []string{"N/A"}
 	} else {
-		dtoDetails := quotaEditLimitRequestDetailsListFromSdk(requestDetails)
-		for _, details := range dtoDetails {
+		details := quotaEditLimitRequestDetailsListFromSdk(requestDetails)
+		for _, details := range details {
 			detailsAsStrings = append(detailsAsStrings, quotaEditLimitRequestDetailsToString(details))
 		}
 	}
