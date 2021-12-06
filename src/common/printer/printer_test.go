@@ -8,6 +8,7 @@ import (
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/quotamodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
 	"phoenixnap.com/pnapctl/testsupport/generators"
 )
@@ -343,7 +344,7 @@ func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := generators.GenerateSshKey()
+	sshkey := sshkeymodels.GenerateSshKeySdk()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -353,7 +354,7 @@ func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := generators.GenerateSshKey()
+	sshkey := sshkeymodels.GenerateSshKeySdk()
 	prepared := PrepareSshKeyForPrinting(sshkey, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -363,7 +364,7 @@ func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	sshkey := generators.GenerateSshKey()
+	sshkey := sshkeymodels.GenerateSshKeySdk()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -373,7 +374,7 @@ func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkeys := generators.GenerateSshKeys(1)
+	sshkeys := sshkeymodels.GenerateSshKeyListSdk(1)
 	prepared := PrepareSshKeyListForPrinting(sshkeys, true)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -383,7 +384,7 @@ func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkeys := generators.GenerateSshKeys(1)
+	sshkeys := sshkeymodels.GenerateSshKeyListSdk(1)
 	prepared := PrepareSshKeyListForPrinting(sshkeys, false)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
