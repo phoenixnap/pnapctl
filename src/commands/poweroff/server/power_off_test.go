@@ -5,18 +5,18 @@ import (
 	"testing"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"phoenixnap.com/pnapctl/testsupport/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 )
 
 // Each test needs to have a name like `TestXXX`
 // They also need a parameter of `*testing.T`
 func TestPowerOffServerSuccess(test_framework *testing.T) {
-	actionResult := generators.GenerateActionResult()
+	actionResult := servermodels.GenerateActionResult()
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(RESOURCEID).
 		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)

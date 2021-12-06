@@ -1,13 +1,13 @@
-package generators
+package servermodels
 
 import (
 	"math/rand"
 	"time"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+	generators "phoenixnap.com/pnapctl/testsupport/generators"
 )
 
 func GenerateServers(n int) []bmcapisdk.Server {
@@ -21,45 +21,45 @@ func GenerateServers(n int) []bmcapisdk.Server {
 func GenerateServer() bmcapisdk.Server {
 	provisionedOn := time.Now()
 	return bmcapisdk.Server{
-		Id:                 RandSeq(10),
-		Status:             RandSeq(10),
-		Hostname:           RandSeq(10),
-		Description:        RandSeqPointer(10),
-		Os:                 RandSeq(10),
-		Type:               RandSeq(10),
-		Location:           RandSeq(10),
-		Cpu:                RandSeq(10),
+		Id:                 generators.RandSeq(10),
+		Status:             generators.RandSeq(10),
+		Hostname:           generators.RandSeq(10),
+		Description:        generators.RandSeqPointer(10),
+		Os:                 generators.RandSeq(10),
+		Type:               generators.RandSeq(10),
+		Location:           generators.RandSeq(10),
+		Cpu:                generators.RandSeq(10),
 		CpuCount:           int32(rand.Int()),
 		CoresPerCpu:        int32(rand.Int()),
 		CpuFrequency:       rand.Float32(),
-		Ram:                RandSeq(10),
-		Storage:            RandSeq(10),
+		Ram:                generators.RandSeq(10),
+		Storage:            generators.RandSeq(10),
 		PrivateIpAddresses: []string{},
 		PublicIpAddresses:  []string{},
-		ReservationId:      RandSeqPointer(10),
-		PricingModel:       RandSeq(10),
-		Password:           RandSeqPointer(10),
-		NetworkType:        RandSeqPointer(10),
-		ClusterId:          RandSeqPointer(10),
+		ReservationId:      generators.RandSeqPointer(10),
+		PricingModel:       generators.RandSeq(10),
+		Password:           generators.RandSeqPointer(10),
+		NetworkType:        generators.RandSeqPointer(10),
+		ClusterId:          generators.RandSeqPointer(10),
 		Tags:               nil,
 		ProvisionedOn:      &provisionedOn,
 		OsConfiguration:    nil,
 	}
 }
 
-func GenerateServerCreate() servermodels.ServerCreate {
-	return servermodels.ServerCreate{
-		Hostname:              RandSeq(10),
-		Description:           RandSeqPointer(10),
-		Os:                    RandSeq(10),
-		Type:                  RandSeq(10),
-		Location:              RandSeq(10),
+func GenerateServerCreate() ServerCreate {
+	return ServerCreate{
+		Hostname:              generators.RandSeq(10),
+		Description:           generators.RandSeqPointer(10),
+		Os:                    generators.RandSeq(10),
+		Type:                  generators.RandSeq(10),
+		Location:              generators.RandSeq(10),
 		InstallDefaultSshKeys: nil,
 		SshKeys:               nil,
 		SshKeyIds:             nil,
-		ReservationId:         RandSeqPointer(10),
-		PricingModel:          RandSeqPointer(10),
-		NetworkType:           RandSeqPointer(10),
+		ReservationId:         generators.RandSeqPointer(10),
+		PricingModel:          generators.RandSeqPointer(10),
+		NetworkType:           generators.RandSeqPointer(10),
 		OsConfiguration:       nil,
 		Tags:                  nil,
 		NetworkConfiguration:  nil,
@@ -76,35 +76,35 @@ func GenerateClusters(n int) []ranchersdk.Cluster {
 
 func GenerateCluster() ranchersdk.Cluster {
 	return ranchersdk.Cluster{
-		Id:                    RandSeqPointer(10),
-		Name:                  RandSeqPointer(10),
-		Description:           RandSeqPointer(10),
-		Location:              RandSeq(10),
-		InitialClusterVersion: RandSeqPointer(10),
+		Id:                    generators.RandSeqPointer(10),
+		Name:                  generators.RandSeqPointer(10),
+		Description:           generators.RandSeqPointer(10),
+		Location:              generators.RandSeq(10),
+		InitialClusterVersion: generators.RandSeqPointer(10),
 		NodePools:             nil,
 		Configuration:         nil,
 		Metadata:              nil,
-		StatusDescription:     RandSeqPointer(10),
+		StatusDescription:     generators.RandSeqPointer(10),
 	}
 }
 
 func GenerateRancherDeleteResult() ranchersdk.DeleteResult {
 	return ranchersdk.DeleteResult{
-		Result:    RandSeq(10),
-		ClusterId: RandSeqPointer(10),
+		Result:    generators.RandSeq(10),
+		ClusterId: generators.RandSeqPointer(10),
 	}
 }
 
 func GenerateBmcApiDeleteResult() bmcapisdk.DeleteResult {
 	return bmcapisdk.DeleteResult{
-		Result:   RandSeq(10),
-		ServerId: RandSeq(10),
+		Result:   generators.RandSeq(10),
+		ServerId: generators.RandSeq(10),
 	}
 }
 
 func GenerateActionResult() bmcapisdk.ActionResult {
 	return bmcapisdk.ActionResult{
-		Result: RandSeq(10),
+		Result: generators.RandSeq(10),
 	}
 }
 
@@ -119,7 +119,7 @@ func GenerateServerReset() bmcapisdk.ServerReset {
 
 func GenerateResetResult() bmcapisdk.ResetResult {
 	return bmcapisdk.ResetResult{
-		Result:          RandSeq(10),
+		Result:          generators.RandSeq(10),
 		Password:        nil,
 		OsConfiguration: nil,
 	}
@@ -127,15 +127,15 @@ func GenerateResetResult() bmcapisdk.ResetResult {
 
 func GenerateServerPatch() bmcapisdk.ServerPatch {
 	return bmcapisdk.ServerPatch{
-		Hostname:    RandSeqPointer(10),
-		Description: RandSeqPointer(10),
+		Hostname:    generators.RandSeqPointer(10),
+		Description: generators.RandSeqPointer(10),
 	}
 }
 
 func GenerateTagAssignmentRequest() bmcapisdk.TagAssignmentRequest {
 	return bmcapisdk.TagAssignmentRequest{
-		Name:  RandSeq(10),
-		Value: RandSeqPointer(10),
+		Name:  generators.RandSeq(10),
+		Value: generators.RandSeqPointer(10),
 	}
 }
 
@@ -156,9 +156,9 @@ func GenerateServerReserve() bmcapisdk.ServerReserve {
 func GenerateServerPrivateNetwork() bmcapisdk.ServerPrivateNetwork {
 	dhcp := false
 	return bmcapisdk.ServerPrivateNetwork{
-		Id:                RandSeq(10),
-		Ips:               RandListStringPointer(10),
+		Id:                generators.RandSeq(10),
+		Ips:               generators.RandListStringPointer(10),
 		Dhcp:              &dhcp,
-		StatusDescription: RandSeqPointer(10),
+		StatusDescription: generators.RandSeqPointer(10),
 	}
 }
