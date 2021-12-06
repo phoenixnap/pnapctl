@@ -23,20 +23,6 @@ func (create *PrivateNetworkCreate) ToSdk() *networksdk.PrivateNetworkCreate {
 	}
 }
 
-func PrivateNetworkCreateFromSdk(create *networksdk.PrivateNetworkCreate) *PrivateNetworkCreate {
-	if create == nil {
-		return nil
-	}
-
-	return &PrivateNetworkCreate{
-		Name:            create.Name,
-		Description:     create.Description,
-		Location:        create.Location,
-		LocationDefault: create.LocationDefault,
-		Cidr:            create.Cidr,
-	}
-}
-
 func CreatePrivateNetworkCreateFromFile(filename string, commandname string) (*networksdk.PrivateNetworkCreate, error) {
 	files.ExpandPath(&filename)
 
