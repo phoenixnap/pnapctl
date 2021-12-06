@@ -21,6 +21,14 @@ func GeneratePrivateNetworkSdk() networkapisdk.PrivateNetwork {
 	}
 }
 
+func GeneratePrivateNetworkListSdk(n int) []networkapisdk.PrivateNetwork {
+	var privateNetworkList []networkapisdk.PrivateNetwork
+	for i := 0; i < n; i++ {
+		privateNetworkList = append(privateNetworkList, GeneratePrivateNetworkSdk())
+	}
+	return privateNetworkList
+}
+
 func GeneratePrivateNetworkServerSdk() networkapisdk.PrivateNetworkServer {
 	return networkapisdk.PrivateNetworkServer{
 		Id:  generators.RandSeq(10),
@@ -44,12 +52,4 @@ func GeneratePrivateNetworkModifyCli() PrivateNetworkModify {
 		Description:     generators.RandSeqPointer(10),
 		LocationDefault: false,
 	}
-}
-
-func GeneratePrivateNetworkListSdk(n int) []networkapisdk.PrivateNetwork {
-	var privateNetworkList []networkapisdk.PrivateNetwork
-	for i := 0; i < n; i++ {
-		privateNetworkList = append(privateNetworkList, GeneratePrivateNetworkSdk())
-	}
-	return privateNetworkList
 }
