@@ -2,10 +2,12 @@ package commands
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra/doc"
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
@@ -58,6 +60,11 @@ func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		var _ = fmt.Errorf("%s", err)
 		os.Exit(1)
+	}
+
+	err := doc.GenMarkdownTree(rootCmd, "./docs")
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
