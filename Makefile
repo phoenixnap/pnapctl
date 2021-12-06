@@ -1,4 +1,6 @@
 SRC                          = $(CURDIR)/src
+DOCS                         = $(CURDIR)/docs
+DOCS_GENERATION              = $(DOCS)/generation
 COMPONENT_TESTS              = $(CURDIR)/component-tests
 TEST_RESULTS_DIR             = $(CURDIR)/out
 COMPONENT_TEST_RESULTS_DIR   = $(TEST_RESULTS_DIR)/component-tests
@@ -43,7 +45,7 @@ bats-assert-verify-version: $(BATS_ASSERT_LOADER) ; $(info $(M) verifying bats-a
 # Binaries
 
 .PHONY: build
-build build-simple pack build-and-pack:
+build build-simple pack build-and-pack: generate-docs
 	$Q $(MAKE) $(MAKE_FLAGS) -C $(SRC) $@
 
 # Tests
@@ -58,6 +60,10 @@ component-tests: build-simple bats-support-verify-version bats-assert-verify-ver
 
 # Misc
 
+.PHONY: generate-docs
+generate-docs: 
+	$Q $(MAKE) $(MAKE_FLAGS) -C $(DOCS_GENERATION) $@
+
 .PHONY:
 version:
 	$Q $(MAKE) $(MAKE_FLAGS) -C $(SRC) $@
@@ -67,13 +73,12 @@ clean: ; $(info $(M) cleaning…)	@ ## Cleanup bin, build, and test result direc
 	@rm -rf $(BIN)
 	@rm -rf $(BUILD)
 	@rm -rf $(TEST_RESULTS_DIR)
+	@rm -rf $(DOCS_GENERATION)/bin
+	@find $(DOCS) -name '*.md' -type f -delete
 
 .PHONY: help
 help:
-	$Q @grep -E '^[ a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
+	@grep -E '^[ a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-16s\033[0m %s\n", $$1, $$2}'
 	$Q $(MAKE) $(MAKE_FLAGS) -C $(SRC) $@
-
-.PHONY:
-generate-docs: build-simple ; $(info $(M) generating docs...) @
-	@$(BIN)/pnapctl _generate_docs
+	$Q $(MAKE) $(MAKE_FLAGS) -C $(DOCS_GENERATION) $@

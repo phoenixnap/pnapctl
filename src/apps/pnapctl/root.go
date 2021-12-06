@@ -41,7 +41,7 @@ var (
 	verbose bool
 	cfgFile string
 
-	rootCmd = &cobra.Command{
+	RootCmd = &cobra.Command{
 		Use:   "pnapctl",
 		Short: "pnapctl creates new and manages existing bare metal servers.",
 		Long: `pnapctl creates new and manages existing bare metal servers provided by the phoenixNAP Bare Metal Cloud service.
@@ -61,7 +61,7 @@ func Execute() {
 
 	// Generate Docs
 	if len(args) > 0 && args[0] == "_generate_docs" {
-		err := doc.GenMarkdownTree(rootCmd, "./docs")
+		err := doc.GenMarkdownTree(RootCmd, "./docs")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -69,7 +69,7 @@ func Execute() {
 
 		// Run commands
 	} else {
-		if err := rootCmd.Execute(); err != nil {
+		if err := RootCmd.Execute(); err != nil {
 			var _ = fmt.Errorf("%s", err)
 			os.Exit(1)
 		}
@@ -78,23 +78,23 @@ func Execute() {
 
 func init() {
 	// add flags here when needed
-	rootCmd.AddCommand(get.GetCmd)
-	rootCmd.AddCommand(create.CreateCmd)
-	rootCmd.AddCommand(update.UpdateCmd)
-	rootCmd.AddCommand(patch.PatchCmd)
-	rootCmd.AddCommand(reset.ResetCmd)
-	rootCmd.AddCommand(delete.DeleteCmd)
-	rootCmd.AddCommand(poweroff.PowerOffCmd)
-	rootCmd.AddCommand(poweron.PowerOnCmd)
-	rootCmd.AddCommand(shutdown.ShutdownCmd)
-	rootCmd.AddCommand(reboot.RebootCmd)
-	rootCmd.AddCommand(reserve.ReserveCmd)
-	rootCmd.AddCommand(version.VersionCmd)
-	rootCmd.AddCommand(requestedit.RequestEditCmd)
-	rootCmd.AddCommand(tag.TagCmd)
+	RootCmd.AddCommand(get.GetCmd)
+	RootCmd.AddCommand(create.CreateCmd)
+	RootCmd.AddCommand(update.UpdateCmd)
+	RootCmd.AddCommand(patch.PatchCmd)
+	RootCmd.AddCommand(reset.ResetCmd)
+	RootCmd.AddCommand(delete.DeleteCmd)
+	RootCmd.AddCommand(poweroff.PowerOffCmd)
+	RootCmd.AddCommand(poweron.PowerOnCmd)
+	RootCmd.AddCommand(shutdown.ShutdownCmd)
+	RootCmd.AddCommand(reboot.RebootCmd)
+	RootCmd.AddCommand(reserve.ReserveCmd)
+	RootCmd.AddCommand(version.VersionCmd)
+	RootCmd.AddCommand(requestedit.RequestEditCmd)
+	RootCmd.AddCommand(tag.TagCmd)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
-	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Warn (default) to Debug.")
+	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
+	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Warn (default) to Debug.")
 
 	cobra.OnInitialize(initConfig, setLoggingLevel)
 }
