@@ -9,13 +9,13 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
-	. "phoenixnap.com/pnapctl/tests/mockhelp"
-	"phoenixnap.com/pnapctl/tests/testutil"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetTagSuccess(test_framework *testing.T) {
 
-	tag := tagmodels.GenerateTag()
+	tag := tagmodels.GenerateTagSdk()
 	var tagTable interface{}
 	tagTable = tables.TagFromSdk(*tag)
 
@@ -71,7 +71,7 @@ func TestGetTagKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetTagPrinterFailure(test_framework *testing.T) {
-	tag := tagmodels.GenerateTag()
+	tag := tagmodels.GenerateTagSdk()
 	tagTable := tables.TagFromSdk(*tag)
 
 	PrepareTagMockClient(test_framework).

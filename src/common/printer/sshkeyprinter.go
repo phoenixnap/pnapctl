@@ -2,7 +2,7 @@ package printer
 
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	sshKeyModel "phoenixnap.com/pnapctl/common/models/bmcapimodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
@@ -35,6 +35,6 @@ func PrepareSshKeyForPrinting(sshKey bmcapisdk.SshKey, full bool) interface{} {
 	case !full && table:
 		return tables.ToSshKeyTable(sshKey)
 	default:
-		return sshKeyModel.SshKeySdkToDto(sshKey)
+		return sshkeymodels.SshKeySdkToDto(sshKey)
 	}
 }

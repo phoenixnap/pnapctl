@@ -19,18 +19,6 @@ func (tagUpdate *TagUpdate) ToSdk() *tagapisdk.TagUpdate {
 	}
 }
 
-func TagUpdateFromSdk(tagUpdate *tagapisdk.TagUpdate) *TagUpdate {
-	if tagUpdate == nil {
-		return nil
-	}
-
-	return &TagUpdate{
-		Name:         tagUpdate.Name,
-		Description:  tagUpdate.Description,
-		IsBillingTag: tagUpdate.IsBillingTag,
-	}
-}
-
 func CreateTagUpdateFromFile(filename string, commandname string) (*tagapisdk.TagUpdate, error) {
 	files.ExpandPath(&filename)
 

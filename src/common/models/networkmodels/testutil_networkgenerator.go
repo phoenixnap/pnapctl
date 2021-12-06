@@ -4,7 +4,7 @@ import (
 	"math/rand"
 
 	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
-	"phoenixnap.com/pnapctl/tests/generators"
+	"phoenixnap.com/pnapctl/testsupport/generators"
 )
 
 func GeneratePrivateNetworkSdk() networkapisdk.PrivateNetwork {
