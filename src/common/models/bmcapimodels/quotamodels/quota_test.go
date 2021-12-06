@@ -10,16 +10,16 @@ import (
 
 func TestQuotaSdkToDto(test_framework *testing.T) {
 	sdkModel := GenerateQuotaSdk()
-	quotaEditLimitRequest := QuotaSdkToDto(sdkModel)
+	quota := QuotaSdkToDto(sdkModel)
 
-	assert.Equal(test_framework, sdkModel.Id, quotaEditLimitRequest.ID)
-	assert.Equal(test_framework, sdkModel.Name, quotaEditLimitRequest.Name)
-	assert.Equal(test_framework, sdkModel.Description, quotaEditLimitRequest.Description)
-	assert.Equal(test_framework, sdkModel.Status, quotaEditLimitRequest.Status)
-	assert.Equal(test_framework, sdkModel.Limit, quotaEditLimitRequest.Limit)
-	assert.Equal(test_framework, sdkModel.Unit, quotaEditLimitRequest.Unit)
-	assert.Equal(test_framework, sdkModel.Used, quotaEditLimitRequest.Used)
-	assertEqualQuotaEditLimitRequestDetails(test_framework, sdkModel.QuotaEditLimitRequestDetails, quotaEditLimitRequest.QuotaEditLimitRequestDetails)
+	assert.Equal(test_framework, sdkModel.Id, quota.ID)
+	assert.Equal(test_framework, sdkModel.Name, quota.Name)
+	assert.Equal(test_framework, sdkModel.Description, quota.Description)
+	assert.Equal(test_framework, sdkModel.Status, quota.Status)
+	assert.Equal(test_framework, sdkModel.Limit, quota.Limit)
+	assert.Equal(test_framework, sdkModel.Unit, quota.Unit)
+	assert.Equal(test_framework, sdkModel.Used, quota.Used)
+	assertEqualQuotaEditLimitRequestDetails(test_framework, sdkModel.QuotaEditLimitRequestDetails, quota.QuotaEditLimitRequestDetails)
 }
 
 func TestQuotaEditLimitRequestDetailsToTableString_noRequests(test_framework *testing.T) {

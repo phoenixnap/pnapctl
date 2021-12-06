@@ -6,10 +6,9 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/generators"
 )
 
-type SshKeyCreate struct {
+type SshKeyUpdate struct {
 	Default bool   `json:"default" yaml:"default"`
 	Name    string `json:"name" yaml:"name"`
-	Key     string `json:"key" yaml:"key"`
 }
 
 func (sshKeyUpdate SshKeyUpdate) toSdk() *bmcapisdk.SshKeyUpdate {
@@ -45,5 +44,11 @@ func GenerateSshKeyUpdateSdk() bmcapisdk.SshKeyUpdate {
 		Default: false,
 		Name:    generators.RandSeq(10),
 	}
+}
 
+func GenerateSshKeyUpdateCli() SshKeyUpdate {
+	return SshKeyUpdate{
+		Default: false,
+		Name:    generators.RandSeq(10),
+	}
 }
