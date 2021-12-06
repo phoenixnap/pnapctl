@@ -27,7 +27,7 @@ func GenerateEventListSdk(n int) []auditapisdk.Event {
 	return eventList
 }
 
-func GenerateQueryParams() EventsGetQueryParams {
+func GenerateQueryParamsCli() EventsGetQueryParams {
 	now := reprocessTime(time.Now())
 	return EventsGetQueryParams{
 		From:     &now,

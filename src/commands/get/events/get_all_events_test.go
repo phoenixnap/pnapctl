@@ -16,7 +16,7 @@ import (
 
 func TestGetAllEventsSuccess(test_framework *testing.T) {
 	eventList := auditmodels.GenerateEventListSdk(2)
-	queryParams := auditmodels.GenerateQueryParams()
+	queryParams := auditmodels.GenerateQueryParamsCli()
 	setQueryParams(queryParams)
 
 	var eventTables []interface{}
@@ -42,7 +42,7 @@ func TestGetAllEventsSuccess(test_framework *testing.T) {
 
 func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
 	event := []auditapisdk.Event{auditmodels.GenerateEventSdk()}
-	queryParams := auditmodels.GenerateQueryParams()
+	queryParams := auditmodels.GenerateQueryParamsCli()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -58,7 +58,7 @@ func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
 
 func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
 	eventList := auditmodels.GenerateEventListSdk(2)
-	queryParams := auditmodels.GenerateQueryParams()
+	queryParams := auditmodels.GenerateQueryParamsCli()
 	setQueryParams(queryParams)
 
 	var eventTables []interface{}
@@ -82,7 +82,7 @@ func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
 }
 
 func TestGetEventsServerError(test_framework *testing.T) {
-	queryParams := auditmodels.GenerateQueryParams()
+	queryParams := auditmodels.GenerateQueryParamsCli()
 	setQueryParams(queryParams)
 
 	PrepareAuditMockClient(test_framework).
@@ -97,7 +97,7 @@ func TestGetEventsServerError(test_framework *testing.T) {
 }
 
 func TestGetEventsInvalidTimeFormat(test_framework *testing.T) {
-	queryParams := auditmodels.GenerateQueryParams()
+	queryParams := auditmodels.GenerateQueryParamsCli()
 	setQueryParams(queryParams)
 	From = "Not A Date"
 
@@ -109,7 +109,7 @@ func TestGetEventsInvalidTimeFormat(test_framework *testing.T) {
 }
 
 func TestGetEventsInvalidOrderFormat(test_framework *testing.T) {
-	queryParams := auditmodels.GenerateQueryParams()
+	queryParams := auditmodels.GenerateQueryParamsCli()
 	setQueryParams(queryParams)
 	Order = "None"
 
@@ -121,7 +121,7 @@ func TestGetEventsInvalidOrderFormat(test_framework *testing.T) {
 }
 
 func TestGetEventsInvalidVerbFormat(test_framework *testing.T) {
-	queryParams := auditmodels.GenerateQueryParams()
+	queryParams := auditmodels.GenerateQueryParamsCli()
 	setQueryParams(queryParams)
 	Verb = "Doing"
 
