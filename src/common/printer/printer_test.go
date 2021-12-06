@@ -7,6 +7,7 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
+	"phoenixnap.com/pnapctl/common/models/auditmodels"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/quotamodels"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
 	"phoenixnap.com/pnapctl/testsupport/generators"
@@ -190,8 +191,8 @@ func TestPrepareServerListForPrinting(test_framework *testing.T) {
 
 func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	event := generators.GenerateEvent()
-	prepared := PrepareEventForPrinting(event)
+	event := auditmodels.GenerateEventSdk()
+	prepared := PrepareEventForPrinting(*event)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -200,8 +201,8 @@ func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 
 func TestPrepareEventForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	event := generators.GenerateEvent()
-	prepared := PrepareEventForPrinting(event)
+	event := auditmodels.GenerateEventSdk()
+	prepared := PrepareEventForPrinting(*event)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -210,7 +211,7 @@ func TestPrepareEventForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareEventListForPrinting(test_framework *testing.T) {
 	OutputFormat = "table"
-	events := generators.GenerateEvents(1)
+	events := auditmodels.GenerateEventListSdk(1)
 	prepared := PrepareEventListForPrinting(events)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
