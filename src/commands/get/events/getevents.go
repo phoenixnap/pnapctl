@@ -3,7 +3,7 @@ package events
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/audit"
-	auditmodels "phoenixnap.com/pnapctl/common/models/auditmodels"
+	"phoenixnap.com/pnapctl/common/models/auditmodels"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
