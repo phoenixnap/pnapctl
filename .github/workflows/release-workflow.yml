@@ -120,6 +120,8 @@ jobs:
     name: Update Latest Tag
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
       - name: Update Latest Tag
         uses: EndBug/latest-tag@latest
         with:
