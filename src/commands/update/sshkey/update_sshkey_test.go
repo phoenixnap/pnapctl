@@ -9,16 +9,16 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/tests/generators"
-	. "phoenixnap.com/pnapctl/tests/mockhelp"
-	"phoenixnap.com/pnapctl/tests/testutil"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 )
 
 func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	sshKeyUpdate := generators.GenerateSshKeyUpdate()
+	sshKeyUpdate := sshkeymodels.GenerateSshKeyUpdateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(sshKeyUpdate)
@@ -26,7 +26,7 @@ func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	sshKey := generators.GenerateSshKey()
+	sshKey := sshkeymodels.GenerateSshKeySdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -50,7 +50,7 @@ func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
 
 func TestUpdateSshKeySuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	sshKeyUpdate := generators.GenerateSshKeyUpdate()
+	sshKeyUpdate := sshkeymodels.GenerateSshKeyUpdateSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(sshKeyUpdate)
@@ -58,7 +58,7 @@ func TestUpdateSshKeySuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	sshKey := generators.GenerateSshKey()
+	sshKey := sshkeymodels.GenerateSshKeySdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -151,7 +151,7 @@ func TestUpdateSshKeyFileReadingFailure(test_framework *testing.T) {
 
 func TestUpdateSshKeyBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	sshKeyUpdate := generators.GenerateSshKeyUpdate()
+	sshKeyUpdate := sshkeymodels.GenerateSshKeyUpdateSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(sshKeyUpdate)
@@ -183,7 +183,7 @@ func TestUpdateSshKeyBackendErrorFailure(test_framework *testing.T) {
 
 func TestUpdateSshKeyClientFailure(test_framework *testing.T) {
 	// Setup
-	sshKeyUpdate := generators.GenerateSshKeyUpdate()
+	sshKeyUpdate := sshkeymodels.GenerateSshKeyUpdateSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(sshKeyUpdate)
@@ -215,7 +215,7 @@ func TestUpdateSshKeyClientFailure(test_framework *testing.T) {
 
 func TestUpdateSshKeyKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	sshKeyUpdate := generators.GenerateSshKeyUpdate()
+	sshKeyUpdate := sshkeymodels.GenerateSshKeyUpdateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(sshKeyUpdate)

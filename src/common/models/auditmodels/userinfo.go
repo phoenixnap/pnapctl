@@ -12,14 +12,6 @@ type UserInfo struct {
 	Username  string  `json:"username" yaml:"username"`
 }
 
-func (userInfo *UserInfo) toSdk() *auditsdk.UserInfo {
-	return &auditsdk.UserInfo{
-		AccountId: userInfo.AccountId,
-		ClientId:  userInfo.ClientId,
-		Username:  userInfo.Username,
-	}
-}
-
 func UserInfoFromSdk(userInfo *auditsdk.UserInfo) *UserInfo {
 	if userInfo == nil {
 		return nil

@@ -7,7 +7,12 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
-	"phoenixnap.com/pnapctl/tests/generators"
+	"phoenixnap.com/pnapctl/common/models/auditmodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/quotamodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
+	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/testsupport/generators"
 )
 
 type ExampleStruct1 struct {
@@ -162,7 +167,7 @@ func TestPrepareServerForPrintingLongServer(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.LongServer")
+	assert.Equal(test_framework, outputType, "servermodels.LongServer")
 }
 
 func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
@@ -172,7 +177,7 @@ func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.ShortServer")
+	assert.Equal(test_framework, outputType, "servermodels.ShortServer")
 }
 
 func TestPrepareServerListForPrinting(test_framework *testing.T) {
@@ -182,14 +187,14 @@ func TestPrepareServerListForPrinting(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared[0])
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.ShortServer")
+	assert.Equal(test_framework, outputType, "servermodels.ShortServer")
 	assert.Equal(test_framework, len(prepared), 1)
 }
 
 func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	event := generators.GenerateEvent()
-	prepared := PrepareEventForPrinting(event)
+	event := auditmodels.GenerateEventSdk()
+	prepared := PrepareEventForPrinting(*event)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -198,8 +203,8 @@ func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 
 func TestPrepareEventForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	event := generators.GenerateEvent()
-	prepared := PrepareEventForPrinting(event)
+	event := auditmodels.GenerateEventSdk()
+	prepared := PrepareEventForPrinting(*event)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -208,7 +213,7 @@ func TestPrepareEventForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareEventListForPrinting(test_framework *testing.T) {
 	OutputFormat = "table"
-	events := generators.GenerateEvents(1)
+	events := auditmodels.GenerateEventListSdk(1)
 	prepared := PrepareEventListForPrinting(events)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -249,7 +254,7 @@ func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	tag := generators.GenerateTag()
+	tag := tagmodels.GenerateTagSdk()
 	prepared := PrepareTagForPrinting(*tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -259,7 +264,7 @@ func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 	OutputFormat = "json"
-	tag := *generators.GenerateTag()
+	tag := *tagmodels.GenerateTagSdk()
 	prepared := PrepareTagForPrinting(tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -269,7 +274,7 @@ func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 
 func TestPrepareTagListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	tags := generators.GenerateTags(1)
+	tags := tagmodels.GenerateTagListSdk(1)
 	prepared := PrepareTagListForPrinting(tags)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -280,7 +285,7 @@ func TestPrepareTagListForPrinting(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	privateNetwork := generators.GeneratePrivateNetwork()
+	privateNetwork := networkmodels.GeneratePrivateNetworkSdk()
 	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -290,7 +295,7 @@ func TestPreparePrivateNetworkForPrintingTable(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	privateNetwork := generators.GeneratePrivateNetwork()
+	privateNetwork := networkmodels.GeneratePrivateNetworkSdk()
 	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -300,7 +305,7 @@ func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	privateNetworks := generators.GeneratePrivateNetworks(1)
+	privateNetworks := networkmodels.GeneratePrivateNetworkListSdk(1)
 	prepared := PreparePrivateNetworkListForPrinting(privateNetworks)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -311,7 +316,7 @@ func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
 
 func TestPrepareQuotaForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	quota := generators.GenerateQuota()
+	quota := quotamodels.GenerateQuotaSdk()
 	prepared := PrepareQuotaForPrinting(quota)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -321,17 +326,17 @@ func TestPrepareQuotaForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareQuotaForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	quota := generators.GenerateQuota()
+	quota := quotamodels.GenerateQuotaSdk()
 	prepared := PrepareQuotaForPrinting(quota)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.Quota")
+	assert.Equal(test_framework, outputType, "quotamodels.Quota")
 }
 
 func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	quotas := generators.GenerateQuotas(1)
+	quotas := quotamodels.GenerateQuotaSdkList(1)
 	prepared := PrepareQuotaListForPrinting(quotas)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -341,7 +346,7 @@ func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := generators.GenerateSshKey()
+	sshkey := sshkeymodels.GenerateSshKeySdk()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -351,7 +356,7 @@ func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := generators.GenerateSshKey()
+	sshkey := sshkeymodels.GenerateSshKeySdk()
 	prepared := PrepareSshKeyForPrinting(sshkey, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -361,17 +366,17 @@ func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	sshkey := generators.GenerateSshKey()
+	sshkey := sshkeymodels.GenerateSshKeySdk()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "bmcapimodels.SshKey")
+	assert.Equal(test_framework, outputType, "sshkeymodels.SshKey")
 }
 
 func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkeys := generators.GenerateSshKeys(1)
+	sshkeys := sshkeymodels.GenerateSshKeyListSdk(1)
 	prepared := PrepareSshKeyListForPrinting(sshkeys, true)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -381,7 +386,7 @@ func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkeys := generators.GenerateSshKeys(1)
+	sshkeys := sshkeymodels.GenerateSshKeyListSdk(1)
 	prepared := PrepareSshKeyListForPrinting(sshkeys, false)
 
 	outputType := fmt.Sprintf("%T", prepared[0])

@@ -12,14 +12,6 @@ type Event struct {
 	UserInfo  UserInfo  `json:"userInfo" yaml:"userInfo"`
 }
 
-func (event *Event) toSdk() *auditsdk.Event {
-	return &auditsdk.Event{
-		Name:      event.Name,
-		Timestamp: event.Timestamp,
-		UserInfo:  *event.UserInfo.toSdk(),
-	}
-}
-
 func EventFromSdk(event *auditsdk.Event) *Event {
 	if event == nil {
 		return nil

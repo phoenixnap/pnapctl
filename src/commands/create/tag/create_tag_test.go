@@ -10,16 +10,15 @@ import (
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
-	"phoenixnap.com/pnapctl/tests/generators"
-	. "phoenixnap.com/pnapctl/tests/mockhelp"
-	"phoenixnap.com/pnapctl/tests/testutil"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 )
 
 func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := *tagmodels.TagCreateFromSdk(generators.GenerateTagCreate())
+	tagCreate := tagmodels.GenerateTagCreateCli()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -27,11 +26,11 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdTag := *generators.GenerateTag()
+	createdTag := *tagmodels.GenerateTagSdk()
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(tagCreate.ToSdk())).
+		TagPost(gomock.Eq(*tagCreate.ToSdk())).
 		Return(createdTag, WithResponse(201, WithBody(createdTag)), nil).
 		Times(1)
 
@@ -51,7 +50,7 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 
 func TestCreateTagSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := *tagmodels.TagCreateFromSdk(generators.GenerateTagCreate())
+	tagCreate := tagmodels.GenerateTagCreateCli()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(tagCreate)
@@ -59,11 +58,11 @@ func TestCreateTagSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdTag := *generators.GenerateTag()
+	createdTag := *tagmodels.GenerateTagSdk()
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(tagCreate.ToSdk())).
+		TagPost(gomock.Eq(*tagCreate.ToSdk())).
 		Return(createdTag, WithResponse(201, WithBody(createdTag)), nil).
 		Times(1)
 
@@ -123,7 +122,7 @@ func TestCreateTagUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := *tagmodels.TagCreateFromSdk(generators.GenerateTagCreate())
+	tagCreate := tagmodels.GenerateTagCreateCli()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -132,7 +131,7 @@ func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(tagCreate.ToSdk())).
+		TagPost(gomock.Eq(*tagCreate.ToSdk())).
 		Return(tagapisdk.Tag{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -153,7 +152,7 @@ func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateTagClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := *tagmodels.TagCreateFromSdk(generators.GenerateTagCreate())
+	tagCreate := tagmodels.GenerateTagCreateCli()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -162,7 +161,7 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(tagCreate.ToSdk())).
+		TagPost(gomock.Eq(*tagCreate.ToSdk())).
 		Return(tagapisdk.Tag{}, nil, testutil.TestError).
 		Times(1)
 
@@ -183,7 +182,7 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 
 func TestCreateTagKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := *tagmodels.TagCreateFromSdk(generators.GenerateTagCreate())
+	tagCreate := tagmodels.GenerateTagCreateCli()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -192,7 +191,7 @@ func TestCreateTagKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(tagCreate.ToSdk())).
+		TagPost(gomock.Eq(*tagCreate.ToSdk())).
 		Return(tagapisdk.Tag{}, nil, testutil.TestKeycloakError).
 		Times(1)
 

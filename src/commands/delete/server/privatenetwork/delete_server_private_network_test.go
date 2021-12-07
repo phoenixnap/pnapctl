@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	. "phoenixnap.com/pnapctl/tests/mockhelp"
-	"phoenixnap.com/pnapctl/tests/testutil"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 const deleteResult = "The server is being removed from the specified private network."

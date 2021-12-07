@@ -8,31 +8,31 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
-	"phoenixnap.com/pnapctl/tests/generators"
-	"phoenixnap.com/pnapctl/tests/testutil"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/testsupport/generators"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"gopkg.in/yaml.v2"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	. "phoenixnap.com/pnapctl/tests/mockhelp"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
 func TestTagServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
 	tagAssignmentRequests := generators.GenerateTagAssignmentRequests(2)
 
-	tagAssignmentModel_1 := bmcapimodels.TagAssignmentRequest{
+	tagAssignmentModel_1 := servermodels.TagAssignmentRequest{
 		Name:  tagAssignmentRequests[0].Name,
 		Value: tagAssignmentRequests[0].Value,
 	}
 
-	tagAssignmentModel_2 := bmcapimodels.TagAssignmentRequest{
+	tagAssignmentModel_2 := servermodels.TagAssignmentRequest{
 		Name:  tagAssignmentRequests[1].Name,
 		Value: tagAssignmentRequests[1].Value,
 	}
 
-	tagAssignmentRequestModels := []bmcapimodels.TagAssignmentRequest{tagAssignmentModel_1, tagAssignmentModel_2}
+	tagAssignmentRequestModels := []servermodels.TagAssignmentRequest{tagAssignmentModel_1, tagAssignmentModel_2}
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagAssignmentRequestModels)
