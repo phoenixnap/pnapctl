@@ -9,14 +9,14 @@ import (
 )
 
 func TestRancherClusterConfigToSdk(test_framework *testing.T) {
-	rancherClusterConfig := GenerateRancherClusterConfigCli()
+	rancherClusterConfig := GeneratecliRancherClusterConfig()
 	sdkRancherClusterConfig := *rancherClusterConfig.ToSdk()
 
 	assertEqualRancherClusterConfig(test_framework, rancherClusterConfig, sdkRancherClusterConfig)
 }
 
 func TestRancherClusterConfigFromSdk(test_framework *testing.T) {
-	sdkRancherClusterConfig := GenerateRancherClusterConfigSdk()
+	sdkRancherClusterConfig := GeneratesdkRancherClusterConfig()
 	rancherClusterConfig := *RancherClusterConfigFromSdk(&sdkRancherClusterConfig)
 
 	assertEqualRancherClusterConfig(test_framework, rancherClusterConfig, sdkRancherClusterConfig)
@@ -28,7 +28,7 @@ func TestRancherClusterConfigToTableString_nilConfig(test_framework *testing.T) 
 }
 
 func TestNodePoolsToTableStrings_withClusterConfig(test_framework *testing.T) {
-	sdkModel := GenerateRancherClusterConfigSdk()
+	sdkModel := GeneratesdkRancherClusterConfig()
 
 	result := RancherClusterConfigToTableString(&sdkModel)
 
@@ -39,15 +39,15 @@ func generateClusterConfigResultString(config *ranchersdk.RancherClusterConfig) 
 	return fmt.Sprintf("Token: %s, Domain: %s", *config.Token, *config.ClusterDomain)
 }
 
-func assertEqualRancherClusterConfig(test_framework *testing.T, r1 RancherClusterConfig, r2 ranchersdk.RancherClusterConfig) {
-	assert.Equal(test_framework, r1.Token, r2.Token)
-	assert.Equal(test_framework, r1.TlsSan, r2.TlsSan)
-	assert.Equal(test_framework, r1.EtcdSnapshotScheduleCron, r2.EtcdSnapshotScheduleCron)
-	assert.Equal(test_framework, r1.EtcdSnapshotRetention, r2.EtcdSnapshotRetention)
-	assert.Equal(test_framework, r1.NodeTaint, r2.NodeTaint)
-	assert.Equal(test_framework, r1.ClusterDomain, r2.ClusterDomain)
+func assertEqualRancherClusterConfig(test_framework *testing.T, cliRancherClusterConfig RancherClusterConfig, sdkRancherClusterConfig ranchersdk.RancherClusterConfig) {
+	assert.Equal(test_framework, cliRancherClusterConfig.Token, sdkRancherClusterConfig.Token)
+	assert.Equal(test_framework, cliRancherClusterConfig.TlsSan, sdkRancherClusterConfig.TlsSan)
+	assert.Equal(test_framework, cliRancherClusterConfig.EtcdSnapshotScheduleCron, sdkRancherClusterConfig.EtcdSnapshotScheduleCron)
+	assert.Equal(test_framework, cliRancherClusterConfig.EtcdSnapshotRetention, sdkRancherClusterConfig.EtcdSnapshotRetention)
+	assert.Equal(test_framework, cliRancherClusterConfig.NodeTaint, sdkRancherClusterConfig.NodeTaint)
+	assert.Equal(test_framework, cliRancherClusterConfig.ClusterDomain, sdkRancherClusterConfig.ClusterDomain)
 
-	if !assertNilEquality(test_framework, "Certificates", r1.Certificates, r2.Certificates) {
-		assertEqualRancherClusterCertificates(test_framework, *r1.Certificates, *r2.Certificates)
+	if !assertNilEquality(test_framework, "Certificates", cliRancherClusterConfig.Certificates, sdkRancherClusterConfig.Certificates) {
+		assertEqualRancherClusterCertificates(test_framework, *cliRancherClusterConfig.Certificates, *sdkRancherClusterConfig.Certificates)
 	}
 }

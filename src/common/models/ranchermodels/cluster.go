@@ -17,12 +17,12 @@ type Cluster struct {
 	StatusDescription     *string                `json:"statusDescription" yaml:"statusDescription"`
 }
 
-func (c Cluster) ToSdk() ranchersdk.Cluster {
+func (cluster Cluster) ToSdk() ranchersdk.Cluster {
 	var nodepools *[]ranchersdk.NodePool
 
-	if c.NodePools != nil {
+	if cluster.NodePools != nil {
 		nodepools = &[]ranchersdk.NodePool{}
-		for _, nodepool := range *c.NodePools {
+		for _, nodepool := range *cluster.NodePools {
 			*nodepools = append(*nodepools, *nodepool.ToSdk())
 		}
 	}
@@ -30,24 +30,24 @@ func (c Cluster) ToSdk() ranchersdk.Cluster {
 	var configuration *ranchersdk.RancherClusterConfig
 	var metadata *ranchersdk.RancherServerMetadata
 
-	if c.Configuration != nil {
-		configuration = c.Configuration.ToSdk()
+	if cluster.Configuration != nil {
+		configuration = cluster.Configuration.ToSdk()
 	}
 
-	if c.Metadata != nil {
-		metadata = c.Metadata.ToSdk()
+	if cluster.Metadata != nil {
+		metadata = cluster.Metadata.ToSdk()
 	}
 
 	return ranchersdk.Cluster{
-		Id:                    c.Id,
-		Name:                  c.Name,
-		Description:           c.Description,
-		Location:              c.Location,
-		InitialClusterVersion: c.InitialClusterVersion,
+		Id:                    cluster.Id,
+		Name:                  cluster.Name,
+		Description:           cluster.Description,
+		Location:              cluster.Location,
+		InitialClusterVersion: cluster.InitialClusterVersion,
 		NodePools:             nodepools,
 		Configuration:         configuration,
 		Metadata:              metadata,
-		StatusDescription:     c.StatusDescription,
+		StatusDescription:     cluster.StatusDescription,
 	}
 }
 

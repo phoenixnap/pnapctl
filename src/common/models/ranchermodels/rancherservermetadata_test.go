@@ -9,14 +9,14 @@ import (
 )
 
 func TestRancherServerMetadataToSdk(test_framework *testing.T) {
-	rancherServerMetadata := GenerateRancherServerMetadataCli()
+	rancherServerMetadata := GeneratecliRancherServerMetadata()
 	sdkRancherServerMetadata := *rancherServerMetadata.ToSdk()
 
 	assertEqualRancherServerMetadata(test_framework, rancherServerMetadata, sdkRancherServerMetadata)
 }
 
 func TestRancherServerMetadataFromSdk(test_framework *testing.T) {
-	sdkRancherServerMetadata := GenerateRancherServerMetadataSdk()
+	sdkRancherServerMetadata := GeneratesdkRancherServerMetadata()
 	rancherServerMetadata := *RancherServerMetadataFromSdk(&sdkRancherServerMetadata)
 
 	assertEqualRancherServerMetadata(test_framework, rancherServerMetadata, sdkRancherServerMetadata)
@@ -70,8 +70,9 @@ func TestRancherServerMetadataToTableString_fullMetadata(test_framework *testing
 	assert.Equal(test_framework, expectedResult, result)
 }
 
-func assertEqualRancherServerMetadata(test_framework *testing.T, r1 RancherServerMetadata, r2 ranchersdk.RancherServerMetadata) {
-	assert.Equal(test_framework, r1.Url, r2.Url)
-	assert.Equal(test_framework, r1.Username, r2.Username)
-	assert.Equal(test_framework, r1.Password, r2.Password)
+func assertEqualRancherServerMetadata(test_framework *testing.T, cliRancherServerMetadata RancherServerMetadata, sdkRancherServerMetadata ranchersdk.RancherServerMetadata) {
+	func assertEqualRancherServerMetadata(test_framework *testing.T, cliRancherServerMetadata RancherServerMetadata, sdkRancherServerMetadata ranchersdk.RancherServerMetadata) {
+	assert.Equal(test_framework, cliRancherServerMetadata.Url, sdkRancherServerMetadata.Url)
+	assert.Equal(test_framework, cliRancherServerMetadata.Username, sdkRancherServerMetadata.Username)
+	assert.Equal(test_framework, cliRancherServerMetadata.Password, sdkRancherServerMetadata.Password)
 }

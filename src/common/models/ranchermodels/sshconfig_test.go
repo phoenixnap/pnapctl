@@ -21,19 +21,19 @@ func TestSshConfigFromSdk(test_framework *testing.T) {
 	assertEqualSshConfig(test_framework, sshConfig, sdkSshConfig)
 }
 
-func assertEqualSshConfig(test_framework *testing.T, s1 SshConfig, s2 ranchersdk.SshConfig) {
-	assert.Equal(test_framework, s1.InstallDefaultKeys, s2.InstallDefaultKeys)
+func assertEqualSshConfig(test_framework *testing.T, cliSshConfig SshConfig, sdkSshConfig ranchersdk.SshConfig) {
+	assert.Equal(test_framework, cliSshConfig.InstallDefaultKeys, sdkSshConfig.InstallDefaultKeys)
 
-	if !assertNilEquality(test_framework, "Keys", s1.Keys, s2.Keys) {
-		assert.Equal(test_framework, len(*s1.Keys), len(*s2.Keys))
-		for i := range *s1.Keys {
-			assert.Equal(test_framework, (*s1.Keys)[i], (*s2.Keys)[i])
+	if !assertNilEquality(test_framework, "Keys", cliSshConfig.Keys, sdkSshConfig.Keys) {
+		assert.Equal(test_framework, len(*cliSshConfig.Keys), len(*sdkSshConfig.Keys))
+		for i := range *cliSshConfig.Keys {
+			assert.Equal(test_framework, (*cliSshConfig.Keys)[i], (*sdkSshConfig.Keys)[i])
 		}
 	}
-	if !assertNilEquality(test_framework, "Key Ids", s1.KeyIds, s2.KeyIds) {
-		assert.Equal(test_framework, len(*s1.KeyIds), len(*s2.KeyIds))
-		for i := range *s1.KeyIds {
-			assert.Equal(test_framework, (*s1.KeyIds)[i], (*s2.KeyIds)[i])
+	if !assertNilEquality(test_framework, "Key Ids", cliSshConfig.KeyIds, sdkSshConfig.KeyIds) {
+		assert.Equal(test_framework, len(*cliSshConfig.KeyIds), len(*sdkSshConfig.KeyIds))
+		for i := range *cliSshConfig.KeyIds {
+			assert.Equal(test_framework, (*cliSshConfig.KeyIds)[i], (*sdkSshConfig.KeyIds)[i])
 		}
 	}
 }
