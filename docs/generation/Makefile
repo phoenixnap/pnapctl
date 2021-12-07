@@ -1,12 +1,14 @@
 GO   = go
 BIN  = bin
-DOCS = $(BIN)/docs
+DOCS = $(BIN)/docgenerator
 
 V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
 
-$(DOCS): ; $(info $(M) building docs executable…) 
+export GO111MODULE=on
+
+$(DOCS): main.go go.mod go.sum; $(info $(M) building docs executable…) 
 	$Q $(GO) build -o $(DOCS) main.go
 
 .PHONY: generate-docs 
