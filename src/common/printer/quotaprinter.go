@@ -33,6 +33,6 @@ func PrepareQuotaForPrinting(quota bmcapisdk.Quota) interface{} {
 	case table:
 		return tables.ToQuotaTable(quota)
 	default:
-		return quotamodels.QuotaSdkToDto(quota)
+		return quotamodels.QuotaFromSdk(quota)
 	}
 }

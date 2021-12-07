@@ -16,7 +16,7 @@ type SshKey struct {
 	LastUpdatedOn time.Time `json:"lastUpdatedOn" yaml:"lastUpdatedOn"`
 }
 
-func SshKeySdkToDto(sshKey bmcapisdk.SshKey) SshKey {
+func SshKeyFromSdk(sshKey bmcapisdk.SshKey) SshKey {
 	return SshKey{
 		Id:            sshKey.Id,
 		Default:       sshKey.Default,
