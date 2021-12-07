@@ -1,4 +1,4 @@
-package generators
+package testutil
 
 import "math/rand"
 
