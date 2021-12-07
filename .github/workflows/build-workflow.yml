@@ -12,7 +12,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    container: golang:1.17.1
+    container: golang:1.17.3
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
@@ -31,7 +31,7 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
-    container: golang:1.17.1
+    container: golang:1.17.3
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
