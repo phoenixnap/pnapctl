@@ -117,7 +117,7 @@ jobs:
             dist/pnapctl-windows-amd64.zip
 
   updateLatestTag:
-    name: Update Latest Tag Test
+    name: Update Latest Tag Test2
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
