@@ -15,11 +15,25 @@ func TestNetworkConfigurationToSdk(test_framework *testing.T) {
 	assertEqualNetworkconfiguration(test_framework, cliNetworkConfiguration, *sdkModel)
 }
 
+func TestNilNetworkConfigurationPrivateNetworkConfigurationNilToSdk(test_framework *testing.T) {
+	cliNetworkConfiguration := NetworkConfiguration{
+		PrivateNetworkConfiguration: nil,
+	}
+
+	sdkModel := cliNetworkConfiguration.toSdk()
+
+	assertEqualNetworkconfiguration(test_framework, cliNetworkConfiguration, *sdkModel)
+}
+
 func TestNilNetworkConfigurationToSdk(test_framework *testing.T) {
 	var test *NetworkConfiguration = nil
 	sdkModel := test.toSdk()
 
 	assert.Nil(test_framework, sdkModel)
+}
+
+func TestNetworkConfigurationFromSdk(test_framework *testing.T) {
+	// TODO: Continue here
 }
 
 // assertion functions
