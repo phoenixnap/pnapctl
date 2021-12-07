@@ -9,14 +9,14 @@ import (
 )
 
 func TestRancherServerMetadataToSdk(test_framework *testing.T) {
-	rancherServerMetadata := GeneratecliRancherServerMetadata()
+	rancherServerMetadata := GenerateRancherServerMetadataCli()
 	sdkRancherServerMetadata := *rancherServerMetadata.ToSdk()
 
 	assertEqualRancherServerMetadata(test_framework, rancherServerMetadata, sdkRancherServerMetadata)
 }
 
 func TestRancherServerMetadataFromSdk(test_framework *testing.T) {
-	sdkRancherServerMetadata := GeneratesdkRancherServerMetadata()
+	sdkRancherServerMetadata := GenerateRancherServerMetadataSdk()
 	rancherServerMetadata := *RancherServerMetadataFromSdk(&sdkRancherServerMetadata)
 
 	assertEqualRancherServerMetadata(test_framework, rancherServerMetadata, sdkRancherServerMetadata)

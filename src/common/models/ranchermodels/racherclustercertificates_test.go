@@ -8,14 +8,14 @@ import (
 )
 
 func TestRancherClusterCertificateToSdk(test_framework *testing.T) {
-	rancherRancherClusterCertificates := GeneratecliRancherClusterCertificates()
+	rancherRancherClusterCertificates := GenerateRancherClusterCertificatesCli()
 	sdkRancherClusterCertificates := *rancherRancherClusterCertificates.toSdk()
 
 	assertEqualRancherClusterCertificates(test_framework, rancherRancherClusterCertificates, sdkRancherClusterCertificates)
 }
 
 func TestRancherClusterCertificateFromSdk(test_framework *testing.T) {
-	sdkRancherClusterCertificates := GeneratesdkRancherClusterCertificates()
+	sdkRancherClusterCertificates := GenerateRancherClusterCertificatesSdk()
 	rancherRancherClusterCertificates := *RancherClusterCertificatesFromSdk(&sdkRancherClusterCertificates)
 
 	assertEqualRancherClusterCertificates(test_framework, rancherRancherClusterCertificates, sdkRancherClusterCertificates)

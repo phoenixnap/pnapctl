@@ -9,14 +9,14 @@ import (
 )
 
 func TestRancherClusterConfigToSdk(test_framework *testing.T) {
-	rancherClusterConfig := GeneratecliRancherClusterConfig()
+	rancherClusterConfig := GenerateRancherClusterConfigCli()
 	sdkRancherClusterConfig := *rancherClusterConfig.ToSdk()
 
 	assertEqualRancherClusterConfig(test_framework, rancherClusterConfig, sdkRancherClusterConfig)
 }
 
 func TestRancherClusterConfigFromSdk(test_framework *testing.T) {
-	sdkRancherClusterConfig := GeneratesdkRancherClusterConfig()
+	sdkRancherClusterConfig := GenerateRancherClusterConfigSdk()
 	rancherClusterConfig := *RancherClusterConfigFromSdk(&sdkRancherClusterConfig)
 
 	assertEqualRancherClusterConfig(test_framework, rancherClusterConfig, sdkRancherClusterConfig)
@@ -28,7 +28,7 @@ func TestRancherClusterConfigToTableString_nilConfig(test_framework *testing.T) 
 }
 
 func TestNodePoolsToTableStrings_withClusterConfig(test_framework *testing.T) {
-	sdkModel := GeneratesdkRancherClusterConfig()
+	sdkModel := GenerateRancherClusterConfigSdk()
 
 	result := RancherClusterConfigToTableString(&sdkModel)
 
