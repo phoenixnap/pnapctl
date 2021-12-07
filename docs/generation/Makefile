@@ -6,6 +6,8 @@ V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
 
+export GO111MODULE=on
+
 $(DOCS): ; $(info $(M) building docs executable…) 
 	$Q $(GO) build -o $(DOCS) main.go
 

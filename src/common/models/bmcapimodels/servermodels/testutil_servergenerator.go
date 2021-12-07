@@ -169,3 +169,37 @@ func GenerateServerPrivateNetworkSdk() bmcapisdk.ServerPrivateNetwork {
 		StatusDescription: generators.RandSeqPointer(10),
 	}
 }
+
+func GenerateNetworkConfigurationCli() NetworkConfiguration {
+	privateNetworkConfiguration := GeneratePrivateNetworkConfigurationCli()
+	return NetworkConfiguration{
+		PrivateNetworkConfiguration: &privateNetworkConfiguration,
+	}
+}
+
+func GeneratePrivateNetworkConfigurationCli() PrivateNetworkConfiguration {
+	serverPrivateNetworks := GenerateServerPrivateNetworkListCli(2)
+	return PrivateNetworkConfiguration{
+		GatewayAddress:    generators.RandSeqPointer(10),
+		ConfigurationType: generators.RandSeqPointer(10),
+		PrivateNetworks:   &serverPrivateNetworks,
+	}
+}
+
+func GenerateServerPrivateNetworkListCli(n int) []ServerPrivateNetwork {
+	var list []ServerPrivateNetwork
+	for i := 0; i < n; i++ {
+		list = append(list, GenerateServerPrivateNetworkCli())
+	}
+	return list
+}
+
+func GenerateServerPrivateNetworkCli() ServerPrivateNetwork {
+	dhcp := false
+	return ServerPrivateNetwork{
+		Id:                generators.RandSeq(10),
+		Ips:               generators.RandListStringPointer(10),
+		Dhcp:              &dhcp,
+		StatusDescription: generators.RandSeqPointer(10),
+	}
+}
