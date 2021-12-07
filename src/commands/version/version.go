@@ -2,8 +2,9 @@ package version
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"runtime"
+
+	"github.com/spf13/cobra"
 )
 
 var (
