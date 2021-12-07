@@ -4,6 +4,7 @@ on:
   release:
     types:
       - created
+      - published
       - edited
 
 jobs:
@@ -115,3 +116,14 @@ jobs:
             dist/pnapctl-darwin-amd64.tar.gz
             dist/pnapctl-linux-amd64.tar.gz
             dist/pnapctl-windows-amd64.zip
+
+  updateLatestTag:
+    name: Update Latest Tag Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Update Latest Tag
+        uses: Actions-R-Us/actions-tagger@latest
+        with:
+          publish_latest_tag: true
