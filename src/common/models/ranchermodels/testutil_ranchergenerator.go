@@ -44,7 +44,7 @@ func GenerateClusterCli() Cluster {
 func GenerateNodePoolSdk() ranchersdk.NodePool {
 	return ranchersdk.NodePool{
 		Name:       generators.RandSeqPointer(10),
-		NodeCount:  nil,
+		NodeCount:  generators.RanNumberPointer(),
 		ServerType: generators.RandSeqPointer(10),
 		SshConfig:  nil,
 		Nodes:      nil,

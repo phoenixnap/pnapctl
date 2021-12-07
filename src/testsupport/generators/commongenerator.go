@@ -24,3 +24,8 @@ func RandListStringPointer(n int) *[]string {
 	}
 	return &b
 }
+
+func RanNumberPointer() *int32 {
+	i := rand.Int31()
+	return &i
+}
