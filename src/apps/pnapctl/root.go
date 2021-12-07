@@ -2,12 +2,10 @@ package commands
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra/doc"
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
@@ -57,22 +55,9 @@ var (
 // Execute adds all child commands to the root command, setting flags appropriately.
 // Called by main.main(), only needing to happen once.
 func Execute() {
-	args := os.Args[1:]
-
-	// Generate Docs
-	if len(args) > 0 && args[0] == "_generate_docs" {
-		err := doc.GenMarkdownTree(RootCmd, "./docs")
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println("Docs Generated")
-
-		// Run commands
-	} else {
-		if err := RootCmd.Execute(); err != nil {
-			var _ = fmt.Errorf("%s", err)
-			os.Exit(1)
-		}
+	if err := RootCmd.Execute(); err != nil {
+		var _ = fmt.Errorf("%s", err)
+		os.Exit(1)
 	}
 }
 
