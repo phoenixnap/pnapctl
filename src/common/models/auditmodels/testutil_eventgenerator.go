@@ -4,12 +4,12 @@ import (
 	"time"
 
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
-	"phoenixnap.com/pnapctl/testsupport/generators"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func GenerateEventSdk() *auditapisdk.Event {
 	return &auditapisdk.Event{
-		Name:      generators.RandSeqPointer(10),
+		Name:      testutil.RandSeqPointer(10),
 		Timestamp: time.Now(),
 		UserInfo:  GenerateUserInfoSdk(),
 	}
@@ -30,17 +30,17 @@ func GenerateQueryParamsCli() EventsGetQueryParams {
 		To:       &now,
 		Limit:    10,
 		Order:    "ASC",
-		Username: generators.RandSeq(10),
+		Username: testutil.RandSeq(10),
 		Verb:     "PUT",
-		Uri:      generators.RandSeq(10),
+		Uri:      testutil.RandSeq(10),
 	}
 }
 
 func GenerateUserInfoSdk() auditapisdk.UserInfo {
 	return auditapisdk.UserInfo{
-		AccountId: generators.RandSeq(10),
-		ClientId:  generators.RandSeqPointer(10),
-		Username:  generators.RandSeq(10),
+		AccountId: testutil.RandSeq(10),
+		ClientId:  testutil.RandSeqPointer(10),
+		Username:  testutil.RandSeq(10),
 	}
 }
 

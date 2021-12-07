@@ -4,16 +4,16 @@ import (
 	"time"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"phoenixnap.com/pnapctl/testsupport/generators"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func GenerateSshKeySdk() bmcapisdk.SshKey {
 	return bmcapisdk.SshKey{
-		Id:            generators.RandSeq(10),
+		Id:            testutil.RandSeq(10),
 		Default:       false,
-		Name:          generators.RandSeq(10),
-		Key:           generators.RandSeq(10),
-		Fingerprint:   generators.RandSeq(10),
+		Name:          testutil.RandSeq(10),
+		Key:           testutil.RandSeq(10),
+		Fingerprint:   testutil.RandSeq(10),
 		CreatedOn:     time.Now(),
 		LastUpdatedOn: time.Now(),
 	}
@@ -29,16 +29,16 @@ func GenerateSshKeyListSdk(n int) []bmcapisdk.SshKey {
 
 func GenerateSshKeyDeleteResultSdk() bmcapisdk.DeleteSshKeyResult {
 	return bmcapisdk.DeleteSshKeyResult{
-		Result:   generators.RandSeq(10),
-		SshKeyId: generators.RandSeq(10),
+		Result:   testutil.RandSeq(10),
+		SshKeyId: testutil.RandSeq(10),
 	}
 }
 
 func GenerateSshKeyCreateSdk() bmcapisdk.SshKeyCreate {
 	return bmcapisdk.SshKeyCreate{
 		Default: false,
-		Name:    generators.RandSeq(10),
-		Key:     generators.RandSeq(10),
+		Name:    testutil.RandSeq(10),
+		Key:     testutil.RandSeq(10),
 	}
 
 }
@@ -46,8 +46,8 @@ func GenerateSshKeyCreateSdk() bmcapisdk.SshKeyCreate {
 func GenerateSshKeyCreateCli() SshKeyCreate {
 	return SshKeyCreate{
 		Default: false,
-		Name:    generators.RandSeq(10),
-		Key:     generators.RandSeq(10),
+		Name:    testutil.RandSeq(10),
+		Key:     testutil.RandSeq(10),
 	}
 
 }
@@ -55,13 +55,13 @@ func GenerateSshKeyCreateCli() SshKeyCreate {
 func GenerateSshKeyUpdateSdk() bmcapisdk.SshKeyUpdate {
 	return bmcapisdk.SshKeyUpdate{
 		Default: false,
-		Name:    generators.RandSeq(10),
+		Name:    testutil.RandSeq(10),
 	}
 }
 
 func GenerateSshKeyUpdateCli() SshKeyUpdate {
 	return SshKeyUpdate{
 		Default: false,
-		Name:    generators.RandSeq(10),
+		Name:    testutil.RandSeq(10),
 	}
 }

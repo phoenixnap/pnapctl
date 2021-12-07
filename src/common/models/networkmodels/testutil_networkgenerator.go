@@ -4,19 +4,19 @@ import (
 	"math/rand"
 
 	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
-	"phoenixnap.com/pnapctl/testsupport/generators"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func GeneratePrivateNetworkSdk() networkapisdk.PrivateNetwork {
 	return networkapisdk.PrivateNetwork{
-		Id:              generators.RandSeq(10),
-		Name:            generators.RandSeq(10),
-		Description:     generators.RandSeqPointer(10),
+		Id:              testutil.RandSeq(10),
+		Name:            testutil.RandSeq(10),
+		Description:     testutil.RandSeqPointer(10),
 		VlanId:          int32(rand.Int()),
-		Type:            generators.RandSeq(10),
-		Location:        generators.RandSeq(10),
+		Type:            testutil.RandSeq(10),
+		Location:        testutil.RandSeq(10),
 		LocationDefault: false,
-		Cidr:            generators.RandSeq(10),
+		Cidr:            testutil.RandSeq(10),
 		Servers:         []networkapisdk.PrivateNetworkServer{},
 	}
 }
@@ -31,25 +31,25 @@ func GeneratePrivateNetworkListSdk(n int) []networkapisdk.PrivateNetwork {
 
 func GeneratePrivateNetworkServerSdk() networkapisdk.PrivateNetworkServer {
 	return networkapisdk.PrivateNetworkServer{
-		Id:  generators.RandSeq(10),
-		Ips: []string{generators.RandSeq(10)},
+		Id:  testutil.RandSeq(10),
+		Ips: []string{testutil.RandSeq(10)},
 	}
 }
 
 func GeneratePrivateNetworkCreateCli() PrivateNetworkCreate {
 	return PrivateNetworkCreate{
-		Name:            generators.RandSeq(10),
-		Description:     generators.RandSeqPointer(10),
-		Location:        generators.RandSeq(10),
+		Name:            testutil.RandSeq(10),
+		Description:     testutil.RandSeqPointer(10),
+		Location:        testutil.RandSeq(10),
 		LocationDefault: nil,
-		Cidr:            generators.RandSeq(10),
+		Cidr:            testutil.RandSeq(10),
 	}
 }
 
 func GeneratePrivateNetworkModifyCli() PrivateNetworkModify {
 	return PrivateNetworkModify{
-		Name:            generators.RandSeq(10),
-		Description:     generators.RandSeqPointer(10),
+		Name:            testutil.RandSeq(10),
+		Description:     testutil.RandSeqPointer(10),
 		LocationDefault: false,
 	}
 }
