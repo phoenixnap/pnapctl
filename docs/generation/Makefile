@@ -8,7 +8,7 @@ M = $(shell printf "\033[34;1m▶\033[0m")
 
 export GO111MODULE=on
 
-$(DOCS): main.go go.mod go.sum; $(info $(M) building docs executable…) 
+$(DOCS): main.go go.mod go.sum; $(info $(M) building docgenerator executable…) 
 	$Q $(GO) build -o $(DOCS) main.go
 
 .PHONY: generate-docs 
