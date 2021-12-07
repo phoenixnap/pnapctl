@@ -117,12 +117,12 @@ jobs:
             dist/pnapctl-windows-amd64.zip
 
   updateLatestTag:
-    name: Update Latest Tag Test1.0.2
+    name: Update Latest Tag Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Update Latest Tag
-        uses: EndBug/latest-tag@latest
+        uses: Actions-R-Us/actions-tagger@latest
         with:
-          description: Latest Release
+          publish_latest_tag: true
