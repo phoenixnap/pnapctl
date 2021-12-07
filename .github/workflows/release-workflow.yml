@@ -115,3 +115,12 @@ jobs:
             dist/pnapctl-darwin-amd64.tar.gz
             dist/pnapctl-linux-amd64.tar.gz
             dist/pnapctl-windows-amd64.zip
+
+  updateLatestTag:
+    name: Update Latest Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Latest Tag
+        uses: EndBug/latest-tag@latest
+        with:
+          description: Latest Release
