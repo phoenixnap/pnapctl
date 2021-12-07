@@ -122,7 +122,7 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
-      - name: Update Latest Tag
+      - name: Update Latest Tag 1.0.1
         uses: Actions-R-Us/actions-tagger@latest
         with:
           publish_latest_tag: true
