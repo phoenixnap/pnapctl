@@ -5,13 +5,13 @@ import (
 )
 
 type SshKeyTableFull struct {
-	Id            string  `header:"ID"`
-	Default       bool    `header:"Default"`
-	Name          string  `header:"Name"`
-	Fingerprint   string  `header:"Fingerprint"`
-	CreatedOn     string  `header:"Created On"`
-	LastUpdatedOn string  `header:"Last Updated On"`
-	Key           *string `header:"Key"`
+	Id            string `header:"ID"`
+	Default       bool   `header:"Default"`
+	Name          string `header:"Name"`
+	Fingerprint   string `header:"Fingerprint"`
+	CreatedOn     string `header:"Created On"`
+	LastUpdatedOn string `header:"Last Updated On"`
+	Key           string `header:"Key"`
 }
 
 type SshKeyTable struct {
@@ -28,7 +28,7 @@ func ToSshKeyTableFull(sshKey bmcapisdk.SshKey) SshKeyTableFull {
 		Id:            sshKey.Id,
 		Default:       sshKey.Default,
 		Name:          sshKey.Name,
-		Key:           &sshKey.Key,
+		Key:           sshKey.Key,
 		Fingerprint:   sshKey.Fingerprint,
 		CreatedOn:     sshKey.CreatedOn.String(),
 		LastUpdatedOn: sshKey.LastUpdatedOn.String(),
