@@ -40,11 +40,11 @@ The CLI can be either used manually or as part of automation scripts.
 
 You can use pnapctl on Linux, OS X, and Windows-based AMD64 systems. The binary is available for download through the following links:
 
-* Linux: [pnapctl-linux-amd64.tar.gz](https://developers-dev.phoenixnap.com/files/pnapctl-linux-amd64.tar.gz)
-* OS X: [pnapctl-darwin-amd64.tar.gz](https://developers-dev.phoenixnap.com/files/pnapctl-darwin-amd64.tar.gz)
-* Windows: [pnapctl-windows-amd64.zip](https://developers-dev.phoenixnap.com/files/pnapctl-windows-amd64.zip)
+* Linux: [pnapctl-linux-amd64.tar.gz](https://github.com/phoenixnap/pnapctl/releases/latest/download/pnapctl-linux-amd64.tar.gz)
+* OS X: [pnapctl-darwin-amd64.tar.gz](https://github.com/phoenixnap/pnapctl/releases/latest/download/pnapctl-darwin-amd64.tar.gz)
+* Windows: [pnapctl-windows-amd64.zip](https://github.com/phoenixnap/pnapctl/releases/latest/download/pnapctl-windows-amd64.zip)
 
-:open_book: Detailed steps on how to install CLI are available on our developers portal: [https://developers-dev.phoenixnap.com/cli](https://developers-dev.phoenixnap.com/cli)
+:open_book: Detailed steps on how to install CLI are available on our developers portal: [https://developers.phoenixnap.com/cli](https://developers.phoenixnap.com/cli)
 
 ## CTL Setup Steps
 
@@ -59,6 +59,10 @@ You can use pnapctl on Linux, OS X, and Windows-based AMD64 systems. The binary 
 The executable will be generated in the `bin` folder. This is an example of command execution:
 
    `./bin/pnapctl get servers`
+
+## Commands
+
+For an overview of the available commands and various options for each command, please refer to the [official documentation on Github](https://github.com/phoenixnap/pnapctl/blob/latest/docs/pnapctl.md)
 
 ## Multi OS Build
 
