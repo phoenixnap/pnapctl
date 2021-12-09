@@ -2,12 +2,12 @@
   <br>
   <a href="https://phoenixnap.com/bare-metal-cloud"><img src="https://user-images.githubusercontent.com/78744488/109779287-16da8600-7c06-11eb-81a1-97bf44983d33.png" alt="phoenixnap Bare Metal Cloud" width="300"></a>
   <br>
-  Bare Metal Cloud CTL
+  Bare Metal Cloud CLI
   <br>
 </h1>
 
 <p align="center">
-This CTL allows you to interact with Bare Metal Cloud APIs via the terminal.
+This CLI allows you to interact with Bare Metal Cloud APIs to deploy new and manage existing servers directly from the terminal.
 </p>
 
 <p align="center">
@@ -34,6 +34,18 @@ This CTL allows you to interact with Bare Metal Cloud APIs via the terminal.
 
 :arrow_forward: **Video tutorial:** [Introduction to Bare Metal Cloud](https://www.youtube.com/watch?v=8TLsqgLDMN4)
 
+## CTL Installation
+
+The CLI can be either used manually or as part of automation scripts.
+
+You can use pnapctl on Linux, OS X, and Windows-based AMD64 systems. The binary is available for download through the following links:
+
+* Linux: [pnapctl-linux-amd64.tar.gz](https://github.com/phoenixnap/pnapctl/releases/latest/download/pnapctl-linux-amd64.tar.gz)
+* OS X: [pnapctl-darwin-amd64.tar.gz](https://github.com/phoenixnap/pnapctl/releases/latest/download/pnapctl-darwin-amd64.tar.gz)
+* Windows: [pnapctl-windows-amd64.zip](https://github.com/phoenixnap/pnapctl/releases/latest/download/pnapctl-windows-amd64.zip)
+
+:open_book: Detailed steps on how to install CLI are available on our developers portal: [https://developers.phoenixnap.com/cli](https://developers.phoenixnap.com/cli)
+
 ## CTL Setup Steps
 
 1. Get [`go`](https://golang.org/) and install.
@@ -47,6 +59,12 @@ This CTL allows you to interact with Bare Metal Cloud APIs via the terminal.
 The executable will be generated in the `bin` folder. This is an example of command execution:
 
    `./bin/pnapctl get servers`
+
+## Commands
+
+You can view all the available commands with different options for each command on our [GitHub page](https://github.com/phoenixnap/pnapctl/blob/latest/docs/pnapctl.md).
+
+These commands enable you to create, delete, modify or shut down a resource, as well as to perform actions such as submit a modification request, print version, reset, tag or update a resource. For a better understanding of what each action does, please consult the [API documentation](https://developers.phoenixnap.com/cli).
 
 ## Multi OS Build
 
