@@ -2,12 +2,12 @@
   <br>
   <a href="https://phoenixnap.com/bare-metal-cloud"><img src="https://user-images.githubusercontent.com/78744488/109779287-16da8600-7c06-11eb-81a1-97bf44983d33.png" alt="phoenixnap Bare Metal Cloud" width="300"></a>
   <br>
-  Bare Metal Cloud CTL
+  Bare Metal Cloud CLI
   <br>
 </h1>
 
 <p align="center">
-This CTL allows you to interact with Bare Metal Cloud APIs via the terminal.
+This CLI allows you to interact with Bare Metal Cloud APIs to deploy new and manage existing servers directly from the terminal.
 </p>
 
 <p align="center">
@@ -33,6 +33,18 @@ This CTL allows you to interact with Bare Metal Cloud APIs via the terminal.
 <br>
 
 :arrow_forward: **Video tutorial:** [Introduction to Bare Metal Cloud](https://www.youtube.com/watch?v=8TLsqgLDMN4)
+
+## CTL Installation
+
+The CLI can be either used manually or as part of automation scripts.
+
+You can use pnapctl on Linux, OS X, and Windows-based AMD64 systems. The binary is available for download through the following links:
+
+* Linux: [pnapctl-linux-amd64.tar.gz](https://developers-dev.phoenixnap.com/files/pnapctl-linux-amd64.tar.gz)
+* OS X: [pnapctl-darwin-amd64.tar.gz](https://developers-dev.phoenixnap.com/files/pnapctl-darwin-amd64.tar.gz)
+* Windows: [pnapctl-windows-amd64.zip](https://developers-dev.phoenixnap.com/files/pnapctl-windows-amd64.zip)
+
+:open_book: Detailed steps on how to install CLI are available on our developers portal: [https://developers-dev.phoenixnap.com/cli](https://developers-dev.phoenixnap.com/cli)
 
 ## CTL Setup Steps
 
