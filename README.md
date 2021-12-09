@@ -63,6 +63,7 @@ The executable will be generated in the `bin` folder. This is an example of comm
 ## Commands
 
 You can view all the available commands with different options for each command on our [GitHub page](https://github.com/phoenixnap/pnapctl/blob/latest/docs/pnapctl.md).
+
 These commands enable you to create, delete, modify or shut down a resource, as well as to perform actions such as submit a modification request, print version, reset, tag or update a resource. For a better understanding of what each action does, please consult the [API documentation](https://developers.phoenixnap.com/cli).
 
 ## Multi OS Build
