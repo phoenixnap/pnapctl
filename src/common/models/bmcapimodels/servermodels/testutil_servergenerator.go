@@ -6,7 +6,6 @@ import (
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
@@ -63,35 +62,6 @@ func GenerateServerCreateCli() ServerCreate {
 		OsConfiguration:       nil,
 		Tags:                  nil,
 		NetworkConfiguration:  nil,
-	}
-}
-
-func GenerateClusterListSdk(n int) []ranchersdk.Cluster {
-	var clusterlist []ranchersdk.Cluster
-	for i := 0; i < n; i++ {
-		clusterlist = append(clusterlist, GenerateClusterSdk())
-	}
-	return clusterlist
-}
-
-func GenerateClusterSdk() ranchersdk.Cluster {
-	return ranchersdk.Cluster{
-		Id:                    testutil.RandSeqPointer(10),
-		Name:                  testutil.RandSeqPointer(10),
-		Description:           testutil.RandSeqPointer(10),
-		Location:              testutil.RandSeq(10),
-		InitialClusterVersion: testutil.RandSeqPointer(10),
-		NodePools:             nil,
-		Configuration:         nil,
-		Metadata:              nil,
-		StatusDescription:     testutil.RandSeqPointer(10),
-	}
-}
-
-func GenerateRancherDeleteResultSdk() ranchersdk.DeleteResult {
-	return ranchersdk.DeleteResult{
-		Result:    testutil.RandSeq(10),
-		ClusterId: testutil.RandSeqPointer(10),
 	}
 }
 
