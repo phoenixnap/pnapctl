@@ -124,6 +124,23 @@ func GenerateTagAssignmentRequestListSdk(n int) []bmcapisdk.TagAssignmentRequest
 	return list
 }
 
+func GenerateTagAssignmentSdk() bmcapisdk.TagAssignment {
+	return bmcapisdk.TagAssignment{
+		Id:           testutil.RandSeq(10),
+		Name:         testutil.RandSeq(10),
+		Value:        testutil.RandSeqPointer(10),
+		IsBillingTag: false,
+	}
+}
+
+func GenerateTagAssignmentListSdk(n int) []bmcapisdk.TagAssignment {
+	var list []bmcapisdk.TagAssignment
+	for i := 0; i < n; i++ {
+		list = append(list, GenerateTagAssignmentSdk())
+	}
+	return list
+}
+
 func GenerateServerReserveSdk() bmcapisdk.ServerReserve {
 	return bmcapisdk.ServerReserve{
 		PricingModel: "ONE_MONTH_RESERVATION",
