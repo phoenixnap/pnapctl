@@ -112,6 +112,13 @@ func GenerateServerPatchSdk() bmcapisdk.ServerPatch {
 	}
 }
 
+func GenerateServerPatchCli() ServerPatch {
+	return ServerPatch{
+		Hostname:    testutil.RandSeqPointer(10),
+		Description: testutil.RandSeqPointer(10),
+	}
+}
+
 func GenerateTagAssignmentRequestSdk() bmcapisdk.TagAssignmentRequest {
 	return bmcapisdk.TagAssignmentRequest{
 		Name:  testutil.RandSeq(10),

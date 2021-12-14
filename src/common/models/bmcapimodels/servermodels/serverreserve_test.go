@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestToSDK(test_framework *testing.T) {
+func TestServerReserveToSDK(test_framework *testing.T) {
 	cliModel := GenerateServerReserveCli()
 	sdkModel := cliModel.toSDK()
 
