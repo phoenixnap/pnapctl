@@ -48,7 +48,7 @@ func assertEqualRancherClusterConfig(test_framework *testing.T, cliRancherCluste
 	assert.Equal(test_framework, cliRancherClusterConfig.NodeTaint, sdkRancherClusterConfig.NodeTaint)
 	assert.Equal(test_framework, cliRancherClusterConfig.ClusterDomain, sdkRancherClusterConfig.ClusterDomain)
 
-	if !testutil.AssertNilEquality(test_framework, "Certificates", cliRancherClusterConfig.Certificates, sdkRancherClusterConfig.Certificates) {
+	if testutil.AssertNilEquality(test_framework, "Certificates", cliRancherClusterConfig.Certificates, sdkRancherClusterConfig.Certificates) {
 		assertEqualRancherClusterCertificates(test_framework, *cliRancherClusterConfig.Certificates, *sdkRancherClusterConfig.Certificates)
 	}
 }

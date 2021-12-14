@@ -62,18 +62,18 @@ func assertEqualCluster(test_framework *testing.T, cliCluster Cluster, sdkCluste
 	assert.Equal(test_framework, cliCluster.InitialClusterVersion, sdkCluster.InitialClusterVersion)
 	assert.Equal(test_framework, cliCluster.StatusDescription, sdkCluster.StatusDescription)
 
-	if !testutil.AssertNilEquality(test_framework, "Node Pools", cliCluster.NodePools, sdkCluster.NodePools) {
+	if testutil.AssertNilEquality(test_framework, "Node Pools", cliCluster.NodePools, sdkCluster.NodePools) {
 		assert.Equal(test_framework, len(*cliCluster.NodePools), len(*sdkCluster.NodePools))
 		for i := range *cliCluster.NodePools {
 			assertEqualNodePool(test_framework, (*cliCluster.NodePools)[i], (*sdkCluster.NodePools)[i])
 		}
 	}
 
-	if !testutil.AssertNilEquality(test_framework, "Configuration", cliCluster.Configuration, sdkCluster.Configuration) {
+	if testutil.AssertNilEquality(test_framework, "Configuration", cliCluster.Configuration, sdkCluster.Configuration) {
 		assertEqualRancherClusterConfig(test_framework, *cliCluster.Configuration, *sdkCluster.Configuration)
 	}
 
-	if !testutil.AssertNilEquality(test_framework, "Metadata", cliCluster.Metadata, sdkCluster.Metadata) {
+	if testutil.AssertNilEquality(test_framework, "Metadata", cliCluster.Metadata, sdkCluster.Metadata) {
 		assertEqualRancherServerMetadata(test_framework, *cliCluster.Metadata, *sdkCluster.Metadata)
 	}
 }
