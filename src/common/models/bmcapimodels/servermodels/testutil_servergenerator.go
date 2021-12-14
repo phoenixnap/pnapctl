@@ -87,6 +87,16 @@ func GenerateServerResetSdk() bmcapisdk.ServerReset {
 	}
 }
 
+func GenerateServerResetCli() ServerReset {
+	var flag = false
+	return ServerReset{
+		InstallDefaultSshKeys: &flag,
+		SshKeys:               testutil.RandListStringPointer(10),
+		SshKeyIds:             testutil.RandListStringPointer(10),
+		OsConfiguration:       nil,
+	}
+}
+
 func GenerateResetResultSdk() bmcapisdk.ResetResult {
 	return bmcapisdk.ResetResult{
 		Result:          testutil.RandSeq(10),

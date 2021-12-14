@@ -6,6 +6,7 @@ import (
 
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"github.com/stretchr/testify/assert"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestNodePoolToSdk(test_framework *testing.T) {
@@ -68,11 +69,11 @@ func assertEqualNodePool(test_framework *testing.T, cliNodePool NodePool, sdkNod
 	assert.Equal(test_framework, cliNodePool.NodeCount, sdkNodePool.NodeCount)
 	assert.Equal(test_framework, cliNodePool.ServerType, sdkNodePool.ServerType)
 
-	if !assertNilEquality(test_framework, "SshConfig", cliNodePool.SshConfig, sdkNodePool.SshConfig) {
+	if !testutil.AssertNilEquality(test_framework, "SshConfig", cliNodePool.SshConfig, sdkNodePool.SshConfig) {
 		assertEqualSshConfig(test_framework, *cliNodePool.SshConfig, *sdkNodePool.SshConfig)
 	}
 
-	if !assertNilEquality(test_framework, "Nodes", cliNodePool.Nodes, sdkNodePool.Nodes) {
+	if !testutil.AssertNilEquality(test_framework, "Nodes", cliNodePool.Nodes, sdkNodePool.Nodes) {
 		assert.Equal(test_framework, len(*cliNodePool.Nodes), len(*sdkNodePool.Nodes))
 		for i := range *cliNodePool.Nodes {
 			assertEqualNode(test_framework, (*cliNodePool.Nodes)[i], (*sdkNodePool.Nodes)[i])
