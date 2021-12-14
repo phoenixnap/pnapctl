@@ -157,6 +157,12 @@ func GenerateServerReserveSdk() bmcapisdk.ServerReserve {
 	}
 }
 
+func GenerateServerReserveCli() ServerReserve {
+	return ServerReserve{
+		PricingModel: "ONE_MONTH_RESERVATION",
+	}
+}
+
 func GenerateNetworkConfigurationCli() NetworkConfiguration {
 	privateNetworkConfiguration := GeneratePrivateNetworkConfigurationCli()
 	return NetworkConfiguration{
