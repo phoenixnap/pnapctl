@@ -38,7 +38,7 @@ func assertShortServersEqual(test_framework *testing.T, server bmcapisdk.Server,
 	assert.Equal(test_framework, server.PublicIpAddresses, table.PublicIPAddresses)
 }
 
-func assertLongServersEqual(test_framework *testing.T, server bmcapisdk.Server, table LongServerTable) {
+func assertLongServersEqual(test_framework *testing.T, server bmcapisdk.Server, longServerTable LongServerTable) {
 	assert.Equal(test_framework, server.Id, table.Id)
 	assert.Equal(test_framework, server.Status, table.Status)
 	assert.Equal(test_framework, server.Hostname, table.Hostname)
