@@ -34,7 +34,7 @@ func TagAssignmentListFromSdk(tagAssignment *[]bmcapisdk.TagAssignment) *[]TagAs
 	return &tagAssignments
 }
 
-func (t TagAssignment) ToTableString() string {
+func (t TagAssignment) toTableString() string {
 	var tagValue string
 
 	if t.Value == nil {
@@ -52,7 +52,7 @@ func TagsToTableStrings(tags *[]bmcapisdk.TagAssignment) []string {
 	} else {
 		tagDetails := TagAssignmentListFromSdk(tags)
 		for _, tag := range *tagDetails {
-			tagStrings = append(tagStrings, tag.ToTableString())
+			tagStrings = append(tagStrings, tag.toTableString())
 		}
 	}
 
