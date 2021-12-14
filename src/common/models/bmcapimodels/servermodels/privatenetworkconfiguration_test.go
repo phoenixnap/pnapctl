@@ -1,15 +1,55 @@
 package servermodels
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"testing"
+
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 
 	"github.com/stretchr/testify/assert"
 )
 
 // tests
 
-// TODO
+func TestPrivateNetworkConfigurationToSdk(test_framework *testing.T) {
+	cliModel := GeneratePrivateNetworkConfigurationCli()
+	sdkModel := cliModel.toSdk()
+
+	assertEqualPrivateNetworkConfiguration(test_framework, cliModel, *sdkModel)
+}
+
+func TestEmptyPrivateNetworkConfigurationToSdk(test_framework *testing.T) {
+	cliModel := &PrivateNetworkConfiguration{}
+	sdkModel := cliModel.toSdk()
+
+	assertEqualPrivateNetworkConfiguration(test_framework, *cliModel, *sdkModel)
+}
+
+func TestNilPrivateNetworkConfigurationToSdk(test_framework *testing.T) {
+	var cliModel *PrivateNetworkConfiguration = nil
+
+	assert.Nil(test_framework, cliModel)
+}
+
+func TestPrivateNetworkConfigurationFromSdk(test_framework *testing.T) {
+	sdkModel := GeneratePrivateNetworkConfigurationSdk()
+	cliModel := privateNetworkConfigurationFromSdk(&sdkModel)
+
+	assertEqualPrivateNetworkConfiguration(test_framework, *cliModel, sdkModel)
+}
+
+func TestEmptyPrivateNetworkConfigurationFromSdk(test_framework *testing.T) {
+	sdkModel := &bmcapisdk.PrivateNetworkConfiguration{}
+	cliModel := privateNetworkConfigurationFromSdk(sdkModel)
+
+	assertEqualPrivateNetworkConfiguration(test_framework, *cliModel, *sdkModel)
+}
+
+func TestNilPrivateNetworkConfigurationFromSdk(test_framework *testing.T) {
+	var sdkModel *bmcapisdk.PrivateNetworkConfiguration = nil
+	cliModel := privateNetworkConfigurationFromSdk(sdkModel)
+
+	assert.Nil(test_framework, cliModel)
+}
 
 // assertion functions
 func assertEqualPrivateNetworkConfiguration(test_framework *testing.T, cliPrivateNetworkConfiguration PrivateNetworkConfiguration, sdkPrivateNetworkConfiguration bmcapisdk.PrivateNetworkConfiguration) {
