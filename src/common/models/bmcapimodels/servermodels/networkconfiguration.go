@@ -28,19 +28,12 @@ func NetworkConfigurationFromSdk(networkConf *bmcapisdk.NetworkConfiguration) *N
 	}
 }
 
-func (n NetworkConfiguration) ToTableString() string {
-	if n.PrivateNetworkConfiguration == nil {
-		return "Public"
-	} else {
-		return "Private"
-	}
-}
-
 func NetworkConfigurationToTableString(networkConfiguration *bmcapisdk.NetworkConfiguration) string {
 	if networkConfiguration == nil {
 		return ""
+	} else if networkConfiguration.PrivateNetworkConfiguration == nil {
+		return "Public"
 	} else {
-		cliObj := NetworkConfigurationFromSdk(networkConfiguration)
-		return cliObj.ToTableString()
+		return "Private"
 	}
 }
