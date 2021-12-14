@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -44,11 +45,7 @@ func TestNilMapServerPrivateNetworksToSdk(test_framework *testing.T) {
 func assertEqualServerPrivateNetwork(test_framework *testing.T, cliServerPrivateNetwork ServerPrivateNetwork, sdkServerPrivateNetwork bmcapisdk.ServerPrivateNetwork) {
 	assert.Equal(test_framework, cliServerPrivateNetwork.Id, sdkServerPrivateNetwork.Id)
 
-	if cliServerPrivateNetwork.Ips == nil {
-		assert.Nil(test_framework, sdkServerPrivateNetwork.Ips, "CLI Server Private Network's IPs are nil, but not SDK Server Private Network's IPs.")
-	} else if sdkServerPrivateNetwork.Ips == nil {
-		assert.Nil(test_framework, cliServerPrivateNetwork.Ips, "SDK Server Private Network's IPs are nil, but not Server Private Network's IPs.")
-	} else {
+	if testutil.AssertNilEquality(test_framework, "Server Private Network's IPs", cliServerPrivateNetwork.Ips, sdkServerPrivateNetwork.Ips) {
 		assert.Equal(test_framework, len(*cliServerPrivateNetwork.Ips), len(*sdkServerPrivateNetwork.Ips))
 
 		for i := range *cliServerPrivateNetwork.Ips {

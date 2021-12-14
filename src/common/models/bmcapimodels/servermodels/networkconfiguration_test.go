@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -82,11 +83,7 @@ func TestPublicNetworkConfigurationToTableString(test_framework *testing.T) {
 
 // assertion functions
 func assertEqualNetworkconfiguration(test_framework *testing.T, cliNetworkConfiguration NetworkConfiguration, sdkNetworkConfiguration bmcapisdk.NetworkConfiguration) {
-	if cliNetworkConfiguration.PrivateNetworkConfiguration == nil {
-		assert.Nil(test_framework, sdkNetworkConfiguration.PrivateNetworkConfiguration, "CLI Network Configuration's Private Networks are nil, but not SDK Network Configuration's Private Networks.")
-	} else if sdkNetworkConfiguration.PrivateNetworkConfiguration == nil {
-		assert.Nil(test_framework, cliNetworkConfiguration.PrivateNetworkConfiguration, "SDK Network Configuration's Private Networks are nil, but not CLI Network Configuration's Private Networks.")
-	} else {
+	if testutil.AssertNilEquality(test_framework, "Network Configuration's Private Networks", cliNetworkConfiguration.PrivateNetworkConfiguration, sdkNetworkConfiguration.PrivateNetworkConfiguration) {
 		assertEqualPrivateNetworkConfiguration(test_framework, *cliNetworkConfiguration.PrivateNetworkConfiguration, *sdkNetworkConfiguration.PrivateNetworkConfiguration)
 	}
 }
