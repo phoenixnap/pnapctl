@@ -7,7 +7,7 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
-	generators "phoenixnap.com/pnapctl/testsupport/generators"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func GenerateServerListSdk(n int) []bmcapisdk.Server {
@@ -21,26 +21,26 @@ func GenerateServerListSdk(n int) []bmcapisdk.Server {
 func GenerateServerSdk() bmcapisdk.Server {
 	provisionedOn := time.Now()
 	return bmcapisdk.Server{
-		Id:                 generators.RandSeq(10),
-		Status:             generators.RandSeq(10),
-		Hostname:           generators.RandSeq(10),
-		Description:        generators.RandSeqPointer(10),
-		Os:                 generators.RandSeq(10),
-		Type:               generators.RandSeq(10),
-		Location:           generators.RandSeq(10),
-		Cpu:                generators.RandSeq(10),
+		Id:                 testutil.RandSeq(10),
+		Status:             testutil.RandSeq(10),
+		Hostname:           testutil.RandSeq(10),
+		Description:        testutil.RandSeqPointer(10),
+		Os:                 testutil.RandSeq(10),
+		Type:               testutil.RandSeq(10),
+		Location:           testutil.RandSeq(10),
+		Cpu:                testutil.RandSeq(10),
 		CpuCount:           int32(rand.Int()),
 		CoresPerCpu:        int32(rand.Int()),
 		CpuFrequency:       rand.Float32(),
-		Ram:                generators.RandSeq(10),
-		Storage:            generators.RandSeq(10),
+		Ram:                testutil.RandSeq(10),
+		Storage:            testutil.RandSeq(10),
 		PrivateIpAddresses: []string{},
 		PublicIpAddresses:  []string{},
-		ReservationId:      generators.RandSeqPointer(10),
-		PricingModel:       generators.RandSeq(10),
-		Password:           generators.RandSeqPointer(10),
-		NetworkType:        generators.RandSeqPointer(10),
-		ClusterId:          generators.RandSeqPointer(10),
+		ReservationId:      testutil.RandSeqPointer(10),
+		PricingModel:       testutil.RandSeq(10),
+		Password:           testutil.RandSeqPointer(10),
+		NetworkType:        testutil.RandSeqPointer(10),
+		ClusterId:          testutil.RandSeqPointer(10),
 		Tags:               nil,
 		ProvisionedOn:      &provisionedOn,
 		OsConfiguration:    nil,
@@ -49,17 +49,17 @@ func GenerateServerSdk() bmcapisdk.Server {
 
 func GenerateServerCreateCli() ServerCreate {
 	return ServerCreate{
-		Hostname:              generators.RandSeq(10),
-		Description:           generators.RandSeqPointer(10),
-		Os:                    generators.RandSeq(10),
-		Type:                  generators.RandSeq(10),
-		Location:              generators.RandSeq(10),
+		Hostname:              testutil.RandSeq(10),
+		Description:           testutil.RandSeqPointer(10),
+		Os:                    testutil.RandSeq(10),
+		Type:                  testutil.RandSeq(10),
+		Location:              testutil.RandSeq(10),
 		InstallDefaultSshKeys: nil,
 		SshKeys:               nil,
 		SshKeyIds:             nil,
-		ReservationId:         generators.RandSeqPointer(10),
-		PricingModel:          generators.RandSeqPointer(10),
-		NetworkType:           generators.RandSeqPointer(10),
+		ReservationId:         testutil.RandSeqPointer(10),
+		PricingModel:          testutil.RandSeqPointer(10),
+		NetworkType:           testutil.RandSeqPointer(10),
 		OsConfiguration:       nil,
 		Tags:                  nil,
 		NetworkConfiguration:  nil,
@@ -76,35 +76,35 @@ func GenerateClusterListSdk(n int) []ranchersdk.Cluster {
 
 func GenerateClusterSdk() ranchersdk.Cluster {
 	return ranchersdk.Cluster{
-		Id:                    generators.RandSeqPointer(10),
-		Name:                  generators.RandSeqPointer(10),
-		Description:           generators.RandSeqPointer(10),
-		Location:              generators.RandSeq(10),
-		InitialClusterVersion: generators.RandSeqPointer(10),
+		Id:                    testutil.RandSeqPointer(10),
+		Name:                  testutil.RandSeqPointer(10),
+		Description:           testutil.RandSeqPointer(10),
+		Location:              testutil.RandSeq(10),
+		InitialClusterVersion: testutil.RandSeqPointer(10),
 		NodePools:             nil,
 		Configuration:         nil,
 		Metadata:              nil,
-		StatusDescription:     generators.RandSeqPointer(10),
+		StatusDescription:     testutil.RandSeqPointer(10),
 	}
 }
 
 func GenerateRancherDeleteResultSdk() ranchersdk.DeleteResult {
 	return ranchersdk.DeleteResult{
-		Result:    generators.RandSeq(10),
-		ClusterId: generators.RandSeqPointer(10),
+		Result:    testutil.RandSeq(10),
+		ClusterId: testutil.RandSeqPointer(10),
 	}
 }
 
 func GenerateBmcApiDeleteResultSdk() bmcapisdk.DeleteResult {
 	return bmcapisdk.DeleteResult{
-		Result:   generators.RandSeq(10),
-		ServerId: generators.RandSeq(10),
+		Result:   testutil.RandSeq(10),
+		ServerId: testutil.RandSeq(10),
 	}
 }
 
 func GenerateActionResultSdk() bmcapisdk.ActionResult {
 	return bmcapisdk.ActionResult{
-		Result: generators.RandSeq(10),
+		Result: testutil.RandSeq(10),
 	}
 }
 
@@ -119,7 +119,7 @@ func GenerateServerResetSdk() bmcapisdk.ServerReset {
 
 func GenerateResetResultSdk() bmcapisdk.ResetResult {
 	return bmcapisdk.ResetResult{
-		Result:          generators.RandSeq(10),
+		Result:          testutil.RandSeq(10),
 		Password:        nil,
 		OsConfiguration: nil,
 	}
@@ -127,22 +127,22 @@ func GenerateResetResultSdk() bmcapisdk.ResetResult {
 
 func GenerateServerPatchSdk() bmcapisdk.ServerPatch {
 	return bmcapisdk.ServerPatch{
-		Hostname:    generators.RandSeqPointer(10),
-		Description: generators.RandSeqPointer(10),
+		Hostname:    testutil.RandSeqPointer(10),
+		Description: testutil.RandSeqPointer(10),
 	}
 }
 
 func GenerateTagAssignmentRequestSdk() bmcapisdk.TagAssignmentRequest {
 	return bmcapisdk.TagAssignmentRequest{
-		Name:  generators.RandSeq(10),
-		Value: generators.RandSeqPointer(10),
+		Name:  testutil.RandSeq(10),
+		Value: testutil.RandSeqPointer(10),
 	}
 }
 
 func GenerateTagAssignmentRequestCli() TagAssignmentRequest {
 	return TagAssignmentRequest{
-		Name:  generators.RandSeq(10),
-		Value: generators.RandSeqPointer(10),
+		Name:  testutil.RandSeq(10),
+		Value: testutil.RandSeqPointer(10),
 	}
 }
 
@@ -163,10 +163,10 @@ func GenerateServerReserveSdk() bmcapisdk.ServerReserve {
 func GenerateServerPrivateNetworkSdk() bmcapisdk.ServerPrivateNetwork {
 	dhcp := false
 	return bmcapisdk.ServerPrivateNetwork{
-		Id:                generators.RandSeq(10),
-		Ips:               generators.RandListStringPointer(10),
+		Id:                testutil.RandSeq(10),
+		Ips:               testutil.RandListStringPointer(10),
 		Dhcp:              &dhcp,
-		StatusDescription: generators.RandSeqPointer(10),
+		StatusDescription: testutil.RandSeqPointer(10),
 	}
 }
 
@@ -180,8 +180,8 @@ func GenerateNetworkConfigurationCli() NetworkConfiguration {
 func GeneratePrivateNetworkConfigurationCli() PrivateNetworkConfiguration {
 	serverPrivateNetworks := GenerateServerPrivateNetworkListCli(2)
 	return PrivateNetworkConfiguration{
-		GatewayAddress:    generators.RandSeqPointer(10),
-		ConfigurationType: generators.RandSeqPointer(10),
+		GatewayAddress:    testutil.RandSeqPointer(10),
+		ConfigurationType: testutil.RandSeqPointer(10),
 		PrivateNetworks:   &serverPrivateNetworks,
 	}
 }
@@ -197,9 +197,9 @@ func GenerateServerPrivateNetworkListCli(n int) []ServerPrivateNetwork {
 func GenerateServerPrivateNetworkCli() ServerPrivateNetwork {
 	dhcp := false
 	return ServerPrivateNetwork{
-		Id:                generators.RandSeq(10),
-		Ips:               generators.RandListStringPointer(10),
+		Id:                testutil.RandSeq(10),
+		Ips:               testutil.RandListStringPointer(10),
 		Dhcp:              &dhcp,
-		StatusDescription: generators.RandSeqPointer(10),
+		StatusDescription: testutil.RandSeqPointer(10),
 	}
 }

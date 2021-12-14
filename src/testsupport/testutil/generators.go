@@ -1,4 +1,4 @@
-package generators
+package testutil
 
 import "math/rand"
 
@@ -23,4 +23,9 @@ func RandListStringPointer(n int) *[]string {
 		b[i] = RandSeq(10)
 	}
 	return &b
+}
+
+func RanNumberPointer() *int32 {
+	i := rand.Int31()
+	return &i
 }
