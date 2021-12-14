@@ -18,7 +18,7 @@ func (privateNetConf *PrivateNetworkConfiguration) toSdk() *bmcapisdk.PrivateNet
 	return &bmcapisdk.PrivateNetworkConfiguration{
 		GatewayAddress:    privateNetConf.GatewayAddress,
 		ConfigurationType: privateNetConf.ConfigurationType,
-		PrivateNetworks:   mapServerPrivateNetworksToSdk(privateNetConf.PrivateNetworks),
+		PrivateNetworks:   mapServerPrivateNetworkListToSdk(privateNetConf.PrivateNetworks),
 	}
 }
 
@@ -30,6 +30,6 @@ func privateNetworkConfigurationFromSdk(privateNetworkConfnfiguration *bmcapisdk
 	return &PrivateNetworkConfiguration{
 		GatewayAddress:    privateNetworkConfnfiguration.GatewayAddress,
 		ConfigurationType: privateNetworkConfnfiguration.ConfigurationType,
-		PrivateNetworks:   privateNetworksFromSdk(privateNetworkConfnfiguration.PrivateNetworks),
+		PrivateNetworks:   serverPrivateNetworkListFromSdk(privateNetworkConfnfiguration.PrivateNetworks),
 	}
 }

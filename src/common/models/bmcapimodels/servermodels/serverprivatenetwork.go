@@ -12,7 +12,7 @@ type ServerPrivateNetwork struct {
 	StatusDescription *string   `yaml:"statusDescription,omitempty" json:"statusDescription,omitempty"`
 }
 
-func mapServerPrivateNetworksToSdk(serverPrivateNetworks *[]ServerPrivateNetwork) *[]bmcapisdk.ServerPrivateNetwork {
+func mapServerPrivateNetworkListToSdk(serverPrivateNetworks *[]ServerPrivateNetwork) *[]bmcapisdk.ServerPrivateNetwork {
 	if serverPrivateNetworks == nil {
 		return nil
 	}
@@ -37,7 +37,7 @@ func (serverPrivateNetwork ServerPrivateNetwork) toSdk() bmcapisdk.ServerPrivate
 	return serverPrivateNetworkSdk
 }
 
-func privateNetworksFromSdk(privateNetworks *[]bmcapisdk.ServerPrivateNetwork) *[]ServerPrivateNetwork {
+func serverPrivateNetworkListFromSdk(privateNetworks *[]bmcapisdk.ServerPrivateNetwork) *[]ServerPrivateNetwork {
 	if privateNetworks == nil {
 		return nil
 	}
