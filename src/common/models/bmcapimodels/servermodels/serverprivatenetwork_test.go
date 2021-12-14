@@ -1,15 +1,44 @@
 package servermodels
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"testing"
+
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 
 	"github.com/stretchr/testify/assert"
 )
 
 // tests
+func TestMapServerPrivateNetworksToSdk(test_framework *testing.T) {
+	cliModels := GenerateServerPrivateNetworkListCli(2)
+	sdkModels := mapServerPrivateNetworksToSdk(&cliModels)
 
-// TODO
+	assert.Equal(test_framework, len(cliModels), len(*sdkModels))
+
+	for i := range cliModels {
+		assertEqualServerPrivateNetwork(test_framework, cliModels[i], (*sdkModels)[i])
+	}
+}
+
+func TestEmptyListMapServerPrivateNetworksToSdk(test_framework *testing.T) {
+	cliModels := GenerateServerPrivateNetworkListCli(0)
+	sdkModels := mapServerPrivateNetworksToSdk(&cliModels)
+
+	assert.Equal(test_framework, len(cliModels), len(*sdkModels))
+
+	for i := range cliModels {
+		assertEqualServerPrivateNetwork(test_framework, cliModels[i], (*sdkModels)[i])
+	}
+}
+
+func TestNilMapServerPrivateNetworksToSdk(test_framework *testing.T) {
+	var cliModels *[]ServerPrivateNetwork = nil
+	sdkModels := mapServerPrivateNetworksToSdk(cliModels)
+
+	assert.Nil(test_framework, sdkModels)
+}
+
+// TODO: Add toSdk tests and the rest
 
 // assertion functions
 func assertEqualServerPrivateNetwork(test_framework *testing.T, cliServerPrivateNetwork ServerPrivateNetwork, sdkServerPrivateNetwork bmcapisdk.ServerPrivateNetwork) {
