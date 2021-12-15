@@ -77,7 +77,7 @@ func ToFullServer(server bmcapisdk.Server) LongServer {
 		ClusterId:            server.ClusterId,
 		Tags:                 TagAssignmentListFromSdk(server.Tags),
 		ProvisionedOn:        server.ProvisionedOn,
-		OsConfiguration:      OsConfigurationFromSdk(server.OsConfiguration),
+		OsConfiguration:      osConfigurationFromSdk(server.OsConfiguration),
 		NetworkConfiguration: NetworkConfigurationFromSdk(&server.NetworkConfiguration),
 	}
 }

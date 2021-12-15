@@ -32,14 +32,14 @@ func TestNilOsConfigurationToSdk(test_framework *testing.T) {
 
 func TestOsConfigurationFromSdk(test_framework *testing.T) {
 	sdkModel := GenerateOsConfigurationSdk()
-	cliModel := OsConfigurationFromSdk(&sdkModel)
+	cliModel := osConfigurationFromSdk(&sdkModel)
 
 	assertEqualOsConfiguration(test_framework, *cliModel, sdkModel)
 }
 
 func TestEmptyOsConfigurationFromSdk(test_framework *testing.T) {
 	var sdkModel *bmcapisdk.OsConfiguration = &bmcapisdk.OsConfiguration{}
-	cliModel := OsConfigurationFromSdk(sdkModel)
+	cliModel := osConfigurationFromSdk(sdkModel)
 
 	assertEqualOsConfiguration(test_framework, *cliModel, *sdkModel)
 }
@@ -47,7 +47,7 @@ func TestEmptyOsConfigurationFromSdk(test_framework *testing.T) {
 func TestNilOsConfigurationFromSdk(test_framework *testing.T) {
 	var sdkModel *bmcapisdk.OsConfiguration = nil
 
-	assert.Nil(test_framework, OsConfigurationFromSdk(sdkModel))
+	assert.Nil(test_framework, osConfigurationFromSdk(sdkModel))
 }
 
 // assertion functions
