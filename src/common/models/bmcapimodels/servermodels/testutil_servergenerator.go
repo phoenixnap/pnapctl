@@ -273,3 +273,18 @@ func GenerateOsConfigurationWindowsSdk() *bmcapisdk.OsConfigurationWindows {
 		RdpAllowedIps: testutil.RandListStringPointer(10),
 	}
 }
+
+func GenerateOsConfigurationMapCli() OsConfigurationMap {
+	return OsConfigurationMap{
+		Windows: GenerateOsConfigurationWindowsCli(),
+		Esxi:    GenerateOsConfigurationMapEsxiCli(),
+	}
+}
+
+func GenerateOsConfigurationMapEsxiCli() *OsConfigurationMapEsxi {
+	return &OsConfigurationMapEsxi{
+		RootPassword:               testutil.RandSeqPointer(10),
+		ManagementUiUrl:            testutil.RandSeqPointer(10),
+		ManagementAccessAllowedIps: testutil.RandListStringPointer(10),
+	}
+}
