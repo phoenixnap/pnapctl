@@ -8,7 +8,7 @@ import (
 
 func TestServerReserveToSDK(test_framework *testing.T) {
 	cliModel := GenerateServerReserveCli()
-	sdkModel := cliModel.toSDK()
+	sdkModel := cliModel.toSdk()
 
 	assert.Equal(test_framework, sdkModel.PricingModel, cliModel.PricingModel)
 }
