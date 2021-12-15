@@ -7,14 +7,14 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/testsupport/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllServersShortSuccess(test_framework *testing.T) {
-	serverlist := generators.GenerateServers(5)
+	serverlist := servermodels.GenerateServerListSdk(5)
 
 	var shortServers []interface{}
 
@@ -38,7 +38,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllServersLongSuccess(test_framework *testing.T) {
-	serverlist := generators.GenerateServers(5)
+	serverlist := servermodels.GenerateServerListSdk(5)
 
 	var longServers []interface{}
 
@@ -65,7 +65,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 }
 
 func TestFilteredServersLongSuccess(test_framework *testing.T) {
-	serverlist := generators.GenerateServers(5)
+	serverlist := servermodels.GenerateServerListSdk(5)
 
 	var longServers []interface{}
 
@@ -108,7 +108,7 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
-	server := []bmcapisdk.Server{generators.GenerateServer()}
+	server := []bmcapisdk.Server{servermodels.GenerateServerSdk()}
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersGet(tags).
@@ -121,7 +121,7 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
-	serverlist := generators.GenerateServers(5)
+	serverlist := servermodels.GenerateServerListSdk(5)
 
 	var shortServers []interface{}
 

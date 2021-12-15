@@ -6,6 +6,7 @@ import (
 
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"github.com/stretchr/testify/assert"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestRancherClusterConfigToSdk(test_framework *testing.T) {
@@ -47,7 +48,7 @@ func assertEqualRancherClusterConfig(test_framework *testing.T, cliRancherCluste
 	assert.Equal(test_framework, cliRancherClusterConfig.NodeTaint, sdkRancherClusterConfig.NodeTaint)
 	assert.Equal(test_framework, cliRancherClusterConfig.ClusterDomain, sdkRancherClusterConfig.ClusterDomain)
 
-	if !assertNilEquality(test_framework, "Certificates", cliRancherClusterConfig.Certificates, sdkRancherClusterConfig.Certificates) {
+	if testutil.AssertNilEquality(test_framework, "Certificates", cliRancherClusterConfig.Certificates, sdkRancherClusterConfig.Certificates) {
 		assertEqualRancherClusterCertificates(test_framework, *cliRancherClusterConfig.Certificates, *sdkRancherClusterConfig.Certificates)
 	}
 }

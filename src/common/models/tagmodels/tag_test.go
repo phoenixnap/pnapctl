@@ -5,6 +5,7 @@ import (
 
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"github.com/stretchr/testify/assert"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 // tests
@@ -37,11 +38,7 @@ func assertEqualTag(test_framework *testing.T, tag Tag, sdkTag tagapisdk.Tag) {
 	assert.Equal(test_framework, tag.Description, sdkTag.Description)
 	assert.Equal(test_framework, tag.IsBillingTag, sdkTag.IsBillingTag)
 
-	if tag.ResourceAssignments == nil {
-		assert.Nil(test_framework, sdkTag.ResourceAssignments, "CLI Tag's Resource Assignments are nil, but not SDK Tag's Resource Assignments.")
-	} else if sdkTag.ResourceAssignments == nil {
-		assert.Nil(test_framework, tag.ResourceAssignments, "SDK Tag's Resource Assignments are nil, but not CLI Tag's Resource Assignments.")
-	} else {
+	if testutil.AssertNilEquality(test_framework, "Tag's Resource Assignments", tag.ResourceAssignments, sdkTag.ResourceAssignments) {
 		assert.Equal(test_framework, len(*tag.ResourceAssignments), len(*sdkTag.ResourceAssignments))
 		for i, _ := range *tag.ResourceAssignments {
 			assertEqualResourceAssignment(test_framework, (*tag.ResourceAssignments)[i], (*sdkTag.ResourceAssignments)[i])

@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"phoenixnap.com/pnapctl/testsupport/generators"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
@@ -13,7 +13,7 @@ import (
 )
 
 func TestPowerOnServerSuccess(test_framework *testing.T) {
-	actionResult := generators.GenerateActionResult()
+	actionResult := servermodels.GenerateActionResultSdk()
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOn(RESOURCEID).

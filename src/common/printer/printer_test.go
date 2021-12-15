@@ -9,11 +9,11 @@ import (
 	"github.com/landoop/tableprinter"
 	"phoenixnap.com/pnapctl/common/models/auditmodels"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/quotamodels"
+	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
 	"phoenixnap.com/pnapctl/common/models/ranchermodels"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
-	"phoenixnap.com/pnapctl/testsupport/generators"
 )
 
 type ExampleStruct1 struct {
@@ -143,7 +143,7 @@ func TestPrintOutputTableFormat(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	server := generators.GenerateServer()
+	server := servermodels.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -153,7 +153,7 @@ func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	server := generators.GenerateServer()
+	server := servermodels.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -163,7 +163,7 @@ func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingLongServer(test_framework *testing.T) {
 	OutputFormat = "json"
-	server := generators.GenerateServer()
+	server := servermodels.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -173,7 +173,7 @@ func TestPrepareServerForPrintingLongServer(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
 	OutputFormat = "json"
-	server := generators.GenerateServer()
+	server := servermodels.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -183,7 +183,7 @@ func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
 
 func TestPrepareServerListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	servers := generators.GenerateServers(1)
+	servers := servermodels.GenerateServerListSdk(1)
 	prepared := PrepareServerListForPrinting(servers, false)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
