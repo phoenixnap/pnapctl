@@ -19,37 +19,41 @@ func GenerateServerListSdk(n int) []bmcapisdk.Server {
 
 func GenerateServerSdk() bmcapisdk.Server {
 	provisionedOn := time.Now()
+	tagAssignments := GenerateTagAssignmentListSdk(2)
+	osConfiguration := GenerateOsConfigurationSdk()
+	networkConfiguration := GenerateNetworkConfigurationSdk()
 	return bmcapisdk.Server{
-		Id:                 testutil.RandSeq(10),
-		Status:             testutil.RandSeq(10),
-		Hostname:           testutil.RandSeq(10),
-		Description:        testutil.RandSeqPointer(10),
-		Os:                 testutil.RandSeq(10),
-		Type:               testutil.RandSeq(10),
-		Location:           testutil.RandSeq(10),
-		Cpu:                testutil.RandSeq(10),
-		CpuCount:           int32(rand.Int()),
-		CoresPerCpu:        int32(rand.Int()),
-		CpuFrequency:       rand.Float32(),
-		Ram:                testutil.RandSeq(10),
-		Storage:            testutil.RandSeq(10),
-		PrivateIpAddresses: []string{},
-		PublicIpAddresses:  []string{},
-		ReservationId:      testutil.RandSeqPointer(10),
-		PricingModel:       testutil.RandSeq(10),
-		Password:           testutil.RandSeqPointer(10),
-		NetworkType:        testutil.RandSeqPointer(10),
-		ClusterId:          testutil.RandSeqPointer(10),
-		Tags:               nil,
-		ProvisionedOn:      &provisionedOn,
-		OsConfiguration:    nil,
+		Id:                   testutil.RandSeq(10),
+		Status:               testutil.RandSeq(10),
+		Hostname:             testutil.RandSeq(10),
+		Description:          testutil.RandSeqPointer(10),
+		Os:                   testutil.RandSeq(10),
+		Type:                 testutil.RandSeq(10),
+		Location:             testutil.RandSeq(10),
+		Cpu:                  testutil.RandSeq(10),
+		CpuCount:             int32(rand.Int()),
+		CoresPerCpu:          int32(rand.Int()),
+		CpuFrequency:         rand.Float32(),
+		Ram:                  testutil.RandSeq(10),
+		Storage:              testutil.RandSeq(10),
+		PrivateIpAddresses:   *testutil.RandListStringPointer(10),
+		PublicIpAddresses:    *testutil.RandListStringPointer(10),
+		ReservationId:        testutil.RandSeqPointer(10),
+		PricingModel:         testutil.RandSeq(10),
+		Password:             testutil.RandSeqPointer(10),
+		NetworkType:          testutil.RandSeqPointer(10),
+		ClusterId:            testutil.RandSeqPointer(10),
+		Tags:                 &tagAssignments,
+		ProvisionedOn:        &provisionedOn,
+		OsConfiguration:      &osConfiguration,
+		NetworkConfiguration: networkConfiguration,
 	}
 }
 
 func GenerateServerCreateCli() ServerCreate {
 	flag := false
 	osConfiguration := GenerateOsConfigurationCli()
-	tagAssginmentRequests := []TagAssignmentRequest{
+	tagAssignmentRequests := []TagAssignmentRequest{
 		GenerateTagAssignmentRequestCli(), GenerateTagAssignmentRequestCli(),
 	}
 	networkConfiguration := GenerateNetworkConfigurationCli()
@@ -66,7 +70,7 @@ func GenerateServerCreateCli() ServerCreate {
 		PricingModel:          testutil.RandSeqPointer(10),
 		NetworkType:           testutil.RandSeqPointer(10),
 		OsConfiguration:       &osConfiguration,
-		Tags:                  &tagAssginmentRequests,
+		Tags:                  &tagAssignmentRequests,
 		NetworkConfiguration:  &networkConfiguration,
 	}
 }
@@ -162,6 +166,15 @@ func GenerateTagAssignmentListSdk(n int) []bmcapisdk.TagAssignment {
 		list = append(list, GenerateTagAssignmentSdk())
 	}
 	return list
+}
+
+func GenerateTagAssignmentCli() TagAssignment {
+	return TagAssignment{
+		Id:           testutil.RandSeq(10),
+		Name:         testutil.RandSeq(10),
+		Value:        testutil.RandSeqPointer(10),
+		IsBillingTag: false,
+	}
 }
 
 func GenerateServerReserveSdk() bmcapisdk.ServerReserve {
