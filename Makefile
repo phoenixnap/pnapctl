@@ -1,4 +1,5 @@
 SRC                          = $(CURDIR)/src
+
 DOCS                         = $(CURDIR)/docs
 DOCS_GENERATION              = $(DOCS)/generation
 COMPONENT_TESTS              = $(CURDIR)/component-tests
