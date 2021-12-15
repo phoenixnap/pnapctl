@@ -47,21 +47,27 @@ func GenerateServerSdk() bmcapisdk.Server {
 }
 
 func GenerateServerCreateCli() ServerCreate {
+	flag := false
+	osConfiguration := GenerateOsConfigurationCli()
+	tagAssginmentRequests := []TagAssignmentRequest{
+		GenerateTagAssignmentRequestCli(), GenerateTagAssignmentRequestCli(),
+	}
+	networkConfiguration := GenerateNetworkConfigurationCli()
 	return ServerCreate{
 		Hostname:              testutil.RandSeq(10),
 		Description:           testutil.RandSeqPointer(10),
 		Os:                    testutil.RandSeq(10),
 		Type:                  testutil.RandSeq(10),
 		Location:              testutil.RandSeq(10),
-		InstallDefaultSshKeys: nil,
-		SshKeys:               nil,
-		SshKeyIds:             nil,
+		InstallDefaultSshKeys: &flag,
+		SshKeys:               testutil.RandListStringPointer(10),
+		SshKeyIds:             testutil.RandListStringPointer(10),
 		ReservationId:         testutil.RandSeqPointer(10),
 		PricingModel:          testutil.RandSeqPointer(10),
 		NetworkType:           testutil.RandSeqPointer(10),
-		OsConfiguration:       nil,
-		Tags:                  nil,
-		NetworkConfiguration:  nil,
+		OsConfiguration:       &osConfiguration,
+		Tags:                  &tagAssginmentRequests,
+		NetworkConfiguration:  &networkConfiguration,
 	}
 }
 

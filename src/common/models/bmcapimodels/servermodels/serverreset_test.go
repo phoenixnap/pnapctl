@@ -15,5 +15,6 @@ func TestServerResestToSdk(test_framework *testing.T) {
 	assert.Equal(test_framework, result.InstallDefaultSshKeys, sdkModel.InstallDefaultSshKeys)
 	assert.Equal(test_framework, result.SshKeys, sdkModel.SshKeys)
 	assert.Equal(test_framework, result.SshKeyIds, sdkModel.SshKeyIds)
+	//TODO assert os configuration map equality
 	testutil.AssertNilEquality(test_framework, "OsConfiguration", result.OsConfiguration, sdkModel.OsConfiguration)
 }

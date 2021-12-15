@@ -14,7 +14,7 @@ func TestNetworkConfigurationToSdk(test_framework *testing.T) {
 	cliModel := GenerateNetworkConfigurationCli()
 	sdkModel := cliModel.toSdk()
 
-	assertEqualNetworkconfiguration(test_framework, cliModel, *sdkModel)
+	assertEqualNetworkConfiguration(test_framework, cliModel, *sdkModel)
 }
 
 func TestNilNetworkConfigurationPrivateNetworkConfigurationNilToSdk(test_framework *testing.T) {
@@ -24,7 +24,7 @@ func TestNilNetworkConfigurationPrivateNetworkConfigurationNilToSdk(test_framewo
 
 	sdkModel := cliModel.toSdk()
 
-	assertEqualNetworkconfiguration(test_framework, cliModel, *sdkModel)
+	assertEqualNetworkConfiguration(test_framework, cliModel, *sdkModel)
 }
 
 func TestNilNetworkConfigurationToSdk(test_framework *testing.T) {
@@ -38,7 +38,7 @@ func TestNetworkConfigurationFromSdk(test_framework *testing.T) {
 	sdkModel := GenerateNetworkConfigurationSdk()
 	cliModel := NetworkConfigurationFromSdk(&sdkModel)
 
-	assertEqualNetworkconfiguration(test_framework, *cliModel, sdkModel)
+	assertEqualNetworkConfiguration(test_framework, *cliModel, sdkModel)
 }
 
 func TestNetworkConfigurationPrivateNetworkConfigurationNilFromSdk(test_framework *testing.T) {
@@ -47,7 +47,7 @@ func TestNetworkConfigurationPrivateNetworkConfigurationNilFromSdk(test_framewor
 	}
 	cliModel := NetworkConfigurationFromSdk(&sdkModel)
 
-	assertEqualNetworkconfiguration(test_framework, *cliModel, sdkModel)
+	assertEqualNetworkConfiguration(test_framework, *cliModel, sdkModel)
 }
 
 func TestNilNetworkConfigurationFromSdk(test_framework *testing.T) {
@@ -82,7 +82,7 @@ func TestPublicNetworkConfigurationToTableString(test_framework *testing.T) {
 }
 
 // assertion functions
-func assertEqualNetworkconfiguration(test_framework *testing.T, cliNetworkConfiguration NetworkConfiguration, sdkNetworkConfiguration bmcapisdk.NetworkConfiguration) {
+func assertEqualNetworkConfiguration(test_framework *testing.T, cliNetworkConfiguration NetworkConfiguration, sdkNetworkConfiguration bmcapisdk.NetworkConfiguration) {
 	if testutil.AssertNilEquality(test_framework, "Network Configuration's Private Networks", cliNetworkConfiguration.PrivateNetworkConfiguration, sdkNetworkConfiguration.PrivateNetworkConfiguration) {
 		assertEqualPrivateNetworkConfiguration(test_framework, *cliNetworkConfiguration.PrivateNetworkConfiguration, *sdkNetworkConfiguration.PrivateNetworkConfiguration)
 	}
