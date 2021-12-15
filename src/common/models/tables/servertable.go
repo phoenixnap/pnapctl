@@ -42,10 +42,10 @@ type ShortServerTable struct {
 }
 
 type ServerPrivateNetworkTable struct {
-	Id                string    `header:"id"`
-	Ips               *[]string `header:"ips"`
-	Dhcp              *bool     `header:"dhcp"`
-	StatusDescription *string   `header:"Status Description"`
+	Id                string   `header:"id"`
+	Ips               []string `header:"ips"`
+	Dhcp              bool     `header:"dhcp"`
+	StatusDescription string   `header:"Status Description"`
 }
 
 func ToShortServerTable(server bmcapisdk.Server) ShortServerTable {
@@ -90,10 +90,15 @@ func ToLongServerTable(server bmcapisdk.Server) LongServerTable {
 }
 
 func ToServerPrivateNetworkTable(privateNetwork bmcapisdk.ServerPrivateNetwork) ServerPrivateNetworkTable {
+	Dhcp := false
+	if privateNetwork.Dhcp != nil {
+		Dhcp = *privateNetwork.Dhcp
+	}
+
 	return ServerPrivateNetworkTable{
 		Id:                privateNetwork.Id,
-		Ips:               privateNetwork.Ips,
-		Dhcp:              privateNetwork.Dhcp,
-		StatusDescription: privateNetwork.StatusDescription,
+		Ips:               DerefStringList(privateNetwork.Ips),
+		Dhcp:              Dhcp,
+		StatusDescription: DerefString(privateNetwork.StatusDescription),
 	}
 }
