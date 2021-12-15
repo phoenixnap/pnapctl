@@ -26,10 +26,10 @@ func CreateReserveRequestFromFile(filename string, commandname string) (*bmcapis
 		return nil, err
 	}
 
-	return serverReserve.toSDK(), nil
+	return serverReserve.toSdk(), nil
 }
 
-func (serverReserve ServerReserve) toSDK() *bmcapisdk.ServerReserve {
+func (serverReserve ServerReserve) toSdk() *bmcapisdk.ServerReserve {
 	return &bmcapisdk.ServerReserve{
 		PricingModel: serverReserve.PricingModel,
 	}
