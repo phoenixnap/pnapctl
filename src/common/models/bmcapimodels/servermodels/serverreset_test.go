@@ -3,7 +3,7 @@ package servermodels
 import (
 	"testing"
 
-	"github.com/influxdata/influxdb/pkg/testing/assert"
+	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
@@ -19,4 +19,12 @@ func TestServerResestToSdk(test_framework *testing.T) {
 	if testutil.AssertNilEquality(test_framework, "OsConfiguration", sdkModel.OsConfiguration, cliModel.OsConfiguration) {
 		assertEqualOsConfigurationMap(test_framework, *cliModel.OsConfiguration, *sdkModel.OsConfiguration)
 	}
+}
+
+func TestNilServerResestToSdk(test_framework *testing.T) {
+
+	var cliModel *ServerReset = nil
+	sdkModel := ServerResetToSDK(cliModel)
+
+	assert.Nil(test_framework, sdkModel)
 }
