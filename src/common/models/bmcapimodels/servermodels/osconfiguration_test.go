@@ -50,6 +50,35 @@ func TestNilOsConfigurationFromSdk(test_framework *testing.T) {
 	assert.Nil(test_framework, osConfigurationFromSdk(sdkModel))
 }
 
+func TestOsConfigurationToTableString(test_framework *testing.T) {
+	rootPass := "abc123"
+	sdkModel := &bmcapisdk.OsConfiguration{
+		RootPassword: &rootPass,
+	}
+	tableString := OsConfigurationToTableString(sdkModel)
+
+	assert.NotNil(test_framework, tableString)
+	assert.Equal(test_framework, "Password: "+rootPass, tableString)
+}
+
+func TestNilOsConfigurationToTableString(test_framework *testing.T) {
+	var sdkModel *bmcapisdk.OsConfiguration = nil
+	tableString := OsConfigurationToTableString(sdkModel)
+
+	assert.NotNil(test_framework, tableString)
+	assert.Empty(test_framework, tableString)
+}
+
+func TestNilRootPasswordOsConfigurationToTableString(test_framework *testing.T) {
+	sdkModel := &bmcapisdk.OsConfiguration{
+		RootPassword: nil,
+	}
+	tableString := OsConfigurationToTableString(sdkModel)
+
+	assert.NotNil(test_framework, tableString)
+	assert.Empty(test_framework, tableString)
+}
+
 // assertion functions
 func assertEqualOsConfiguration(test_framework *testing.T, cliOsConfiguration OsConfiguration, sdkOsConfiguration bmcapisdk.OsConfiguration) {
 
