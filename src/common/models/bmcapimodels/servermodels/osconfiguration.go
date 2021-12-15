@@ -37,19 +37,10 @@ func osConfigurationFromSdk(osConfiguration *bmcapisdk.OsConfiguration) *OsConfi
 	}
 }
 
-func (os OsConfiguration) ToTableString() string {
-	if os.RootPassword == nil {
-		return ""
-	} else {
-		return "Password: " + *os.RootPassword
-	}
-}
-
 func OsConfigurationToTableString(osConfiguration *bmcapisdk.OsConfiguration) string {
-	if osConfiguration == nil {
+	if osConfiguration == nil || osConfiguration.RootPassword == nil {
 		return ""
 	} else {
-		cliObj := osConfigurationFromSdk(osConfiguration)
-		return cliObj.ToTableString()
+		return "Password: " + *osConfiguration.RootPassword
 	}
 }
