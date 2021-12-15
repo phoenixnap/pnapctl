@@ -103,7 +103,7 @@ func GenerateServerResetCli() ServerReset {
 		InstallDefaultSshKeys: &flag,
 		SshKeys:               testutil.RandListStringPointer(10),
 		SshKeyIds:             testutil.RandListStringPointer(10),
-		OsConfiguration:       nil,
+		OsConfiguration:       GenerateOsConfigurationMapCli(),
 	}
 }
 
@@ -287,8 +287,8 @@ func GenerateOsConfigurationWindowsSdk() *bmcapisdk.OsConfigurationWindows {
 	}
 }
 
-func GenerateOsConfigurationMapCli() OsConfigurationMap {
-	return OsConfigurationMap{
+func GenerateOsConfigurationMapCli() *OsConfigurationMap {
+	return &OsConfigurationMap{
 		Windows: GenerateOsConfigurationWindowsCli(),
 		Esxi:    GenerateOsConfigurationMapEsxiCli(),
 	}

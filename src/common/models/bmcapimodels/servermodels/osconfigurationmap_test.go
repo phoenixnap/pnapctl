@@ -12,9 +12,9 @@ import (
 // tests
 func TestOsConfigurationMapToSdk(test_framework *testing.T) {
 	cliModel := GenerateOsConfigurationMapCli()
-	sdkModel := OsConfigurationMapToSDK(&cliModel)
+	sdkModel := OsConfigurationMapToSDK(cliModel)
 
-	assertEqualOsConfigurationMap(test_framework, cliModel, *sdkModel)
+	assertEqualOsConfigurationMap(test_framework, *cliModel, *sdkModel)
 }
 
 func TestEmptyOsConfigurationMapToSdk(test_framework *testing.T) {

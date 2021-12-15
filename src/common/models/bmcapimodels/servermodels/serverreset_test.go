@@ -9,12 +9,14 @@ import (
 
 func TestServerResestToSdk(test_framework *testing.T) {
 
-	sdkModel := GenerateServerResetCli()
-	result := ServerResetToSDK(&sdkModel)
+	cliModel := GenerateServerResetCli()
+	sdkModel := ServerResetToSDK(&cliModel)
 
-	assert.Equal(test_framework, result.InstallDefaultSshKeys, sdkModel.InstallDefaultSshKeys)
-	assert.Equal(test_framework, result.SshKeys, sdkModel.SshKeys)
-	assert.Equal(test_framework, result.SshKeyIds, sdkModel.SshKeyIds)
-	//TODO assert os configuration map equality
-	testutil.AssertNilEquality(test_framework, "OsConfiguration", result.OsConfiguration, sdkModel.OsConfiguration)
+	assert.Equal(test_framework, sdkModel.InstallDefaultSshKeys, cliModel.InstallDefaultSshKeys)
+	assert.Equal(test_framework, sdkModel.SshKeys, cliModel.SshKeys)
+	assert.Equal(test_framework, sdkModel.SshKeyIds, cliModel.SshKeyIds)
+
+	if testutil.AssertNilEquality(test_framework, "OsConfiguration", sdkModel.OsConfiguration, cliModel.OsConfiguration) {
+		assertEqualOsConfigurationMap(test_framework, *cliModel.OsConfiguration, *sdkModel.OsConfiguration)
+	}
 }
