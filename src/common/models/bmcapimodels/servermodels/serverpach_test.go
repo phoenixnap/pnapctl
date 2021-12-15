@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestServerPatchToSDK(test_framework *testing.T) {
+func TestServerPatchToSdk(test_framework *testing.T) {
 	cliModel := GenerateServerPatchCli()
 	sdkModel := cliModel.ToSdk()
 
