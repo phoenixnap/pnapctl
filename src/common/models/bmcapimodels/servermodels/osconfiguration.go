@@ -11,10 +11,6 @@ type OsConfiguration struct {
 	ManagementAccessAllowedIps *[]string               `yaml:"managementAccessAllowedIps,omitempty" json:"managementAccessAllowedIps,omitempty"`
 }
 
-type OsConfigurationWindows struct {
-	RdpAllowedIps *[]string `yaml:"rdpAllowedIps,omitempty" json:"rdpAllowedIps,omitempty"`
-}
-
 func (osConfiguration *OsConfiguration) toSdk() *bmcapisdk.OsConfiguration {
 	if osConfiguration == nil {
 		return nil
@@ -28,16 +24,6 @@ func (osConfiguration *OsConfiguration) toSdk() *bmcapisdk.OsConfiguration {
 	}
 }
 
-func (osConfigurationWindows *OsConfigurationWindows) toSdk() *bmcapisdk.OsConfigurationWindows {
-	if osConfigurationWindows == nil {
-		return nil
-	}
-
-	return &bmcapisdk.OsConfigurationWindows{
-		RdpAllowedIps: osConfigurationWindows.RdpAllowedIps,
-	}
-}
-
 func OsConfigurationFromSdk(osConfiguration *bmcapisdk.OsConfiguration) *OsConfiguration {
 	if osConfiguration == nil {
 		return nil
@@ -48,16 +34,6 @@ func OsConfigurationFromSdk(osConfiguration *bmcapisdk.OsConfiguration) *OsConfi
 		RootPassword:               osConfiguration.RootPassword,
 		ManagementUiUrl:            osConfiguration.ManagementUiUrl,
 		ManagementAccessAllowedIps: osConfiguration.ManagementAccessAllowedIps,
-	}
-}
-
-func osConfigurationWindowsFromSdk(osConfigurationWindows *bmcapisdk.OsConfigurationWindows) *OsConfigurationWindows {
-	if osConfigurationWindows == nil {
-		return nil
-	}
-
-	return &OsConfigurationWindows{
-		RdpAllowedIps: osConfigurationWindows.RdpAllowedIps,
 	}
 }
 
