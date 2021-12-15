@@ -247,8 +247,23 @@ func GenerateOsConfigurationCli() OsConfiguration {
 	}
 }
 
+func GenerateOsConfigurationSdk() bmcapisdk.OsConfiguration {
+	return bmcapisdk.OsConfiguration{
+		Windows:                    GenerateOsConfigurationWindowsSdk(),
+		RootPassword:               testutil.RandSeqPointer(10),
+		ManagementUiUrl:            testutil.RandSeqPointer(10),
+		ManagementAccessAllowedIps: testutil.RandListStringPointer(10),
+	}
+}
+
 func GenerateOsConfigurationWindowsCli() *OsConfigurationWindows {
 	return &OsConfigurationWindows{
+		RdpAllowedIps: testutil.RandListStringPointer(10),
+	}
+}
+
+func GenerateOsConfigurationWindowsSdk() *bmcapisdk.OsConfigurationWindows {
+	return &bmcapisdk.OsConfigurationWindows{
 		RdpAllowedIps: testutil.RandListStringPointer(10),
 	}
 }
