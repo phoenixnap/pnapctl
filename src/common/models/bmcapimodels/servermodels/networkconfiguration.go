@@ -5,7 +5,8 @@ import (
 )
 
 type NetworkConfiguration struct {
-	PrivateNetworkConfiguration *PrivateNetworkConfiguration `yaml:"privateNetworkConfiguration" json:"privateNetworkConfiguration"`
+	PrivateNetworkConfiguration *PrivateNetworkConfiguration `yaml:"privateNetworkConfiguration,omitempty" json:"privateNetworkConfiguration,omitempty"`
+	IpBlocksConfiguration       *IpBlocksConfiguration       `yaml:"ipBlocksConfiguration,omitempty" json:"ipBlocksConfiguration,omitempty"`
 }
 
 func (networkconfiguration *NetworkConfiguration) toSdk() *bmcapisdk.NetworkConfiguration {
@@ -15,6 +16,7 @@ func (networkconfiguration *NetworkConfiguration) toSdk() *bmcapisdk.NetworkConf
 
 	return &bmcapisdk.NetworkConfiguration{
 		PrivateNetworkConfiguration: networkconfiguration.PrivateNetworkConfiguration.toSdk(),
+		IpBlocksConfiguration:       networkconfiguration.IpBlocksConfiguration.toSdk(),
 	}
 }
 
@@ -25,6 +27,7 @@ func NetworkConfigurationFromSdk(networkConf *bmcapisdk.NetworkConfiguration) *N
 
 	return &NetworkConfiguration{
 		PrivateNetworkConfiguration: privateNetworkConfigurationFromSdk(networkConf.PrivateNetworkConfiguration),
+		IpBlocksConfiguration:       ipBlocksConfigurationFromSdk(networkConf.IpBlocksConfiguration),
 	}
 }
 

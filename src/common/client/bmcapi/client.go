@@ -26,8 +26,11 @@ type BmcApiSdkClient interface {
 	ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
 	ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error)
 	ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error)
+	ServerDeprovision(serverId string) (string, *http.Response, error)
 	ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error)
 	ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error)
+	ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (bmcapisdk.ServerIpBlock, *http.Response, error)
+	ServerIpBlockDelete(serverId string, ipBlockId string) (string, *http.Response, error)
 
 	//Ssh Keys
 	SshKeyPost(sshkeyCreate bmcapisdk.SshKeyCreate) (bmcapisdk.SshKey, *http.Response, error)
@@ -132,12 +135,24 @@ func (m MainClient) ServerTag(serverId string, tagAssignmentRequests []bmcapisdk
 	return m.ServersApiClient.ServersServerIdTagsPut(context.Background(), serverId).TagAssignmentRequest(tagAssignmentRequests).Execute()
 }
 
+func (m MainClient) ServerDeprovision(serverId string) (string, *http.Response, error) {
+	return m.ServersApiClient.ServersServerIdActionsDeprovisionPost(context.Background(), serverId).Execute()
+}
+
 func (m MainClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error) {
 	return m.ServersApiClient.ServersServerIdPrivateNetworksPost(context.Background(), serverId).ServerPrivateNetwork(serverPrivateNetwork).Execute()
 }
 
 func (m MainClient) ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error) {
 	return m.ServersApiClient.DeletePrivateNetwork(context.Background(), serverId, networkId).Execute()
+}
+
+func (m MainClient) ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (bmcapisdk.ServerIpBlock, *http.Response, error) {
+	return m.ServersApiClient.ServersServerIdIpBlocksPost(context.Background(), serverId).ServerIpBlock(serverIpBlock).Execute()
+}
+
+func (m MainClient) ServerIpBlockDelete(serverId string, ipBlockId string) (string, *http.Response, error) {
+	return m.ServersApiClient.ServersServerIdIpBlocksIpBlockIdDelete(context.Background(), serverId, ipBlockId).Execute()
 }
 
 // SSH Key APIs
