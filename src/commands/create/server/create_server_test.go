@@ -106,7 +106,6 @@ func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
 
 func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 	// Invalid contents of the file
-	// filecontents := make([]byte, 10)
 	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
 
 	Filename = FILENAME

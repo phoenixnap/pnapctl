@@ -26,7 +26,7 @@ type BmcApiSdkClient interface {
 	ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error)
 	ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error)
 	ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error)
-	ServerDeprovision(serverId string) (string, *http.Response, error)
+	ServerDeprovision(serverId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, *http.Response, error)
 	ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error)
 	ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error)
 	ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (bmcapisdk.ServerIpBlock, *http.Response, error)
@@ -135,8 +135,8 @@ func (m MainClient) ServerTag(serverId string, tagAssignmentRequests []bmcapisdk
 	return m.ServersApiClient.ServersServerIdTagsPut(context.Background(), serverId).TagAssignmentRequest(tagAssignmentRequests).Execute()
 }
 
-func (m MainClient) ServerDeprovision(serverId string) (string, *http.Response, error) {
-	return m.ServersApiClient.ServersServerIdActionsDeprovisionPost(context.Background(), serverId).Execute()
+func (m MainClient) ServerDeprovision(serverId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, *http.Response, error) {
+	return m.ServersApiClient.ServersServerIdActionsDeprovisionPost(context.Background(), serverId).RelinquishIpBlock(relinquishIpBlock).Execute()
 }
 
 func (m MainClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error) {

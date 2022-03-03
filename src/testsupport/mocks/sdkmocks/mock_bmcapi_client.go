@@ -228,9 +228,9 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerTag(serverId, tagAssignmentRequ
 }
 
 // ServerDeprovision mocks base method.
-func (m *MockBmcApiSdkClient) ServerDeprovision(serverId string) (string, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerDeprovision(serverId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerDeprovision")
+	ret := m.ctrl.Call(m, "ServerDeprovision", relinquishIpBlock)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -238,9 +238,9 @@ func (m *MockBmcApiSdkClient) ServerDeprovision(serverId string) (string, *http.
 }
 
 // ServerDeprovision indicates an expected call of ServerDeprovision.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerDeprovision(serverId interface{}) *gomock.Call {
+func (mr *MockBmcApiSdkClientMockRecorder) ServerDeprovision(serverId, relinquishIpBlock interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerDeprovision", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerDeprovision))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerDeprovision", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerDeprovision), relinquishIpBlock)
 }
 
 // ServerPrivateNetworkPost mocks base method.

@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 	"os"
+	"phoenixnap.com/pnapctl/commands/deprovision"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/sirupsen/logrus"
@@ -74,6 +75,7 @@ func init() {
 	RootCmd.AddCommand(shutdown.ShutdownCmd)
 	RootCmd.AddCommand(reboot.RebootCmd)
 	RootCmd.AddCommand(reserve.ReserveCmd)
+	RootCmd.AddCommand(deprovision.DeprovisionCmd)
 	RootCmd.AddCommand(version.VersionCmd)
 	RootCmd.AddCommand(requestedit.RequestEditCmd)
 	RootCmd.AddCommand(tag.TagCmd)
