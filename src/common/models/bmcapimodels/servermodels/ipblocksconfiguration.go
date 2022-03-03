@@ -8,6 +8,10 @@ type IpBlocksConfiguration struct {
 }
 
 func (ipBlocksConfiguration *IpBlocksConfiguration) toSdk() *bmcapisdk.IpBlocksConfiguration {
+	if ipBlocksConfiguration == nil {
+		return nil
+	}
+
 	var ipBlocksConfigurationSdk = bmcapisdk.IpBlocksConfiguration{
 		ConfigurationType: ipBlocksConfiguration.ConfigurationType,
 		IpBlocks:          mapServerIpBlocksToSdk(ipBlocksConfiguration.IpBlocks),
@@ -23,6 +27,6 @@ func ipBlocksConfigurationFromSdk(ipBlocksConfiguration *bmcapisdk.IpBlocksConfi
 
 	return &IpBlocksConfiguration{
 		ConfigurationType: ipBlocksConfiguration.ConfigurationType,
-		IpBlocks:          serverIpBlockListFromSdk(ipBlocksConfiguration.IpBlocks),
+		IpBlocks:          mapServerIpBlocksToCLI(ipBlocksConfiguration.IpBlocks),
 	}
 }

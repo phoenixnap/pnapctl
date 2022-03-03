@@ -227,6 +227,22 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerTag(serverId, tagAssignmentRequ
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerTag", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerTag), tagAssignmentRequests)
 }
 
+// ServerDeprovision mocks base method.
+func (m *MockBmcApiSdkClient) ServerDeprovision(serverId string) (string, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerDeprovision")
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerDeprovision indicates an expected call of ServerDeprovision.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerDeprovision(serverId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerDeprovision", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerDeprovision))
+}
+
 // ServerPrivateNetworkPost mocks base method.
 func (m *MockBmcApiSdkClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error) {
 	m.ctrl.T.Helper()
@@ -257,6 +273,38 @@ func (m *MockBmcApiSdkClient) ServerPrivateNetworkDelete(serverId string, networ
 func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkDelete(serverId, networkId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkDelete), serverId, networkId)
+}
+
+// ServerIpBlockPost mocks base method.
+func (m *MockBmcApiSdkClient) ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (bmcapisdk.ServerIpBlock, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerIpBlockPost", serverIpBlock)
+	ret0, _ := ret[0].(bmcapisdk.ServerIpBlock)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerIpBlockPost indicates an expected call of ServerIpBlockPost.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerIpBlockPost(serverId, serverIpBlock interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerIpBlockPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerIpBlockPost), serverId, serverIpBlock)
+}
+
+// ServerIpBlockDelete mocks base method.
+func (m *MockBmcApiSdkClient) ServerIpBlockDelete(serverId string, ipBlockId string) (string, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerIpBlockDelete", serverId, ipBlockId)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerIpBlockDelete indicates an expected call of ServerIpBlockDelete.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerIpBlockDelete(serverId, ipBlockId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerIpBlockDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerIpBlockDelete), serverId, ipBlockId)
 }
 
 /*---- SSH KEYS -----*/

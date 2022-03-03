@@ -30,7 +30,7 @@ func mapServerIpBlocksToSdk(serverIpBlocks *[]ServerIpBlock) *[]bmcapisdk.Server
 	return &serverIpBlocksSdk
 }
 
-func serverIpBlockListFromSdk(serverIpBlocks *[]bmcapisdk.ServerIpBlock) *[]ServerIpBlock {
+func mapServerIpBlocksToCLI(serverIpBlocks *[]bmcapisdk.ServerIpBlock) *[]ServerIpBlock {
 	if serverIpBlocks == nil {
 		return nil
 	}
