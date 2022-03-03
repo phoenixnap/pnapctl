@@ -358,3 +358,10 @@ func GenerateIpBlockConfigurationSdk() *bmcapisdk.IpBlocksConfiguration {
 		IpBlocks:          GenerateServerIpBlockListSdk(2),
 	}
 }
+
+func GenerateRelinquishIpBlockCli() RelinquishIpBlock {
+	var flag = false
+	return RelinquishIpBlock{
+		DeleteIpBlocks: &flag,
+	}
+}
