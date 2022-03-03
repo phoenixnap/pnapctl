@@ -37,6 +37,7 @@ func assertEqualTag(test_framework *testing.T, tag Tag, sdkTag tagapisdk.Tag) {
 	assert.Equal(test_framework, tag.Values, sdkTag.Values)
 	assert.Equal(test_framework, tag.Description, sdkTag.Description)
 	assert.Equal(test_framework, tag.IsBillingTag, sdkTag.IsBillingTag)
+	assert.Equal(test_framework, tag.CreatedBy, sdkTag.CreatedBy)
 
 	if testutil.AssertNilEquality(test_framework, "Tag's Resource Assignments", tag.ResourceAssignments, sdkTag.ResourceAssignments) {
 		assert.Equal(test_framework, len(*tag.ResourceAssignments), len(*sdkTag.ResourceAssignments))

@@ -12,6 +12,7 @@ type TagTable struct {
 	Description         string   `header:"Description"`
 	IsBillingTag        bool     `header:"Is Billing Tag"`
 	ResourceAssignments []string `header:"Resource Assignments"`
+	CreatedBy           string   `header:"Created By"`
 }
 
 func TagFromSdk(tag tagapisdk.Tag) TagTable {
@@ -30,5 +31,6 @@ func TagFromSdk(tag tagapisdk.Tag) TagTable {
 		Description:         DerefString(tag.Description),
 		IsBillingTag:        tag.IsBillingTag,
 		ResourceAssignments: resourceAssignments,
+		CreatedBy:           *tag.CreatedBy,
 	}
 }
