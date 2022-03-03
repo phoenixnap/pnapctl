@@ -295,11 +295,20 @@ func GenerateOsConfigurationMapCli() *OsConfigurationMap {
 	return &OsConfigurationMap{
 		Windows: GenerateOsConfigurationWindowsCli(),
 		Esxi:    GenerateOsConfigurationMapEsxiCli(),
+		Proxmox: GenerateOsConfigurationMapProxmoxCli(),
 	}
 }
 
 func GenerateOsConfigurationMapEsxiCli() *OsConfigurationMapEsxi {
 	return &OsConfigurationMapEsxi{
+		RootPassword:               testutil.RandSeqPointer(10),
+		ManagementUiUrl:            testutil.RandSeqPointer(10),
+		ManagementAccessAllowedIps: testutil.RandListStringPointer(10),
+	}
+}
+
+func GenerateOsConfigurationMapProxmoxCli() *OsConfigurationMapProxmox {
+	return &OsConfigurationMapProxmox{
 		RootPassword:               testutil.RandSeqPointer(10),
 		ManagementUiUrl:            testutil.RandSeqPointer(10),
 		ManagementAccessAllowedIps: testutil.RandListStringPointer(10),
