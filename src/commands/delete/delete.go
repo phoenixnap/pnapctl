@@ -2,6 +2,7 @@ package delete
 
 import (
 	"os"
+	ip_blocks "phoenixnap.com/pnapctl/commands/delete/ip-blocks"
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/commands/delete/cluster"
@@ -31,4 +32,5 @@ func init() {
 	DeleteCmd.AddCommand(sshkey.DeleteSshKeyCmd)
 	DeleteCmd.AddCommand(cluster.DeleteClusterCmd)
 	DeleteCmd.AddCommand(privatenetwork.DeletePrivateNetworkCmd)
+	DeleteCmd.AddCommand(ip_blocks.DeleteIpBlockCmd)
 }

@@ -2,6 +2,7 @@ package create
 
 import (
 	"os"
+	ip_blocks "phoenixnap.com/pnapctl/commands/create/ip-blocks"
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/commands/create/cluster"
@@ -29,4 +30,5 @@ func init() {
 	CreateCmd.AddCommand(tag.CreateTagCmd)
 	CreateCmd.AddCommand(sshkey.CreateSshKeyCmd)
 	CreateCmd.AddCommand(privatenetwork.CreatePrivateNetworkCmd)
+	CreateCmd.AddCommand(ip_blocks.CreateIpBlockCmd)
 }

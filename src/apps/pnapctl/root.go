@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"phoenixnap.com/pnapctl/commands/deprovision"
+	"phoenixnap.com/pnapctl/common/client/ip"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/sirupsen/logrus"
@@ -150,6 +151,7 @@ func initConfig() {
 		customAuditHostname := viper.GetString("auditHostname")
 		customTagsHostname := viper.GetString("tagsHostname")
 		customNetworksHostname := viper.GetString("networksHostname")
+		customIpHostname := viper.GetString("ipHostname")
 		customTokenUrl := viper.GetString("tokenURL")
 
 		bmcapi.Client = bmcapi.NewMainClient(clientId, clientSecret, customBmcApiHostname, customTokenUrl)
@@ -157,6 +159,7 @@ func initConfig() {
 		audit.Client = audit.NewMainClient(clientId, clientSecret, customAuditHostname, customTokenUrl)
 		tags.Client = tags.NewMainClient(clientId, clientSecret, customTagsHostname, customTokenUrl)
 		networks.Client = networks.NewMainClient(clientId, clientSecret, customNetworksHostname, customTokenUrl)
+		ip.Client = ip.NewMainClient(clientId, clientSecret, customIpHostname, customTokenUrl)
 	}
 }
 
