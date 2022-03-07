@@ -41,6 +41,7 @@ Usage:
 Available Commands:
   cluster         Retrieve one or all clusters.
   event           Retrieve all events relating to your account.
+  ip-block        Retrieve one or all ip-blocks for your account.
   private-network Retrieve one or all private networks.
   quota           Retrieve one or all quotas for your account.
   server          Retrieve one or all servers.
@@ -64,6 +65,7 @@ Usage:
 
 Available Commands:
   cluster                Create a new cluster.
+  ip-block               Create a new ip-block.
   private-network        Create a new private network.
   server                 Create a new server.
   server-private-network Create a new private network for server.
@@ -87,7 +89,7 @@ Usage:
 
 Available Commands:
   cluster                Deletes a specific cluster.
-  cluster                Deletes a specific cluster.
+  ip-block               Deletes a specific ip-block.
   private-network        Deletes a specific private network.
   server-private-network Remove a server from a private network.
   ssh-key                Deletes a specific SSH Key.

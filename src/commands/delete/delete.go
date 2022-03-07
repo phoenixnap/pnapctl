@@ -30,7 +30,6 @@ func init() {
 	DeleteCmd.AddCommand(cluster.DeleteClusterCmd)
 	DeleteCmd.AddCommand(tag.DeleteTagCmd)
 	DeleteCmd.AddCommand(sshkey.DeleteSshKeyCmd)
-	DeleteCmd.AddCommand(cluster.DeleteClusterCmd)
 	DeleteCmd.AddCommand(privatenetwork.DeletePrivateNetworkCmd)
 	DeleteCmd.AddCommand(ip_blocks.DeleteIpBlockCmd)
 }
