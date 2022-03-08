@@ -68,6 +68,7 @@ Available Commands:
   ip-block               Create a new ip-block.
   private-network        Create a new private network.
   server                 Create a new server.
+  server-ip-block        Create a new ip-block for server.
   server-private-network Create a new private network for server.
   ssh-key                Create a new ssh-key.
   tag                    Create a new tag.
@@ -91,6 +92,7 @@ Available Commands:
   cluster                Deletes a specific cluster.
   ip-block               Deletes a specific ip-block.
   private-network        Deletes a specific private network.
+  server-ip-block        Remove an ip-block from a server.
   server-private-network Remove a server from a private network.
   ssh-key                Deletes a specific SSH Key.
   tag                    Deletes a specific tag.
