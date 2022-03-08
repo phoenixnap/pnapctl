@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	ranchersolutionapi "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+	ranchersolutionapisdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 )
 
 // MockRancherSdkClient is a mock of RancherSdkClient interface.
@@ -36,10 +36,10 @@ func (m *MockRancherSdkClient) EXPECT() *MockRancherSdkClientMockRecorder {
 }
 
 // ClusterDelete mocks base method.
-func (m *MockRancherSdkClient) ClusterDelete(clusterId string) (ranchersolutionapi.DeleteResult, *http.Response, error) {
+func (m *MockRancherSdkClient) ClusterDelete(clusterId string) (ranchersolutionapisdk.DeleteResult, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ClusterDelete", clusterId)
-	ret0, _ := ret[0].(ranchersolutionapi.DeleteResult)
+	ret0, _ := ret[0].(ranchersolutionapisdk.DeleteResult)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -52,10 +52,10 @@ func (mr *MockRancherSdkClientMockRecorder) ClusterDelete(clusterId interface{})
 }
 
 // ClusterGetById mocks base method.
-func (m *MockRancherSdkClient) ClusterGetById(clusterId string) (ranchersolutionapi.Cluster, *http.Response, error) {
+func (m *MockRancherSdkClient) ClusterGetById(clusterId string) (ranchersolutionapisdk.Cluster, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ClusterGetById", clusterId)
-	ret0, _ := ret[0].(ranchersolutionapi.Cluster)
+	ret0, _ := ret[0].(ranchersolutionapisdk.Cluster)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -68,10 +68,10 @@ func (mr *MockRancherSdkClientMockRecorder) ClusterGetById(clusterId interface{}
 }
 
 // ClusterPost mocks base method.
-func (m *MockRancherSdkClient) ClusterPost(clusterCreate ranchersolutionapi.Cluster) (ranchersolutionapi.Cluster, *http.Response, error) {
+func (m *MockRancherSdkClient) ClusterPost(clusterCreate ranchersolutionapisdk.Cluster) (ranchersolutionapisdk.Cluster, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ClusterPost", clusterCreate)
-	ret0, _ := ret[0].(ranchersolutionapi.Cluster)
+	ret0, _ := ret[0].(ranchersolutionapisdk.Cluster)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -84,10 +84,10 @@ func (mr *MockRancherSdkClientMockRecorder) ClusterPost(clusterCreate interface{
 }
 
 // ClustersGet mocks base method.
-func (m *MockRancherSdkClient) ClustersGet() ([]ranchersolutionapi.Cluster, *http.Response, error) {
+func (m *MockRancherSdkClient) ClustersGet() ([]ranchersolutionapisdk.Cluster, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ClustersGet")
-	ret0, _ := ret[0].([]ranchersolutionapi.Cluster)
+	ret0, _ := ret[0].([]ranchersolutionapisdk.Cluster)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2

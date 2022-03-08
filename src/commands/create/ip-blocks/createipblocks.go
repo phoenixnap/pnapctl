@@ -11,7 +11,7 @@ import (
 // Filename is the filename from which to retrieve a complex object
 var Filename string
 
-var commandName = "create ip-blocks"
+var commandName = "create ip-block"
 
 // CreateIpBlockCmd is the command for creating an ssh key.
 var CreateIpBlockCmd = &cobra.Command{
@@ -22,7 +22,7 @@ var CreateIpBlockCmd = &cobra.Command{
 	Long: `Create a new ip-block.
 
 Requires a file (yaml or json) containing the information needed to create the ip-block.`,
-	Example: `# Create a new ip-block as described in ipblockreate.yaml
+	Example: `# Create a new ip-block as described in ipblockcreate.yaml
 pnapctl create ip-block --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # ipblockreate.yaml
