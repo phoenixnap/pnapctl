@@ -9,7 +9,7 @@ import (
 // tests
 func TestServerIpBlockToSdk(test_framework *testing.T) {
 	cliModel := GenerateServerIpBlockCli()
-	sdkModel := cliModel.toSdk()
+	sdkModel := cliModel.ToSdk()
 
 	assert.Equal(test_framework, cliModel.Id, sdkModel.Id)
 	assert.Equal(test_framework, &cliModel.VlanId, &sdkModel.VlanId)
