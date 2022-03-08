@@ -17,10 +17,7 @@ import (
 func TestDeprovisionServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	result := "Server Deprovisioned"
-	deleteIpBlocks := false
-	requestBody := servermodels.RelinquishIpBlock{
-		DeleteIpBlocks: &deleteIpBlocks,
-	}
+	requestBody := servermodels.GenerateRelinquishIpBlockCli()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(requestBody)
@@ -48,10 +45,7 @@ func TestDeprovisionServerSuccessYAML(test_framework *testing.T) {
 func TestDeprovisionServerSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	result := "Server Deprovisioned"
-	deleteIpBlocks := false
-	requestBody := servermodels.RelinquishIpBlock{
-		DeleteIpBlocks: &deleteIpBlocks,
-	}
+	requestBody := servermodels.GenerateRelinquishIpBlockCli()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(requestBody)
@@ -147,10 +141,7 @@ func TestDeprovisionServerFileReadingFailure(test_framework *testing.T) {
 func TestDeprovisionServerBackendErrorFailure(test_framework *testing.T) {
 	// Setup
 	// Mocking
-	deleteIpBlocks := false
-	requestBody := servermodels.RelinquishIpBlock{
-		DeleteIpBlocks: &deleteIpBlocks,
-	}
+	requestBody := servermodels.GenerateRelinquishIpBlockCli()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(requestBody)
@@ -180,10 +171,7 @@ func TestDeprovisionServerBackendErrorFailure(test_framework *testing.T) {
 
 func TestDeprovisionServerClientFailure(test_framework *testing.T) {
 	// Setup
-	deleteIpBlocks := false
-	requestBody := servermodels.RelinquishIpBlock{
-		DeleteIpBlocks: &deleteIpBlocks,
-	}
+	requestBody := servermodels.GenerateRelinquishIpBlockCli()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(requestBody)
@@ -214,10 +202,7 @@ func TestDeprovisionServerClientFailure(test_framework *testing.T) {
 
 func TestDeprovisionServerKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	deleteIpBlocks := false
-	requestBody := servermodels.RelinquishIpBlock{
-		DeleteIpBlocks: &deleteIpBlocks,
-	}
+	requestBody := servermodels.GenerateRelinquishIpBlockCli()
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(requestBody)
 

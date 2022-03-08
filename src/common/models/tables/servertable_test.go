@@ -29,6 +29,13 @@ func TestToServerPrivateNetworkTable(test_framework *testing.T) {
 	assertServerPrivateNetworksEqual(test_framework, network, table)
 }
 
+func TestToServerIpBlockTable(test_framework *testing.T) {
+	sdkModel := servermodels.GenerateServerIpBlockSdk()
+	table := ToServerIpBlockTable(sdkModel)
+
+	assertServerIpBlockEqual(test_framework, sdkModel, table)
+}
+
 func assertShortServersEqual(test_framework *testing.T, server bmcapisdk.Server, shortServerTable ShortServerTable) {
 	assert.Equal(test_framework, server.Id, shortServerTable.ID)
 	assert.Equal(test_framework, server.Status, shortServerTable.Status)
@@ -75,4 +82,9 @@ func assertServerPrivateNetworksEqual(test_framework *testing.T, privateNetwork 
 	assert.Equal(test_framework, DerefStringList(privateNetwork.Ips), table.Ips)
 	assert.Equal(test_framework, Dhcp, table.Dhcp)
 	assert.Equal(test_framework, DerefString(privateNetwork.StatusDescription), table.StatusDescription)
+}
+
+func assertServerIpBlockEqual(test_framework *testing.T, serverIpBlock bmcapisdk.ServerIpBlock, table ServerIpBlockTable) {
+	assert.Equal(test_framework, serverIpBlock.Id, table.Id)
+	assert.Equal(test_framework, *serverIpBlock.VlanId, table.VlandId)
 }

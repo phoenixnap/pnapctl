@@ -278,7 +278,7 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkDelete(serverId, 
 // ServerIpBlockPost mocks base method.
 func (m *MockBmcApiSdkClient) ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (bmcapisdk.ServerIpBlock, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerIpBlockPost", serverIpBlock)
+	ret := m.ctrl.Call(m, "ServerIpBlockPost", serverId, serverIpBlock)
 	ret0, _ := ret[0].(bmcapisdk.ServerIpBlock)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -292,9 +292,9 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerIpBlockPost(serverId, serverIpB
 }
 
 // ServerIpBlockDelete mocks base method.
-func (m *MockBmcApiSdkClient) ServerIpBlockDelete(serverId string, ipBlockId string) (string, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerIpBlockDelete", serverId, ipBlockId)
+	ret := m.ctrl.Call(m, "ServerIpBlockDelete", serverId, ipBlockId, relinquishIpBlock)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -302,9 +302,9 @@ func (m *MockBmcApiSdkClient) ServerIpBlockDelete(serverId string, ipBlockId str
 }
 
 // ServerIpBlockDelete indicates an expected call of ServerIpBlockDelete.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerIpBlockDelete(serverId, ipBlockId interface{}) *gomock.Call {
+func (mr *MockBmcApiSdkClientMockRecorder) ServerIpBlockDelete(serverId, ipBlockId, relinquishIpBlock interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerIpBlockDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerIpBlockDelete), serverId, ipBlockId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerIpBlockDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerIpBlockDelete), serverId, ipBlockId, relinquishIpBlock)
 }
 
 /*---- SSH KEYS -----*/

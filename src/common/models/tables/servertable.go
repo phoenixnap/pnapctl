@@ -48,6 +48,11 @@ type ServerPrivateNetworkTable struct {
 	StatusDescription string   `header:"Status Description"`
 }
 
+type ServerIpBlockTable struct {
+	Id      string `header:"ID"`
+	VlandId int32  `header:"VlandId"`
+}
+
 func ToShortServerTable(server bmcapisdk.Server) ShortServerTable {
 
 	return ShortServerTable{
@@ -100,5 +105,12 @@ func ToServerPrivateNetworkTable(privateNetwork bmcapisdk.ServerPrivateNetwork) 
 		Ips:               DerefStringList(privateNetwork.Ips),
 		Dhcp:              Dhcp,
 		StatusDescription: DerefString(privateNetwork.StatusDescription),
+	}
+}
+
+func ToServerIpBlockTable(serverIpBlock bmcapisdk.ServerIpBlock) ServerIpBlockTable {
+	return ServerIpBlockTable{
+		Id:      serverIpBlock.Id,
+		VlandId: *serverIpBlock.VlanId,
 	}
 }

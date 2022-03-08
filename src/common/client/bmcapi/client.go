@@ -30,7 +30,7 @@ type BmcApiSdkClient interface {
 	ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error)
 	ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error)
 	ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (bmcapisdk.ServerIpBlock, *http.Response, error)
-	ServerIpBlockDelete(serverId string, ipBlockId string) (string, *http.Response, error)
+	ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, *http.Response, error)
 
 	//Ssh Keys
 	SshKeyPost(sshkeyCreate bmcapisdk.SshKeyCreate) (bmcapisdk.SshKey, *http.Response, error)
@@ -151,8 +151,8 @@ func (m MainClient) ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.S
 	return m.ServersApiClient.ServersServerIdIpBlocksPost(context.Background(), serverId).ServerIpBlock(serverIpBlock).Execute()
 }
 
-func (m MainClient) ServerIpBlockDelete(serverId string, ipBlockId string) (string, *http.Response, error) {
-	return m.ServersApiClient.ServersServerIdIpBlocksIpBlockIdDelete(context.Background(), serverId, ipBlockId).Execute()
+func (m MainClient) ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, *http.Response, error) {
+	return m.ServersApiClient.ServersServerIdIpBlocksIpBlockIdDelete(context.Background(), serverId, ipBlockId).RelinquishIpBlock(relinquishIpBlock).Execute()
 }
 
 // SSH Key APIs

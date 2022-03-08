@@ -27,7 +27,7 @@ pnapctl delete [flags]
 
 * [pnapctl](pnapctl.md)	 - pnapctl creates new and manages existing bare metal servers.
 * [pnapctl delete cluster](pnapctl_delete_cluster.md)	 - Deletes a specific cluster.
-* [pnapctl delete cluster](pnapctl_delete_cluster.md)	 - Deletes a specific cluster.
+* [pnapctl delete ip-block](pnapctl_delete_ip-block.md)	 - Deletes a specific ip-block.
 * [pnapctl delete private-network](pnapctl_delete_private-network.md)	 - Deletes a specific private network.
 * [pnapctl delete server-private-network](pnapctl_delete_server-private-network.md)	 - Remove a server from a private network.
 * [pnapctl delete ssh-key](pnapctl_delete_ssh-key.md)	 - Deletes a specific SSH Key.

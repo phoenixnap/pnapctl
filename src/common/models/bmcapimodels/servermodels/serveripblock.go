@@ -7,7 +7,7 @@ type ServerIpBlock struct {
 	VlanId *int32 `yaml:"vlanId,omitempty" json:"vlanId,omitempty"`
 }
 
-func (serverIpBlock ServerIpBlock) toSdk() bmcapisdk.ServerIpBlock {
+func (serverIpBlock ServerIpBlock) ToSdk() bmcapisdk.ServerIpBlock {
 	var serverIpBlockSdk = bmcapisdk.ServerIpBlock{
 		Id:     serverIpBlock.Id,
 		VlanId: serverIpBlock.VlanId,
@@ -24,7 +24,7 @@ func mapServerIpBlocksToSdk(serverIpBlocks *[]ServerIpBlock) *[]bmcapisdk.Server
 	var serverIpBlocksSdk []bmcapisdk.ServerIpBlock
 
 	for _, serverIpBlock := range *serverIpBlocks {
-		serverIpBlocksSdk = append(serverIpBlocksSdk, serverIpBlock.toSdk())
+		serverIpBlocksSdk = append(serverIpBlocksSdk, serverIpBlock.ToSdk())
 	}
 
 	return &serverIpBlocksSdk
