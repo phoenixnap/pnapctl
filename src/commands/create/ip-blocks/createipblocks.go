@@ -25,7 +25,7 @@ Requires a file (yaml or json) containing the information needed to create the i
 	Example: `# Create a new ip-block as described in ipblockcreate.yaml
 pnapctl create ip-block --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
-# ipblockreate.yaml
+# ipblockcreate.yaml
 cidrBlockSize: /28
 location: PHX`,
 	RunE: func(cmd *cobra.Command, args []string) error {
