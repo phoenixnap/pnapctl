@@ -47,6 +47,6 @@ deleteIpBlocks: false`,
 }
 
 func init() {
-	DeprovisionServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	DeprovisionServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for deprovision")
 	DeprovisionServerCmd.MarkFlagRequired("filename")
 }
