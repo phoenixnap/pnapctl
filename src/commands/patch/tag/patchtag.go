@@ -8,12 +8,12 @@ import (
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
-// Filename is the filename from which to retrieve a complex object
+// Filename is the filename from which to retrieve the request body
 var Filename string
 
 var commandName = "patch tag"
 
-// CreateServerCmd is the command for creating a server.
+// PatchTagCmd is the command for creating a server.
 var PatchTagCmd = &cobra.Command{
 	Use:          "tag TAG_ID",
 	Short:        "Patch/Update a tag.",

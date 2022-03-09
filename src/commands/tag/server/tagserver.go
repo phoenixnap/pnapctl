@@ -11,7 +11,7 @@ import (
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
-// Filename is the filename from which to retrieve a complex object
+// Filename is the filename from which to retrieve the request body
 var Filename string
 
 const commandName string = "tag server"

@@ -8,7 +8,7 @@ import (
 	"phoenixnap.com/pnapctl/common/printer"
 )
 
-// Filename is the filename from which to retrieve a complex object
+// Filename is the filename from which to retrieve the request body
 var Filename string
 
 var commandName = "update private-network"

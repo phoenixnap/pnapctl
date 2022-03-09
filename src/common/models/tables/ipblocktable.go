@@ -8,7 +8,7 @@ type IpBlock struct {
 	CidrBlockSize        string  `header:"Cidr Block Size"`
 	Cidr                 string  `header:"Cidr"`
 	Status               string  `header:"Status"`
-	AssignedResourceId   *string `header:"Assigned Resource Id"`
+	AssignedResourceId   *string `header:"Assigned Resource ID"`
 	AssignedResourceType *string `header:"Assigned Resource Type"`
 }
 

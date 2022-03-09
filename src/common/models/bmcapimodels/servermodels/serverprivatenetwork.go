@@ -97,7 +97,7 @@ func CreateServerIpBlockFromFile(filename string, commandname string) (*bmcapisd
 		return nil, err
 	}
 
-	serverPrivateNetworkSdk := serverIpBlock.ToSdk()
+	serverIpBlockSdk := serverIpBlock.ToSdk()
 
-	return &serverPrivateNetworkSdk, nil
+	return &serverIpBlockSdk, nil
 }

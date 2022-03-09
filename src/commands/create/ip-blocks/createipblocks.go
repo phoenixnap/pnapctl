@@ -8,7 +8,7 @@ import (
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
-// Filename is the filename from which to retrieve a complex object
+// Filename is the filename from which to retrieve the request body
 var Filename string
 
 var commandName = "create ip-block"
@@ -23,7 +23,7 @@ var CreateIpBlockCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to create the ip-block.`,
 	Example: `# Create a new ip-block as described in ipblockcreate.yaml
-pnapctl create ip-block --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
+pnapctl create ip-block --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 # ipblockreate.yaml
 cidrBlockSize: /28
