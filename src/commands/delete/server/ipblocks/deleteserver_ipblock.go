@@ -42,6 +42,6 @@ deleteIpBlocks: false`,
 }
 
 func init() {
-	DeleteServerIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	DeleteServerIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for ip block removal from server")
 	DeleteServerIpBlockCmd.MarkFlagRequired("filename")
 }
