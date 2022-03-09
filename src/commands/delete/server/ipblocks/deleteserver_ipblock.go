@@ -13,7 +13,7 @@ var Filename string
 
 var commandName = "delete server-ip-block"
 
-// DeleteServerIpBlockCmd is the command for creating a server.
+// DeleteServerIpBlockCmd is the command for deleting a server ip block.
 var DeleteServerIpBlockCmd = &cobra.Command{
 	Use:          "server-ip-block SERVER_ID IP_BLOCK_ID",
 	Short:        "Remove an ip-block from a server.",
@@ -42,6 +42,6 @@ deleteIpBlocks: false`,
 }
 
 func init() {
-	DeleteServerIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	DeleteServerIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for ip block removal from server")
 	DeleteServerIpBlockCmd.MarkFlagRequired("filename")
 }

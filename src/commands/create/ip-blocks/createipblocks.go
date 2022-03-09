@@ -13,7 +13,7 @@ var Filename string
 
 var commandName = "create ip-block"
 
-// CreateIpBlockCmd is the command for creating an ssh key.
+// CreateIpBlockCmd is the command for creating an ip block.
 var CreateIpBlockCmd = &cobra.Command{
 	Use:          "ip-block",
 	Short:        "Create a new ip-block.",
