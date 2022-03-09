@@ -24,12 +24,12 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.4.2 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
-	github.com/phoenixnap/go-sdk-bmc/auditapi v1.0.1-alpha // indirect
-	github.com/phoenixnap/go-sdk-bmc/bmcapi v1.1.0-alpha // indirect
-	github.com/phoenixnap/go-sdk-bmc/ipapi v1.0.0-alpha // indirect
-	github.com/phoenixnap/go-sdk-bmc/networkapi v1.0.1-alpha // indirect
-	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v1.0.1-alpha // indirect
-	github.com/phoenixnap/go-sdk-bmc/tagapi v1.1.0-alpha // indirect
+	github.com/phoenixnap/go-sdk-bmc/auditapi v1.0.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/bmcapi v1.1.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/ipapi v1.0.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/networkapi v1.0.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v1.0.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/tagapi v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/russross/blackfriday/v2 v2.0.1 // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
