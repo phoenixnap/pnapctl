@@ -86,5 +86,5 @@ func assertServerPrivateNetworksEqual(test_framework *testing.T, privateNetwork 
 
 func assertServerIpBlockEqual(test_framework *testing.T, serverIpBlock bmcapisdk.ServerIpBlock, table ServerIpBlockTable) {
 	assert.Equal(test_framework, serverIpBlock.Id, table.Id)
-	assert.Equal(test_framework, *serverIpBlock.VlanId, table.VlandId)
+	assert.Equal(test_framework, *serverIpBlock.VlanId, table.VlanId)
 }
