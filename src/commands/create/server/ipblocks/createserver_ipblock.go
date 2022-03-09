@@ -35,7 +35,7 @@ vlanId: 11`,
 			return err
 		}
 
-		// Create the server private network
+		// Create the server ip block
 		response, httpResponse, err := bmcapi.Client.ServerIpBlockPost(args[0], *serverIpBlock)
 
 		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
