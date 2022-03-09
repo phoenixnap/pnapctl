@@ -1,11 +1,10 @@
 package create
 
 import (
-	"os"
-	ip_blocks "phoenixnap.com/pnapctl/commands/create/ip-blocks"
-
 	"github.com/spf13/cobra"
+	"os"
 	"phoenixnap.com/pnapctl/commands/create/cluster"
+	"phoenixnap.com/pnapctl/commands/create/ip-blocks"
 	"phoenixnap.com/pnapctl/commands/create/privatenetwork"
 	"phoenixnap.com/pnapctl/commands/create/server"
 	serveripblock "phoenixnap.com/pnapctl/commands/create/server/ipblocks"
