@@ -3,6 +3,7 @@ package printer
 import (
 	"bytes"
 	"fmt"
+	"phoenixnap.com/pnapctl/common/models/ipmodels"
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
@@ -393,6 +394,47 @@ func TestPrepareSshkeyListForPrintingTable(test_framework *testing.T) {
 	outputType := fmt.Sprintf("%T", prepared[0])
 
 	assert.Equal(test_framework, outputType, "tables.SshKeyTable")
+}
+
+func TestPrepareIpBlockForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	ipBlock := ipmodels.GenerateIpBlockSdk()
+	prepared := PrepareIpBlockForPrinting(ipBlock)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.IpBlock")
+}
+
+func TestPrepareIpBlockForPrintingNonTable(test_framework *testing.T) {
+	OutputFormat = "json"
+	ipBlock := ipmodels.GenerateIpBlockSdk()
+	prepared := PrepareIpBlockForPrinting(ipBlock)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "ipmodels.IpBlock")
+}
+
+func TestPrepareIpBlockListForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	ipBlocks := ipmodels.GenerateIpBlockSdkList(1)
+	prepared := PrepareIpBlockListForPrinting(ipBlocks)
+
+	outputType := fmt.Sprintf("%T", prepared[0])
+
+	assert.Equal(test_framework, outputType, "tables.IpBlock")
+}
+
+func TestPrepareIpBlockListForPrinting(test_framework *testing.T) {
+	OutputFormat = "json"
+	ipBlocks := ipmodels.GenerateIpBlockSdkList(1)
+	prepared := PrepareIpBlockListForPrinting(ipBlocks)
+
+	outputType := fmt.Sprintf("%T", prepared[0])
+
+	assert.Equal(test_framework, outputType, "ipmodels.IpBlock")
+	assert.Equal(test_framework, len(prepared), 1)
 }
 
 func ExamplePrintOutputTableFormatEmpty() {

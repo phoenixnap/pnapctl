@@ -8,7 +8,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models/auditmodels"
 )
 
-func TestEventFromSdk(test_framework *testing.T) {
+func TestToEventTable(test_framework *testing.T) {
 	event := auditmodels.GenerateEventSdk()
 	table := ToEventTable(*event)
 

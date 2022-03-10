@@ -39,6 +39,7 @@ func assertEqualTagAssignment(test_framework *testing.T, cliTagAssignment TagAss
 	assert.Equal(test_framework, cliTagAssignment.Name, sdkTagAssignment.Name)
 	assert.Equal(test_framework, cliTagAssignment.Value, sdkTagAssignment.Value)
 	assert.Equal(test_framework, cliTagAssignment.IsBillingTag, sdkTagAssignment.IsBillingTag)
+	assert.Equal(test_framework, cliTagAssignment.CreatedBy, sdkTagAssignment.CreatedBy)
 
 }
 

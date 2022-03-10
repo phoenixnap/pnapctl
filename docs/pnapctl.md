@@ -24,6 +24,7 @@ pnapctl [flags]
 
 * [pnapctl create](pnapctl_create.md)	 - Create a resource.
 * [pnapctl delete](pnapctl_delete.md)	 - Delete a resource.
+* [pnapctl deprovision](pnapctl_deprovision.md)	 - Deprovision a resource.
 * [pnapctl get](pnapctl_get.md)	 - Display one or many resources.
 * [pnapctl patch](pnapctl_patch.md)	 - Modify a resource.
 * [pnapctl power-off](pnapctl_power-off.md)	 - Perform a hard shutdown on the resource.

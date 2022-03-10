@@ -191,15 +191,19 @@ func GenerateServerReserveCli() ServerReserve {
 
 func GenerateNetworkConfigurationCli() NetworkConfiguration {
 	privateNetworkConfiguration := GeneratePrivateNetworkConfigurationCli()
+	ipBlocksConfiguration := GenerateIpBlocksConfigurationCli()
 	return NetworkConfiguration{
 		PrivateNetworkConfiguration: &privateNetworkConfiguration,
+		IpBlocksConfiguration:       ipBlocksConfiguration,
 	}
 }
 
 func GenerateNetworkConfigurationSdk() bmcapisdk.NetworkConfiguration {
 	privateNetworkConfiguration := GeneratePrivateNetworkConfigurationSdk()
+	ipBlocksConfiguration := GenerateIpBlockConfigurationSdk()
 	return bmcapisdk.NetworkConfiguration{
 		PrivateNetworkConfiguration: &privateNetworkConfiguration,
+		IpBlocksConfiguration:       ipBlocksConfiguration,
 	}
 }
 
@@ -291,6 +295,7 @@ func GenerateOsConfigurationMapCli() *OsConfigurationMap {
 	return &OsConfigurationMap{
 		Windows: GenerateOsConfigurationWindowsCli(),
 		Esxi:    GenerateOsConfigurationMapEsxiCli(),
+		Proxmox: GenerateOsConfigurationMapProxmoxCli(),
 	}
 }
 
@@ -299,5 +304,64 @@ func GenerateOsConfigurationMapEsxiCli() *OsConfigurationMapEsxi {
 		RootPassword:               testutil.RandSeqPointer(10),
 		ManagementUiUrl:            testutil.RandSeqPointer(10),
 		ManagementAccessAllowedIps: testutil.RandListStringPointer(10),
+	}
+}
+
+func GenerateOsConfigurationMapProxmoxCli() *OsConfigurationMapProxmox {
+	return &OsConfigurationMapProxmox{
+		RootPassword:               testutil.RandSeqPointer(10),
+		ManagementUiUrl:            testutil.RandSeqPointer(10),
+		ManagementAccessAllowedIps: testutil.RandListStringPointer(10),
+	}
+}
+
+func GenerateServerIpBlockCli() ServerIpBlock {
+	return ServerIpBlock{
+		Id:     testutil.RandSeq(10),
+		VlanId: testutil.RanNumberPointer(),
+	}
+}
+
+func GenerateServerIpBlockSdk() bmcapisdk.ServerIpBlock {
+	return bmcapisdk.ServerIpBlock{
+		Id:     testutil.RandSeq(10),
+		VlanId: testutil.RanNumberPointer(),
+	}
+}
+
+func GenerateServerIpBlockListCli(n int) *[]ServerIpBlock {
+	var list []ServerIpBlock
+	for i := 0; i < n; i++ {
+		list = append(list, GenerateServerIpBlockCli())
+	}
+	return &list
+}
+
+func GenerateServerIpBlockListSdk(n int) *[]bmcapisdk.ServerIpBlock {
+	var list []bmcapisdk.ServerIpBlock
+	for i := 0; i < n; i++ {
+		list = append(list, GenerateServerIpBlockSdk())
+	}
+	return &list
+}
+
+func GenerateIpBlocksConfigurationCli() *IpBlocksConfiguration {
+	return &IpBlocksConfiguration{
+		ConfigurationType: testutil.RandSeqPointer(10),
+		IpBlocks:          GenerateServerIpBlockListCli(2),
+	}
+}
+
+func GenerateIpBlockConfigurationSdk() *bmcapisdk.IpBlocksConfiguration {
+	return &bmcapisdk.IpBlocksConfiguration{
+		ConfigurationType: testutil.RandSeqPointer(10),
+		IpBlocks:          GenerateServerIpBlockListSdk(2),
+	}
+}
+
+func GenerateRelinquishIpBlockCli() RelinquishIpBlock {
+	var flag = false
+	return RelinquishIpBlock{
+		DeleteIpBlocks: &flag,
 	}
 }

@@ -17,9 +17,10 @@ func TestNetworkConfigurationToSdk(test_framework *testing.T) {
 	assertEqualNetworkConfiguration(test_framework, cliModel, *sdkModel)
 }
 
-func TestNilNetworkConfigurationPrivateNetworkConfigurationNilToSdk(test_framework *testing.T) {
+func TestNetworkConfigurationNilPropertiesToSdk(test_framework *testing.T) {
 	cliModel := NetworkConfiguration{
 		PrivateNetworkConfiguration: nil,
+		IpBlocksConfiguration:       nil,
 	}
 
 	sdkModel := cliModel.toSdk()
@@ -41,9 +42,10 @@ func TestNetworkConfigurationFromSdk(test_framework *testing.T) {
 	assertEqualNetworkConfiguration(test_framework, *cliModel, sdkModel)
 }
 
-func TestNetworkConfigurationPrivateNetworkConfigurationNilFromSdk(test_framework *testing.T) {
+func TestNetworkConfigurationNilPropertiesFromSdk(test_framework *testing.T) {
 	sdkModel := bmcapisdk.NetworkConfiguration{
 		PrivateNetworkConfiguration: nil,
+		IpBlocksConfiguration:       nil,
 	}
 	cliModel := NetworkConfigurationFromSdk(&sdkModel)
 
@@ -85,5 +87,6 @@ func TestPublicNetworkConfigurationToTableString(test_framework *testing.T) {
 func assertEqualNetworkConfiguration(test_framework *testing.T, cliNetworkConfiguration NetworkConfiguration, sdkNetworkConfiguration bmcapisdk.NetworkConfiguration) {
 	if testutil.AssertNilEquality(test_framework, "Network Configuration's Private Networks", cliNetworkConfiguration.PrivateNetworkConfiguration, sdkNetworkConfiguration.PrivateNetworkConfiguration) {
 		assertEqualPrivateNetworkConfiguration(test_framework, *cliNetworkConfiguration.PrivateNetworkConfiguration, *sdkNetworkConfiguration.PrivateNetworkConfiguration)
+		assertEqualIpBlocksConfiguration(test_framework, cliNetworkConfiguration.IpBlocksConfiguration, sdkNetworkConfiguration.IpBlocksConfiguration)
 	}
 }

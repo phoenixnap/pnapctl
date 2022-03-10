@@ -13,6 +13,7 @@ func GenerateTagSdk() *tagapisdk.Tag {
 		Name:        testutil.RandSeq(10),
 		Values:      &values,
 		Description: testutil.RandSeqPointer(10),
+		CreatedBy:   testutil.RandSeqPointer(5),
 	}
 }
 

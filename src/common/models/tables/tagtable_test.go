@@ -30,4 +30,5 @@ func assertTagsEqual(test_framework *testing.T, tag tagapisdk.Tag, table TagTabl
 	assert.Equal(test_framework, DerefString(tag.Description), table.Description)
 	assert.Equal(test_framework, tag.IsBillingTag, table.IsBillingTag)
 	assert.Equal(test_framework, resourceAssignments, table.ResourceAssignments)
+	assert.Equal(test_framework, DerefString(tag.CreatedBy), table.CreatedBy)
 }

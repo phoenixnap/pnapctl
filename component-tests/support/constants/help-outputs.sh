@@ -10,6 +10,7 @@ Available Commands:
   completion   generate the autocompletion script for the specified shell
   create       Create a resource.
   delete       Delete a resource.
+  deprovision  Deprovision a resource.
   get          Display one or many resources.
   help         Help about any command
   patch        Modify a resource.
@@ -40,6 +41,7 @@ Usage:
 Available Commands:
   cluster         Retrieve one or all clusters.
   event           Retrieve all events relating to your account.
+  ip-block        Retrieve one or all ip-blocks for your account.
   private-network Retrieve one or all private networks.
   quota           Retrieve one or all quotas for your account.
   server          Retrieve one or all servers.
@@ -63,8 +65,10 @@ Usage:
 
 Available Commands:
   cluster                Create a new cluster.
+  ip-block               Create a new ip-block.
   private-network        Create a new private network.
   server                 Create a new server.
+  server-ip-block        Create a new ip-block for server.
   server-private-network Create a new private network for server.
   ssh-key                Create a new ssh-key.
   tag                    Create a new tag.
@@ -86,9 +90,9 @@ Usage:
 
 Available Commands:
   cluster                Deletes a specific cluster.
-  cluster                Deletes a specific cluster.
+  ip-block               Deletes a specific ip-block.
   private-network        Deletes a specific private network.
-  server                 Deletes a specific server.
+  server-ip-block        Remove an ip-block from a server.
   server-private-network Remove a server from a private network.
   ssh-key                Deletes a specific SSH Key.
   tag                    Deletes a specific tag.
@@ -101,6 +105,24 @@ Global Flags:
   -v, --verbose         change log level from Warn (default) to Debug.
 
 Use \"pnapctl delete [command] --help\" for more information about a command."
+
+outputHelpDeprovision="Deprovision a resource
+
+Usage:
+  pnapctl deprovision [flags]
+  pnapctl deprovision [command]
+
+Available Commands:
+  server      Deprovision a server.
+
+Flags:
+  -h, --help   help for deprovision
+
+Global Flags:
+      --config string   config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.
+  -v, --verbose         change log level from Warn (default) to Debug.
+
+Use \"pnapctl deprovision [command] --help\" for more information about a command."
 
 outputHelpPatch="Modify a resource.
 

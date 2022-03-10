@@ -33,19 +33,24 @@ type LongServerTable struct {
 }
 
 type ShortServerTable struct {
-	ID                 string   `header:"id"`
-	Status             string   `header:"status"`
-	Name               string   `header:"name"`
-	Description        string   `header:"description"`
+	ID                 string   `header:"ID"`
+	Status             string   `header:"Status"`
+	Name               string   `header:"Name"`
+	Description        string   `header:"Description"`
 	PrivateIPAddresses []string `header:"Private Ips"`
 	PublicIPAddresses  []string `header:"Public Ips"`
 }
 
 type ServerPrivateNetworkTable struct {
-	Id                string   `header:"id"`
-	Ips               []string `header:"ips"`
-	Dhcp              bool     `header:"dhcp"`
+	Id                string   `header:"ID"`
+	Ips               []string `header:"IPs"`
+	Dhcp              bool     `header:"DHCP"`
 	StatusDescription string   `header:"Status Description"`
+}
+
+type ServerIpBlockTable struct {
+	Id     string `header:"ID"`
+	VlanId int32  `header:"Vlan ID"`
 }
 
 func ToShortServerTable(server bmcapisdk.Server) ShortServerTable {
@@ -100,5 +105,12 @@ func ToServerPrivateNetworkTable(privateNetwork bmcapisdk.ServerPrivateNetwork) 
 		Ips:               DerefStringList(privateNetwork.Ips),
 		Dhcp:              Dhcp,
 		StatusDescription: DerefString(privateNetwork.StatusDescription),
+	}
+}
+
+func ToServerIpBlockTable(serverIpBlock bmcapisdk.ServerIpBlock) ServerIpBlockTable {
+	return ServerIpBlockTable{
+		Id:     serverIpBlock.Id,
+		VlanId: *serverIpBlock.VlanId,
 	}
 }

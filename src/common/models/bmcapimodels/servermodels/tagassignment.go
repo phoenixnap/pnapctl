@@ -11,6 +11,7 @@ type TagAssignment struct {
 	Name         string  `yaml:"name" json:"name"`
 	Value        *string `yaml:"value,omitempty" json:"value,omitempty"`
 	IsBillingTag bool    `yaml:"isBillingTag" json:"isBillingTag"`
+	CreatedBy    *string `yaml:"createdBy,omitempty" json:"createdBy,omitempty"`
 }
 
 func TagAssignmentListFromSdk(tagAssignment *[]bmcapisdk.TagAssignment) *[]TagAssignment {
@@ -26,6 +27,7 @@ func TagAssignmentListFromSdk(tagAssignment *[]bmcapisdk.TagAssignment) *[]TagAs
 			Name:         bmcTagAssignment.Name,
 			Value:        bmcTagAssignment.Value,
 			IsBillingTag: bmcTagAssignment.IsBillingTag,
+			CreatedBy:    bmcTagAssignment.CreatedBy,
 		}
 
 		tagAssignments = append(tagAssignments, *mappedTagAssignment)

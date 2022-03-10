@@ -9,7 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
-// Filename is the filename from which to retrieve a complex object
+// Filename is the filename from which to retrieve the request body
 var Filename string
 
 var commandName = "request-edit quota"

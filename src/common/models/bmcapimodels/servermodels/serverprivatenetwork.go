@@ -78,3 +78,26 @@ func CreateServerPrivateNetworkFromFile(filename string, commandname string) (*b
 
 	return &serverPrivateNetworkSdk, nil
 }
+
+func CreateServerIpBlockFromFile(filename string, commandname string) (*bmcapisdk.ServerIpBlock, error) {
+	files.ExpandPath(&filename)
+
+	data, err := files.ReadFile(filename, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Marshal file into JSON using the struct
+	var serverIpBlock ServerIpBlock
+
+	err = files.Unmarshal(data, &serverIpBlock, commandname)
+
+	if err != nil {
+		return nil, err
+	}
+
+	serverIpBlockSdk := serverIpBlock.ToSdk()
+
+	return &serverIpBlockSdk, nil
+}

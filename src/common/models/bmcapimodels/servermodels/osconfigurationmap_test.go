@@ -40,4 +40,8 @@ func assertEqualOsConfigurationMap(test_framework *testing.T, cliOsConfiguration
 	if testutil.AssertNilEquality(test_framework, "Esxi Configuration", cliOsConfigurationMap.Esxi, sdkOsConfigurationMap.Esxi) {
 		assertEqualOsConfigurationMapEsxi(test_framework, *cliOsConfigurationMap.Esxi, *sdkOsConfigurationMap.Esxi)
 	}
+
+	if testutil.AssertNilEquality(test_framework, "Esxi Configuration", cliOsConfigurationMap.Proxmox, sdkOsConfigurationMap.Proxmox) {
+		assertEqualOsConfigurationMapProxmox(test_framework, *cliOsConfigurationMap.Proxmox, *sdkOsConfigurationMap.Proxmox)
+	}
 }

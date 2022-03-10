@@ -47,6 +47,13 @@ runCommand="run pnapctl"
   assert_output "$outputHelpDelete"
 }
 
+@test "Deprovision help command" {
+  $runCommand deprovision
+
+  assert_success
+  assert_output "$outputHelpDeprovision"
+}
+
 @test "Patch help command" {
   $runCommand patch
   

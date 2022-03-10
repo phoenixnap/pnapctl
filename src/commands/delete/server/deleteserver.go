@@ -19,6 +19,7 @@ var DeleteServerCmd = &cobra.Command{
 	Args:         cobra.ExactArgs(1),
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
+	Deprecated:   "Use the deprovision command instead: pnapctl deprovision server <SERVER_ID> --filename <FILE_PATH>",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		result, httpResponse, err := bmcapi.Client.ServerDelete(args[0])
 		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
