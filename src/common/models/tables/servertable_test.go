@@ -79,7 +79,7 @@ func assertServerPrivateNetworksEqual(test_framework *testing.T, privateNetwork 
 	}
 
 	assert.Equal(test_framework, privateNetwork.Id, table.Id)
-	assert.Equal(test_framework, DerefStringList(privateNetwork.Ips), table.Ips)
+	assert.Equal(test_framework, privateNetwork.Ips, table.Ips)
 	assert.Equal(test_framework, Dhcp, table.Dhcp)
 	assert.Equal(test_framework, DerefString(privateNetwork.StatusDescription), table.StatusDescription)
 }

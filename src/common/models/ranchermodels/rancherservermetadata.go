@@ -32,7 +32,7 @@ func RancherServerMetadataFromSdk(metadata *ranchersdk.ClusterMetadata) *Rancher
 	}
 }
 
-func RancherServerMetadataToTableString(metadata *ranchersdk.RancherServerMetadata) string {
+func RancherServerMetadataToTableString(metadata *ranchersdk.ClusterMetadata) string {
 	if metadata == nil {
 		return ""
 	}

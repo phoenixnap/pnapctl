@@ -52,14 +52,14 @@ func NodePoolFromSdk(nodepool ranchersdk.NodePool) NodePool {
 	}
 }
 
-func NodePoolsToTableStrings(pools *[]ranchersdk.NodePool) []string {
+func NodePoolsToTableStrings(pools []ranchersdk.NodePool) []string {
 	if pools == nil {
 		return []string{}
 	}
 
 	var strings = []string{}
 
-	for _, pool := range *pools {
+	for _, pool := range pools {
 		strings = append(strings, fmt.Sprintf("%s - %d nodes", *pool.Name, *pool.NodeCount))
 	}
 

@@ -102,7 +102,7 @@ func ToServerPrivateNetworkTable(privateNetwork bmcapisdk.ServerPrivateNetwork) 
 
 	return ServerPrivateNetworkTable{
 		Id:                privateNetwork.Id,
-		Ips:               DerefStringList(privateNetwork.Ips),
+		Ips:               privateNetwork.Ips,
 		Dhcp:              Dhcp,
 		StatusDescription: DerefString(privateNetwork.StatusDescription),
 	}

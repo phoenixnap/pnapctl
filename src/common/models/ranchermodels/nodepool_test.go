@@ -45,7 +45,7 @@ func TestNodePoolsToTableStrings_nilPools(test_framework *testing.T) {
 }
 
 func TestNodePoolsToTableStrings_emptyPoolList(test_framework *testing.T) {
-	result := NodePoolsToTableStrings(&[]ranchersdk.NodePool{})
+	result := NodePoolsToTableStrings([]ranchersdk.NodePool{})
 	assert.Equal(test_framework, []string{}, result)
 }
 
@@ -57,7 +57,7 @@ func TestNodePoolsToTableStrings_withPoolList(test_framework *testing.T) {
 		sdkModel_1, sdkModel_2,
 	}
 
-	result := NodePoolsToTableStrings(&list)
+	result := NodePoolsToTableStrings(list)
 
 	assert.Equal(test_framework, len(result), 2)
 	assert.Equal(test_framework, result[0], generateNodePoolResultString(sdkModel_1))
