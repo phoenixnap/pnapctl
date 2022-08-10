@@ -70,7 +70,7 @@ func TestRancherServerMetadataToTableString_fullMetadata(test_framework *testing
 	assert.Equal(test_framework, expectedResult, result)
 }
 
-func assertEqualRancherServerMetadata(test_framework *testing.T, cliRancherServerMetadata RancherServerMetadata, sdkRancherServerMetadata ranchersdk.RancherServerMetadata) {
+func assertEqualRancherServerMetadata(test_framework *testing.T, cliRancherServerMetadata RancherServerMetadata, sdkRancherServerMetadata ranchersdk.ClusterMetadata) {
 	assert.Equal(test_framework, cliRancherServerMetadata.Url, sdkRancherServerMetadata.Url)
 	assert.Equal(test_framework, cliRancherServerMetadata.Username, sdkRancherServerMetadata.Username)
 	assert.Equal(test_framework, cliRancherServerMetadata.Password, sdkRancherServerMetadata.Password)

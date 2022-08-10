@@ -10,15 +10,15 @@ type RancherClusterCertificates struct {
 	CertificateKey *string `json:"certificateKey" yaml:"certificateKey"`
 }
 
-func (r RancherClusterCertificates) toSdk() *ranchersdk.RancherClusterCertificates {
-	return &ranchersdk.RancherClusterCertificates{
+func (r RancherClusterCertificates) toSdk() *ranchersdk.RancherClusterConfigCertificates {
+	return &ranchersdk.RancherClusterConfigCertificates{
 		CaCertificate:  r.CaCertificate,
 		Certificate:    r.Certificate,
 		CertificateKey: r.CertificateKey,
 	}
 }
 
-func RancherClusterCertificatesFromSdk(certificates *ranchersdk.RancherClusterCertificates) *RancherClusterCertificates {
+func RancherClusterCertificatesFromSdk(certificates *ranchersdk.RancherClusterConfigCertificates) *RancherClusterCertificates {
 	if certificates == nil {
 		return nil
 	}

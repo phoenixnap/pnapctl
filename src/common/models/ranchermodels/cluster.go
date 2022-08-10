@@ -11,24 +11,24 @@ type Cluster struct {
 	Description           *string                `json:"description" yaml:"description"`
 	Location              string                 `json:"location" yaml:"location"`
 	InitialClusterVersion *string                `json:"initialClusterVersion" yaml:"initialClusterVersion"`
-	NodePools             *[]NodePool            `json:"nodePools" yaml:"nodePools"`
+	NodePools             []NodePool             `json:"nodePools" yaml:"nodePools"`
 	Configuration         *RancherClusterConfig  `json:"configuration" yaml:"configuration"`
 	Metadata              *RancherServerMetadata `json:"metadata" yaml:"metadata"`
 	StatusDescription     *string                `json:"statusDescription" yaml:"statusDescription"`
 }
 
 func (cluster Cluster) ToSdk() ranchersdk.Cluster {
-	var nodepools *[]ranchersdk.NodePool
+	var nodepools []ranchersdk.NodePool
 
 	if cluster.NodePools != nil {
-		nodepools = &[]ranchersdk.NodePool{}
-		for _, nodepool := range *cluster.NodePools {
-			*nodepools = append(*nodepools, *nodepool.ToSdk())
+		nodepools = []ranchersdk.NodePool{}
+		for _, nodepool := range cluster.NodePools {
+			nodepools = append(nodepools, *nodepool.ToSdk())
 		}
 	}
 
-	var configuration *ranchersdk.RancherClusterConfig
-	var metadata *ranchersdk.RancherServerMetadata
+	var configuration *ranchersdk.ClusterConfiguration
+	var metadata *ranchersdk.ClusterMetadata
 
 	if cluster.Configuration != nil {
 		configuration = cluster.Configuration.ToSdk()
@@ -52,12 +52,12 @@ func (cluster Cluster) ToSdk() ranchersdk.Cluster {
 }
 
 func ClusterFromSdk(cluster ranchersdk.Cluster) Cluster {
-	var nodepools *[]NodePool
+	var nodepools []NodePool
 
 	if cluster.NodePools != nil {
-		nodepools = &[]NodePool{}
-		for _, nodepool := range *cluster.NodePools {
-			*nodepools = append(*nodepools, NodePoolFromSdk(nodepool))
+		nodepools = []NodePool{}
+		for _, nodepool := range cluster.NodePools {
+			nodepools = append(nodepools, NodePoolFromSdk(nodepool))
 		}
 	}
 

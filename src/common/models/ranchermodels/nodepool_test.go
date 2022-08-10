@@ -18,7 +18,7 @@ func TestNodePoolToSdk(test_framework *testing.T) {
 
 func TestFullNodePoolToSdk(test_framework *testing.T) {
 	nodePool := GenerateNodePoolCli()
-	nodePool.Nodes = &[]Node{GenerateNodeCli()}
+	nodePool.Nodes = []Node{GenerateNodeCli()}
 	sdkNodePool := *nodePool.ToSdk()
 
 	assertEqualNodePool(test_framework, nodePool, sdkNodePool)
@@ -33,7 +33,7 @@ func TestNodePoolFromSdk(test_framework *testing.T) {
 
 func TestFullNodePoolFromSdk(test_framework *testing.T) {
 	sdkNodePool := GenerateNodePoolSdk()
-	sdkNodePool.Nodes = &[]ranchersdk.Node{GenerateNodeSdk()}
+	sdkNodePool.Nodes = []ranchersdk.Node{GenerateNodeSdk()}
 	nodePool := NodePoolFromSdk(sdkNodePool)
 
 	assertEqualNodePool(test_framework, nodePool, sdkNodePool)
@@ -74,9 +74,9 @@ func assertEqualNodePool(test_framework *testing.T, cliNodePool NodePool, sdkNod
 	}
 
 	if testutil.AssertNilEquality(test_framework, "Nodes", cliNodePool.Nodes, sdkNodePool.Nodes) {
-		assert.Equal(test_framework, len(*cliNodePool.Nodes), len(*sdkNodePool.Nodes))
-		for i := range *cliNodePool.Nodes {
-			assertEqualNode(test_framework, (*cliNodePool.Nodes)[i], (*sdkNodePool.Nodes)[i])
+		assert.Equal(test_framework, len(cliNodePool.Nodes), len(sdkNodePool.Nodes))
+		for i := range cliNodePool.Nodes {
+			assertEqualNode(test_framework, (cliNodePool.Nodes)[i], (sdkNodePool.Nodes)[i])
 		}
 	}
 

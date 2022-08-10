@@ -12,15 +12,15 @@ type RancherServerMetadata struct {
 	Password *string `json:"password" yaml:"password"`
 }
 
-func (r RancherServerMetadata) ToSdk() *ranchersdk.RancherServerMetadata {
-	return &ranchersdk.RancherServerMetadata{
+func (r RancherServerMetadata) ToSdk() *ranchersdk.ClusterMetadata {
+	return &ranchersdk.ClusterMetadata{
 		Url:      r.Url,
 		Username: r.Username,
 		Password: r.Password,
 	}
 }
 
-func RancherServerMetadataFromSdk(metadata *ranchersdk.RancherServerMetadata) *RancherServerMetadata {
+func RancherServerMetadataFromSdk(metadata *ranchersdk.ClusterMetadata) *RancherServerMetadata {
 	if metadata == nil {
 		return nil
 	}
