@@ -1,5 +1,5 @@
 # Build automation directives.
-# Content of this file is heavely inspired by https://github.com/vincentbernat/hellogopher
+# Content of this file is heavily inspired by https://github.com/vincentbernat/hellogopher
 
 MODULE             = $(shell env GO111MODULE=on $(GO) list -m)
 CLI_NAME           = pnapctl
