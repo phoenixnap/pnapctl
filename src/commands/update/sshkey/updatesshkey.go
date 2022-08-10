@@ -44,7 +44,7 @@ name: default ssh key`,
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintSshKeyResponse(response, Full, commandName)
+			return printer.PrintSshKeyResponse(*response, Full, commandName)
 		}
 	},
 }

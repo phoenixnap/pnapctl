@@ -1,8 +1,9 @@
 package ip_blocks
 
 import (
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
 	netHttp "net/http"
+
+	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
 	"phoenixnap.com/pnapctl/common/client/ip"
 
 	"github.com/spf13/cobra"
@@ -44,7 +45,7 @@ pnapctl get ip-block <IP_BLOCK_ID> [--output <OUTPUT_TYPE>]`,
 func getIpBlocks(ipBlockId string) error {
 	var httpResponse *netHttp.Response
 	var err error
-	var ipBlock ipapisdk.IpBlock
+	var ipBlock *ipapisdk.IpBlock
 	var ipBlocks []ipapisdk.IpBlock
 
 	if ipBlockId == "" {
@@ -61,7 +62,7 @@ func getIpBlocks(ipBlockId string) error {
 		if ipBlockId == "" {
 			return printer.PrintIpBlockListResponse(ipBlocks, commandName)
 		} else {
-			return printer.PrintIpBlockResponse(ipBlock, commandName)
+			return printer.PrintIpBlockResponse(*ipBlock, commandName)
 		}
 	}
 }

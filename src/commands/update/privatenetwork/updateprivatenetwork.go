@@ -44,7 +44,7 @@ locationDefault: true`,
 		} else if err != nil {
 			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 		} else {
-			return printer.PrintPrivateNetworkResponse(response, commandName)
+			return printer.PrintPrivateNetworkResponse(*response, commandName)
 		}
 	},
 }

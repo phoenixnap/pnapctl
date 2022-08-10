@@ -42,7 +42,7 @@ location: PHX`,
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintIpBlockResponse(response, commandName)
+			return printer.PrintIpBlockResponse(*response, commandName)
 		}
 	},
 }

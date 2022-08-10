@@ -44,7 +44,7 @@ pricingModel: ONE_MONTH_RESERVATION`,
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintServerResponse(serverResponse, Full, commandName)
+			return printer.PrintServerResponse(*serverResponse, Full, commandName)
 		}
 	},
 }

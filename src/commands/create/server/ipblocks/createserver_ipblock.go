@@ -43,7 +43,7 @@ vlanId: 11`,
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintServerIpBlock(response, commandName)
+			return printer.PrintServerIpBlock(*response, commandName)
 		}
 	},
 }

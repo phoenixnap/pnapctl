@@ -45,7 +45,7 @@ pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
 func getClusters(clusterID string) error {
 	var httpResponse *netHttp.Response
 	var err error
-	var cluster ranchersdk.Cluster
+	var cluster *ranchersdk.Cluster
 	var clusters []ranchersdk.Cluster
 
 	if clusterID == "" {
@@ -62,7 +62,7 @@ func getClusters(clusterID string) error {
 		if clusterID == "" {
 			return printer.PrintClusterListResponse(clusters, commandName)
 		} else {
-			return printer.PrintClusterResponse(cluster, commandName)
+			return printer.PrintClusterResponse(*cluster, commandName)
 		}
 	}
 }

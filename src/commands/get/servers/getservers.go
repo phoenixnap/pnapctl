@@ -46,7 +46,7 @@ pnapctl get servers <SERVER_ID> [--full] [--output <OUTPUT_TYPE>]`,
 func getServers(serverID string) error {
 	var httpResponse *netHttp.Response
 	var err error
-	var server bmcapisdk.Server
+	var server *bmcapisdk.Server
 	var servers []bmcapisdk.Server
 
 	if serverID == "" {
@@ -63,7 +63,7 @@ func getServers(serverID string) error {
 		if serverID == "" {
 			return printer.PrintServerListResponse(servers, Full, commandName)
 		} else {
-			return printer.PrintServerResponse(server, Full, commandName)
+			return printer.PrintServerResponse(*server, Full, commandName)
 		}
 	}
 }

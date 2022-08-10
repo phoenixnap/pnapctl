@@ -48,7 +48,7 @@ pnapctl tag server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintServerResponse(serverResponse, Full, commandName)
+			return printer.PrintServerResponse(*serverResponse, Full, commandName)
 		}
 	},
 }
@@ -60,11 +60,11 @@ func init() {
 	TagServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 }
 
-func performTagRequest(serverId string, tagRequests *[]bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error) {
+func performTagRequest(serverId string, tagRequests []bmcapisdk.TagAssignmentRequest) (*bmcapisdk.Server, *http.Response, error) {
 	// An empty array must be used as a request body if file is empty
-	if len(*tagRequests) < 1 {
+	if len(tagRequests) < 1 {
 		return bmcapi.Client.ServerTag(serverId, []bmcapisdk.TagAssignmentRequest{})
 	} else {
-		return bmcapi.Client.ServerTag(serverId, *tagRequests)
+		return bmcapi.Client.ServerTag(serverId, tagRequests)
 	}
 }
