@@ -15,9 +15,9 @@ var Client NetworkSdkClient
 type NetworkSdkClient interface {
 	// Private Networks
 	PrivateNetworksGet(location string) ([]networkapisdk.PrivateNetwork, *http.Response, error)
-	PrivateNetworkGetById(networkId string) (networkapisdk.PrivateNetwork, *http.Response, error)
-	PrivateNetworksPost(privateNetworkCreate networkapisdk.PrivateNetworkCreate) (networkapisdk.PrivateNetwork, *http.Response, error)
-	PrivateNetworkPut(networkId string, privateNetworkUpdate networkapisdk.PrivateNetworkModify) (networkapisdk.PrivateNetwork, *http.Response, error)
+	PrivateNetworkGetById(networkId string) (*networkapisdk.PrivateNetwork, *http.Response, error)
+	PrivateNetworksPost(privateNetworkCreate networkapisdk.PrivateNetworkCreate) (*networkapisdk.PrivateNetwork, *http.Response, error)
+	PrivateNetworkPut(networkId string, privateNetworkUpdate networkapisdk.PrivateNetworkModify) (*networkapisdk.PrivateNetwork, *http.Response, error)
 	PrivateNetworkDelete(networkId string) (*http.Response, error)
 }
 
@@ -68,15 +68,15 @@ func (m MainClient) PrivateNetworksGet(location string) ([]networkapisdk.Private
 	return request.Execute()
 }
 
-func (m MainClient) PrivateNetworkGetById(networkId string) (networkapisdk.PrivateNetwork, *http.Response, error) {
+func (m MainClient) PrivateNetworkGetById(networkId string) (*networkapisdk.PrivateNetwork, *http.Response, error) {
 	return m.PrivateNetworksClient.PrivateNetworksNetworkIdGet(context.Background(), networkId).Execute()
 }
 
-func (m MainClient) PrivateNetworksPost(privateNetworkCreate networkapisdk.PrivateNetworkCreate) (networkapisdk.PrivateNetwork, *http.Response, error) {
+func (m MainClient) PrivateNetworksPost(privateNetworkCreate networkapisdk.PrivateNetworkCreate) (*networkapisdk.PrivateNetwork, *http.Response, error) {
 	return m.PrivateNetworksClient.PrivateNetworksPost(context.Background()).PrivateNetworkCreate(privateNetworkCreate).Execute()
 }
 
-func (m MainClient) PrivateNetworkPut(networkId string, privateNetworkUpdate networkapisdk.PrivateNetworkModify) (networkapisdk.PrivateNetwork, *http.Response, error) {
+func (m MainClient) PrivateNetworkPut(networkId string, privateNetworkUpdate networkapisdk.PrivateNetworkModify) (*networkapisdk.PrivateNetwork, *http.Response, error) {
 	return m.PrivateNetworksClient.PrivateNetworksNetworkIdPut(context.Background(), networkId).PrivateNetworkModify(privateNetworkUpdate).Execute()
 }
 

@@ -13,11 +13,11 @@ import (
 var Client TagSdkClient
 
 type TagSdkClient interface {
-	TagPost(tagCreate tagapisdk.TagCreate) (tagapisdk.Tag, *http.Response, error)
+	TagPost(tagCreate tagapisdk.TagCreate) (*tagapisdk.Tag, *http.Response, error)
 	TagsGet(name string) ([]tagapisdk.Tag, *http.Response, error)
-	TagGetById(tagId string) (tagapisdk.Tag, *http.Response, error)
-	TagDelete(tagId string) (tagapisdk.DeleteResult, *http.Response, error)
-	TagPatch(tagId string, tagUpdate tagapisdk.TagUpdate) (tagapisdk.Tag, *http.Response, error)
+	TagGetById(tagId string) (*tagapisdk.Tag, *http.Response, error)
+	TagDelete(tagId string) (*tagapisdk.DeleteResult, *http.Response, error)
+	TagPatch(tagId string, tagUpdate tagapisdk.TagUpdate) (*tagapisdk.Tag, *http.Response, error)
 }
 
 type MainClient struct {
@@ -57,7 +57,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	}
 }
 
-func (m MainClient) TagPost(tagCreate tagapisdk.TagCreate) (tagapisdk.Tag, *http.Response, error) {
+func (m MainClient) TagPost(tagCreate tagapisdk.TagCreate) (*tagapisdk.Tag, *http.Response, error) {
 	return m.TagSdkClient.TagsPost(context.Background()).TagCreate(tagCreate).Execute()
 }
 
@@ -71,14 +71,14 @@ func (m MainClient) TagsGet(name string) ([]tagapisdk.Tag, *http.Response, error
 	return request.Execute()
 }
 
-func (m MainClient) TagGetById(tagId string) (tagapisdk.Tag, *http.Response, error) {
+func (m MainClient) TagGetById(tagId string) (*tagapisdk.Tag, *http.Response, error) {
 	return m.TagSdkClient.TagsTagIdGet(context.Background(), tagId).Execute()
 }
 
-func (m MainClient) TagDelete(tagId string) (tagapisdk.DeleteResult, *http.Response, error) {
+func (m MainClient) TagDelete(tagId string) (*tagapisdk.DeleteResult, *http.Response, error) {
 	return m.TagSdkClient.TagsTagIdDelete(context.Background(), tagId).Execute()
 }
 
-func (m MainClient) TagPatch(tagId string, tagUpdate tagapisdk.TagUpdate) (tagapisdk.Tag, *http.Response, error) {
+func (m MainClient) TagPatch(tagId string, tagUpdate tagapisdk.TagUpdate) (*tagapisdk.Tag, *http.Response, error) {
 	return m.TagSdkClient.TagsTagIdPatch(context.Background(), tagId).TagUpdate(tagUpdate).Execute()
 }
