@@ -3,8 +3,8 @@ package servermodels
 import bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 
 type IpBlocksConfiguration struct {
-	ConfigurationType *string          `yaml:"configurationType,omitempty" json:"configurationType,omitempty"`
-	IpBlocks          *[]ServerIpBlock `yaml:"ipBlocks,omitempty" json:"ipBlocks,omitempty"`
+	ConfigurationType *string         `yaml:"configurationType,omitempty" json:"configurationType,omitempty"`
+	IpBlocks          []ServerIpBlock `yaml:"ipBlocks,omitempty" json:"ipBlocks,omitempty"`
 }
 
 func (ipBlocksConfiguration *IpBlocksConfiguration) toSdk() *bmcapisdk.IpBlocksConfiguration {

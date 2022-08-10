@@ -19,7 +19,7 @@ func (tagAssignmentRequest TagAssignmentRequest) toSdk() bmcapisdk.TagAssignment
 	return tagAssignmentRequestSdk
 }
 
-func TagServerRequestFromFile(filename string, commandname string) (*[]bmcapisdk.TagAssignmentRequest, error) {
+func TagServerRequestFromFile(filename string, commandname string) ([]bmcapisdk.TagAssignmentRequest, error) {
 	files.ExpandPath(&filename)
 
 	data, err := files.ReadFile(filename, commandname)
@@ -40,7 +40,7 @@ func TagServerRequestFromFile(filename string, commandname string) (*[]bmcapisdk
 	return mapTagAssignmentRequestToSdk(&tagAssignmentRequests), nil
 }
 
-func mapTagAssignmentRequestToSdk(tagAssignmentRequest *[]TagAssignmentRequest) *[]bmcapisdk.TagAssignmentRequest {
+func mapTagAssignmentRequestToSdk(tagAssignmentRequest *[]TagAssignmentRequest) []bmcapisdk.TagAssignmentRequest {
 	if tagAssignmentRequest == nil {
 		return nil
 	}
@@ -51,5 +51,5 @@ func mapTagAssignmentRequestToSdk(tagAssignmentRequest *[]TagAssignmentRequest) 
 		tagAssignmentRequests = append(tagAssignmentRequests, tagAssignmentRequest.toSdk())
 	}
 
-	return &tagAssignmentRequests
+	return tagAssignmentRequests
 }

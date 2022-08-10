@@ -16,33 +16,33 @@ func (serverIpBlock ServerIpBlock) ToSdk() bmcapisdk.ServerIpBlock {
 	return serverIpBlockSdk
 }
 
-func mapServerIpBlocksToSdk(serverIpBlocks *[]ServerIpBlock) *[]bmcapisdk.ServerIpBlock {
+func mapServerIpBlocksToSdk(serverIpBlocks []ServerIpBlock) []bmcapisdk.ServerIpBlock {
 	if serverIpBlocks == nil {
 		return nil
 	}
 
 	var serverIpBlocksSdk []bmcapisdk.ServerIpBlock
 
-	for _, serverIpBlock := range *serverIpBlocks {
+	for _, serverIpBlock := range serverIpBlocks {
 		serverIpBlocksSdk = append(serverIpBlocksSdk, serverIpBlock.ToSdk())
 	}
 
-	return &serverIpBlocksSdk
+	return serverIpBlocksSdk
 }
 
-func mapServerIpBlocksToCLI(serverIpBlocks *[]bmcapisdk.ServerIpBlock) *[]ServerIpBlock {
+func mapServerIpBlocksToCLI(serverIpBlocks []bmcapisdk.ServerIpBlock) []ServerIpBlock {
 	if serverIpBlocks == nil {
 		return nil
 	}
 
 	var serverIpBlocksCLI []ServerIpBlock
 
-	for _, serverIpBlock := range *serverIpBlocks {
+	for _, serverIpBlock := range serverIpBlocks {
 		serverIpBlocksCLI = append(serverIpBlocksCLI, ServerIpBlock{
 			Id:     serverIpBlock.Id,
 			VlanId: serverIpBlock.VlanId,
 		})
 	}
 
-	return &serverIpBlocksCLI
+	return serverIpBlocksCLI
 }

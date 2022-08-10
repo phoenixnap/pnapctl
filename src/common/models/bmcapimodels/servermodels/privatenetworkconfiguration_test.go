@@ -58,10 +58,10 @@ func assertEqualPrivateNetworkConfiguration(test_framework *testing.T, cliPrivat
 	assert.Equal(test_framework, cliPrivateNetworkConfiguration.ConfigurationType, sdkPrivateNetworkConfiguration.ConfigurationType)
 
 	if testutil.AssertNilEquality(test_framework, "Private Network Configuration's Private Networks", cliPrivateNetworkConfiguration.PrivateNetworks, sdkPrivateNetworkConfiguration.PrivateNetworks) {
-		assert.Equal(test_framework, len(*cliPrivateNetworkConfiguration.PrivateNetworks), len(*sdkPrivateNetworkConfiguration.PrivateNetworks))
+		assert.Equal(test_framework, len(cliPrivateNetworkConfiguration.PrivateNetworks), len(sdkPrivateNetworkConfiguration.PrivateNetworks))
 
-		for i := range *cliPrivateNetworkConfiguration.PrivateNetworks {
-			assertEqualServerPrivateNetwork(test_framework, (*cliPrivateNetworkConfiguration.PrivateNetworks)[i], (*sdkPrivateNetworkConfiguration.PrivateNetworks)[i])
+		for i := range cliPrivateNetworkConfiguration.PrivateNetworks {
+			assertEqualServerPrivateNetwork(test_framework, (cliPrivateNetworkConfiguration.PrivateNetworks)[i], (sdkPrivateNetworkConfiguration.PrivateNetworks)[i])
 		}
 	}
 }

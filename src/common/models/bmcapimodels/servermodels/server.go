@@ -27,7 +27,7 @@ type LongServer struct {
 	Password             *string               `yaml:"password,omitempty" json:"password,omitempty"`
 	NetworkType          *string               `yaml:"networkType,omitempty" json:"networkType,omitempty"`
 	ClusterId            *string               `yaml:"clusterId,omitempty" json:"clusterId,omitempty"`
-	Tags                 *[]TagAssignment      `yaml:"tags,omitempty" json:"tags,omitempty"`
+	Tags                 []TagAssignment       `yaml:"tags,omitempty" json:"tags,omitempty"`
 	ProvisionedOn        *time.Time            `yaml:"provisionedOn,omitempty" json:"provisionedOn,omitempty"`
 	OsConfiguration      *OsConfiguration      `yaml:"osConfiguration,omitempty" json:"osConfiguration,omitempty"`
 	NetworkConfiguration *NetworkConfiguration `yaml:"networkConfiguration,omitempty" json:"networkConfiguration,omitempty"`

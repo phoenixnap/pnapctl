@@ -36,14 +36,14 @@ func GenerateServerSdk() bmcapisdk.Server {
 		CpuFrequency:         rand.Float32(),
 		Ram:                  testutil.RandSeq(10),
 		Storage:              testutil.RandSeq(10),
-		PrivateIpAddresses:   *testutil.RandListStringPointer(10),
-		PublicIpAddresses:    *testutil.RandListStringPointer(10),
+		PrivateIpAddresses:   testutil.RandListStringPointer(10),
+		PublicIpAddresses:    testutil.RandListStringPointer(10),
 		ReservationId:        testutil.RandSeqPointer(10),
 		PricingModel:         testutil.RandSeq(10),
 		Password:             testutil.RandSeqPointer(10),
 		NetworkType:          testutil.RandSeqPointer(10),
 		ClusterId:            testutil.RandSeqPointer(10),
-		Tags:                 &tagAssignments,
+		Tags:                 tagAssignments,
 		ProvisionedOn:        &provisionedOn,
 		OsConfiguration:      &osConfiguration,
 		NetworkConfiguration: networkConfiguration,
@@ -212,7 +212,7 @@ func GeneratePrivateNetworkConfigurationCli() PrivateNetworkConfiguration {
 	return PrivateNetworkConfiguration{
 		GatewayAddress:    testutil.RandSeqPointer(10),
 		ConfigurationType: testutil.RandSeqPointer(10),
-		PrivateNetworks:   &serverPrivateNetworks,
+		PrivateNetworks:   serverPrivateNetworks,
 	}
 }
 
@@ -221,7 +221,7 @@ func GeneratePrivateNetworkConfigurationSdk() bmcapisdk.PrivateNetworkConfigurat
 	return bmcapisdk.PrivateNetworkConfiguration{
 		GatewayAddress:    testutil.RandSeqPointer(10),
 		ConfigurationType: testutil.RandSeqPointer(10),
-		PrivateNetworks:   &serverPrivateNetworks,
+		PrivateNetworks:   serverPrivateNetworks,
 	}
 }
 
@@ -329,20 +329,20 @@ func GenerateServerIpBlockSdk() bmcapisdk.ServerIpBlock {
 	}
 }
 
-func GenerateServerIpBlockListCli(n int) *[]ServerIpBlock {
+func GenerateServerIpBlockListCli(n int) []ServerIpBlock {
 	var list []ServerIpBlock
 	for i := 0; i < n; i++ {
 		list = append(list, GenerateServerIpBlockCli())
 	}
-	return &list
+	return list
 }
 
-func GenerateServerIpBlockListSdk(n int) *[]bmcapisdk.ServerIpBlock {
+func GenerateServerIpBlockListSdk(n int) []bmcapisdk.ServerIpBlock {
 	var list []bmcapisdk.ServerIpBlock
 	for i := 0; i < n; i++ {
 		list = append(list, GenerateServerIpBlockSdk())
 	}
-	return &list
+	return list
 }
 
 func GenerateIpBlocksConfigurationCli() *IpBlocksConfiguration {

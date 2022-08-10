@@ -12,8 +12,8 @@ type ServerCreate struct {
 	Type                  string                  `yaml:"type" json:"type"`
 	Location              string                  `yaml:"location" json:"location"`
 	InstallDefaultSshKeys *bool                   `yaml:"installDefaultSshKeys,omitempty" json:"installDefaultSshKeys,omitempty"`
-	SshKeys               *[]string               `yaml:"sshKeys,omitempty" json:"sshKeys,omitempty"`
-	SshKeyIds             *[]string               `yaml:"sshKeyIds,omitempty" json:"sshKeyIds,omitempty"`
+	SshKeys               []string                `yaml:"sshKeys,omitempty" json:"sshKeys,omitempty"`
+	SshKeyIds             []string                `yaml:"sshKeyIds,omitempty" json:"sshKeyIds,omitempty"`
 	ReservationId         *string                 `yaml:"reservationId,omitempty" json:"reservationId,omitempty"`
 	PricingModel          *string                 `yaml:"pricingModel,omitempty" json:"pricingModel,omitempty"`
 	NetworkType           *string                 `yaml:"networkType,omitempty" json:"networkType,omitempty"`

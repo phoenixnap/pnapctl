@@ -43,8 +43,8 @@ func TestServerToFullServer(test_framework *testing.T) {
 	assert.Equal(test_framework, fullServer.NetworkType, serverSdk.NetworkType)
 	assert.Equal(test_framework, fullServer.ClusterId, serverSdk.ClusterId)
 
-	tagAssignments := *serverSdk.Tags
-	for i, tagAssignment := range *fullServer.Tags {
+	tagAssignments := serverSdk.Tags
+	for i, tagAssignment := range fullServer.Tags {
 		assertEqualTagAssignment(test_framework, tagAssignment, tagAssignments[i])
 	}
 

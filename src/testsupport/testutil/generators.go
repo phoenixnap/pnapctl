@@ -17,12 +17,12 @@ func RandSeqPointer(n int) *string {
 	return &random
 }
 
-func RandListStringPointer(n int) *[]string {
+func RandListStringPointer(n int) []string {
 	b := []string{}
 	for i := range b {
 		b[i] = RandSeq(10)
 	}
-	return &b
+	return b
 }
 
 func RanNumberPointer() *int32 {

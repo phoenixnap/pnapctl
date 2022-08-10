@@ -5,9 +5,9 @@ import (
 )
 
 type PrivateNetworkConfiguration struct {
-	GatewayAddress    *string                 `yaml:"gatewayAddress" json:"gatewayAddress"`
-	ConfigurationType *string                 `yaml:"configurationType" json:"configurationType"`
-	PrivateNetworks   *[]ServerPrivateNetwork `yaml:"privateNetworks" json:"privateNetworks"`
+	GatewayAddress    *string                `yaml:"gatewayAddress" json:"gatewayAddress"`
+	ConfigurationType *string                `yaml:"configurationType" json:"configurationType"`
+	PrivateNetworks   []ServerPrivateNetwork `yaml:"privateNetworks" json:"privateNetworks"`
 }
 
 func (privateNetConf *PrivateNetworkConfiguration) toSdk() *bmcapisdk.PrivateNetworkConfiguration {

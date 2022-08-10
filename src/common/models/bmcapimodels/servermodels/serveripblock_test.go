@@ -1,9 +1,10 @@
 package servermodels
 
 import (
+	"testing"
+
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 // tests
@@ -36,10 +37,10 @@ func TestMapServerIpBlocksToCLI(test_framework *testing.T) {
 	assertServerIpBlockListEquality(test_framework, cliModels, sdkModels)
 }
 
-func assertServerIpBlockListEquality(test_framework *testing.T, cliModels *[]ServerIpBlock, sdkModels *[]bmcapisdk.ServerIpBlock) {
-	assert.Equal(test_framework, len(*sdkModels), len(*cliModels))
-	for i, cliElement := range *cliModels {
-		assert.Equal(test_framework, cliElement.Id, (*sdkModels)[i].Id)
-		assert.Equal(test_framework, cliElement.VlanId, (*sdkModels)[i].VlanId)
+func assertServerIpBlockListEquality(test_framework *testing.T, cliModels []ServerIpBlock, sdkModels []bmcapisdk.ServerIpBlock) {
+	assert.Equal(test_framework, len(sdkModels), len(cliModels))
+	for i, cliElement := range cliModels {
+		assert.Equal(test_framework, cliElement.Id, (sdkModels)[i].Id)
+		assert.Equal(test_framework, cliElement.VlanId, (sdkModels)[i].VlanId)
 	}
 }

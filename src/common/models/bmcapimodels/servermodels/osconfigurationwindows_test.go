@@ -58,10 +58,10 @@ func TestOsConfigurationWindowsFromSdkNilRdpAllowedIps(test_framework *testing.T
 func assertEqualOsConfigurationWindows(test_framework *testing.T, cliOsConfigurationWindows OsConfigurationWindows, sdkOsConfigurationWindows bmcapisdk.OsConfigurationWindows) {
 
 	if testutil.AssertNilEquality(test_framework, "RDP Allowed IPs", cliOsConfigurationWindows.RdpAllowedIps, sdkOsConfigurationWindows.RdpAllowedIps) {
-		assert.Equal(test_framework, len(*cliOsConfigurationWindows.RdpAllowedIps), len(*sdkOsConfigurationWindows.RdpAllowedIps))
+		assert.Equal(test_framework, len(cliOsConfigurationWindows.RdpAllowedIps), len(sdkOsConfigurationWindows.RdpAllowedIps))
 
-		for i := range *cliOsConfigurationWindows.RdpAllowedIps {
-			assert.Equal(test_framework, (*cliOsConfigurationWindows.RdpAllowedIps)[i], (*sdkOsConfigurationWindows.RdpAllowedIps)[i])
+		for i := range cliOsConfigurationWindows.RdpAllowedIps {
+			assert.Equal(test_framework, (cliOsConfigurationWindows.RdpAllowedIps)[i], (sdkOsConfigurationWindows.RdpAllowedIps)[i])
 		}
 	}
 }

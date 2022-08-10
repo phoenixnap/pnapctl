@@ -14,14 +14,14 @@ type TagAssignment struct {
 	CreatedBy    *string `yaml:"createdBy,omitempty" json:"createdBy,omitempty"`
 }
 
-func TagAssignmentListFromSdk(tagAssignment *[]bmcapisdk.TagAssignment) *[]TagAssignment {
+func TagAssignmentListFromSdk(tagAssignment []bmcapisdk.TagAssignment) []TagAssignment {
 	if tagAssignment == nil {
 		return nil
 	}
 
 	var tagAssignments []TagAssignment
 
-	for _, bmcTagAssignment := range *tagAssignment {
+	for _, bmcTagAssignment := range tagAssignment {
 		mappedTagAssignment := &TagAssignment{
 			Id:           bmcTagAssignment.Id,
 			Name:         bmcTagAssignment.Name,
@@ -33,7 +33,7 @@ func TagAssignmentListFromSdk(tagAssignment *[]bmcapisdk.TagAssignment) *[]TagAs
 		tagAssignments = append(tagAssignments, *mappedTagAssignment)
 	}
 
-	return &tagAssignments
+	return tagAssignments
 }
 
 func (t TagAssignment) toTableString() string {
@@ -47,13 +47,13 @@ func (t TagAssignment) toTableString() string {
 	return fmt.Sprintf("(%s) %s%s", t.Id, t.Name, tagValue)
 }
 
-func TagsToTableStrings(tags *[]bmcapisdk.TagAssignment) []string {
+func TagsToTableStrings(tags []bmcapisdk.TagAssignment) []string {
 	var tagStrings []string
 	if tags == nil {
 		tagStrings = []string{}
 	} else {
 		tagDetails := TagAssignmentListFromSdk(tags)
-		for _, tag := range *tagDetails {
+		for _, tag := range tagDetails {
 			tagStrings = append(tagStrings, tag.toTableString())
 		}
 	}

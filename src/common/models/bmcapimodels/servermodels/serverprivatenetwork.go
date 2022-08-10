@@ -6,24 +6,24 @@ import (
 )
 
 type ServerPrivateNetwork struct {
-	Id                string    `yaml:"id,omitempty" json:"id,omitempty"`
-	Ips               *[]string `yaml:"ips,omitempty" json:"ips,omitempty"`
-	Dhcp              *bool     `yaml:"dhcp,omitempty" json:"dhcp,omitempty"`
-	StatusDescription *string   `yaml:"statusDescription,omitempty" json:"statusDescription,omitempty"`
+	Id                string   `yaml:"id,omitempty" json:"id,omitempty"`
+	Ips               []string `yaml:"ips,omitempty" json:"ips,omitempty"`
+	Dhcp              *bool    `yaml:"dhcp,omitempty" json:"dhcp,omitempty"`
+	StatusDescription *string  `yaml:"statusDescription,omitempty" json:"statusDescription,omitempty"`
 }
 
-func mapServerPrivateNetworkListToSdk(serverPrivateNetworks *[]ServerPrivateNetwork) *[]bmcapisdk.ServerPrivateNetwork {
+func mapServerPrivateNetworkListToSdk(serverPrivateNetworks []ServerPrivateNetwork) []bmcapisdk.ServerPrivateNetwork {
 	if serverPrivateNetworks == nil {
 		return nil
 	}
 
 	var bmcServerPrivateNetworks []bmcapisdk.ServerPrivateNetwork
 
-	for _, serverPrivateNetwork := range *serverPrivateNetworks {
+	for _, serverPrivateNetwork := range serverPrivateNetworks {
 		bmcServerPrivateNetworks = append(bmcServerPrivateNetworks, serverPrivateNetwork.toSdk())
 	}
 
-	return &bmcServerPrivateNetworks
+	return bmcServerPrivateNetworks
 }
 
 func (serverPrivateNetwork ServerPrivateNetwork) toSdk() bmcapisdk.ServerPrivateNetwork {
@@ -37,14 +37,14 @@ func (serverPrivateNetwork ServerPrivateNetwork) toSdk() bmcapisdk.ServerPrivate
 	return serverPrivateNetworkSdk
 }
 
-func serverPrivateNetworkListFromSdk(privateNetworks *[]bmcapisdk.ServerPrivateNetwork) *[]ServerPrivateNetwork {
+func serverPrivateNetworkListFromSdk(privateNetworks []bmcapisdk.ServerPrivateNetwork) []ServerPrivateNetwork {
 	if privateNetworks == nil {
 		return nil
 	}
 
 	var bmcServerPrivateNetworks []ServerPrivateNetwork
 
-	for _, bmcServerPrivateNetwork := range *privateNetworks {
+	for _, bmcServerPrivateNetwork := range privateNetworks {
 		bmcServerPrivateNetworks = append(bmcServerPrivateNetworks, ServerPrivateNetwork{
 			Id:                bmcServerPrivateNetwork.Id,
 			Ips:               bmcServerPrivateNetwork.Ips,
@@ -53,7 +53,7 @@ func serverPrivateNetworkListFromSdk(privateNetworks *[]bmcapisdk.ServerPrivateN
 		})
 	}
 
-	return &bmcServerPrivateNetworks
+	return bmcServerPrivateNetworks
 }
 
 func CreateServerPrivateNetworkFromFile(filename string, commandname string) (*bmcapisdk.ServerPrivateNetwork, error) {
