@@ -23,6 +23,7 @@ V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
 
+BIN                  = $(CURDIR)/bin
 ARTIFACT_FOLDER      = $(BUILD)
 ARTIFACT_DIST_FOLDER = $(ARTIFACT_FOLDER)/dist
 
@@ -43,6 +44,9 @@ $(BIN)/gox: PACKAGE = github.com/mitchellh/gox
 
 GO_JUNIT_REPORT = $(BIN)/go-junit-report
 $(BIN)/go-junit-report: PACKAGE = github.com/jstemmer/go-junit-report
+
+MOCKGEN = $(BIN)/mockgen
+$(BIN)/mockgen: PACKAGE = github.com/golang/mock/mockgen
 
 # Binaries
 
@@ -71,6 +75,10 @@ build-and-pack: ; @ ## Build cross compilation binaries ready for deployment and
 	make pack
 
 # Tests
+
+.PHONY: generate-mock
+generate-mock: $(MOCKGEN) ; $(info $(M) generating mock...) @ ## Generate mock using mockgen tool.
+	$Q $(MOCKGEN) --source=$(MOCK_SOURCE) --destination=$(MOCK_DESTINATION) --package=$(MOCK_PACKAGE)
 
 COVERAGE_MODE    = atomic
 COVERAGE_PROFILE = $(UNIT_TEST_RESULTS_DIR)/profile.out
