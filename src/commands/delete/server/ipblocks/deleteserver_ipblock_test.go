@@ -2,6 +2,8 @@ package ipblocks
 
 import (
 	"encoding/json"
+	"testing"
+
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
@@ -9,7 +11,6 @@ import (
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-	"testing"
 )
 
 const deleteResult = "The specified IP block is being removed from the server."

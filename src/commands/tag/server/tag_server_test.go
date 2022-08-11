@@ -44,7 +44,7 @@ func TestTagServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(server, WithResponse(200, WithBody(server)), nil).
+		Return(&server, WithResponse(200, WithBody(server)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -74,7 +74,7 @@ func TestTagServerEmptyBodySuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, []bmcapisdk.TagAssignmentRequest{}).
-		Return(server, WithResponse(200, WithBody(server)), nil).
+		Return(&server, WithResponse(200, WithBody(server)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -106,7 +106,7 @@ func TestTagServerSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(server, WithResponse(200, WithBody(server)), nil).
+		Return(&server, WithResponse(200, WithBody(server)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -204,7 +204,7 @@ func TestTagServerBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(bmcapisdk.Server{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -236,7 +236,7 @@ func TestTagServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(bmcapisdk.Server{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -268,7 +268,7 @@ func TestTagServerKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(bmcapisdk.Server{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

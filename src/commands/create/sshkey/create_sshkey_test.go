@@ -12,8 +12,6 @@ import (
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 )
 
 func TestCreateSshKeySuccessYAML(test_framework *testing.T) {
@@ -30,8 +28,8 @@ func TestCreateSshKeySuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(sshKey, WithResponse(201, WithBody(sshKey)), nil).
+		SshKeyPost(gomock.Eq(*sshKeyCreate)).
+		Return(&sshKey, WithResponse(201, WithBody(sshKey)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -62,8 +60,8 @@ func TestCreateSshKeySuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(sshKey, WithResponse(201, WithBody(sshKey)), nil).
+		SshKeyPost(gomock.Eq(*sshKeyCreate)).
+		Return(&sshKey, WithResponse(201, WithBody(sshKey)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -160,8 +158,8 @@ func TestCreateSshKeyBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(bmcapisdk.SshKey{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		SshKeyPost(gomock.Eq(*sshKeyCreate)).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -192,8 +190,8 @@ func TestCreateSshKeyClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(bmcapisdk.SshKey{}, nil, testutil.TestError).
+		SshKeyPost(gomock.Eq(*sshKeyCreate)).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -224,8 +222,8 @@ func TestCreateSshKeyKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(bmcapisdk.SshKey{}, nil, testutil.TestKeycloakError).
+		SshKeyPost(gomock.Eq(*sshKeyCreate)).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

@@ -32,9 +32,9 @@ func TestNilOsConfigurationToSdk(test_framework *testing.T) {
 
 func TestOsConfigurationFromSdk(test_framework *testing.T) {
 	sdkModel := GenerateOsConfigurationSdk()
-	cliModel := osConfigurationFromSdk(&sdkModel)
+	cliModel := osConfigurationFromSdk(sdkModel)
 
-	assertEqualOsConfiguration(test_framework, *cliModel, sdkModel)
+	assertEqualOsConfiguration(test_framework, *cliModel, *sdkModel)
 }
 
 func TestEmptyOsConfigurationFromSdk(test_framework *testing.T) {

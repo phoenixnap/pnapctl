@@ -12,8 +12,6 @@ import (
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-
-	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
 )
 
 func TestUpdatePrivateNetworkSuccessYAML(test_framework *testing.T) {
@@ -31,7 +29,7 @@ func TestUpdatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(*privateNetworkUpdate.ToSdk())).
-		Return(privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil).
+		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,7 +61,7 @@ func TestUpdatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(*privateNetworkUpdate.ToSdk())).
-		Return(privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil).
+		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -161,7 +159,7 @@ func TestUpdatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(*privateNetworkUpdate.ToSdk())).
-		Return(networksdk.PrivateNetwork{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -193,7 +191,7 @@ func TestUpdatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(*privateNetworkUpdate.ToSdk())).
-		Return(networksdk.PrivateNetwork{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -225,7 +223,7 @@ func TestUpdatePrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(*privateNetworkUpdate.ToSdk())).
-		Return(networksdk.PrivateNetwork{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

@@ -20,7 +20,6 @@ func GenerateServerListSdk(n int) []bmcapisdk.Server {
 func GenerateServerSdk() bmcapisdk.Server {
 	provisionedOn := time.Now()
 	tagAssignments := GenerateTagAssignmentListSdk(2)
-	osConfiguration := GenerateOsConfigurationSdk()
 	networkConfiguration := GenerateNetworkConfigurationSdk()
 	return bmcapisdk.Server{
 		Id:                   testutil.RandSeq(10),
@@ -45,8 +44,8 @@ func GenerateServerSdk() bmcapisdk.Server {
 		ClusterId:            testutil.RandSeqPointer(10),
 		Tags:                 tagAssignments,
 		ProvisionedOn:        &provisionedOn,
-		OsConfiguration:      &osConfiguration,
-		NetworkConfiguration: networkConfiguration,
+		OsConfiguration:      GenerateOsConfigurationSdk(),
+		NetworkConfiguration: *networkConfiguration,
 	}
 }
 
@@ -75,24 +74,24 @@ func GenerateServerCreateCli() ServerCreate {
 	}
 }
 
-func GenerateBmcApiDeleteResultSdk() bmcapisdk.DeleteResult {
-	return bmcapisdk.DeleteResult{
+func GenerateBmcApiDeleteResultSdk() *bmcapisdk.DeleteResult {
+	return &bmcapisdk.DeleteResult{
 		Result:   testutil.RandSeq(10),
 		ServerId: testutil.RandSeq(10),
 	}
 }
 
-func GenerateActionResultSdk() bmcapisdk.ActionResult {
-	return bmcapisdk.ActionResult{
+func GenerateActionResultSdk() *bmcapisdk.ActionResult {
+	return &bmcapisdk.ActionResult{
 		Result: testutil.RandSeq(10),
 	}
 }
 
-func GenerateServerResetSdk() bmcapisdk.ServerReset {
-	return bmcapisdk.ServerReset{
+func GenerateServerResetSdk() *bmcapisdk.ServerReset {
+	return &bmcapisdk.ServerReset{
 		InstallDefaultSshKeys: nil,
-		SshKeys:               nil,
-		SshKeyIds:             nil,
+		SshKeys:               testutil.RandListStringPointer(10),
+		SshKeyIds:             testutil.RandListStringPointer(10),
 		OsConfiguration:       nil,
 	}
 }
@@ -107,16 +106,16 @@ func GenerateServerResetCli() ServerReset {
 	}
 }
 
-func GenerateResetResultSdk() bmcapisdk.ResetResult {
-	return bmcapisdk.ResetResult{
+func GenerateResetResultSdk() *bmcapisdk.ResetResult {
+	return &bmcapisdk.ResetResult{
 		Result:          testutil.RandSeq(10),
 		Password:        nil,
 		OsConfiguration: nil,
 	}
 }
 
-func GenerateServerPatchSdk() bmcapisdk.ServerPatch {
-	return bmcapisdk.ServerPatch{
+func GenerateServerPatchSdk() *bmcapisdk.ServerPatch {
+	return &bmcapisdk.ServerPatch{
 		Hostname:    testutil.RandSeqPointer(10),
 		Description: testutil.RandSeqPointer(10),
 	}
@@ -129,8 +128,8 @@ func GenerateServerPatchCli() ServerPatch {
 	}
 }
 
-func GenerateTagAssignmentRequestSdk() bmcapisdk.TagAssignmentRequest {
-	return bmcapisdk.TagAssignmentRequest{
+func GenerateTagAssignmentRequestSdk() *bmcapisdk.TagAssignmentRequest {
+	return &bmcapisdk.TagAssignmentRequest{
 		Name:  testutil.RandSeq(10),
 		Value: testutil.RandSeqPointer(10),
 	}
@@ -146,13 +145,13 @@ func GenerateTagAssignmentRequestCli() TagAssignmentRequest {
 func GenerateTagAssignmentRequestListSdk(n int) []bmcapisdk.TagAssignmentRequest {
 	var list []bmcapisdk.TagAssignmentRequest
 	for i := 0; i < n; i++ {
-		list = append(list, GenerateTagAssignmentRequestSdk())
+		list = append(list, *GenerateTagAssignmentRequestSdk())
 	}
 	return list
 }
 
-func GenerateTagAssignmentSdk() bmcapisdk.TagAssignment {
-	return bmcapisdk.TagAssignment{
+func GenerateTagAssignmentSdk() *bmcapisdk.TagAssignment {
+	return &bmcapisdk.TagAssignment{
 		Id:           testutil.RandSeq(10),
 		Name:         testutil.RandSeq(10),
 		Value:        testutil.RandSeqPointer(10),
@@ -163,7 +162,7 @@ func GenerateTagAssignmentSdk() bmcapisdk.TagAssignment {
 func GenerateTagAssignmentListSdk(n int) []bmcapisdk.TagAssignment {
 	var list []bmcapisdk.TagAssignment
 	for i := 0; i < n; i++ {
-		list = append(list, GenerateTagAssignmentSdk())
+		list = append(list, *GenerateTagAssignmentSdk())
 	}
 	return list
 }
@@ -177,8 +176,8 @@ func GenerateTagAssignmentCli() TagAssignment {
 	}
 }
 
-func GenerateServerReserveSdk() bmcapisdk.ServerReserve {
-	return bmcapisdk.ServerReserve{
+func GenerateServerReserveSdk() *bmcapisdk.ServerReserve {
+	return &bmcapisdk.ServerReserve{
 		PricingModel: "ONE_MONTH_RESERVATION",
 	}
 }
@@ -198,12 +197,10 @@ func GenerateNetworkConfigurationCli() NetworkConfiguration {
 	}
 }
 
-func GenerateNetworkConfigurationSdk() bmcapisdk.NetworkConfiguration {
-	privateNetworkConfiguration := GeneratePrivateNetworkConfigurationSdk()
-	ipBlocksConfiguration := GenerateIpBlockConfigurationSdk()
-	return bmcapisdk.NetworkConfiguration{
-		PrivateNetworkConfiguration: &privateNetworkConfiguration,
-		IpBlocksConfiguration:       ipBlocksConfiguration,
+func GenerateNetworkConfigurationSdk() *bmcapisdk.NetworkConfiguration {
+	return &bmcapisdk.NetworkConfiguration{
+		PrivateNetworkConfiguration: GeneratePrivateNetworkConfigurationSdk(),
+		IpBlocksConfiguration:       GenerateIpBlockConfigurationSdk(),
 	}
 }
 
@@ -216,9 +213,9 @@ func GeneratePrivateNetworkConfigurationCli() PrivateNetworkConfiguration {
 	}
 }
 
-func GeneratePrivateNetworkConfigurationSdk() bmcapisdk.PrivateNetworkConfiguration {
+func GeneratePrivateNetworkConfigurationSdk() *bmcapisdk.PrivateNetworkConfiguration {
 	serverPrivateNetworks := GenerateServerPrivateNetworkListSdk(2)
-	return bmcapisdk.PrivateNetworkConfiguration{
+	return &bmcapisdk.PrivateNetworkConfiguration{
 		GatewayAddress:    testutil.RandSeqPointer(10),
 		ConfigurationType: testutil.RandSeqPointer(10),
 		PrivateNetworks:   serverPrivateNetworks,
@@ -236,7 +233,7 @@ func GenerateServerPrivateNetworkListCli(n int) []ServerPrivateNetwork {
 func GenerateServerPrivateNetworkListSdk(n int) []bmcapisdk.ServerPrivateNetwork {
 	var list []bmcapisdk.ServerPrivateNetwork
 	for i := 0; i < n; i++ {
-		list = append(list, GenerateServerPrivateNetworkSdk())
+		list = append(list, *GenerateServerPrivateNetworkSdk())
 	}
 	return list
 }
@@ -251,9 +248,9 @@ func GenerateServerPrivateNetworkCli() ServerPrivateNetwork {
 	}
 }
 
-func GenerateServerPrivateNetworkSdk() bmcapisdk.ServerPrivateNetwork {
+func GenerateServerPrivateNetworkSdk() *bmcapisdk.ServerPrivateNetwork {
 	dhcp := false
-	return bmcapisdk.ServerPrivateNetwork{
+	return &bmcapisdk.ServerPrivateNetwork{
 		Id:                testutil.RandSeq(10),
 		Ips:               testutil.RandListStringPointer(10),
 		Dhcp:              &dhcp,
@@ -270,8 +267,8 @@ func GenerateOsConfigurationCli() OsConfiguration {
 	}
 }
 
-func GenerateOsConfigurationSdk() bmcapisdk.OsConfiguration {
-	return bmcapisdk.OsConfiguration{
+func GenerateOsConfigurationSdk() *bmcapisdk.OsConfiguration {
+	return &bmcapisdk.OsConfiguration{
 		Windows:                    GenerateOsConfigurationWindowsSdk(),
 		RootPassword:               testutil.RandSeqPointer(10),
 		ManagementUiUrl:            testutil.RandSeqPointer(10),

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
@@ -20,7 +19,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).
-		Return(server, WithResponse(200, WithBody(server)), nil)
+		Return(&server, WithResponse(200, WithBody(server)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(shortServer, "get servers").
@@ -39,7 +38,7 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).
-		Return(server, WithResponse(200, WithBody(server)), nil)
+		Return(&server, WithResponse(200, WithBody(server)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(longServer, "get servers").
@@ -55,7 +54,7 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 func TestGetServerNotFound(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).
-		Return(bmcapisdk.Server{}, WithResponse(400, nil), nil)
+		Return(nil, WithResponse(400, nil), nil)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{RESOURCEID})
 
@@ -67,7 +66,7 @@ func TestGetServerNotFound(test_framework *testing.T) {
 func TestGetServerClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).
-		Return(bmcapisdk.Server{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{RESOURCEID})
 
@@ -81,7 +80,7 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 func TestGetServerKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).
-		Return(bmcapisdk.Server{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{RESOURCEID})
 
@@ -95,7 +94,7 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).
-		Return(server, WithResponse(200, WithBody(server)), nil)
+		Return(&server, WithResponse(200, WithBody(server)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(shortServer, "get servers").

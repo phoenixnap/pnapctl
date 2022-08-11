@@ -13,7 +13,6 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
@@ -35,7 +34,7 @@ func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
 		Return(serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
 		Times(1)
 
@@ -64,7 +63,7 @@ func TestCreateServerPrivateNetworkSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
 		Return(serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
 		Times(1)
 
@@ -162,8 +161,8 @@ func TestCreateServerPrivateNetworkBackendErrorFailure(test_framework *testing.T
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(bmcapisdk.ServerPrivateNetwork{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -194,8 +193,8 @@ func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(bmcapisdk.ServerPrivateNetwork{}, nil, testutil.TestError).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -226,8 +225,8 @@ func TestCreateServerPrivateNetworkKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(bmcapisdk.ServerPrivateNetwork{}, nil, testutil.TestKeycloakError).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

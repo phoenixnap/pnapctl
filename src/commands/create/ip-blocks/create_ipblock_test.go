@@ -3,9 +3,9 @@ package ip_blocks
 import (
 	"encoding/json"
 	"errors"
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
 	"testing"
+
+	"phoenixnap.com/pnapctl/common/models/ipmodels"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -29,7 +29,7 @@ func TestCreateIpBlockSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(*ipBlockCreateCli.ToSdk())).
-		Return(ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
+		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -60,7 +60,7 @@ func TestCreateIpBlockSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(*ipBlockCreateCli.ToSdk())).
-		Return(ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
+		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -158,7 +158,7 @@ func TestCreateIpBlockBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(*ipBlockCreate.ToSdk())).
-		Return(ipapisdk.IpBlock{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -190,7 +190,7 @@ func TestCreateIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(*ipBlockCreate.ToSdk())).
-		Return(ipapisdk.IpBlock{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -222,7 +222,7 @@ func TestCreateIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(*ipBlockCreate.ToSdk())).
-		Return(ipapisdk.IpBlock{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

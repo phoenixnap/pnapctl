@@ -12,8 +12,6 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 )
 
 func TestCreateTagSuccessYAML(test_framework *testing.T) {
@@ -31,7 +29,7 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(*tagCreate.ToSdk())).
-		Return(createdTag, WithResponse(201, WithBody(createdTag)), nil).
+		Return(&createdTag, WithResponse(201, WithBody(createdTag)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,7 +61,7 @@ func TestCreateTagSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(*tagCreate.ToSdk())).
-		Return(createdTag, WithResponse(201, WithBody(createdTag)), nil).
+		Return(&createdTag, WithResponse(201, WithBody(createdTag)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -132,7 +130,7 @@ func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(*tagCreate.ToSdk())).
-		Return(tagapisdk.Tag{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -162,7 +160,7 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(*tagCreate.ToSdk())).
-		Return(tagapisdk.Tag{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -192,7 +190,7 @@ func TestCreateTagKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(*tagCreate.ToSdk())).
-		Return(tagapisdk.Tag{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).

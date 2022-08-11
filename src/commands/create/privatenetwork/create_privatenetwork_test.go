@@ -12,8 +12,6 @@ import (
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-
-	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
 )
 
 func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
@@ -31,7 +29,7 @@ func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(*privateNetworkCreate.ToSdk())).
-		Return(createdPrivateNetwork, WithResponse(201, WithBody(createdPrivateNetwork)), nil).
+		Return(&createdPrivateNetwork, WithResponse(201, WithBody(createdPrivateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,7 +61,7 @@ func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(*privateNetworkCreate.ToSdk())).
-		Return(createdPrivateNetwork, WithResponse(201, WithBody(createdPrivateNetwork)), nil).
+		Return(&createdPrivateNetwork, WithResponse(201, WithBody(createdPrivateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -132,7 +130,7 @@ func TestCreatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(*privateNetworkCreate.ToSdk())).
-		Return(networksdk.PrivateNetwork{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -162,7 +160,7 @@ func TestCreatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(*privateNetworkCreate.ToSdk())).
-		Return(networksdk.PrivateNetwork{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -192,7 +190,7 @@ func TestCreatePrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(*privateNetworkCreate.ToSdk())).
-		Return(networksdk.PrivateNetwork{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).

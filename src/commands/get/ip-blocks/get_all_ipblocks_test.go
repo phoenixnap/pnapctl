@@ -2,14 +2,14 @@ package ip_blocks
 
 import (
 	"errors"
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/ipmodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-	"testing"
 )
 
 func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
@@ -37,11 +37,10 @@ func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllIpBlocksKeycloakFailure(test_framework *testing.T) {
-	ipBlockList := []ipapisdk.IpBlock{}
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksGet().
-		Return(ipBlockList, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{})
 

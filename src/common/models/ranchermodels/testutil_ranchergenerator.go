@@ -147,8 +147,8 @@ func GenerateSshConfigCli() SshConfig {
 	}
 }
 
-func GenerateRancherDeleteResultSdk() ranchersdk.DeleteResult {
-	return ranchersdk.DeleteResult{
+func GenerateRancherDeleteResultSdk() *ranchersdk.DeleteResult {
+	return &ranchersdk.DeleteResult{
 		Result:    testutil.RandSeq(10),
 		ClusterId: testutil.RandSeq(10),
 	}

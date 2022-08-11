@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/tables"
@@ -41,7 +40,7 @@ func TestGetAllTagsClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagsGet("").
-		Return([]tagapisdk.Tag{}, WithResponse(200, nil), testutil.TestError)
+		Return(nil, WithResponse(200, nil), testutil.TestError)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
 
@@ -56,7 +55,7 @@ func TestGetAllTagsKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagsGet("").
-		Return([]tagapisdk.Tag{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
 

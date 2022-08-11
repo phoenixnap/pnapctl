@@ -3,7 +3,6 @@ package sshkey
 import (
 	"testing"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
@@ -28,7 +27,7 @@ func TestDeleteSshKeyNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyDelete(RESOURCEID).
-		Return(bmcapisdk.DeleteSshKeyResult{}, WithResponse(404, nil), nil)
+		Return(nil, WithResponse(404, nil), nil)
 
 	// Run command
 	err := DeleteSshKeyCmd.RunE(DeleteSshKeyCmd, []string{RESOURCEID})
@@ -43,7 +42,7 @@ func TestDeleteSshKeyError(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyDelete(RESOURCEID).
-		Return(bmcapisdk.DeleteSshKeyResult{}, WithResponse(500, nil), nil)
+		Return(nil, WithResponse(500, nil), nil)
 
 	// Run command
 	err := DeleteSshKeyCmd.RunE(DeleteSshKeyCmd, []string{RESOURCEID})
@@ -58,7 +57,7 @@ func TestDeleteSshKeyClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyDelete(RESOURCEID).
-		Return(bmcapisdk.DeleteSshKeyResult{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	// Run command
 	err := DeleteSshKeyCmd.RunE(DeleteSshKeyCmd, []string{RESOURCEID})
@@ -74,7 +73,7 @@ func TestDeleteSshKeyKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyDelete(RESOURCEID).
-		Return(bmcapisdk.DeleteSshKeyResult{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := DeleteSshKeyCmd.RunE(DeleteSshKeyCmd, []string{RESOURCEID})

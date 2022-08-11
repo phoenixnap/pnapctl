@@ -41,8 +41,8 @@ func GenerateTagListSdk(n int) []tagapisdk.Tag {
 	return tagList
 }
 
-func GenerateTagsDeleteResultSdk() tagapisdk.DeleteResult {
-	return tagapisdk.DeleteResult{
+func GenerateTagsDeleteResultSdk() *tagapisdk.DeleteResult {
+	return &tagapisdk.DeleteResult{
 		Result: testutil.RandSeq(10),
 		TagId:  testutil.RandSeq(10),
 	}

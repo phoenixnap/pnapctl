@@ -32,8 +32,8 @@ func GenerateIpBlockCreateCLI() IpBlockCreate {
 	}
 }
 
-func GenerateDeleteIpBlockResultSdk() ipapisdk.DeleteIpBlockResult {
-	return ipapisdk.DeleteIpBlockResult{
+func GenerateDeleteIpBlockResultSdk() *ipapisdk.DeleteIpBlockResult {
+	return &ipapisdk.DeleteIpBlockResult{
 		Result:    testutil.RandSeq(10),
 		IpBlockId: testutil.RandSeq(10),
 	}

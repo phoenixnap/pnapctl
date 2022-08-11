@@ -1,11 +1,11 @@
 package ip_blocks
 
 import (
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
+	"testing"
+
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/ipmodels"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-	"testing"
 
 	"github.com/stretchr/testify/assert"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -28,7 +28,7 @@ func TestDeleteIpBlockNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdDelete(RESOURCEID).
-		Return(ipapisdk.DeleteIpBlockResult{}, WithResponse(404, nil), nil)
+		Return(nil, WithResponse(404, nil), nil)
 
 	// Run command
 	err := DeleteIpBlockCmd.RunE(DeleteIpBlockCmd, []string{RESOURCEID})
@@ -43,7 +43,7 @@ func TestDeleteIpBlockError(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdDelete(RESOURCEID).
-		Return(ipapisdk.DeleteIpBlockResult{}, WithResponse(500, nil), nil)
+		Return(nil, WithResponse(500, nil), nil)
 
 	// Run command
 	err := DeleteIpBlockCmd.RunE(DeleteIpBlockCmd, []string{RESOURCEID})
@@ -58,7 +58,7 @@ func TestDeleteIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdDelete(RESOURCEID).
-		Return(ipapisdk.DeleteIpBlockResult{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	// Run command
 	err := DeleteIpBlockCmd.RunE(DeleteIpBlockCmd, []string{RESOURCEID})
@@ -74,7 +74,7 @@ func TestDeleteIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdDelete(RESOURCEID).
-		Return(ipapisdk.DeleteIpBlockResult{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := DeleteIpBlockCmd.RunE(DeleteIpBlockCmd, []string{RESOURCEID})

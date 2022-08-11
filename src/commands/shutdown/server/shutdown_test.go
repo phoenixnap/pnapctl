@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
@@ -28,7 +27,7 @@ func TestShutdownServerSuccess(test_framework *testing.T) {
 func TestShutdownServerNotFound(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerShutdown(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+		Return(nil, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := ShutdownCmd.RunE(ShutdownCmd, []string{RESOURCEID})
@@ -40,7 +39,7 @@ func TestShutdownServerNotFound(test_framework *testing.T) {
 func TestShutdownServerError(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerShutdown(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := ShutdownCmd.RunE(ShutdownCmd, []string{RESOURCEID})
@@ -55,7 +54,7 @@ func TestShutdownServerError(test_framework *testing.T) {
 func TestShutdownServerClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerShutdown(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	// Run command
 	err := ShutdownCmd.RunE(ShutdownCmd, []string{RESOURCEID})
@@ -70,7 +69,7 @@ func TestShutdownServerClientFailure(test_framework *testing.T) {
 func TestShutdownServerKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerShutdown(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := ShutdownCmd.RunE(ShutdownCmd, []string{RESOURCEID})

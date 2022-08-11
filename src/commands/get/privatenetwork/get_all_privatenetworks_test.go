@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
@@ -41,7 +40,7 @@ func TestGetAllPrivateNetworksClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").
-		Return([]networksdk.PrivateNetwork{}, WithResponse(200, nil), testutil.TestError)
+		Return(nil, WithResponse(200, nil), testutil.TestError)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
 
@@ -56,7 +55,7 @@ func TestGetAllPrivateNetworksKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").
-		Return([]networksdk.PrivateNetwork{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
 

@@ -5,7 +5,6 @@ import (
 	"testing"
 	"time"
 
-	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/auditmodels"
@@ -42,14 +41,13 @@ func TestGetAllEventsSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
-	event := []auditapisdk.Event{*auditmodels.GenerateEventSdk()}
 	queryParams := auditmodels.GenerateQueryParamsCli()
 	setQueryParams(queryParams)
 
 	// Mocking
 	PrepareAuditMockClient(test_framework).
 		EventsGet(queryParams).
-		Return(event, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetEventsCmd.RunE(GetEventsCmd, []string{})
 
@@ -88,7 +86,7 @@ func TestGetEventsServerError(test_framework *testing.T) {
 
 	PrepareAuditMockClient(test_framework).
 		EventsGet(queryParams).
-		Return([]auditapisdk.Event{}, WithResponse(500, nil), nil)
+		Return(nil, WithResponse(500, nil), nil)
 
 	err := GetEventsCmd.RunE(GetEventsCmd, []string{RESOURCEID})
 

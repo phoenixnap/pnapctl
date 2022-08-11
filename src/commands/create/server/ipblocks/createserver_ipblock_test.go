@@ -3,15 +3,15 @@ package ipblocks
 import (
 	"encoding/json"
 	"errors"
+	"testing"
+
 	"github.com/golang/mock/gomock"
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-	"testing"
 )
 
 func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
@@ -26,7 +26,7 @@ func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(serverIpBlockSdk, WithResponse(202, WithBody(serverIpBlockSdk)), nil).
+		Return(&serverIpBlockSdk, WithResponse(202, WithBody(serverIpBlockSdk)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -55,7 +55,7 @@ func TestCreateServerIpBlockSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(serverIpBlockSdk, WithResponse(202, WithBody(serverIpBlockSdk)), nil).
+		Return(&serverIpBlockSdk, WithResponse(202, WithBody(serverIpBlockSdk)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -152,7 +152,7 @@ func TestCreateServerIpBlockBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(bmcapisdk.ServerIpBlock{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -184,7 +184,7 @@ func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(bmcapisdk.ServerIpBlock{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -216,7 +216,7 @@ func TestCreateServerIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(bmcapisdk.ServerIpBlock{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

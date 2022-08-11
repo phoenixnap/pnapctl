@@ -37,9 +37,9 @@ func TestNilNetworkConfigurationToSdk(test_framework *testing.T) {
 
 func TestNetworkConfigurationFromSdk(test_framework *testing.T) {
 	sdkModel := GenerateNetworkConfigurationSdk()
-	cliModel := NetworkConfigurationFromSdk(&sdkModel)
+	cliModel := NetworkConfigurationFromSdk(sdkModel)
 
-	assertEqualNetworkConfiguration(test_framework, *cliModel, sdkModel)
+	assertEqualNetworkConfiguration(test_framework, *cliModel, *sdkModel)
 }
 
 func TestNetworkConfigurationNilPropertiesFromSdk(test_framework *testing.T) {

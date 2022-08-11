@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
@@ -33,7 +32,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
-		Return(createdServer, WithResponse(200, WithBody(createdServer)), nil).
+		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -65,7 +64,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
-		Return(createdServer, WithResponse(200, WithBody(createdServer)), nil).
+		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -164,7 +163,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
-		Return(bmcapisdk.Server{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -197,7 +196,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
-		Return(bmcapisdk.Server{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -229,7 +228,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
-		Return(bmcapisdk.Server{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

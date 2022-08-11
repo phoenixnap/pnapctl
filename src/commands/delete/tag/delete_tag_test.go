@@ -3,7 +3,6 @@ package tag
 import (
 	"testing"
 
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
@@ -28,7 +27,7 @@ func TestDeleteTagNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagDelete(RESOURCEID).
-		Return(tagapisdk.DeleteResult{}, WithResponse(404, nil), nil)
+		Return(nil, WithResponse(404, nil), nil)
 
 	// Run command
 	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})
@@ -43,7 +42,7 @@ func TestDeleteTagError(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagDelete(RESOURCEID).
-		Return(tagapisdk.DeleteResult{}, WithResponse(500, nil), nil)
+		Return(nil, WithResponse(500, nil), nil)
 
 	// Run command
 	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})
@@ -58,7 +57,7 @@ func TestDeleteTagClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagDelete(RESOURCEID).
-		Return(tagapisdk.DeleteResult{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	// Run command
 	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})
@@ -74,7 +73,7 @@ func TestDeleteTagKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagDelete(RESOURCEID).
-		Return(tagapisdk.DeleteResult{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})

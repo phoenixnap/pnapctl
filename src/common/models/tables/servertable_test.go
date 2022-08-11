@@ -24,9 +24,9 @@ func TestToLongServerTable(test_framework *testing.T) {
 
 func TestToServerPrivateNetworkTable(test_framework *testing.T) {
 	network := servermodels.GenerateServerPrivateNetworkSdk()
-	table := ToServerPrivateNetworkTable(network)
+	table := ToServerPrivateNetworkTable(*network)
 
-	assertServerPrivateNetworksEqual(test_framework, network, table)
+	assertServerPrivateNetworksEqual(test_framework, *network, table)
 }
 
 func TestToServerIpBlockTable(test_framework *testing.T) {

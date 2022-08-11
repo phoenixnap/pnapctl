@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/ranchermodels"
@@ -41,7 +40,7 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
-		Return([]ranchersdk.Cluster{}, WithResponse(200, nil), testutil.TestError)
+		Return(nil, WithResponse(200, nil), testutil.TestError)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
 
@@ -56,7 +55,7 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
-		Return([]ranchersdk.Cluster{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
 

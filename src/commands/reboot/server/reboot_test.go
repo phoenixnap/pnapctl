@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
@@ -29,7 +28,7 @@ func TestRebootServerSuccess(test_framework *testing.T) {
 func TestRebootServerClientFail(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})
 
@@ -43,7 +42,7 @@ func TestRebootServerClientFail(test_framework *testing.T) {
 func TestRebootServerKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})
 
@@ -54,7 +53,7 @@ func TestRebootServerKeycloakFailure(test_framework *testing.T) {
 func TestRebootServerNotFoundFail(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+		Return(nil, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})
 
@@ -65,7 +64,7 @@ func TestRebootServerNotFoundFail(test_framework *testing.T) {
 func TestRebootServerErrorFail(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})
 

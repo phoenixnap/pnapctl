@@ -3,11 +3,12 @@ package server
 import (
 	"encoding/json"
 	"errors"
+	"testing"
+
 	"github.com/golang/mock/gomock"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"

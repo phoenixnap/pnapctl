@@ -12,8 +12,6 @@ import (
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 )
 
 func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
@@ -30,8 +28,8 @@ func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
-		Return(sshKey, WithResponse(200, WithBody(sshKey)), nil).
+		SshKeyPut(RESOURCEID, gomock.Eq(*sshKeyUpdate)).
+		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -62,8 +60,8 @@ func TestUpdateSshKeySuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
-		Return(sshKey, WithResponse(200, WithBody(sshKey)), nil).
+		SshKeyPut(RESOURCEID, gomock.Eq(*sshKeyUpdate)).
+		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -160,8 +158,8 @@ func TestUpdateSshKeyBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
-		Return(bmcapisdk.SshKey{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		SshKeyPut(RESOURCEID, gomock.Eq(*sshKeyUpdate)).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -192,8 +190,8 @@ func TestUpdateSshKeyClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
-		Return(bmcapisdk.SshKey{}, nil, testutil.TestError).
+		SshKeyPut(RESOURCEID, gomock.Eq(*sshKeyUpdate)).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -224,8 +222,8 @@ func TestUpdateSshKeyKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
-		Return(bmcapisdk.SshKey{}, nil, testutil.TestKeycloakError).
+		SshKeyPut(RESOURCEID, gomock.Eq(*sshKeyUpdate)).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

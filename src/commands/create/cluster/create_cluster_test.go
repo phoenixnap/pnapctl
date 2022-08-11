@@ -12,8 +12,6 @@ import (
 	"phoenixnap.com/pnapctl/common/models/ranchermodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 )
 
 func TestCreateClusterSuccessYAML(test_framework *testing.T) {
@@ -132,7 +130,7 @@ func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
-		Return(&ranchersdk.Cluster{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -162,7 +160,7 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
-		Return(&ranchersdk.Cluster{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -192,7 +190,7 @@ func TestCreateClusterKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
-		Return(&ranchersdk.Cluster{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).

@@ -3,7 +3,6 @@ package server
 import (
 	"testing"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
@@ -28,7 +27,7 @@ func TestDeleteServerNotFound(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDelete(RESOURCEID).
-		Return(bmcapisdk.DeleteResult{}, WithResponse(404, nil), nil)
+		Return(nil, WithResponse(404, nil), nil)
 
 	// Run command
 	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})
@@ -43,7 +42,7 @@ func TestDeleteServerError(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDelete(RESOURCEID).
-		Return(bmcapisdk.DeleteResult{}, WithResponse(500, nil), nil)
+		Return(nil, WithResponse(500, nil), nil)
 
 	// Run command
 	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})
@@ -58,7 +57,7 @@ func TestDeleteServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDelete(RESOURCEID).
-		Return(bmcapisdk.DeleteResult{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	// Run command
 	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})
@@ -74,7 +73,7 @@ func TestDeleteServerKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDelete(RESOURCEID).
-		Return(bmcapisdk.DeleteResult{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})

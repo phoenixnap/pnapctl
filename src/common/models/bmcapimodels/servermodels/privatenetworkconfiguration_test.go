@@ -33,9 +33,9 @@ func TestNilPrivateNetworkConfigurationToSdk(test_framework *testing.T) {
 
 func TestPrivateNetworkConfigurationFromSdk(test_framework *testing.T) {
 	sdkModel := GeneratePrivateNetworkConfigurationSdk()
-	cliModel := privateNetworkConfigurationFromSdk(&sdkModel)
+	cliModel := privateNetworkConfigurationFromSdk(sdkModel)
 
-	assertEqualPrivateNetworkConfiguration(test_framework, *cliModel, sdkModel)
+	assertEqualPrivateNetworkConfiguration(test_framework, *cliModel, *sdkModel)
 }
 
 func TestEmptyPrivateNetworkConfigurationFromSdk(test_framework *testing.T) {
