@@ -31,7 +31,7 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
-		Return(createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
+		Return(&createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,7 +63,7 @@ func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
-		Return(createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
+		Return(&createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -132,7 +132,7 @@ func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
-		Return(ranchersdk.Cluster{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(&ranchersdk.Cluster{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -162,7 +162,7 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
-		Return(ranchersdk.Cluster{}, nil, testutil.TestError).
+		Return(&ranchersdk.Cluster{}, nil, testutil.TestError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -192,7 +192,7 @@ func TestCreateClusterKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
-		Return(ranchersdk.Cluster{}, nil, testutil.TestKeycloakError).
+		Return(&ranchersdk.Cluster{}, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).

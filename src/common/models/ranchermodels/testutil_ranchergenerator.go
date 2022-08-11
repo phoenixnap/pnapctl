@@ -20,9 +20,10 @@ func GenerateClusterSdk() ranchersdk.Cluster {
 		Description:           testutil.RandSeqPointer(10),
 		Location:              testutil.RandSeq(10),
 		InitialClusterVersion: testutil.RandSeqPointer(10),
-		NodePools:             nil,
+		NodePools:             []ranchersdk.NodePool{},
 		Configuration:         nil,
 		Metadata:              nil,
+		WorkloadConfiguration: nil,
 		StatusDescription:     testutil.RandSeqPointer(10),
 	}
 }
@@ -34,9 +35,10 @@ func GenerateClusterCli() Cluster {
 		Description:           testutil.RandSeqPointer(10),
 		Location:              testutil.RandSeq(10),
 		InitialClusterVersion: testutil.RandSeqPointer(10),
-		NodePools:             nil,
+		NodePools:             []NodePool{},
 		Configuration:         nil,
 		Metadata:              nil,
+		WorkloadConfiguration: nil,
 		StatusDescription:     testutil.RandSeqPointer(10),
 	}
 }
