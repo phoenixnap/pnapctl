@@ -3,8 +3,9 @@ package printer
 import (
 	"bytes"
 	"fmt"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
 	"testing"
+
+	"phoenixnap.com/pnapctl/common/models/ipmodels"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
@@ -21,8 +22,6 @@ type ExampleStruct1 struct {
 	ID     string `header:"id"`
 	Status string `header:"status"`
 }
-
-var input []byte
 
 // Setup
 func printerSetup() {
@@ -43,7 +42,7 @@ func TestPrintOutputJsonFormat(test_framework *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		test_framework.Run(fmt.Sprintf("%s", tc.name), func(test_framework *testing.T) {
+		test_framework.Run(tc.name, func(test_framework *testing.T) {
 			outputError := MainPrinter.PrintOutput(&tc.input, "dummy command")
 
 			assert.NoError(test_framework, outputError)
@@ -80,7 +79,7 @@ func TestPrintOutputYamlFormat(test_framework *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		test_framework.Run(fmt.Sprintf("%s", tc.name), func(test_framework *testing.T) {
+		test_framework.Run(tc.name, func(test_framework *testing.T) {
 			outputError := MainPrinter.PrintOutput(tc.input, "dummy command")
 
 			assert.NoError(test_framework, outputError)
@@ -123,7 +122,7 @@ func TestPrintOutputTableFormat(test_framework *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		test_framework.Run(fmt.Sprintf("%s", tc.name), func(test_framework *testing.T) {
+		test_framework.Run(tc.name, func(test_framework *testing.T) {
 			// Overwriting table printer buffer since it uses a different buffer which we can't check via Example
 			customTablePrinterBuffer := new(bytes.Buffer)
 			MainPrinter = BodyPrinter{
@@ -135,7 +134,7 @@ func TestPrintOutputTableFormat(test_framework *testing.T) {
 			assert.NoError(test_framework, outputError)
 
 			// asserting the custom buffer printed something
-			outputText := string(customTablePrinterBuffer.Bytes())
+			outputText := customTablePrinterBuffer.String()
 
 			assert.Equal(test_framework, tc.expected, outputText)
 		})

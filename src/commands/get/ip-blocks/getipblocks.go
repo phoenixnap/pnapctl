@@ -62,7 +62,7 @@ func getIpBlocks(ipBlockId string) error {
 		if ipBlockId == "" {
 			return printer.PrintIpBlockListResponse(ipBlocks, commandName)
 		} else {
-			return printer.PrintIpBlockResponse(*ipBlock, commandName)
+			return printer.PrintIpBlockResponse(ipBlock, commandName)
 		}
 	}
 }

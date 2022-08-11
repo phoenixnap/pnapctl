@@ -6,8 +6,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintIpBlockResponse(ipBlock ipapisdk.IpBlock, commandName string) error {
-	ipBlockToPrint := PrepareIpBlockForPrinting(ipBlock)
+func PrintIpBlockResponse(ipBlock *ipapisdk.IpBlock, commandName string) error {
+	ipBlockToPrint := PrepareIpBlockForPrinting(*ipBlock)
 	return MainPrinter.PrintOutput(ipBlockToPrint, commandName)
 }
 

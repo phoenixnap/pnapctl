@@ -6,8 +6,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tagmodels"
 )
 
-func PrintTagResponse(tag tagapisdk.Tag, commandName string) error {
-	tagToPrint := PrepareTagForPrinting(tag)
+func PrintTagResponse(tag *tagapisdk.Tag, commandName string) error {
+	tagToPrint := PrepareTagForPrinting(*tag)
 	return MainPrinter.PrintOutput(tagToPrint, commandName)
 }
 

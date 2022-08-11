@@ -43,7 +43,7 @@ description: My custom server edit`,
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintServerResponse(*serverResponse, Full, commandName)
+			return printer.PrintServerResponse(serverResponse, Full, commandName)
 		}
 	},
 }

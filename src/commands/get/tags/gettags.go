@@ -64,7 +64,7 @@ func getTags(tagID string) error {
 		if tagID == "" {
 			return printer.PrintTagListResponse(tags, commandName)
 		} else {
-			return printer.PrintTagResponse(*tag, commandName)
+			return printer.PrintTagResponse(tag, commandName)
 		}
 	}
 }

@@ -61,7 +61,7 @@ func getQuotas(quotaId string) error {
 		if quotaId == "" {
 			return printer.PrintQuotaListResponse(quotas, commandName)
 		} else {
-			return printer.PrintQuotaResponse(*quota, commandName)
+			return printer.PrintQuotaResponse(quota, commandName)
 		}
 	}
 }

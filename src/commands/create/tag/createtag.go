@@ -44,7 +44,7 @@ isBillingTag: false
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintTagResponse(*response, commandName)
+			return printer.PrintTagResponse(response, commandName)
 		}
 	},
 }

@@ -6,8 +6,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintServerResponse(server bmcapisdk.Server, full bool, commandName string) error {
-	serverToPrint := PrepareServerForPrinting(server, full)
+func PrintServerResponse(server *bmcapisdk.Server, full bool, commandName string) error {
+	serverToPrint := PrepareServerForPrinting(*server, full)
 	return MainPrinter.PrintOutput(serverToPrint, commandName)
 }
 
@@ -16,21 +16,21 @@ func PrintServerListResponse(servers []bmcapisdk.Server, full bool, commandName 
 	return MainPrinter.PrintOutput(serverListToPrint, commandName)
 }
 
-func PrintServerPrivateNetwork(serverPrivateNetwork bmcapisdk.ServerPrivateNetwork, commandName string) error {
+func PrintServerPrivateNetwork(serverPrivateNetwork *bmcapisdk.ServerPrivateNetwork, commandName string) error {
 	table := OutputIsTable()
 
 	if table {
-		return MainPrinter.PrintOutput(tables.ToServerPrivateNetworkTable(serverPrivateNetwork), commandName)
+		return MainPrinter.PrintOutput(tables.ToServerPrivateNetworkTable(*serverPrivateNetwork), commandName)
 	} else {
 		return MainPrinter.PrintOutput(serverPrivateNetwork, commandName)
 	}
 }
 
-func PrintServerIpBlock(serverIpBlock bmcapisdk.ServerIpBlock, commandName string) error {
+func PrintServerIpBlock(serverIpBlock *bmcapisdk.ServerIpBlock, commandName string) error {
 	table := OutputIsTable()
 
 	if table {
-		return MainPrinter.PrintOutput(tables.ToServerIpBlockTable(serverIpBlock), commandName)
+		return MainPrinter.PrintOutput(tables.ToServerIpBlockTable(*serverIpBlock), commandName)
 	} else {
 		return MainPrinter.PrintOutput(serverIpBlock, commandName)
 	}

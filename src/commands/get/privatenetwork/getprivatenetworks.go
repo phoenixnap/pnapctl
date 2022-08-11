@@ -62,7 +62,7 @@ func getPrivateNetworks(privateNetworkID string) error {
 		if privateNetworkID == "" {
 			return printer.PrintPrivateNetworkListResponse(privateNetworks, commandName)
 		} else {
-			return printer.PrintPrivateNetworkResponse(*privateNetwork, commandName)
+			return printer.PrintPrivateNetworkResponse(privateNetwork, commandName)
 		}
 	}
 }

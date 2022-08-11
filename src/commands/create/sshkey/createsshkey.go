@@ -45,7 +45,7 @@ key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyVGaw1PuEl98f4/7Kq3O9ZIvDw2OFOSXAFVq
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintSshKeyResponse(*response, Full, commandName)
+			return printer.PrintSshKeyResponse(response, Full, commandName)
 		}
 	},
 }

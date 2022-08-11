@@ -42,7 +42,7 @@ nodePools:
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintClusterResponse(*response, commandName)
+			return printer.PrintClusterResponse(response, commandName)
 		}
 	},
 }

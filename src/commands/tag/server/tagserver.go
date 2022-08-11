@@ -48,7 +48,7 @@ pnapctl tag server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintServerResponse(*serverResponse, Full, commandName)
+			return printer.PrintServerResponse(serverResponse, Full, commandName)
 		}
 	},
 }

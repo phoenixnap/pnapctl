@@ -62,7 +62,7 @@ func getSshKeys(sshKeyId string) error {
 		if sshKeyId == "" {
 			return printer.PrintSshKeyListResponse(sshKeys, Full, commandName)
 		} else {
-			return printer.PrintSshKeyResponse(*sshKey, Full, commandName)
+			return printer.PrintSshKeyResponse(sshKey, Full, commandName)
 		}
 	}
 }

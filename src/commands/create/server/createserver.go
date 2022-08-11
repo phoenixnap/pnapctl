@@ -51,7 +51,7 @@ sshKeys:
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintServerResponse(*response, Full, commandName)
+			return printer.PrintServerResponse(response, Full, commandName)
 		}
 	},
 }

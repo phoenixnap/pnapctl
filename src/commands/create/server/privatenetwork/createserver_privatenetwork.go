@@ -49,7 +49,7 @@ statusDescription: in-progress
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintServerPrivateNetwork(*response, commandName)
+			return printer.PrintServerPrivateNetwork(response, commandName)
 		}
 	},
 }

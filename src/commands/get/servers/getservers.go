@@ -63,7 +63,7 @@ func getServers(serverID string) error {
 		if serverID == "" {
 			return printer.PrintServerListResponse(servers, Full, commandName)
 		} else {
-			return printer.PrintServerResponse(*server, Full, commandName)
+			return printer.PrintServerResponse(server, Full, commandName)
 		}
 	}
 }

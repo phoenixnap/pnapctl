@@ -62,7 +62,7 @@ func getClusters(clusterID string) error {
 		if clusterID == "" {
 			return printer.PrintClusterListResponse(clusters, commandName)
 		} else {
-			return printer.PrintClusterResponse(*cluster, commandName)
+			return printer.PrintClusterResponse(cluster, commandName)
 		}
 	}
 }
