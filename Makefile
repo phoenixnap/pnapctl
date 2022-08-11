@@ -45,7 +45,7 @@ bats-assert-verify-version: $(BATS_ASSERT_LOADER) ; $(info $(M) verifying bats-a
 # Binaries
 
 .PHONY: build
-build build-simple pack build-and-pack: generate-docs
+build build-simple pack build-and-pack generate-docs:
 	$Q $(MAKE) $(MAKE_FLAGS) -C $(SRC) $@
 
 # Tests
