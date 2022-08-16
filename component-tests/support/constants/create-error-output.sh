@@ -8,5 +8,5 @@ expectedOutputWrongFile="Error: Command 'create server' has been performed, but 
 
 expectedOutputInvalidFilenameCommand="Error: accepts 0 arg(s), received 2"
 
-expectedOutputCredentialError="Error: Post \"https://api.phoenixnap.com/bmc/v0/servers\": oauth2: cannot fetch token: 400 Bad Request
+expectedOutputCredentialError="Error: Post \"https://api.phoenixnap.com/bmc/v1/servers\": oauth2: cannot fetch token: 400 Bad Request
 Response: {\"error\":\"invalid_client\",\"error_description\":\"Invalid client credentials\"}"
