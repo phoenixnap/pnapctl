@@ -679,6 +679,8 @@ github.com/peterh/liner v1.0.1-0.20180619022028-8c1271fcf47f/go.mod h1:xIteQHvHu
 github.com/philhofer/fwd v1.0.0/go.mod h1:gk3iGcWd9+svBvR0sR+KPcfE+RNWozjowpeBVG3ZVNU=
 github.com/phoenixnap/go-sdk-bmc/auditapi v1.0.4 h1:XksjWAO7ZLReuj7ERXVnTS7nf5XinSbjZLTkapPbWzk=
 github.com/phoenixnap/go-sdk-bmc/auditapi v1.0.4/go.mod h1:tz/BbJIV88pp30F2qYFTEXtxaIBXMn8uo9bEiaVX/TA=
+github.com/phoenixnap/go-sdk-bmc/billingapi v1.0.0 h1:faaufmpOvBiKgPUKIFyeWQq8lRufGmUwzhhs2ZNZ7mg=
+github.com/phoenixnap/go-sdk-bmc/billingapi v1.0.0/go.mod h1:1DSv+VDVnySg+8nqpATrGY0XV8iaJJ9AZyYP4sBUWKo=
 github.com/phoenixnap/go-sdk-bmc/bmcapi v1.2.2 h1:U+GIAzjwIQa+xmr9EVUO5HWuawTcNEXkdEHsgLUDRSY=
 github.com/phoenixnap/go-sdk-bmc/bmcapi v1.2.2/go.mod h1:VyiO4HOscCgS731zd1iKfuXW40/FPMEJWbTML/mUX4Y=
 github.com/phoenixnap/go-sdk-bmc/ipapi v1.1.2 h1:2k8RPyvg7aQpoW/TOn+p2XIqYl2qIybu/gG/uWp0sG8=
