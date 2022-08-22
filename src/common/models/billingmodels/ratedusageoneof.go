@@ -11,16 +11,6 @@ type RatedUsageOneOf struct {
 	ServerRecord          *billingapi.ServerRecord
 }
 
-type oneOfType string
-
-const (
-	BANDWIDTH        oneOfType = "BANDWIDTH RECORD"
-	OPERATING_SYSTEM oneOfType = "OPERATING SYSTEM RECORD"
-	PUBLIC_SUBNET    oneOfType = "PUBLIC SUBNET RECORD"
-	SERVER           oneOfType = "SERVER RECORD"
-	OTHER            oneOfType = "OTHER"
-)
-
 func RatedUsageActualFromSdk(ratedUsageOneOf billingapi.RatedUsageGet200ResponseInner) interface{} {
 	if ratedUsageOneOf.BandwidthRecord != nil {
 		return BandwidthRecordFromSdk(ratedUsageOneOf.BandwidthRecord)

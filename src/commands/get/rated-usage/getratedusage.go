@@ -35,7 +35,6 @@ pnapctl get rated-usages [--output <OUTPUT_TYPE>]`,
 }
 
 func getRatedUsage() error {
-
 	queryParams, err := billingmodels.NewRatedUsageGetQueryParams(FromYearMonth, ToYearMonth, ProductCategory)
 	if err != nil {
 		return err
