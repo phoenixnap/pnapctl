@@ -1,9 +1,10 @@
 package rated_usage
 
 import (
-	"errors"
-
-	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
+	"phoenixnap.com/pnapctl/common/client/billing"
+	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -34,37 +35,30 @@ pnapctl get rated-usages [--output <OUTPUT_TYPE>]`,
 }
 
 func getRatedUsage() error {
-	// var httpResponse *netHttp.Response
-	// var err error
 
-	// Only here for import.
-	var ratedUsageRecords []billingapisdk.RatedUsageRecord
-	return errors.New(ratedUsageRecords[0].Id)
+	queryParams, err := billingmodels.NewRatedUsageGetQueryParams(FromYearMonth, ToYearMonth, ProductCategory)
+	if err != nil {
+		return err
+	}
 
-	// if ipBlockId == "" {
-	// 	ipBlocks, httpResponse, err = ip.Client.IpBlocksGet()
-	// } else {
-	// 	ipBlock, httpResponse, err = ip.Client.IpBlocksGetById(ipBlockId)
-	// }
+	ratedUsageRecords, httpResponse, err := billing.Client.RatedUsageGet(*queryParams)
 
-	// var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
-	// if *generatedError != nil {
-	// 	return *generatedError
-	// } else {
-	// 	if ipBlockId == "" {
-	// 		return printer.PrintIpBlockListResponse(ipBlocks, commandName)
-	// 	} else {
-	// 		return printer.PrintIpBlockResponse(ipBlock, commandName)
-	// 	}
-	// }
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintRatedUsageListResponse(ratedUsageRecords, Full, commandName)
+	}
 }
 
+var Full bool
 var FromYearMonth string
 var ToYearMonth string
 var ProductCategory string
 
 func init() {
+	GetRatedUsageCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
 	GetRatedUsageCmd.PersistentFlags().StringVarP(&FromYearMonth, "fromYearMonth", "from", "", "From year month (inclusive) to filter rated usage records by.")
 	GetRatedUsageCmd.PersistentFlags().StringVarP(&ToYearMonth, "toYearMonth", "to", "", "To year month (inclusive) to filter rated usage records by.")
 	GetRatedUsageCmd.PersistentFlags().StringVarP(&ProductCategory, "productCategory", "category", "", "The product category to filter by.")

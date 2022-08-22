@@ -2,15 +2,6 @@ package billingmodels
 
 import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"phoenixnap.com/pnapctl/common/models/tables"
-)
-
-type Format int
-
-const (
-	SDK Format = iota
-	SHORT_TABLE
-	FULL_TABLE
 )
 
 type RatedUsageOneOf struct {
@@ -20,62 +11,31 @@ type RatedUsageOneOf struct {
 	ServerRecord          *billingapi.ServerRecord
 }
 
-func RatedUsageOneOfFromSdk(ratedUsageOneOf *billingapi.RatedUsageGet200ResponseInner) *RatedUsageOneOf {
-	if ratedUsageOneOf == nil {
-		return nil
+type oneOfType string
+
+const (
+	BANDWIDTH        oneOfType = "BANDWIDTH RECORD"
+	OPERATING_SYSTEM oneOfType = "OPERATING SYSTEM RECORD"
+	PUBLIC_SUBNET    oneOfType = "PUBLIC SUBNET RECORD"
+	SERVER           oneOfType = "SERVER RECORD"
+	OTHER            oneOfType = "OTHER"
+)
+
+func RatedUsageActualFromSdk(ratedUsageOneOf billingapi.RatedUsageGet200ResponseInner) interface{} {
+	if ratedUsageOneOf.BandwidthRecord != nil {
+		return BandwidthRecordFromSdk(ratedUsageOneOf.BandwidthRecord)
 	}
 
-	return &RatedUsageOneOf{
-		BandwidthRecord:       ratedUsageOneOf.BandwidthRecord,
-		OperatingSystemRecord: ratedUsageOneOf.OperatingSystemRecord,
-		PublicSubnetRecord:    ratedUsageOneOf.PublicSubnetRecord,
-		ServerRecord:          ratedUsageOneOf.ServerRecord,
-	}
-}
-
-func (oneOf *RatedUsageOneOf) GetActualInstanceAs(format Format) interface{} {
-	if oneOf.BandwidthRecord != nil {
-		switch format {
-		case SDK:
-			return BandwidthRecordFromSdk(oneOf.BandwidthRecord)
-		case FULL_TABLE:
-			return tables.BandwidthRecordTableFromSdk(*oneOf.BandwidthRecord)
-		case SHORT_TABLE:
-			return tables.ShortBandwidthRecordTableFromSdk(*oneOf.BandwidthRecord)
-		}
+	if ratedUsageOneOf.OperatingSystemRecord != nil {
+		return OperatingSystemRecordFromSdk(ratedUsageOneOf.OperatingSystemRecord)
 	}
 
-	if oneOf.OperatingSystemRecord != nil {
-		switch format {
-		case SDK:
-			return OperatingSystemRecordFromSdk(oneOf.OperatingSystemRecord)
-		case FULL_TABLE:
-			return tables.OperatingSystemRecordTableFromSdk(*oneOf.OperatingSystemRecord)
-		case SHORT_TABLE:
-			return tables.ShortOperatingSystemRecordTableFromSdk(*oneOf.OperatingSystemRecord)
-		}
+	if ratedUsageOneOf.PublicSubnetRecord != nil {
+		return PublicSubnetRecordFromSdk(ratedUsageOneOf.PublicSubnetRecord)
 	}
 
-	if oneOf.PublicSubnetRecord != nil {
-		switch format {
-		case SDK:
-			return PublicSubnetRecordFromSdk(oneOf.PublicSubnetRecord)
-		case FULL_TABLE:
-			return tables.PublicSubnetRecordTableFromSdk(*oneOf.PublicSubnetRecord)
-		case SHORT_TABLE:
-			return tables.ShortPublicSubnetRecordTableFromSdk(*oneOf.PublicSubnetRecord)
-		}
-	}
-
-	if oneOf.ServerRecord != nil {
-		switch format {
-		case SDK:
-			return ServerRecordFromSdk(oneOf.ServerRecord)
-		case FULL_TABLE:
-			return tables.ServerRecordTableFromSdk(*oneOf.ServerRecord)
-		case SHORT_TABLE:
-			return tables.ShortServerRecordTableFromSdk(*oneOf.ServerRecord)
-		}
+	if ratedUsageOneOf.ServerRecord != nil {
+		return ServerRecordFromSdk(ratedUsageOneOf.ServerRecord)
 	}
 
 	return nil

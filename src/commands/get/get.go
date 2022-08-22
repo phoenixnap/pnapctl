@@ -6,9 +6,10 @@ import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/commands/get/clusters"
 	"phoenixnap.com/pnapctl/commands/get/events"
-	"phoenixnap.com/pnapctl/commands/get/ip-blocks"
+	ip_blocks "phoenixnap.com/pnapctl/commands/get/ip-blocks"
 	"phoenixnap.com/pnapctl/commands/get/privatenetwork"
 	"phoenixnap.com/pnapctl/commands/get/quotas"
+	rated_usage "phoenixnap.com/pnapctl/commands/get/rated-usage"
 	"phoenixnap.com/pnapctl/commands/get/servers"
 	"phoenixnap.com/pnapctl/commands/get/sshkeys"
 	"phoenixnap.com/pnapctl/commands/get/tags"
@@ -33,4 +34,5 @@ func init() {
 	GetCmd.AddCommand(sshkeys.GetSshKeysCmd)
 	GetCmd.AddCommand(privatenetwork.GetPrivateNetworksCmd)
 	GetCmd.AddCommand(ip_blocks.GetIpBlockCmd)
+	GetCmd.AddCommand(rated_usage.GetRatedUsageCmd)
 }
