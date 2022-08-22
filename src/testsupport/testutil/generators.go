@@ -31,3 +31,8 @@ func RanNumberPointer() *int32 {
 	i := rand.Int31()
 	return &i
 }
+
+func RanF32Pointer() *float32 {
+	f := rand.Float32()
+	return &f
+}
