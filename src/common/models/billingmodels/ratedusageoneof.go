@@ -2,6 +2,7 @@ package billingmodels
 
 import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
+	"phoenixnap.com/pnapctl/common/models/billingmodels/ratedusageoneof"
 )
 
 type RatedUsageOneOf struct {
@@ -13,19 +14,19 @@ type RatedUsageOneOf struct {
 
 func RatedUsageActualFromSdk(ratedUsageOneOf billingapi.RatedUsageGet200ResponseInner) interface{} {
 	if ratedUsageOneOf.BandwidthRecord != nil {
-		return BandwidthRecordFromSdk(ratedUsageOneOf.BandwidthRecord)
+		return ratedusageoneof.BandwidthRecordFromSdk(ratedUsageOneOf.BandwidthRecord)
 	}
 
 	if ratedUsageOneOf.OperatingSystemRecord != nil {
-		return OperatingSystemRecordFromSdk(ratedUsageOneOf.OperatingSystemRecord)
+		return ratedusageoneof.OperatingSystemRecordFromSdk(ratedUsageOneOf.OperatingSystemRecord)
 	}
 
 	if ratedUsageOneOf.PublicSubnetRecord != nil {
-		return PublicSubnetRecordFromSdk(ratedUsageOneOf.PublicSubnetRecord)
+		return ratedusageoneof.PublicSubnetRecordFromSdk(ratedUsageOneOf.PublicSubnetRecord)
 	}
 
 	if ratedUsageOneOf.ServerRecord != nil {
-		return ServerRecordFromSdk(ratedUsageOneOf.ServerRecord)
+		return ratedusageoneof.ServerRecordFromSdk(ratedUsageOneOf.ServerRecord)
 	}
 
 	return nil

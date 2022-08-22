@@ -1,4 +1,4 @@
-package billingmodels
+package ratedusageoneof
 
 import (
 	"time"
