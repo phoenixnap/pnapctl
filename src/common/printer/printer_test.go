@@ -438,12 +438,14 @@ func TestPrepareIpBlockListForPrinting(test_framework *testing.T) {
 	assert.Equal(test_framework, len(prepared), 1)
 }
 
+// Billing
+
 func TestPrepareRatedUsageRecordForPrintingNonTable_Bandwidth(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
 		BandwidthRecord: billingmodels.GenerateBandwidthRecordSdk(),
 	}
-	prepared, _ := PrepareRatedUsageForPrinting(ratedUsage, true, "get rated-usage")
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -455,7 +457,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framewo
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
 		OperatingSystemRecord: billingmodels.GenerateOperatingSystemRecordSdk(),
 	}
-	prepared, _ := PrepareRatedUsageForPrinting(ratedUsage, true, "get rated-usage")
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -467,7 +469,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework 
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
 		PublicSubnetRecord: billingmodels.GeneratePublicSubnetRecordSdk(),
 	}
-	prepared, _ := PrepareRatedUsageForPrinting(ratedUsage, true, "get rated-usage")
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -479,7 +481,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testi
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
 		ServerRecord: billingmodels.GenerateServerRecordSdk(),
 	}
-	prepared, _ := PrepareRatedUsageForPrinting(ratedUsage, true, "get rated-usage")
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -491,7 +493,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Short(test_framework *testin
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
 		BandwidthRecord: billingmodels.GenerateBandwidthRecordSdk(),
 	}
-	prepared, _ := PrepareRatedUsageForPrinting(ratedUsage, false, "get rated-usage")
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -503,7 +505,7 @@ func TestPrepareRatedUsageRecordForPrintingTableFull(test_framework *testing.T) 
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
 		ServerRecord: billingmodels.GenerateServerRecordSdk(),
 	}
-	prepared, _ := PrepareRatedUsageForPrinting(ratedUsage, true, "get rated-usage")
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -515,7 +517,7 @@ func TestPrepareRatedUsageRecordForPrintingTableShort(test_framework *testing.T)
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
 		ServerRecord: billingmodels.GenerateServerRecordSdk(),
 	}
-	prepared, _ := PrepareRatedUsageForPrinting(ratedUsage, false, "get rated-usage")
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
 

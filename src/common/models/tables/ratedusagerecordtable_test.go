@@ -5,7 +5,6 @@ import (
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/billingmodels"
 )
 
@@ -14,9 +13,8 @@ func TestRatedUsageRecordFromBandwidthSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
 		BandwidthRecord: billingmodels.GenerateBandwidthRecordSdk(),
 	}
-	table, err := RatedUsageRecordFromSdk(record, "get rated-usage")
+	table := RatedUsageRecordFromSdk(record)
 
-	assert.Nil(test_framework, err)
 	assertFullBandwidthRecordsEqual(test_framework, *record.BandwidthRecord, table)
 }
 
@@ -24,9 +22,8 @@ func TestRatedUsageRecordFromOperatingSystemSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
 		OperatingSystemRecord: billingmodels.GenerateOperatingSystemRecordSdk(),
 	}
-	table, err := RatedUsageRecordFromSdk(record, "get rated-usage")
+	table := RatedUsageRecordFromSdk(record)
 
-	assert.Nil(test_framework, err)
 	assertFullOperatingSystemRecordsEqual(test_framework, *record.OperatingSystemRecord, table)
 }
 
@@ -34,9 +31,8 @@ func TestRatedUsageRecordFromPublicSubnetSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
 		PublicSubnetRecord: billingmodels.GeneratePublicSubnetRecordSdk(),
 	}
-	table, err := RatedUsageRecordFromSdk(record, "get rated-usage")
+	table := RatedUsageRecordFromSdk(record)
 
-	assert.Nil(test_framework, err)
 	assertFullPublicSubnetRecordsEqual(test_framework, *record.PublicSubnetRecord, table)
 }
 
@@ -44,19 +40,9 @@ func TestRatedUsageRecordFromServerSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
 		ServerRecord: billingmodels.GenerateServerRecordSdk(),
 	}
-	table, err := RatedUsageRecordFromSdk(record, "get rated-usage")
+	table := RatedUsageRecordFromSdk(record)
 
-	assert.Nil(test_framework, err)
 	assertFullServerRecordsEqual(test_framework, *record.ServerRecord, table)
-}
-
-func TestRatedUsageRecordFromSdk_NoFieldsError(test_framework *testing.T) {
-	record := billingapi.RatedUsageGet200ResponseInner{}
-	_, err := RatedUsageRecordFromSdk(record, "get rated-usage")
-
-	assert.NotNil(test_framework, err)
-	expectedMessage := "Command 'get rated-usage' has been performed, but something went wrong. Error code: " + ctlerrors.OneOfNoFieldsPopulated
-	assert.Equal(test_framework, err.Error(), expectedMessage)
 }
 
 // Full assertions
@@ -64,7 +50,7 @@ func assertFullBandwidthRecordsEqual(test_framework *testing.T, bandwidthRecord 
 	assert.Equal(test_framework, bandwidthRecord.Id, cliOneOf.Id)
 
 	assert.Equal(test_framework, bandwidthRecord.Id, cliOneOf.Id)
-	assert.Equal(test_framework, bandwidthRecord.ProductCategory, cliOneOf.ProductCategory)
+	assert.Equal(test_framework, bandwidthRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, bandwidthRecord.ProductCode, cliOneOf.ProductCode)
 	assert.Equal(test_framework, string(bandwidthRecord.Location), cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(bandwidthRecord.YearMonth), cliOneOf.YearMonth)
@@ -90,7 +76,7 @@ func assertFullOperatingSystemRecordsEqual(test_framework *testing.T, operatingS
 	assert.Equal(test_framework, operatingSystemRecord.Id, cliOneOf.Id)
 
 	assert.Equal(test_framework, operatingSystemRecord.Id, cliOneOf.Id)
-	assert.Equal(test_framework, operatingSystemRecord.ProductCategory, cliOneOf.ProductCategory)
+	assert.Equal(test_framework, operatingSystemRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, operatingSystemRecord.ProductCode, cliOneOf.ProductCode)
 	assert.Equal(test_framework, string(operatingSystemRecord.Location), cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(operatingSystemRecord.YearMonth), cliOneOf.YearMonth)
@@ -114,7 +100,7 @@ func assertFullPublicSubnetRecordsEqual(test_framework *testing.T, publicSubnetR
 	assert.Equal(test_framework, publicSubnetRecord.Id, cliOneOf.Id)
 
 	assert.Equal(test_framework, publicSubnetRecord.Id, cliOneOf.Id)
-	assert.Equal(test_framework, publicSubnetRecord.ProductCategory, cliOneOf.ProductCategory)
+	assert.Equal(test_framework, publicSubnetRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, publicSubnetRecord.ProductCode, cliOneOf.ProductCode)
 	assert.Equal(test_framework, string(publicSubnetRecord.Location), cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(publicSubnetRecord.YearMonth), cliOneOf.YearMonth)
@@ -139,7 +125,7 @@ func assertFullServerRecordsEqual(test_framework *testing.T, serverRecord billin
 	assert.Equal(test_framework, serverRecord.Id, cliOneOf.Id)
 
 	assert.Equal(test_framework, serverRecord.Id, cliOneOf.Id)
-	assert.Equal(test_framework, serverRecord.ProductCategory, cliOneOf.ProductCategory)
+	assert.Equal(test_framework, serverRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, serverRecord.ProductCode, cliOneOf.ProductCode)
 	assert.Equal(test_framework, string(serverRecord.Location), cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(serverRecord.YearMonth), cliOneOf.YearMonth)

@@ -1,10 +1,8 @@
 package tables
 
 import (
-	"fmt"
-
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/billingmodels/ratedusageoneof"
 )
 
 var ONE_OF_TYPES = []string{
@@ -14,6 +12,7 @@ var ONE_OF_TYPES = []string{
 	"SERVER_RECORD",
 }
 
+// Metadata keys
 const (
 	// Bandwidth Record
 	EGRESS_GB        string = "Egress (GB)"
@@ -38,168 +37,99 @@ const (
 // Full Table
 
 type RatedUsageRecordTable struct {
-	Id                   string                 `header:"Id"`
-	ProductCategory      string                 `header:"Product Category"`
-	ProductCode          string                 `header:"Product Code"`
-	Location             string                 `header:"Location"`
-	YearMonth            string                 `header:"Year Month"`
-	StartDateTime        string                 `header:"Start Date Time"`
-	EndDateTime          string                 `header:"End Date Time"`
-	Cost                 int64                  `header:"Cost"`
-	PriceModel           string                 `header:"Price Model"`
-	UnitPrice            float32                `header:"Unit Price"`
-	UnitPriceDescription string                 `header:"Unit Price Description"`
-	Quantity             float32                `header:"Quantity"`
-	Active               bool                   `header:"Active"`
-	UsageSessionId       string                 `header:"Usage Session Id"`
-	CorrelationId        string                 `header:"Correlation Id"`
-	ReservationId        string                 `header:"Reservation Id"`
-	Metadata             map[string]interface{} `header:"Metadata"`
+	Id                   string                        `header:"Id"`
+	ProductCategory      ratedusageoneof.Discriminator `header:"Product Category"`
+	ProductCode          string                        `header:"Product Code"`
+	Location             string                        `header:"Location"`
+	YearMonth            string                        `header:"Year Month"`
+	StartDateTime        string                        `header:"Start Date Time"`
+	EndDateTime          string                        `header:"End Date Time"`
+	Cost                 int64                         `header:"Cost"`
+	PriceModel           string                        `header:"Price Model"`
+	UnitPrice            float32                       `header:"Unit Price"`
+	UnitPriceDescription string                        `header:"Unit Price Description"`
+	Quantity             float32                       `header:"Quantity"`
+	Active               bool                          `header:"Active"`
+	UsageSessionId       string                        `header:"Usage Session Id"`
+	CorrelationId        string                        `header:"Correlation Id"`
+	ReservationId        string                        `header:"Reservation Id"`
+	Metadata             map[string]interface{}        `header:"Metadata"`
 }
 
-func RatedUsageRecordFromSdk(sdkRecord billingapisdk.RatedUsageGet200ResponseInner, commandName string) (RatedUsageRecordTable, error) {
-	if sdkRecord.BandwidthRecord != nil {
-		return fromBandwidthRecord(*sdkRecord.BandwidthRecord), nil
-	} else if sdkRecord.OperatingSystemRecord != nil {
-		return fromOperatingSystemRecord(*sdkRecord.OperatingSystemRecord), nil
-	} else if sdkRecord.PublicSubnetRecord != nil {
-		return fromPublicSubnetRecord(*sdkRecord.PublicSubnetRecord), nil
-	} else if sdkRecord.ServerRecord != nil {
-		return fromServerRecord(*sdkRecord.ServerRecord), nil
-	} else {
-		return RatedUsageRecordTable{}, ctlerrors.CreateCLIError(ctlerrors.OneOfNoFieldsPopulated, commandName,
-			fmt.Errorf("RatedUsage was none of the following: %v. Couldn't turn into table", ONE_OF_TYPES))
+func RatedUsageRecordFromSdk(sdkRecord billingapisdk.RatedUsageGet200ResponseInner) RatedUsageRecordTable {
+	ratedUsage := parseCommon(sdkRecord)
+	ratedUsage.attachMetadata(sdkRecord)
+	return ratedUsage
+}
+
+func parseCommon(sdkRecord billingapisdk.RatedUsageGet200ResponseInner) RatedUsageRecordTable {
+	ratedUsage := ratedusageoneof.RatedUsageFromSdkOneOf(&sdkRecord)
+
+	return RatedUsageRecordTable{
+		Id:                   ratedUsage.Id,
+		ProductCategory:      ratedUsage.ProductCategory,
+		ProductCode:          ratedUsage.ProductCode,
+		Location:             ratedUsage.Location,
+		YearMonth:            ratedUsage.YearMonth,
+		StartDateTime:        ratedUsage.StartDateTime.String(),
+		EndDateTime:          ratedUsage.EndDateTime.String(),
+		Cost:                 ratedUsage.Cost,
+		PriceModel:           ratedUsage.PriceModel,
+		UnitPrice:            ratedUsage.UnitPrice,
+		UnitPriceDescription: ratedUsage.UnitPriceDescription,
+		Quantity:             ratedUsage.Quantity,
+		Active:               ratedUsage.Active,
+		UsageSessionId:       ratedUsage.UsageSessionId,
+		CorrelationId:        ratedUsage.CorrelationId,
+		ReservationId:        ratedUsage.ReservationId,
 	}
 }
 
-func fromBandwidthRecord(bandwidthRecord billingapisdk.BandwidthRecord) RatedUsageRecordTable {
-	metadata := make(map[string]interface{})
+func (table *RatedUsageRecordTable) attachMetadata(sdkRecord billingapisdk.RatedUsageGet200ResponseInner) {
+	switch table.ProductCategory {
 
-	metadata[EGRESS_GB] = bandwidthRecord.Metadata.EgressGb
-	metadata[INGRESS_GB] = bandwidthRecord.Metadata.IngressGb
-	metadata[PACKAGE_QUANTITY] = bandwidthRecord.Metadata.PackageQuantity
-	metadata[PACKAGE_UNIT] = bandwidthRecord.Metadata.PackageUnit
+	case ratedusageoneof.BANDWIDTH:
+		table.Metadata = map[string]interface{}{
+			EGRESS_GB:        sdkRecord.BandwidthRecord.Metadata.EgressGb,
+			INGRESS_GB:       sdkRecord.BandwidthRecord.Metadata.IngressGb,
+			PACKAGE_QUANTITY: sdkRecord.BandwidthRecord.Metadata.PackageQuantity,
+			PACKAGE_UNIT:     sdkRecord.BandwidthRecord.Metadata.PackageUnit,
+		}
 
-	return RatedUsageRecordTable{
-		Id:                   bandwidthRecord.Id,
-		ProductCategory:      bandwidthRecord.ProductCategory,
-		ProductCode:          bandwidthRecord.ProductCode,
-		Location:             string(bandwidthRecord.Location),
-		YearMonth:            DerefString(bandwidthRecord.YearMonth),
-		StartDateTime:        bandwidthRecord.StartDateTime.String(),
-		EndDateTime:          bandwidthRecord.EndDateTime.String(),
-		Cost:                 bandwidthRecord.Cost,
-		PriceModel:           bandwidthRecord.PriceModel,
-		UnitPrice:            bandwidthRecord.UnitPrice,
-		UnitPriceDescription: bandwidthRecord.UnitPriceDescription,
-		Quantity:             bandwidthRecord.Quantity,
-		Active:               bandwidthRecord.Active,
-		UsageSessionId:       bandwidthRecord.UsageSessionId,
-		CorrelationId:        bandwidthRecord.CorrelationId,
-		ReservationId:        DerefString(bandwidthRecord.ReservationId),
-		Metadata:             metadata,
-	}
-}
+	case ratedusageoneof.OPERATING_SYSTEM:
+		table.Metadata = map[string]interface{}{
+			CORES:          sdkRecord.OperatingSystemRecord.Metadata.Cores,
+			CORRELATION_ID: sdkRecord.OperatingSystemRecord.Metadata.CorrelationId,
+		}
 
-func fromOperatingSystemRecord(operatingSystemRecord billingapisdk.OperatingSystemRecord) RatedUsageRecordTable {
-	metadata := make(map[string]interface{})
+	case ratedusageoneof.PUBLIC_SUBNET:
+		table.Metadata = map[string]interface{}{
+			CIDR:      sdkRecord.PublicSubnetRecord.Metadata.Cidr,
+			SUBNET_ID: sdkRecord.PublicSubnetRecord.Metadata.Id,
+			SIZE:      sdkRecord.PublicSubnetRecord.Metadata.Size,
+		}
 
-	metadata[CORES] = operatingSystemRecord.Metadata.Cores
-	metadata[CORRELATION_ID] = operatingSystemRecord.Metadata.CorrelationId
-
-	return RatedUsageRecordTable{
-		Id:                   operatingSystemRecord.Id,
-		ProductCategory:      operatingSystemRecord.ProductCategory,
-		ProductCode:          operatingSystemRecord.ProductCode,
-		Location:             string(operatingSystemRecord.Location),
-		YearMonth:            DerefString(operatingSystemRecord.YearMonth),
-		StartDateTime:        operatingSystemRecord.StartDateTime.String(),
-		EndDateTime:          operatingSystemRecord.EndDateTime.String(),
-		Cost:                 operatingSystemRecord.Cost,
-		PriceModel:           operatingSystemRecord.PriceModel,
-		UnitPrice:            operatingSystemRecord.UnitPrice,
-		UnitPriceDescription: operatingSystemRecord.UnitPriceDescription,
-		Quantity:             operatingSystemRecord.Quantity,
-		Active:               operatingSystemRecord.Active,
-		UsageSessionId:       operatingSystemRecord.UsageSessionId,
-		CorrelationId:        operatingSystemRecord.CorrelationId,
-		ReservationId:        DerefString(operatingSystemRecord.ReservationId),
-		Metadata:             metadata,
-	}
-}
-
-func fromPublicSubnetRecord(publicSubnetRecord billingapisdk.PublicSubnetRecord) RatedUsageRecordTable {
-	metadata := make(map[string]interface{})
-
-	metadata[CIDR] = publicSubnetRecord.Metadata.Cidr
-	metadata[SUBNET_ID] = publicSubnetRecord.Metadata.Id
-	metadata[SIZE] = publicSubnetRecord.Metadata.Size
-
-	return RatedUsageRecordTable{
-		Id:                   publicSubnetRecord.Id,
-		ProductCategory:      publicSubnetRecord.ProductCategory,
-		ProductCode:          publicSubnetRecord.ProductCode,
-		Location:             string(publicSubnetRecord.Location),
-		YearMonth:            DerefString(publicSubnetRecord.YearMonth),
-		StartDateTime:        publicSubnetRecord.StartDateTime.String(),
-		EndDateTime:          publicSubnetRecord.EndDateTime.String(),
-		Cost:                 publicSubnetRecord.Cost,
-		PriceModel:           publicSubnetRecord.PriceModel,
-		UnitPrice:            publicSubnetRecord.UnitPrice,
-		UnitPriceDescription: publicSubnetRecord.UnitPriceDescription,
-		Quantity:             publicSubnetRecord.Quantity,
-		Active:               publicSubnetRecord.Active,
-		UsageSessionId:       publicSubnetRecord.UsageSessionId,
-		CorrelationId:        publicSubnetRecord.CorrelationId,
-		ReservationId:        DerefString(publicSubnetRecord.ReservationId),
-		Metadata:             metadata,
-	}
-}
-
-func fromServerRecord(serverRecord billingapisdk.ServerRecord) RatedUsageRecordTable {
-	metadata := make(map[string]interface{})
-
-	metadata[SERVER_ID] = serverRecord.Metadata.Id
-	metadata[HOSTNAME] = serverRecord.Metadata.Hostname
-
-	return RatedUsageRecordTable{
-		Id:                   serverRecord.Id,
-		ProductCategory:      serverRecord.ProductCategory,
-		ProductCode:          serverRecord.ProductCode,
-		Location:             string(serverRecord.Location),
-		YearMonth:            DerefString(serverRecord.YearMonth),
-		StartDateTime:        serverRecord.StartDateTime.String(),
-		EndDateTime:          serverRecord.EndDateTime.String(),
-		Cost:                 serverRecord.Cost,
-		PriceModel:           serverRecord.PriceModel,
-		UnitPrice:            serverRecord.UnitPrice,
-		UnitPriceDescription: serverRecord.UnitPriceDescription,
-		Quantity:             serverRecord.Quantity,
-		Active:               serverRecord.Active,
-		UsageSessionId:       serverRecord.UsageSessionId,
-		CorrelationId:        serverRecord.CorrelationId,
-		ReservationId:        DerefString(serverRecord.ReservationId),
-		Metadata:             metadata,
+	case ratedusageoneof.SERVER:
+		table.Metadata = map[string]interface{}{
+			SERVER_ID: sdkRecord.ServerRecord.Metadata.Id,
+			HOSTNAME:  sdkRecord.ServerRecord.Metadata.Hostname,
+		}
 	}
 }
 
 // Short Version
 
 type ShortRatedUsageRecordTable struct {
-	Id              string `header:"Id"`
-	ProductCategory string `header:"Product Category"`
-	ProductCode     string `header:"Product Code"`
-	YearMonth       string `header:"Year Month"`
-	Cost            int64  `header:"Cost"`
+	Id              string                        `header:"Id"`
+	ProductCategory ratedusageoneof.Discriminator `header:"Product Category"`
+	ProductCode     string                        `header:"Product Code"`
+	YearMonth       string                        `header:"Year Month"`
+	Cost            int64                         `header:"Cost"`
 }
 
 // Extracts a ShortRatedUsageRecordTable using the full table.
-func ShortRatedUsageRecordFromSdk(sdkRecord billingapisdk.RatedUsageGet200ResponseInner, commandName string) (*ShortRatedUsageRecordTable, error) {
-	fullTable, err := RatedUsageRecordFromSdk(sdkRecord, commandName)
-
-	if err != nil {
-		return nil, err
-	}
+func ShortRatedUsageRecordFromSdk(sdkRecord billingapisdk.RatedUsageGet200ResponseInner) *ShortRatedUsageRecordTable {
+	fullTable := parseCommon(sdkRecord)
 
 	return &ShortRatedUsageRecordTable{
 		Id:              fullTable.Id,
@@ -207,5 +137,5 @@ func ShortRatedUsageRecordFromSdk(sdkRecord billingapisdk.RatedUsageGet200Respon
 		ProductCode:     fullTable.ProductCode,
 		YearMonth:       fullTable.YearMonth,
 		Cost:            fullTable.Cost,
-	}, nil
+	}
 }

@@ -7,56 +7,36 @@ import (
 )
 
 func PrintRatedUsageResponse(ratedUsage *billingapi.RatedUsageGet200ResponseInner, full bool, commandName string) error {
-	clusterToPrint, err := PrepareRatedUsageForPrinting(*ratedUsage, full, commandName)
-	if err != nil {
-		return err
-	}
-
+	clusterToPrint := PrepareRatedUsageForPrinting(*ratedUsage, full)
 	return MainPrinter.PrintOutput(clusterToPrint, commandName)
 }
 
 func PrintRatedUsageListResponse(ratedUsages []billingapi.RatedUsageGet200ResponseInner, full bool, commandName string) error {
-	clusterListToPrint, err := PrepareRatedUsageListForPrinting(ratedUsages, full, commandName)
-	if err != nil {
-		return err
-	}
-
+	clusterListToPrint := PrepareRatedUsageListForPrinting(ratedUsages, full)
 	return MainPrinter.PrintOutput(clusterListToPrint, commandName)
 }
 
-func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200ResponseInner, full bool, commandName string) (interface{}, error) {
+func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200ResponseInner, full bool) interface{} {
 	table := OutputIsTable()
 
 	switch {
 	case table && full:
-		record, err := tables.RatedUsageRecordFromSdk(ratedUsage, commandName)
-		if err != nil {
-			return nil, err
-		}
-		return record, nil
+		return tables.RatedUsageRecordFromSdk(ratedUsage)
 	case table:
-		record, err := tables.ShortRatedUsageRecordFromSdk(ratedUsage, commandName)
-		if err != nil {
-			return nil, err
-		}
-		return record, nil
+		return tables.ShortRatedUsageRecordFromSdk(ratedUsage)
 	case full:
-		return billingmodels.RatedUsageActualFromSdk(ratedUsage), nil
+		return billingmodels.RatedUsageActualFromSdk(ratedUsage)
 	default:
-		return billingmodels.ShortRatedUsageActualFromSdk(ratedUsage), nil
+		return billingmodels.ShortRatedUsageActualFromSdk(ratedUsage)
 	}
 }
 
-func PrepareRatedUsageListForPrinting(ratedUsages []billingapi.RatedUsageGet200ResponseInner, full bool, commandName string) ([]interface{}, error) {
+func PrepareRatedUsageListForPrinting(ratedUsages []billingapi.RatedUsageGet200ResponseInner, full bool) []interface{} {
 	var clusterList []interface{}
 
 	for _, cluster := range ratedUsages {
-		record, err := PrepareRatedUsageForPrinting(cluster, full, commandName)
-		if err != nil {
-			return nil, err
-		}
-		clusterList = append(clusterList, record)
+		clusterList = append(clusterList, PrepareRatedUsageForPrinting(cluster, full))
 	}
 
-	return clusterList, nil
+	return clusterList
 }
