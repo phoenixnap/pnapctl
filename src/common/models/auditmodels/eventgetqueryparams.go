@@ -7,7 +7,6 @@ import (
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 )
 
-// TODO: Needs tests!
 type EventsGetQueryParams struct {
 	From     *time.Time
 	To       *time.Time

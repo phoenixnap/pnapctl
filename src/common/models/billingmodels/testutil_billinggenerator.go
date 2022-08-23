@@ -8,6 +8,31 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
+func GenerateGetRatedUsageQueryParams() RatedUsageGetQueryParams {
+	return RatedUsageGetQueryParams{
+		FromYearMonth:   "2020-10",
+		ToYearMonth:     "2021-10",
+		ProductCategory: billingapi.BANDWIDTH.Ptr(),
+	}
+}
+
+func GenerateRatedUsageRecordSdkList() []billingapi.RatedUsageGet200ResponseInner {
+	return []billingapi.RatedUsageGet200ResponseInner{
+		{
+			BandwidthRecord: GenerateBandwidthRecordSdk(),
+		},
+		{
+			OperatingSystemRecord: GenerateOperatingSystemRecordSdk(),
+		},
+		{
+			PublicSubnetRecord: GeneratePublicSubnetRecordSdk(),
+		},
+		{
+			ServerRecord: GenerateServerRecordSdk(),
+		},
+	}
+}
+
 func GenerateBandwidthRecordSdk() *billingapi.BandwidthRecord {
 	return &billingapi.BandwidthRecord{
 		Id:                   testutil.RandSeq(10),
