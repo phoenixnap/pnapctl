@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
+	"phoenixnap.com/pnapctl/common/models/billingmodels/ratedusageoneof"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
@@ -36,7 +37,7 @@ func GenerateRatedUsageRecordSdkList() []billingapi.RatedUsageGet200ResponseInne
 func GenerateBandwidthRecordSdk() *billingapi.BandwidthRecord {
 	return &billingapi.BandwidthRecord{
 		Id:                   testutil.RandSeq(10),
-		ProductCategory:      testutil.RandSeq(10),
+		ProductCategory:      ratedusageoneof.BANDWIDTH,
 		ProductCode:          testutil.RandSeq(10),
 		Location:             "PHX",
 		YearMonth:            testutil.RandSeqPointer(10),
@@ -67,7 +68,7 @@ func GenerateBandwidthDetails() billingapi.BandwidthDetails {
 func GenerateOperatingSystemRecordSdk() *billingapi.OperatingSystemRecord {
 	return &billingapi.OperatingSystemRecord{
 		Id:                   testutil.RandSeq(10),
-		ProductCategory:      testutil.RandSeq(10),
+		ProductCategory:      ratedusageoneof.OPERATING_SYSTEM,
 		ProductCode:          testutil.RandSeq(10),
 		Location:             "PHX",
 		YearMonth:            testutil.RandSeqPointer(10),
@@ -96,7 +97,7 @@ func GenerateOperatingSystemDetails() billingapi.OperatingSystemDetails {
 func GeneratePublicSubnetRecordSdk() *billingapi.PublicSubnetRecord {
 	return &billingapi.PublicSubnetRecord{
 		Id:                   testutil.RandSeq(10),
-		ProductCategory:      testutil.RandSeq(10),
+		ProductCategory:      ratedusageoneof.PUBLIC_SUBNET,
 		ProductCode:          testutil.RandSeq(10),
 		Location:             "PHX",
 		YearMonth:            testutil.RandSeqPointer(10),
@@ -126,7 +127,7 @@ func GeneratePublicSubnetDetails() billingapi.PublicSubnetDetails {
 func GenerateServerRecordSdk() *billingapi.ServerRecord {
 	return &billingapi.ServerRecord{
 		Id:                   testutil.RandSeq(10),
-		ProductCategory:      testutil.RandSeq(10),
+		ProductCategory:      ratedusageoneof.SERVER,
 		ProductCode:          testutil.RandSeq(10),
 		Location:             "PHX",
 		YearMonth:            testutil.RandSeqPointer(10),

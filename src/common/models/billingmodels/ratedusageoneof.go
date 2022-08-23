@@ -6,73 +6,58 @@ import (
 )
 
 type ShortRatedUsage struct {
-	Id              string
-	ProductCategory string
-	ProductCode     string
-	YearMonth       *string
-	Cost            int64
+	Id              string                        `json:"id" yaml:"id"`
+	ProductCategory ratedusageoneof.Discriminator `json:"productCategory" yaml:"productCategory"`
+	ProductCode     string                        `json:"productCode" yaml:"productCode"`
+	YearMonth       string                        `json:"yearMonth,omitempty" yaml:"yearMonth,omitempty"`
+	Cost            int64                         `json:"cost" yaml:"cost"`
 }
 
 func RatedUsageActualFromSdk(ratedUsageOneOf billingapi.RatedUsageGet200ResponseInner) interface{} {
-	if ratedUsageOneOf.BandwidthRecord != nil {
-		return ratedusageoneof.BandwidthRecordFromSdk(ratedUsageOneOf.BandwidthRecord)
+	ratedUsage := ratedusageoneof.RatedUsageFromSdkOneOf(&ratedUsageOneOf)
+
+	if ratedUsage == nil {
+		return nil
 	}
 
-	if ratedUsageOneOf.OperatingSystemRecord != nil {
-		return ratedusageoneof.OperatingSystemRecordFromSdk(ratedUsageOneOf.OperatingSystemRecord)
-	}
-
-	if ratedUsageOneOf.PublicSubnetRecord != nil {
-		return ratedusageoneof.PublicSubnetRecordFromSdk(ratedUsageOneOf.PublicSubnetRecord)
-	}
-
-	if ratedUsageOneOf.ServerRecord != nil {
-		return ratedusageoneof.ServerRecordFromSdk(ratedUsageOneOf.ServerRecord)
+	switch {
+	case ratedUsage.IsActually(ratedusageoneof.BANDWIDTH):
+		return &ratedusageoneof.BandwidthRecord{
+			RatedUsage: *ratedUsage,
+			Metadata:   *ratedusageoneof.BandwidthDetailsFromSdk(&ratedUsageOneOf.BandwidthRecord.Metadata),
+		}
+	case ratedUsage.IsActually(ratedusageoneof.OPERATING_SYSTEM):
+		return &ratedusageoneof.OperatingSystemRecord{
+			RatedUsage: *ratedUsage,
+			Metadata:   *ratedusageoneof.OperatingSystemDetailsFromSdk(&ratedUsageOneOf.OperatingSystemRecord.Metadata),
+		}
+	case ratedUsage.IsActually(ratedusageoneof.PUBLIC_SUBNET):
+		return &ratedusageoneof.PublicSubnetRecord{
+			RatedUsage: *ratedUsage,
+			Metadata:   *ratedusageoneof.PublicSubnetDetailsFromSdk(&ratedUsageOneOf.PublicSubnetRecord.Metadata),
+		}
+	case ratedUsage.IsActually(ratedusageoneof.SERVER):
+		return &ratedusageoneof.ServerRecord{
+			RatedUsage: *ratedUsage,
+			Metadata:   *ratedusageoneof.ServerDetailsFromSdk(&ratedUsageOneOf.ServerRecord.Metadata),
+		}
 	}
 
 	return nil
 }
 
 func ShortRatedUsageActualFromSdk(ratedUsageOneOf billingapi.RatedUsageGet200ResponseInner) interface{} {
-	if ratedUsageOneOf.BandwidthRecord != nil {
-		return &ShortRatedUsage{
-			Id:              ratedUsageOneOf.BandwidthRecord.Id,
-			ProductCategory: ratedUsageOneOf.BandwidthRecord.ProductCategory,
-			ProductCode:     ratedUsageOneOf.BandwidthRecord.ProductCode,
-			YearMonth:       ratedUsageOneOf.BandwidthRecord.YearMonth,
-			Cost:            ratedUsageOneOf.BandwidthRecord.Cost,
-		}
+	ratedUsage := ratedusageoneof.RatedUsageFromSdkOneOf(&ratedUsageOneOf)
+
+	if ratedUsage == nil {
+		return nil
 	}
 
-	if ratedUsageOneOf.OperatingSystemRecord != nil {
-		return &ShortRatedUsage{
-			Id:              ratedUsageOneOf.OperatingSystemRecord.Id,
-			ProductCategory: ratedUsageOneOf.OperatingSystemRecord.ProductCategory,
-			ProductCode:     ratedUsageOneOf.OperatingSystemRecord.ProductCode,
-			YearMonth:       ratedUsageOneOf.OperatingSystemRecord.YearMonth,
-			Cost:            ratedUsageOneOf.OperatingSystemRecord.Cost,
-		}
+	return &ShortRatedUsage{
+		Id:              ratedUsage.Id,
+		ProductCategory: ratedUsage.ProductCategory,
+		ProductCode:     ratedUsage.ProductCode,
+		YearMonth:       ratedUsage.YearMonth,
+		Cost:            ratedUsage.Cost,
 	}
-
-	if ratedUsageOneOf.PublicSubnetRecord != nil {
-		return &ShortRatedUsage{
-			Id:              ratedUsageOneOf.PublicSubnetRecord.Id,
-			ProductCategory: ratedUsageOneOf.PublicSubnetRecord.ProductCategory,
-			ProductCode:     ratedUsageOneOf.PublicSubnetRecord.ProductCode,
-			YearMonth:       ratedUsageOneOf.PublicSubnetRecord.YearMonth,
-			Cost:            ratedUsageOneOf.PublicSubnetRecord.Cost,
-		}
-	}
-
-	if ratedUsageOneOf.ServerRecord != nil {
-		return &ShortRatedUsage{
-			Id:              ratedUsageOneOf.ServerRecord.Id,
-			ProductCategory: ratedUsageOneOf.ServerRecord.ProductCategory,
-			ProductCode:     ratedUsageOneOf.ServerRecord.ProductCode,
-			YearMonth:       ratedUsageOneOf.ServerRecord.YearMonth,
-			Cost:            ratedUsageOneOf.ServerRecord.Cost,
-		}
-	}
-
-	return nil
 }
