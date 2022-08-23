@@ -15,8 +15,6 @@ type RatedUsageGetQueryParams struct {
 
 func NewRatedUsageGetQueryParams(fromYearMonth string, toYearMonth string, productCategory string) (*RatedUsageGetQueryParams, error) {
 	validYearMonth := regexp.MustCompile("[0-9]{4}-0[1-9]|1[0-2]")
-	validYearMonth.MatchString(fromYearMonth)
-	validYearMonth.MatchString(toYearMonth)
 
 	if !validYearMonth.MatchString(fromYearMonth) {
 		return nil, fmt.Errorf("'FromYearMonth' (%s) is not in the valid format (YYYY-MM)", fromYearMonth)
