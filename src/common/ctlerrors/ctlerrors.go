@@ -45,8 +45,6 @@ const (
 	TablePrinterFailure = "9901"
 	// The error below typically happens either if there is a bug in the client or if the request body is incorrect
 	ErrorSendingRequest = "9902"
-	// This error happens because none of the potential fields were populated.
-	OneOfNoFieldsPopulated = "9903"
 )
 
 /* Error functions.
