@@ -24,7 +24,8 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 	var recordTables []interface{}
 
 	for _, record := range responseList {
-		recordTables = append(recordTables, tables.RatedUsageRecordFromSdk(record))
+		ratedUsageRecord, _ := tables.RatedUsageRecordFromSdk(record, commandName)
+		recordTables = append(recordTables, ratedUsageRecord)
 	}
 
 	// Mocking
