@@ -35,9 +35,15 @@ func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200Response
 		}
 		return record, nil
 	case table:
-		return tables.ShortRatedUsageRecordFromSdk(ratedUsage), nil
-	default:
+		record, err := tables.ShortRatedUsageRecordFromSdk(ratedUsage, commandName)
+		if err != nil {
+			return nil, err
+		}
+		return record, nil
+	case full:
 		return billingmodels.RatedUsageActualFromSdk(ratedUsage), nil
+	default:
+		return billingmodels.ShortRatedUsageActualFromSdk(ratedUsage), nil
 	}
 }
 

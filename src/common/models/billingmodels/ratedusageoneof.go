@@ -5,11 +5,12 @@ import (
 	"phoenixnap.com/pnapctl/common/models/billingmodels/ratedusageoneof"
 )
 
-type RatedUsageOneOf struct {
-	BandwidthRecord       *billingapi.BandwidthRecord
-	OperatingSystemRecord *billingapi.OperatingSystemRecord
-	PublicSubnetRecord    *billingapi.PublicSubnetRecord
-	ServerRecord          *billingapi.ServerRecord
+type ShortRatedUsage struct {
+	Id              string
+	ProductCategory string
+	ProductCode     string
+	YearMonth       *string
+	Cost            int64
 }
 
 func RatedUsageActualFromSdk(ratedUsageOneOf billingapi.RatedUsageGet200ResponseInner) interface{} {
@@ -27,6 +28,50 @@ func RatedUsageActualFromSdk(ratedUsageOneOf billingapi.RatedUsageGet200Response
 
 	if ratedUsageOneOf.ServerRecord != nil {
 		return ratedusageoneof.ServerRecordFromSdk(ratedUsageOneOf.ServerRecord)
+	}
+
+	return nil
+}
+
+func ShortRatedUsageActualFromSdk(ratedUsageOneOf billingapi.RatedUsageGet200ResponseInner) interface{} {
+	if ratedUsageOneOf.BandwidthRecord != nil {
+		return &ShortRatedUsage{
+			Id:              ratedUsageOneOf.BandwidthRecord.Id,
+			ProductCategory: ratedUsageOneOf.BandwidthRecord.ProductCategory,
+			ProductCode:     ratedUsageOneOf.BandwidthRecord.ProductCode,
+			YearMonth:       ratedUsageOneOf.BandwidthRecord.YearMonth,
+			Cost:            ratedUsageOneOf.BandwidthRecord.Cost,
+		}
+	}
+
+	if ratedUsageOneOf.OperatingSystemRecord != nil {
+		return &ShortRatedUsage{
+			Id:              ratedUsageOneOf.OperatingSystemRecord.Id,
+			ProductCategory: ratedUsageOneOf.OperatingSystemRecord.ProductCategory,
+			ProductCode:     ratedUsageOneOf.OperatingSystemRecord.ProductCode,
+			YearMonth:       ratedUsageOneOf.OperatingSystemRecord.YearMonth,
+			Cost:            ratedUsageOneOf.OperatingSystemRecord.Cost,
+		}
+	}
+
+	if ratedUsageOneOf.PublicSubnetRecord != nil {
+		return &ShortRatedUsage{
+			Id:              ratedUsageOneOf.PublicSubnetRecord.Id,
+			ProductCategory: ratedUsageOneOf.PublicSubnetRecord.ProductCategory,
+			ProductCode:     ratedUsageOneOf.PublicSubnetRecord.ProductCode,
+			YearMonth:       ratedUsageOneOf.PublicSubnetRecord.YearMonth,
+			Cost:            ratedUsageOneOf.PublicSubnetRecord.Cost,
+		}
+	}
+
+	if ratedUsageOneOf.ServerRecord != nil {
+		return &ShortRatedUsage{
+			Id:              ratedUsageOneOf.ServerRecord.Id,
+			ProductCategory: ratedUsageOneOf.ServerRecord.ProductCategory,
+			ProductCode:     ratedUsageOneOf.ServerRecord.ProductCode,
+			YearMonth:       ratedUsageOneOf.ServerRecord.YearMonth,
+			Cost:            ratedUsageOneOf.ServerRecord.Cost,
+		}
 	}
 
 	return nil

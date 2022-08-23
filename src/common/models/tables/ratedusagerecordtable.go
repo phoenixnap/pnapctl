@@ -1,7 +1,6 @@
 package tables
 
 import (
-	"encoding/json"
 	"fmt"
 
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
@@ -184,25 +183,29 @@ func fromServerRecord(serverRecord billingapisdk.ServerRecord) RatedUsageRecordT
 	}
 }
 
-// TODO: Finish Short version
+// Short Version
 
 type ShortRatedUsageRecordTable struct {
-	// TODO: Fill...
+	Id              string `header:"Id"`
+	ProductCategory string `header:"Product Category"`
+	ProductCode     string `header:"Product Code"`
+	YearMonth       string `header:"Year Month"`
+	Cost            int64  `header:"Cost"`
 }
 
-// Extracts a ShortRatedUsageRecordTable from the OneOf response.
-// Done by marshalling into JSON and unmarshalling into a struct that holds a common representation.
-func ShortRatedUsageRecordFromSdk(sdkRecord billingapisdk.RatedUsageGet200ResponseInner) ShortRatedUsageRecordTable {
-	// Converts the oneOf record into the common representation
-	jsonRecord, _ := sdkRecord.MarshalJSON()
-	var common ShortRatedUsageRecordCommon
-	json.Unmarshal(jsonRecord, &common)
+// Extracts a ShortRatedUsageRecordTable using the full table.
+func ShortRatedUsageRecordFromSdk(sdkRecord billingapisdk.RatedUsageGet200ResponseInner, commandName string) (*ShortRatedUsageRecordTable, error) {
+	fullTable, err := RatedUsageRecordFromSdk(sdkRecord, commandName)
 
-	return ShortRatedUsageRecordTable{
-		// TODO: Fill...
+	if err != nil {
+		return nil, err
 	}
-}
 
-type ShortRatedUsageRecordCommon struct {
-	// TODO: Fill...
+	return &ShortRatedUsageRecordTable{
+		Id:              fullTable.Id,
+		ProductCategory: fullTable.ProductCategory,
+		ProductCode:     fullTable.ProductCode,
+		YearMonth:       fullTable.YearMonth,
+		Cost:            fullTable.Cost,
+	}, nil
 }
