@@ -51,7 +51,7 @@ build build-simple pack build-and-pack: generate-docs
 # Tests
 
 .PHONY:
-generate-mocks test-bench test-short test-verbose test-race check test tests test-tparse test-coverage-show test-coverage:
+generate-all-mocks generate-all-mock-clients generate-all-mock-utils test-bench test-short test-verbose test-race check test tests test-tparse test-coverage-show test-coverage:
 	$Q $(MAKE) $(MAKE_FLAGS) -C $(SRC) $@
 
 .PHONY: component-tests
