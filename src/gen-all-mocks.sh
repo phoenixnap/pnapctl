@@ -13,6 +13,7 @@ is=(
     "networks"
     "rancher"
     "tags"
+    "billing"
 )
 
 for api in "${is[@]}"; do

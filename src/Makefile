@@ -44,8 +44,7 @@ $(BIN)/gox: PACKAGE = github.com/mitchellh/gox
 GO_JUNIT_REPORT = $(BIN)/go-junit-report
 $(BIN)/go-junit-report: PACKAGE = github.com/jstemmer/go-junit-report
 
-MOCKGEN = $(BIN)/mockgen
-$(BIN)/mockgen: PACKAGE = github.com/golang/mock/mockgen
+MOCKGEN = mockgen
 
 # Binaries
 
@@ -76,7 +75,7 @@ build-and-pack: ; @ ## Build cross compilation binaries ready for deployment and
 # Tests
 
 .PHONY: generate-mock
-generate-mock: $(MOCKGEN) ; $(info $(M) generating mock...) @ ## Generate mock using mockgen tool.
+generate-mock: $(info $(M) generating mock...) ## Generate mock using mockgen tool.
 	$Q $(MOCKGEN) --source=$(MOCK_SOURCE) --destination=$(MOCK_DESTINATION) --package=$(MOCK_PACKAGE)
 
 COVERAGE_MODE    = atomic

@@ -51,3 +51,19 @@ func (mr *MockBillingSdkClientMockRecorder) RatedUsageGet(queryParams interface{
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RatedUsageGet", reflect.TypeOf((*MockBillingSdkClient)(nil).RatedUsageGet), queryParams)
 }
+
+// RatedUsageMonthToDateGet mocks base method.
+func (m *MockBillingSdkClient) RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageGetMonthToDateQueryParams) ([]billingapi.RatedUsageGet200ResponseInner, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RatedUsageMonthToDateGet", queryParams)
+	ret0, _ := ret[0].([]billingapi.RatedUsageGet200ResponseInner)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// RatedUsageMonthToDateGet indicates an expected call of RatedUsageMonthToDateGet.
+func (mr *MockBillingSdkClientMockRecorder) RatedUsageMonthToDateGet(queryParams interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RatedUsageMonthToDateGet", reflect.TypeOf((*MockBillingSdkClient)(nil).RatedUsageMonthToDateGet), queryParams)
+}
