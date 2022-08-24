@@ -35,7 +35,7 @@ func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -67,7 +67,7 @@ func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -83,7 +83,7 @@ func TestCreatePrivateNetworkFileNotFoundFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
@@ -104,7 +104,7 @@ func TestCreatePrivateNetworkUnmarshallingFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -134,7 +134,7 @@ func TestCreatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -164,7 +164,7 @@ func TestCreatePrivateNetworkClientFailure(test_framework *testing.T) {
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -194,7 +194,7 @@ func TestCreatePrivateNetworkKeycloakFailure(test_framework *testing.T) {
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
