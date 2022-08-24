@@ -13,32 +13,27 @@ type RatedUsageGetQueryParams struct {
 	ProductCategory *billingapisdk.ProductCategoryEnum
 }
 
-func NewRatedUsageGetQueryParams(fromYearMonth string, toYearMonth string, productCategory string) (*RatedUsageGetQueryParams, error) {
+func NewRatedUsageGetQueryParams(fromYearMonth string, toYearMonth string, productCategory string) (params *RatedUsageGetQueryParams, err error) {
 	validYearMonth := regexp.MustCompile("[0-9]{4}-0[1-9]|1[0-2]")
 
 	if !validYearMonth.MatchString(fromYearMonth) {
-		return nil, fmt.Errorf("'FromYearMonth' (%s) is not in the valid format (YYYY-MM)", fromYearMonth)
+		err = fmt.Errorf("'FromYearMonth' (%s) is not in the valid format (YYYY-MM)", fromYearMonth)
+		return
 	}
 	if !validYearMonth.MatchString(toYearMonth) {
-		return nil, fmt.Errorf("'ToYearMonth' (%s) is not in the valid format (YYYY-MM)", toYearMonth)
+		err = fmt.Errorf("'ToYearMonth' (%s) is not in the valid format (YYYY-MM)", toYearMonth)
+		return
 	}
 
-	var validProductCategory *billingapisdk.ProductCategoryEnum
+	validProductCategory, err := parseProductCategory(productCategory)
 
-	if productCategory != "" {
-		parsedEnum, err := billingapisdk.NewProductCategoryEnumFromValue(productCategory)
-		validProductCategory = parsedEnum
-
-		if err != nil {
-			return nil, fmt.Errorf("invalid ProductCategory '%s'. Valid values: %v", productCategory, billingapisdk.AllowedProductCategoryEnumEnumValues)
-		}
-	}
-
-	return &RatedUsageGetQueryParams{
+	params = &RatedUsageGetQueryParams{
 		FromYearMonth:   fromYearMonth,
 		ToYearMonth:     toYearMonth,
 		ProductCategory: validProductCategory,
-	}, nil
+	}
+
+	return
 }
 
 func (queries RatedUsageGetQueryParams) AttachToRequest(request billingapisdk.ApiRatedUsageGetRequest) *billingapisdk.ApiRatedUsageGetRequest {
@@ -50,4 +45,37 @@ func (queries RatedUsageGetQueryParams) AttachToRequest(request billingapisdk.Ap
 	}
 
 	return &request
+}
+
+type RatedUsageGetMonthToDateQueryParams struct {
+	ProductCategory *billingapisdk.ProductCategoryEnum
+}
+
+func NewRatedUsageGetMonthToDateQueryParams(productCategory string) (params *RatedUsageGetMonthToDateQueryParams, err error) {
+	validProductCategory, err := parseProductCategory(productCategory)
+
+	params = &RatedUsageGetMonthToDateQueryParams{
+		ProductCategory: validProductCategory,
+	}
+
+	return
+}
+
+func (queries RatedUsageGetMonthToDateQueryParams) AttachToRequest(request *billingapisdk.ApiRatedUsageMonthToDateGetRequest) {
+	if queries.ProductCategory != nil {
+		request.ProductCategory(*queries.ProductCategory)
+	}
+}
+
+// Private methods
+func parseProductCategory(productCategory string) (validCategory *billingapisdk.ProductCategoryEnum, err error) {
+	if productCategory != "" {
+		validCategory, err = billingapisdk.NewProductCategoryEnumFromValue(productCategory)
+
+		if err != nil {
+			err = fmt.Errorf("invalid ProductCategory '%s'. Valid values: %v", productCategory, billingapisdk.AllowedProductCategoryEnumEnumValues)
+		}
+	}
+
+	return
 }

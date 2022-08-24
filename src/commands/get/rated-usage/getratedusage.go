@@ -1,6 +1,7 @@
 package rated_usage
 
 import (
+	month_to_date "phoenixnap.com/pnapctl/commands/get/rated-usage/month-to-date"
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/models/billingmodels"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -16,19 +17,17 @@ var GetRatedUsageCmd = &cobra.Command{
 	Short:        "Retrieve all rated-usages for the given time period.",
 	Aliases:      []string{"rated-usages"},
 	SilenceUsage: true,
-	Args:         cobra.MaximumNArgs(1),
 	Long: `Retrieve all rated-usages for the given time period.
 
 Prints all information about the rated-usages for the given time period.
 By default, the data is printed in table format.
 
-Every record corresponds to a charge. All date & times are in UTC.`,
+Every record corresponds to a charge. All date & times are in UTC.
+Note: "from" and "to" are required and need to be in a valid YYYY/MM format.`,
 	Example: `
 # List all rated usages.
-pnapctl get rated-usages [--output <OUTPUT_TYPE>]
-
-# List all rated usages.
-pnapctl get rated-usages [--output <OUTPUT_TYPE>]`,
+pnapctl get rated-usages --from=2020/10 --to=2021/11 [--category <CATEGORY>] [--output <OUTPUT_TYPE>]
+`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return getRatedUsage()
 	},
@@ -42,7 +41,7 @@ func getRatedUsage() error {
 
 	ratedUsageRecords, httpResponse, err := billing.Client.RatedUsageGet(*queryParams)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
 
 	if *generatedError != nil {
 		return *generatedError
@@ -57,6 +56,8 @@ var ToYearMonth string
 var ProductCategory string
 
 func init() {
+	GetRatedUsageCmd.AddCommand(month_to_date.GetRatedUsageMonthToDateCmd)
+
 	GetRatedUsageCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
 	GetRatedUsageCmd.PersistentFlags().StringVar(&FromYearMonth, "from", "", "From year month (inclusive) to filter rated usage records by.")
 	GetRatedUsageCmd.PersistentFlags().StringVar(&ToYearMonth, "to", "", "To year month (inclusive) to filter rated usage records by.")

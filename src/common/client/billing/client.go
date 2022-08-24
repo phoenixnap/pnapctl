@@ -14,8 +14,9 @@ import (
 var Client BillingSdkClient
 
 type BillingSdkClient interface {
-	// Events
+	// Rated Usages
 	RatedUsageGet(queryParams billingmodels.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
+	RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageGetMonthToDateQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
 }
 
 type MainClient struct {
@@ -58,6 +59,13 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 func (m MainClient) RatedUsageGet(queryParams billingmodels.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
 	request := m.RatedUsageApiClient.RatedUsageGet(context.Background())
 	request = *queryParams.AttachToRequest(request)
+
+	return request.Execute()
+}
+
+func (m MainClient) RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageGetMonthToDateQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
+	request := m.RatedUsageApiClient.RatedUsageMonthToDateGet(context.Background())
+	queryParams.AttachToRequest(&request)
 
 	return request.Execute()
 }
