@@ -47,6 +47,9 @@ $(BIN)/go-junit-report: PACKAGE = github.com/jstemmer/go-junit-report
 MOCKGEN = $(BIN)/mockgen
 $(BIN)/mockgen: PACKAGE = github.com/golang/mock/mockgen
 
+TPARSE = $(BIN)/tparse
+$(BIN)/tparse: PACKAGE = github.com/mfridman/tparse
+
 # Binaries
 
 .PHONY: build
@@ -116,8 +119,8 @@ $(TEST_TARGETS): NAME=$(MAKECMDGOALS:test-%=%)
 $(TEST_TARGETS): test
 check test tests: ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
 	$Q $(GO) test -vet=off -timeout $(TIMEOUT)s $(ARGS) $(TESTPKGS)
-test-tparse: ; $(info $(M) running $(NAME:%=% )tests...) @
-	$Q $(GO) test -vet=off -timeout $(TIMEOUT)s -json -cover $(TESTPKGS) | tparse -all 
+test-tparse: $(TPARSE) ; $(info $(M) running $(NAME:%=% )tests...) @
+	$Q $(GO) test -vet=off -timeout $(TIMEOUT)s -json -cover $(TESTPKGS) | $(TPARSE) -all 
 
 .PHONY: test-coverage test-coverage-tools test-coverage-show
 test-coverage-show: ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
