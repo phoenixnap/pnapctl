@@ -68,3 +68,29 @@ func TestRatedUsageGetQueryParams_invalidProductCategory(test_framework *testing
 
 	assert.Equal(test_framework, err, expectedErr)
 }
+
+// Month to date
+func TestRatedUsageMonthToDateGetQueryParams_valid(test_framework *testing.T) {
+	productCategory := billingapisdk.SERVER
+
+	queryParams, err := NewRatedUsageGetMonthToDateQueryParams(string(productCategory))
+
+	assert.NotNil(test_framework, queryParams)
+	assert.Nil(test_framework, err)
+
+	assert.Equal(test_framework, &productCategory, queryParams.ProductCategory)
+}
+
+func TestRatedUsageMonthToDateGetQueryParams_invalidProductCategory(test_framework *testing.T) {
+	var productCategory billingapisdk.ProductCategoryEnum = "NotValid"
+
+	queryParams, err := NewRatedUsageGetMonthToDateQueryParams(string(productCategory))
+
+	assert.Nil(test_framework, queryParams)
+	assert.NotNil(test_framework, err)
+
+	expectedErr := fmt.Errorf("invalid ProductCategory '%s'. Valid values: %v",
+		productCategory, billingapisdk.AllowedProductCategoryEnumEnumValues)
+
+	assert.Equal(test_framework, err, expectedErr)
+}

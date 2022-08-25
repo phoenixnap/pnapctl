@@ -13,27 +13,26 @@ type RatedUsageGetQueryParams struct {
 	ProductCategory *billingapisdk.ProductCategoryEnum
 }
 
-func NewRatedUsageGetQueryParams(fromYearMonth string, toYearMonth string, productCategory string) (params *RatedUsageGetQueryParams, err error) {
+func NewRatedUsageGetQueryParams(fromYearMonth string, toYearMonth string, productCategory string) (*RatedUsageGetQueryParams, error) {
 	validYearMonth := regexp.MustCompile("[0-9]{4}-0[1-9]|1[0-2]")
 
 	if !validYearMonth.MatchString(fromYearMonth) {
-		err = fmt.Errorf("'FromYearMonth' (%s) is not in the valid format (YYYY-MM)", fromYearMonth)
-		return
+		return nil, fmt.Errorf("'FromYearMonth' (%s) is not in the valid format (YYYY-MM)", fromYearMonth)
 	}
 	if !validYearMonth.MatchString(toYearMonth) {
-		err = fmt.Errorf("'ToYearMonth' (%s) is not in the valid format (YYYY-MM)", toYearMonth)
-		return
+		return nil, fmt.Errorf("'ToYearMonth' (%s) is not in the valid format (YYYY-MM)", toYearMonth)
 	}
 
 	validProductCategory, err := parseProductCategory(productCategory)
+	if err != nil {
+		return nil, err
+	}
 
-	params = &RatedUsageGetQueryParams{
+	return &RatedUsageGetQueryParams{
 		FromYearMonth:   fromYearMonth,
 		ToYearMonth:     toYearMonth,
 		ProductCategory: validProductCategory,
-	}
-
-	return
+	}, nil
 }
 
 func (queries RatedUsageGetQueryParams) AttachToRequest(request *billingapisdk.ApiRatedUsageGetRequest) {
@@ -49,14 +48,16 @@ type RatedUsageGetMonthToDateQueryParams struct {
 	ProductCategory *billingapisdk.ProductCategoryEnum
 }
 
-func NewRatedUsageGetMonthToDateQueryParams(productCategory string) (params *RatedUsageGetMonthToDateQueryParams, err error) {
+func NewRatedUsageGetMonthToDateQueryParams(productCategory string) (*RatedUsageGetMonthToDateQueryParams, error) {
 	validProductCategory, err := parseProductCategory(productCategory)
 
-	params = &RatedUsageGetMonthToDateQueryParams{
-		ProductCategory: validProductCategory,
+	if err != nil {
+		return nil, err
 	}
 
-	return
+	return &RatedUsageGetMonthToDateQueryParams{
+		ProductCategory: validProductCategory,
+	}, nil
 }
 
 func (queries RatedUsageGetMonthToDateQueryParams) AttachToRequest(request *billingapisdk.ApiRatedUsageMonthToDateGetRequest) {

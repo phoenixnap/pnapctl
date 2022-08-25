@@ -17,6 +17,12 @@ func GenerateGetRatedUsageQueryParams() RatedUsageGetQueryParams {
 	}
 }
 
+func GenerateGetRatedUsageMonthToDateQueryParams() RatedUsageGetMonthToDateQueryParams {
+	return RatedUsageGetMonthToDateQueryParams{
+		ProductCategory: billingapi.BANDWIDTH.Ptr(),
+	}
+}
+
 func GenerateRatedUsageRecordSdkList() []billingapi.RatedUsageGet200ResponseInner {
 	return []billingapi.RatedUsageGet200ResponseInner{
 		{
