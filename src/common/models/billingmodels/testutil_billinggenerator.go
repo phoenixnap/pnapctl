@@ -43,9 +43,9 @@ func GenerateRatedUsageRecordSdkList() []billingapi.RatedUsageGet200ResponseInne
 	}
 }
 
-type RatedUsageCommonSdk interface {
+// For common setting
+type RatedUsageCommonSetter interface {
 	SetId(string)
-	SetProductCategory(string)
 	SetProductCode(string)
 	SetLocation(billingapi.LocationEnum)
 	SetYearMonth(string)
@@ -62,9 +62,8 @@ type RatedUsageCommonSdk interface {
 	SetReservationId(string)
 }
 
-func populateRatedUsageCommon(sdk RatedUsageCommonSdk) RatedUsageCommonSdk {
+func populateRatedUsageCommon(sdk RatedUsageCommonSetter) RatedUsageCommonSetter {
 	sdk.SetId(testutil.RandSeq(10))
-	sdk.SetProductCategory(string(ratedusageoneof.BANDWIDTH))
 	sdk.SetProductCode(testutil.RandSeq(10))
 	sdk.SetLocation("PHX")
 	sdk.SetYearMonth(testutil.RandSeq(10))
@@ -82,9 +81,11 @@ func populateRatedUsageCommon(sdk RatedUsageCommonSdk) RatedUsageCommonSdk {
 	return sdk
 }
 
+// Individual oneof setting
 func GenerateBandwidthRecordSdk() *billingapi.BandwidthRecord {
 	record := billingapi.BandwidthRecord{
-		Metadata: GenerateBandwidthDetails(),
+		ProductCategory: string(ratedusageoneof.BANDWIDTH),
+		Metadata:        GenerateBandwidthDetails(),
 	}
 	return populateRatedUsageCommon(&record).(*billingapi.BandwidthRecord)
 }
@@ -100,7 +101,8 @@ func GenerateBandwidthDetails() billingapi.BandwidthDetails {
 
 func GenerateOperatingSystemRecordSdk() *billingapi.OperatingSystemRecord {
 	record := billingapi.OperatingSystemRecord{
-		Metadata: GenerateOperatingSystemDetails(),
+		ProductCategory: string(ratedusageoneof.OPERATING_SYSTEM),
+		Metadata:        GenerateOperatingSystemDetails(),
 	}
 	return populateRatedUsageCommon(&record).(*billingapi.OperatingSystemRecord)
 }
@@ -114,7 +116,8 @@ func GenerateOperatingSystemDetails() billingapi.OperatingSystemDetails {
 
 func GeneratePublicSubnetRecordSdk() *billingapi.PublicSubnetRecord {
 	record := billingapi.PublicSubnetRecord{
-		Metadata: GeneratePublicSubnetDetails(),
+		ProductCategory: string(ratedusageoneof.PUBLIC_SUBNET),
+		Metadata:        GeneratePublicSubnetDetails(),
 	}
 	return populateRatedUsageCommon(&record).(*billingapi.PublicSubnetRecord)
 }
@@ -129,7 +132,8 @@ func GeneratePublicSubnetDetails() billingapi.PublicSubnetDetails {
 
 func GenerateServerRecordSdk() *billingapi.ServerRecord {
 	record := billingapi.ServerRecord{
-		Metadata: GenerateServerDetails(),
+		ProductCategory: string(ratedusageoneof.SERVER),
+		Metadata:        GenerateServerDetails(),
 	}
 	return populateRatedUsageCommon(&record).(*billingapi.ServerRecord)
 }
@@ -151,12 +155,30 @@ func GenerateProductsGetQueryParams() ProductsGetQueryParams {
 	}
 }
 
-func GenerateProduct() *billingapi.Product {
-	return &billingapi.Product{
-		ProductCode:     testutil.RandSeq(10),
-		ProductCategory: string(productoneof.BANDWIDTH),
-		Plans:           []billingapi.PricingPlan{*GeneratePricingPlan()},
+func GenerateProductSdkList() []billingapi.ProductsGet200ResponseInner {
+	return []billingapi.ProductsGet200ResponseInner{
+		{
+			Product: GenerateBandwidthProduct(),
+		},
+		{
+			Product: GenerateOperatingSystemProduct(),
+		},
+		{
+			ServerProduct: GenerateServerProduct(),
+		},
 	}
+}
+
+// For common setting
+type ProductCommonSetter interface {
+	SetProductCode(string)
+	SetPlans([]billingapi.PricingPlan)
+}
+
+func populateProductCommon(sdk ProductCommonSetter) ProductCommonSetter {
+	sdk.SetProductCode(testutil.RandSeq(10))
+	sdk.SetPlans([]billingapi.PricingPlan{*GeneratePricingPlan()})
+	return sdk
 }
 
 func GeneratePricingPlan() *billingapi.PricingPlan {
@@ -170,5 +192,43 @@ func GeneratePricingPlan() *billingapi.PricingPlan {
 		CorrelatedProductCode: testutil.RandSeqPointer(10),
 		PackageQuantity:       testutil.RanF32Pointer(),
 		PackageUnit:           testutil.RandSeqPointer(10),
+	}
+}
+
+// Individual oneof setting
+func GenerateBandwidthProduct() *billingapi.Product {
+	product := &billingapi.Product{
+		ProductCategory: string(productoneof.BANDWIDTH),
+	}
+
+	return populateProductCommon(product).(*billingapi.Product)
+}
+
+func GenerateOperatingSystemProduct() *billingapi.Product {
+	product := &billingapi.Product{
+		ProductCategory: string(productoneof.OPERATING_SYSTEM),
+	}
+
+	return populateProductCommon(product).(*billingapi.Product)
+}
+
+func GenerateServerProduct() *billingapi.ServerProduct {
+	product := &billingapi.ServerProduct{
+		ProductCategory: string(productoneof.SERVER),
+		Metadata:        *GenerateServerProductMetadata(),
+	}
+
+	return populateProductCommon(product).(*billingapi.ServerProduct)
+}
+
+func GenerateServerProductMetadata() *billingapi.ServerProductMetadata {
+	return &billingapi.ServerProductMetadata{
+		RamInGb:      rand.Float32(),
+		Cpu:          testutil.RandSeq(10),
+		CpuCount:     rand.Float32(),
+		CoresPerCpu:  rand.Float32(),
+		CpuFrequency: rand.Float32(),
+		Network:      testutil.RandSeq(10),
+		Storage:      testutil.RandSeq(10),
 	}
 }

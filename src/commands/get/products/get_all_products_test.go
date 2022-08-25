@@ -13,15 +13,15 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
-func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
-	responseList := billingmodels.GenerateRatedUsageRecordSdkList()
+func TestGetAllProducts_FullTable(test_framework *testing.T) {
+	responseList := billingmodels.GenerateProductSdkList()
 	queryParams := billingmodels.GenerateProductsGetQueryParams()
 	setQueryParams(queryParams)
 
-	var recordTables []interface{}
+	var products []interface{}
 
-	for _, record := range responseList {
-		recordTables = append(recordTables, tables.RatedUsageRecordTableFromSdk(record))
+	for _, product := range responseList {
+		products = append(products, tables.ProductTableFromSdk(product))
 	}
 
 	// Mocking
@@ -30,7 +30,7 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(recordTables, "get products").
+		PrintOutput(products, "get products").
 		Return(nil)
 
 	err := GetProductsCmd.RunE(GetProductsCmd, []string{})
@@ -39,7 +39,7 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetAllRatedUsages_KeycloakFailure(test_framework *testing.T) {
+func TestGetAllProducts_KeycloakFailure(test_framework *testing.T) {
 	queryParams := billingmodels.GenerateProductsGetQueryParams()
 	setQueryParams(queryParams)
 
@@ -54,15 +54,15 @@ func TestGetAllRatedUsages_KeycloakFailure(test_framework *testing.T) {
 	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
-func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
-	responseList := billingmodels.GenerateRatedUsageRecordSdkList()
+func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
+	responseList := billingmodels.GenerateProductSdkList()
 	queryParams := billingmodels.GenerateProductsGetQueryParams()
 	setQueryParams(queryParams)
 
-	var recordTables []interface{}
+	var products []interface{}
 
-	for _, record := range responseList {
-		recordTables = append(recordTables, tables.ShortRatedUsageRecordFromSdk(record))
+	for _, product := range responseList {
+		products = append(products, tables.ProductTableFromSdk(product))
 	}
 
 	// Mocking
@@ -71,7 +71,7 @@ func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(recordTables, "get products").
+		PrintOutput(products, "get products").
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetProductsCmd.RunE(GetProductsCmd, []string{})
@@ -80,7 +80,7 @@ func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
 }
 
-func TestGetAllRatedUsages_ServerError(test_framework *testing.T) {
+func TestGetAllProducts_ServerError(test_framework *testing.T) {
 	queryParams := billingmodels.GenerateProductsGetQueryParams()
 	setQueryParams(queryParams)
 
