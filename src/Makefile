@@ -44,7 +44,8 @@ $(BIN)/gox: PACKAGE = github.com/mitchellh/gox
 GO_JUNIT_REPORT = $(BIN)/go-junit-report
 $(BIN)/go-junit-report: PACKAGE = github.com/jstemmer/go-junit-report
 
-MOCKGEN = mockgen
+MOCKGEN = $(BIN)/mockgen
+$(BIN)/mockgen: PACKAGE = github.com/golang/mock/mockgen
 
 TPARSE = $(BIN)/tparse
 $(BIN)/tparse: PACKAGE = github.com/mfridman/tparse
@@ -87,7 +88,7 @@ generate-mock-util: $(MOCKGEN) ; $(info $(M) generating mock util $(UTIL)...) @ 
 	$Q $(MOCKGEN) --source=common/$(UTIL)/$(UTIL).go --destination=testsupport/mocks/mock_$(UTIL).go --package=mocks
 
 # All items to generate mocks for
-gen-clients = bmcapi audit ip networks rancher tags
+gen-clients = bmcapi audit ip networks rancher tags billing
 gen-utils = printer fileprocessor
 gen-all = $(gen-clients) $(gen-utils)
 
