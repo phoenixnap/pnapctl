@@ -5,33 +5,33 @@ import (
 )
 
 type ProductsGetQueryParams struct {
-	productCode     *string
-	productCategory *string
-	skuCode         *string
-	location        *string
+	ProductCode     *string
+	ProductCategory *string
+	SkuCode         *string
+	Location        *string
 }
 
 func NewProductsGetQueryParams(productCode string, productCategory string, skuCode string, location string) ProductsGetQueryParams {
 	return ProductsGetQueryParams{
-		productCode:     stringToParam(productCode),
-		productCategory: stringToParam(productCategory),
-		skuCode:         stringToParam(skuCode),
-		location:        stringToParam(location),
+		ProductCode:     stringToParam(productCode),
+		ProductCategory: stringToParam(productCategory),
+		SkuCode:         stringToParam(skuCode),
+		Location:        stringToParam(location),
 	}
 }
 
 func (queries ProductsGetQueryParams) AttachToRequest(request *billingapisdk.ApiProductsGetRequest) {
-	if queries.productCode != nil {
-		request.ProductCode(*queries.productCode)
+	if queries.ProductCode != nil {
+		request.ProductCode(*queries.ProductCode)
 	}
-	if queries.productCategory != nil {
-		request.ProductCategory(*queries.productCategory)
+	if queries.ProductCategory != nil {
+		request.ProductCategory(*queries.ProductCategory)
 	}
-	if queries.skuCode != nil {
-		request.SkuCode(*queries.skuCode)
+	if queries.SkuCode != nil {
+		request.SkuCode(*queries.SkuCode)
 	}
-	if queries.location != nil {
-		request.Location(*queries.location)
+	if queries.Location != nil {
+		request.Location(*queries.Location)
 	}
 }
 

@@ -69,7 +69,7 @@ func (mr *MockBillingSdkClientMockRecorder) RatedUsageGet(queryParams interface{
 }
 
 // RatedUsageMonthToDateGet mocks base method.
-func (m *MockBillingSdkClient) RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageGetMonthToDateQueryParams) ([]billingapi.RatedUsageGet200ResponseInner, *http.Response, error) {
+func (m *MockBillingSdkClient) RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageMonthToDateGetQueryParams) ([]billingapi.RatedUsageGet200ResponseInner, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RatedUsageMonthToDateGet", queryParams)
 	ret0, _ := ret[0].([]billingapi.RatedUsageGet200ResponseInner)

@@ -16,7 +16,7 @@ var Client BillingSdkClient
 type BillingSdkClient interface {
 	// Rated Usages
 	RatedUsageGet(queryParams billingmodels.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
-	RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageGetMonthToDateQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
+	RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageMonthToDateGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
 	ProductsGet(queryParams billingmodels.ProductsGetQueryParams) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error)
 }
 
@@ -66,7 +66,7 @@ func (m MainClient) RatedUsageGet(queryParams billingmodels.RatedUsageGetQueryPa
 	return request.Execute()
 }
 
-func (m MainClient) RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageGetMonthToDateQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
+func (m MainClient) RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageMonthToDateGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
 	request := m.RatedUsageApiClient.RatedUsageMonthToDateGet(context.Background())
 	queryParams.AttachToRequest(&request)
 

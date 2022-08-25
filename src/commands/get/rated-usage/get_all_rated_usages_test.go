@@ -16,7 +16,7 @@ import (
 
 func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 	responseList := billingmodels.GenerateRatedUsageRecordSdkList()
-	queryParams := billingmodels.GenerateGetRatedUsageQueryParams()
+	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
 	setQueryParams(queryParams)
 
 	Full = true
@@ -42,10 +42,9 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-// Currently the short table is an empty struct.
 func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 	responseList := billingmodels.GenerateRatedUsageRecordSdkList()
-	queryParams := billingmodels.GenerateGetRatedUsageQueryParams()
+	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
 	setQueryParams(queryParams)
 
 	Full = false
@@ -72,7 +71,7 @@ func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsages_KeycloakFailure(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateGetRatedUsageQueryParams()
+	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -88,7 +87,7 @@ func TestGetAllRatedUsages_KeycloakFailure(test_framework *testing.T) {
 
 func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 	responseList := billingmodels.GenerateRatedUsageRecordSdkList()
-	queryParams := billingmodels.GenerateGetRatedUsageQueryParams()
+	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
 	setQueryParams(queryParams)
 
 	var recordTables []interface{}
@@ -113,7 +112,7 @@ func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsages_ServerError(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateGetRatedUsageQueryParams()
+	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -129,7 +128,7 @@ func TestGetAllRatedUsages_ServerError(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsages_InvalidParams(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateGetRatedUsageQueryParams()
+	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
 	queryParams.FromYearMonth = "0000/00"
 	setQueryParams(queryParams)
 

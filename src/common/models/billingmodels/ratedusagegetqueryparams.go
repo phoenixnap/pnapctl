@@ -44,23 +44,23 @@ func (queries RatedUsageGetQueryParams) AttachToRequest(request *billingapisdk.A
 	}
 }
 
-type RatedUsageGetMonthToDateQueryParams struct {
+type RatedUsageMonthToDateGetQueryParams struct {
 	ProductCategory *billingapisdk.ProductCategoryEnum
 }
 
-func NewRatedUsageGetMonthToDateQueryParams(productCategory string) (*RatedUsageGetMonthToDateQueryParams, error) {
+func NewRatedUsageGetMonthToDateQueryParams(productCategory string) (*RatedUsageMonthToDateGetQueryParams, error) {
 	validProductCategory, err := parseProductCategory(productCategory)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &RatedUsageGetMonthToDateQueryParams{
+	return &RatedUsageMonthToDateGetQueryParams{
 		ProductCategory: validProductCategory,
 	}, nil
 }
 
-func (queries RatedUsageGetMonthToDateQueryParams) AttachToRequest(request *billingapisdk.ApiRatedUsageMonthToDateGetRequest) {
+func (queries RatedUsageMonthToDateGetQueryParams) AttachToRequest(request *billingapisdk.ApiRatedUsageMonthToDateGetRequest) {
 	if queries.ProductCategory != nil {
 		request.ProductCategory(*queries.ProductCategory)
 	}

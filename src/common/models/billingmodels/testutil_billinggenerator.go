@@ -5,11 +5,14 @@ import (
 	"time"
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
+	"phoenixnap.com/pnapctl/common/models/billingmodels/productoneof"
 	"phoenixnap.com/pnapctl/common/models/billingmodels/ratedusageoneof"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
-func GenerateGetRatedUsageQueryParams() RatedUsageGetQueryParams {
+// Rated Usage
+
+func GenerateRatedUsageGetQueryParams() RatedUsageGetQueryParams {
 	return RatedUsageGetQueryParams{
 		FromYearMonth:   "2020-10",
 		ToYearMonth:     "2021-10",
@@ -17,8 +20,8 @@ func GenerateGetRatedUsageQueryParams() RatedUsageGetQueryParams {
 	}
 }
 
-func GenerateGetRatedUsageMonthToDateQueryParams() RatedUsageGetMonthToDateQueryParams {
-	return RatedUsageGetMonthToDateQueryParams{
+func GenerateRatedUsageMonthToDateGetQueryParams() RatedUsageMonthToDateGetQueryParams {
+	return RatedUsageMonthToDateGetQueryParams{
 		ProductCategory: billingapi.BANDWIDTH.Ptr(),
 	}
 }
@@ -40,26 +43,50 @@ func GenerateRatedUsageRecordSdkList() []billingapi.RatedUsageGet200ResponseInne
 	}
 }
 
+type RatedUsageCommonSdk interface {
+	SetId(string)
+	SetProductCategory(string)
+	SetProductCode(string)
+	SetLocation(billingapi.LocationEnum)
+	SetYearMonth(string)
+	SetStartDateTime(time.Time)
+	SetEndDateTime(time.Time)
+	SetCost(int64)
+	SetPriceModel(string)
+	SetUnitPrice(float32)
+	SetUnitPriceDescription(string)
+	SetQuantity(float32)
+	SetActive(bool)
+	SetUsageSessionId(string)
+	SetCorrelationId(string)
+	SetReservationId(string)
+}
+
+func populateRatedUsageCommon(sdk RatedUsageCommonSdk) RatedUsageCommonSdk {
+	sdk.SetId(testutil.RandSeq(10))
+	sdk.SetProductCategory(string(ratedusageoneof.BANDWIDTH))
+	sdk.SetProductCode(testutil.RandSeq(10))
+	sdk.SetLocation("PHX")
+	sdk.SetYearMonth(testutil.RandSeq(10))
+	sdk.SetStartDateTime(time.Now())
+	sdk.SetEndDateTime(time.Now())
+	sdk.SetCost(rand.Int63())
+	sdk.SetPriceModel(testutil.RandSeq(10))
+	sdk.SetUnitPrice(rand.Float32())
+	sdk.SetUnitPriceDescription(testutil.RandSeq(10))
+	sdk.SetQuantity(rand.Float32())
+	sdk.SetActive(false)
+	sdk.SetUsageSessionId(testutil.RandSeq(10))
+	sdk.SetCorrelationId(testutil.RandSeq(10))
+	sdk.SetReservationId(testutil.RandSeq(10))
+	return sdk
+}
+
 func GenerateBandwidthRecordSdk() *billingapi.BandwidthRecord {
-	return &billingapi.BandwidthRecord{
-		Id:                   testutil.RandSeq(10),
-		ProductCategory:      string(ratedusageoneof.BANDWIDTH),
-		ProductCode:          testutil.RandSeq(10),
-		Location:             "PHX",
-		YearMonth:            testutil.RandSeqPointer(10),
-		StartDateTime:        time.Now(),
-		EndDateTime:          time.Now(),
-		Cost:                 rand.Int63(),
-		PriceModel:           testutil.RandSeq(10),
-		UnitPrice:            rand.Float32(),
-		UnitPriceDescription: testutil.RandSeq(10),
-		Quantity:             rand.Float32(),
-		Active:               false,
-		UsageSessionId:       testutil.RandSeq(10),
-		CorrelationId:        testutil.RandSeq(10),
-		ReservationId:        testutil.RandSeqPointer(10),
-		Metadata:             GenerateBandwidthDetails(),
+	record := billingapi.BandwidthRecord{
+		Metadata: GenerateBandwidthDetails(),
 	}
+	return populateRatedUsageCommon(&record).(*billingapi.BandwidthRecord)
 }
 
 func GenerateBandwidthDetails() billingapi.BandwidthDetails {
@@ -72,25 +99,10 @@ func GenerateBandwidthDetails() billingapi.BandwidthDetails {
 }
 
 func GenerateOperatingSystemRecordSdk() *billingapi.OperatingSystemRecord {
-	return &billingapi.OperatingSystemRecord{
-		Id:                   testutil.RandSeq(10),
-		ProductCategory:      string(ratedusageoneof.OPERATING_SYSTEM),
-		ProductCode:          testutil.RandSeq(10),
-		Location:             "PHX",
-		YearMonth:            testutil.RandSeqPointer(10),
-		StartDateTime:        time.Now(),
-		EndDateTime:          time.Now(),
-		Cost:                 rand.Int63(),
-		PriceModel:           testutil.RandSeq(10),
-		UnitPrice:            rand.Float32(),
-		UnitPriceDescription: testutil.RandSeq(10),
-		Quantity:             rand.Float32(),
-		Active:               false,
-		UsageSessionId:       testutil.RandSeq(10),
-		CorrelationId:        testutil.RandSeq(10),
-		ReservationId:        testutil.RandSeqPointer(10),
-		Metadata:             GenerateOperatingSystemDetails(),
+	record := billingapi.OperatingSystemRecord{
+		Metadata: GenerateOperatingSystemDetails(),
 	}
+	return populateRatedUsageCommon(&record).(*billingapi.OperatingSystemRecord)
 }
 
 func GenerateOperatingSystemDetails() billingapi.OperatingSystemDetails {
@@ -101,25 +113,10 @@ func GenerateOperatingSystemDetails() billingapi.OperatingSystemDetails {
 }
 
 func GeneratePublicSubnetRecordSdk() *billingapi.PublicSubnetRecord {
-	return &billingapi.PublicSubnetRecord{
-		Id:                   testutil.RandSeq(10),
-		ProductCategory:      string(ratedusageoneof.PUBLIC_SUBNET),
-		ProductCode:          testutil.RandSeq(10),
-		Location:             "PHX",
-		YearMonth:            testutil.RandSeqPointer(10),
-		StartDateTime:        time.Now(),
-		EndDateTime:          time.Now(),
-		Cost:                 rand.Int63(),
-		PriceModel:           testutil.RandSeq(10),
-		UnitPrice:            rand.Float32(),
-		UnitPriceDescription: testutil.RandSeq(10),
-		Quantity:             rand.Float32(),
-		Active:               false,
-		UsageSessionId:       testutil.RandSeq(10),
-		CorrelationId:        testutil.RandSeq(10),
-		ReservationId:        testutil.RandSeqPointer(10),
-		Metadata:             GeneratePublicSubnetDetails(),
+	record := billingapi.PublicSubnetRecord{
+		Metadata: GeneratePublicSubnetDetails(),
 	}
+	return populateRatedUsageCommon(&record).(*billingapi.PublicSubnetRecord)
 }
 
 func GeneratePublicSubnetDetails() billingapi.PublicSubnetDetails {
@@ -131,30 +128,47 @@ func GeneratePublicSubnetDetails() billingapi.PublicSubnetDetails {
 }
 
 func GenerateServerRecordSdk() *billingapi.ServerRecord {
-	return &billingapi.ServerRecord{
-		Id:                   testutil.RandSeq(10),
-		ProductCategory:      string(ratedusageoneof.SERVER),
-		ProductCode:          testutil.RandSeq(10),
-		Location:             "PHX",
-		YearMonth:            testutil.RandSeqPointer(10),
-		StartDateTime:        time.Now(),
-		EndDateTime:          time.Now(),
-		Cost:                 rand.Int63(),
-		PriceModel:           testutil.RandSeq(10),
-		UnitPrice:            rand.Float32(),
-		UnitPriceDescription: testutil.RandSeq(10),
-		Quantity:             rand.Float32(),
-		Active:               false,
-		UsageSessionId:       testutil.RandSeq(10),
-		CorrelationId:        testutil.RandSeq(10),
-		ReservationId:        testutil.RandSeqPointer(10),
-		Metadata:             GenerateServerDetails(),
+	record := billingapi.ServerRecord{
+		Metadata: GenerateServerDetails(),
 	}
+	return populateRatedUsageCommon(&record).(*billingapi.ServerRecord)
 }
 
 func GenerateServerDetails() billingapi.ServerDetails {
 	return billingapi.ServerDetails{
 		Id:       testutil.RandSeq(10),
 		Hostname: testutil.RandSeq(10),
+	}
+}
+
+// Products
+func GenerateProductsGetQueryParams() ProductsGetQueryParams {
+	return ProductsGetQueryParams{
+		ProductCode:     testutil.RandSeqPointer(10),
+		ProductCategory: testutil.RandSeqPointer(10),
+		SkuCode:         testutil.RandSeqPointer(10),
+		Location:        testutil.RandSeqPointer(10),
+	}
+}
+
+func GenerateProduct() *billingapi.Product {
+	return &billingapi.Product{
+		ProductCode:     testutil.RandSeq(10),
+		ProductCategory: string(productoneof.BANDWIDTH),
+		Plans:           []billingapi.PricingPlan{*GeneratePricingPlan()},
+	}
+}
+
+func GeneratePricingPlan() *billingapi.PricingPlan {
+	return &billingapi.PricingPlan{
+		Sku:                   testutil.RandSeq(10),
+		SkuDescription:        testutil.RandSeqPointer(10),
+		Location:              "PHX",
+		PricingModel:          testutil.RandSeq(10),
+		Price:                 rand.Float32(),
+		PriceUnit:             billingapi.GB,
+		CorrelatedProductCode: testutil.RandSeqPointer(10),
+		PackageQuantity:       testutil.RanF32Pointer(),
+		PackageUnit:           testutil.RandSeqPointer(10),
 	}
 }

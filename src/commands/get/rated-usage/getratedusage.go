@@ -58,6 +58,7 @@ var ProductCategory string
 func init() {
 	GetRatedUsageCmd.AddCommand(month_to_date.GetRatedUsageMonthToDateCmd)
 
+	GetRatedUsageCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 	GetRatedUsageCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
 	GetRatedUsageCmd.PersistentFlags().StringVar(&FromYearMonth, "from", "", "From year month (inclusive) to filter rated usage records by.")
 	GetRatedUsageCmd.PersistentFlags().StringVar(&ToYearMonth, "to", "", "To year month (inclusive) to filter rated usage records by.")

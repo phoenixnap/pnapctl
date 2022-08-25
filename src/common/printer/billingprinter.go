@@ -4,16 +4,18 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"phoenixnap.com/pnapctl/common/models/billingmodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
+// Rated Usage
 func PrintRatedUsageResponse(ratedUsage *billingapi.RatedUsageGet200ResponseInner, full bool, commandName string) error {
-	clusterToPrint := PrepareRatedUsageForPrinting(*ratedUsage, full)
-	return MainPrinter.PrintOutput(clusterToPrint, commandName)
+	ratedUsageToPrint := PrepareRatedUsageForPrinting(*ratedUsage, full)
+	return MainPrinter.PrintOutput(ratedUsageToPrint, commandName)
 }
 
 func PrintRatedUsageListResponse(ratedUsages []billingapi.RatedUsageGet200ResponseInner, full bool, commandName string) error {
-	clusterListToPrint := PrepareRatedUsageListForPrinting(ratedUsages, full)
-	return MainPrinter.PrintOutput(clusterListToPrint, commandName)
+	ratedUsageToPrint := iterutils.BiMap(ratedUsages, full, PrepareRatedUsageForPrinting)
+	return MainPrinter.PrintOutput(ratedUsageToPrint, commandName)
 }
 
 func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200ResponseInner, full bool) interface{} {
@@ -31,12 +33,24 @@ func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200Response
 	}
 }
 
-func PrepareRatedUsageListForPrinting(ratedUsages []billingapi.RatedUsageGet200ResponseInner, full bool) []interface{} {
-	var clusterList []interface{}
+// Products
+func PrintProductResponse(product *billingapi.ProductsGet200ResponseInner, full bool, commandName string) error {
+	productToPrint := PrepareProductForPrinting(*product)
+	return MainPrinter.PrintOutput(productToPrint, commandName)
+}
 
-	for _, cluster := range ratedUsages {
-		clusterList = append(clusterList, PrepareRatedUsageForPrinting(cluster, full))
+func PrintProductListResponse(products []billingapi.ProductsGet200ResponseInner, commandName string) error {
+	productsToPrint := iterutils.Map(products, PrepareProductForPrinting)
+	return MainPrinter.PrintOutput(productsToPrint, commandName)
+}
+
+func PrepareProductForPrinting(product billingapi.ProductsGet200ResponseInner) interface{} {
+	table := OutputIsTable()
+
+	switch {
+	case table:
+		return tables.ProductTableFromSdk(product)
+	default:
+		return billingmodels.ProductActualFromSdk(product)
 	}
-
-	return clusterList
 }
