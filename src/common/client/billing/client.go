@@ -17,10 +17,12 @@ type BillingSdkClient interface {
 	// Rated Usages
 	RatedUsageGet(queryParams billingmodels.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
 	RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageGetMonthToDateQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
+	ProductsGet(queryParams billingmodels.ProductsGetQueryParams) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error)
 }
 
 type MainClient struct {
 	RatedUsageApiClient billingapisdk.RatedUsageApi
+	ProductsApiClient   billingapisdk.ProductsApi
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) BillingSdkClient {
@@ -53,18 +55,26 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 
 	return MainClient{
 		RatedUsageApiClient: api_client.RatedUsageApi,
+		ProductsApiClient:   api_client.ProductsApi,
 	}
 }
 
 func (m MainClient) RatedUsageGet(queryParams billingmodels.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
 	request := m.RatedUsageApiClient.RatedUsageGet(context.Background())
-	request = *queryParams.AttachToRequest(request)
+	queryParams.AttachToRequest(&request)
 
 	return request.Execute()
 }
 
 func (m MainClient) RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageGetMonthToDateQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
 	request := m.RatedUsageApiClient.RatedUsageMonthToDateGet(context.Background())
+	queryParams.AttachToRequest(&request)
+
+	return request.Execute()
+}
+
+func (m MainClient) ProductsGet(queryParams billingmodels.ProductsGetQueryParams) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error) {
+	request := m.ProductsApiClient.ProductsGet(context.Background())
 	queryParams.AttachToRequest(&request)
 
 	return request.Execute()

@@ -15,23 +15,23 @@ var ONE_OF_TYPES = []string{
 // Metadata keys
 const (
 	// Bandwidth Record
-	EGRESS_GB        string = "Egress (GB)"
-	INGRESS_GB       string = "Ingress (GB)"
-	PACKAGE_QUANTITY string = "Package Quantity"
-	PACKAGE_UNIT     string = "Package Unit"
+	EGRESS_GB        = "Egress (GB)"
+	INGRESS_GB       = "Ingress (GB)"
+	PACKAGE_QUANTITY = "Package Quantity"
+	PACKAGE_UNIT     = "Package Unit"
 
 	// Operating System Record
-	CORES          string = "OS Cores"
-	CORRELATION_ID string = "Correlation ID"
+	CORES          = "OS Cores"
+	CORRELATION_ID = "Correlation ID"
 
 	// Public Subnet Record
-	CIDR      string = "Subnet Cidr"
-	SUBNET_ID string = "Subnet ID"
-	SIZE      string = "Size"
+	CIDR      = "Subnet Cidr"
+	SUBNET_ID = "Subnet ID"
+	SIZE      = "Size"
 
 	// Server Record
-	SERVER_ID string = "Server Id"
-	HOSTNAME  string = "Hostname"
+	SERVER_ID = "Server Id"
+	HOSTNAME  = "Hostname"
 )
 
 // Full Table
@@ -56,63 +56,62 @@ type RatedUsageRecordTable struct {
 	Metadata             map[string]interface{}        `header:"Metadata"`
 }
 
-func RatedUsageRecordFromSdk(sdkRecord billingapisdk.RatedUsageGet200ResponseInner) RatedUsageRecordTable {
-	ratedUsage := parseCommon(sdkRecord)
-	ratedUsage.attachMetadata(sdkRecord)
+func RatedUsageRecordTableFromSdk(sdk billingapisdk.RatedUsageGet200ResponseInner) RatedUsageRecordTable {
+	ratedUsage := RatedUsageRecordTable{}
+	ratedUsage.parseCommon(sdk)
+	ratedUsage.attachMetadata(sdk)
 	return ratedUsage
 }
 
-func parseCommon(sdkRecord billingapisdk.RatedUsageGet200ResponseInner) RatedUsageRecordTable {
-	ratedUsage := ratedusageoneof.RatedUsageFromSdkOneOf(&sdkRecord)
+func (r *RatedUsageRecordTable) parseCommon(sdk billingapisdk.RatedUsageGet200ResponseInner) {
+	ratedUsage := ratedusageoneof.RatedUsageFromSdkOneOf(&sdk)
 
-	return RatedUsageRecordTable{
-		Id:                   ratedUsage.Id,
-		ProductCategory:      ratedUsage.ProductCategory,
-		ProductCode:          ratedUsage.ProductCode,
-		Location:             ratedUsage.Location,
-		YearMonth:            ratedUsage.YearMonth,
-		StartDateTime:        ratedUsage.StartDateTime.String(),
-		EndDateTime:          ratedUsage.EndDateTime.String(),
-		Cost:                 ratedUsage.Cost,
-		PriceModel:           ratedUsage.PriceModel,
-		UnitPrice:            ratedUsage.UnitPrice,
-		UnitPriceDescription: ratedUsage.UnitPriceDescription,
-		Quantity:             ratedUsage.Quantity,
-		Active:               ratedUsage.Active,
-		UsageSessionId:       ratedUsage.UsageSessionId,
-		CorrelationId:        ratedUsage.CorrelationId,
-		ReservationId:        ratedUsage.ReservationId,
-	}
+	r.Id = ratedUsage.Id
+	r.ProductCategory = ratedUsage.ProductCategory
+	r.ProductCode = ratedUsage.ProductCode
+	r.Location = ratedUsage.Location
+	r.YearMonth = ratedUsage.YearMonth
+	r.StartDateTime = ratedUsage.StartDateTime.String()
+	r.EndDateTime = ratedUsage.EndDateTime.String()
+	r.Cost = ratedUsage.Cost
+	r.PriceModel = ratedUsage.PriceModel
+	r.UnitPrice = ratedUsage.UnitPrice
+	r.UnitPriceDescription = ratedUsage.UnitPriceDescription
+	r.Quantity = ratedUsage.Quantity
+	r.Active = ratedUsage.Active
+	r.UsageSessionId = ratedUsage.UsageSessionId
+	r.CorrelationId = ratedUsage.CorrelationId
+	r.ReservationId = ratedUsage.ReservationId
 }
 
-func (table *RatedUsageRecordTable) attachMetadata(sdkRecord billingapisdk.RatedUsageGet200ResponseInner) {
+func (table *RatedUsageRecordTable) attachMetadata(sdk billingapisdk.RatedUsageGet200ResponseInner) {
 	switch table.ProductCategory {
 
 	case ratedusageoneof.BANDWIDTH:
 		table.Metadata = map[string]interface{}{
-			EGRESS_GB:        sdkRecord.BandwidthRecord.Metadata.EgressGb,
-			INGRESS_GB:       sdkRecord.BandwidthRecord.Metadata.IngressGb,
-			PACKAGE_QUANTITY: sdkRecord.BandwidthRecord.Metadata.PackageQuantity,
-			PACKAGE_UNIT:     sdkRecord.BandwidthRecord.Metadata.PackageUnit,
+			EGRESS_GB:        sdk.BandwidthRecord.Metadata.EgressGb,
+			INGRESS_GB:       sdk.BandwidthRecord.Metadata.IngressGb,
+			PACKAGE_QUANTITY: sdk.BandwidthRecord.Metadata.PackageQuantity,
+			PACKAGE_UNIT:     sdk.BandwidthRecord.Metadata.PackageUnit,
 		}
 
 	case ratedusageoneof.OPERATING_SYSTEM:
 		table.Metadata = map[string]interface{}{
-			CORES:          sdkRecord.OperatingSystemRecord.Metadata.Cores,
-			CORRELATION_ID: sdkRecord.OperatingSystemRecord.Metadata.CorrelationId,
+			CORES:          sdk.OperatingSystemRecord.Metadata.Cores,
+			CORRELATION_ID: sdk.OperatingSystemRecord.Metadata.CorrelationId,
 		}
 
 	case ratedusageoneof.PUBLIC_SUBNET:
 		table.Metadata = map[string]interface{}{
-			CIDR:      sdkRecord.PublicSubnetRecord.Metadata.Cidr,
-			SUBNET_ID: sdkRecord.PublicSubnetRecord.Metadata.Id,
-			SIZE:      sdkRecord.PublicSubnetRecord.Metadata.Size,
+			CIDR:      sdk.PublicSubnetRecord.Metadata.Cidr,
+			SUBNET_ID: sdk.PublicSubnetRecord.Metadata.Id,
+			SIZE:      sdk.PublicSubnetRecord.Metadata.Size,
 		}
 
 	case ratedusageoneof.SERVER:
 		table.Metadata = map[string]interface{}{
-			SERVER_ID: sdkRecord.ServerRecord.Metadata.Id,
-			HOSTNAME:  sdkRecord.ServerRecord.Metadata.Hostname,
+			SERVER_ID: sdk.ServerRecord.Metadata.Id,
+			HOSTNAME:  sdk.ServerRecord.Metadata.Hostname,
 		}
 	}
 }
@@ -128,8 +127,9 @@ type ShortRatedUsageRecordTable struct {
 }
 
 // Extracts a ShortRatedUsageRecordTable using the full table.
-func ShortRatedUsageRecordFromSdk(sdkRecord billingapisdk.RatedUsageGet200ResponseInner) *ShortRatedUsageRecordTable {
-	fullTable := parseCommon(sdkRecord)
+func ShortRatedUsageRecordFromSdk(sdk billingapisdk.RatedUsageGet200ResponseInner) *ShortRatedUsageRecordTable {
+	fullTable := RatedUsageRecordTable{}
+	fullTable.parseCommon(sdk)
 
 	return &ShortRatedUsageRecordTable{
 		Id:              fullTable.Id,

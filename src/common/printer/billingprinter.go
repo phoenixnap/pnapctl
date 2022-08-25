@@ -21,7 +21,7 @@ func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200Response
 
 	switch {
 	case table && full:
-		return tables.RatedUsageRecordFromSdk(ratedUsage)
+		return tables.RatedUsageRecordTableFromSdk(ratedUsage)
 	case table:
 		return tables.ShortRatedUsageRecordFromSdk(ratedUsage)
 	case full:

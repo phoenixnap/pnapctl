@@ -4,22 +4,22 @@ import "github.com/phoenixnap/go-sdk-bmc/billingapi"
 
 // Record types
 type BandwidthRecord struct {
-	RatedUsage
+	RatedUsageCommon
 	Metadata BandwidthDetails `json:"metadata" yaml:"metadata"`
 }
 
 type OperatingSystemRecord struct {
-	RatedUsage
+	RatedUsageCommon
 	Metadata OperatingSystemDetails `json:"metadata" yaml:"metadata"`
 }
 
 type PublicSubnetRecord struct {
-	RatedUsage
+	RatedUsageCommon
 	Metadata PublicSubnetDetails `json:"metadata" yaml:"metadata"`
 }
 
 type ServerRecord struct {
-	RatedUsage
+	RatedUsageCommon
 	Metadata ServerDetails `json:"metadata" yaml:"metadata"`
 }
 

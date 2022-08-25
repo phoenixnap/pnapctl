@@ -3,18 +3,25 @@ package ratedusageoneof
 import (
 	"time"
 
-	"github.com/phoenixnap/go-sdk-bmc/billingapi"
+	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 // Uses the discriminator - productCategory
 type Discriminator string
 
 const (
-	BANDWIDTH        = "bandwidth"
-	OPERATING_SYSTEM = "operating-system"
-	PUBLIC_SUBNET    = "public-ip"
-	SERVER           = "bmc-server"
-	OTHER            = "other"
+	// Bandwidth Record
+	BANDWIDTH Discriminator = "bandwidth"
+
+	// Operating System Record
+	OPERATING_SYSTEM Discriminator = "operating-system"
+
+	// Public Subnet Record
+	PUBLIC_SUBNET Discriminator = "public-ip"
+
+	// Server Record
+	SERVER Discriminator = "bmc-server"
 )
 
 // Matches all elements in the OneOf due to common fields.
@@ -22,7 +29,7 @@ type RatedUsageSdk interface {
 	GetId() string
 	GetProductCategory() string
 	GetProductCode() string
-	GetLocation() billingapi.LocationEnum
+	GetLocation() billingapisdk.LocationEnum
 	GetYearMonth() string
 	GetStartDateTime() time.Time
 	GetEndDateTime() time.Time
@@ -38,7 +45,7 @@ type RatedUsageSdk interface {
 }
 
 // All common fields that the interface maps to.
-type RatedUsage struct {
+type RatedUsageCommon struct {
 	Id                   string        `json:"id" yaml:"id"`
 	ProductCategory      Discriminator `json:"productCategory" yaml:"productCategory"`
 	ProductCode          string        `json:"productCode" yaml:"productCode"`
@@ -58,14 +65,14 @@ type RatedUsage struct {
 }
 
 // Uses type assertions to convert the OneOf into a RatedUsage.
-func RatedUsageFromSdkOneOf(sdkRecord *billingapi.RatedUsageGet200ResponseInner) *RatedUsage {
-	if sdkRecord == nil {
+func RatedUsageFromSdkOneOf(sdk *billingapisdk.RatedUsageGet200ResponseInner) *RatedUsageCommon {
+	if sdk == nil {
 		return nil
 	}
 
-	actualInstance := sdkRecord.GetActualInstance().(RatedUsageSdk)
+	actualInstance := sdk.GetActualInstance().(RatedUsageSdk)
 
-	return &RatedUsage{
+	return &RatedUsageCommon{
 		Id:                   actualInstance.GetId(),
 		ProductCategory:      Discriminator(actualInstance.GetProductCategory()),
 		ProductCode:          actualInstance.GetProductCode(),
@@ -85,6 +92,7 @@ func RatedUsageFromSdkOneOf(sdkRecord *billingapi.RatedUsageGet200ResponseInner)
 	}
 }
 
-func (rec *RatedUsage) IsActually(recordType Discriminator) bool {
-	return rec.ProductCategory == recordType
+// Checks whether the struct type is actually any of the ones passed.
+func (rec *RatedUsageCommon) IsActually(ds ...Discriminator) bool {
+	return iterutils.Contains(ds, rec.ProductCategory)
 }

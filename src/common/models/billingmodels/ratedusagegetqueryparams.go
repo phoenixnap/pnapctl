@@ -36,15 +36,13 @@ func NewRatedUsageGetQueryParams(fromYearMonth string, toYearMonth string, produ
 	return
 }
 
-func (queries RatedUsageGetQueryParams) AttachToRequest(request billingapisdk.ApiRatedUsageGetRequest) *billingapisdk.ApiRatedUsageGetRequest {
-	request = request.FromYearMonth(queries.FromYearMonth)
-	request = request.ToYearMonth(queries.ToYearMonth)
+func (queries RatedUsageGetQueryParams) AttachToRequest(request *billingapisdk.ApiRatedUsageGetRequest) {
+	request.FromYearMonth(queries.FromYearMonth)
+	request.ToYearMonth(queries.ToYearMonth)
 
 	if queries.ProductCategory != nil {
-		request = request.ProductCategory(*queries.ProductCategory)
+		request.ProductCategory(*queries.ProductCategory)
 	}
-
-	return &request
 }
 
 type RatedUsageGetMonthToDateQueryParams struct {
