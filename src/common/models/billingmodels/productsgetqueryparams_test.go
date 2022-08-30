@@ -14,10 +14,10 @@ func TestProductsGetQueryParams_allSet(test_framework *testing.T) {
 
 	queryParams := NewProductsGetQueryParams(productCode, productCategory, skuCode, location)
 
-	assert.Equal(test_framework, productCode, queryParams.ProductCode)
-	assert.Equal(test_framework, productCategory, queryParams.ProductCategory)
-	assert.Equal(test_framework, skuCode, queryParams.SkuCode)
-	assert.Equal(test_framework, location, queryParams.Location)
+	assert.Equal(test_framework, &productCode, queryParams.ProductCode)
+	assert.Equal(test_framework, &productCategory, queryParams.ProductCategory)
+	assert.Equal(test_framework, &skuCode, queryParams.SkuCode)
+	assert.Equal(test_framework, &location, queryParams.Location)
 }
 
 func TestProductsGetQueryParams_noneSet(test_framework *testing.T) {
