@@ -36,6 +36,38 @@ func (m *MockBillingSdkClient) EXPECT() *MockBillingSdkClientMockRecorder {
 	return m.recorder
 }
 
+// AccountBillingConfigurationGet mocks base method.
+func (m *MockBillingSdkClient) AccountBillingConfigurationGet() (*billingapi.ConfigurationDetails, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AccountBillingConfigurationGet")
+	ret0, _ := ret[0].(*billingapi.ConfigurationDetails)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// AccountBillingConfigurationGet indicates an expected call of AccountBillingConfigurationGet.
+func (mr *MockBillingSdkClientMockRecorder) AccountBillingConfigurationGet() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AccountBillingConfigurationGet", reflect.TypeOf((*MockBillingSdkClient)(nil).AccountBillingConfigurationGet))
+}
+
+// ProductAvailabilityGet mocks base method.
+func (m *MockBillingSdkClient) ProductAvailabilityGet(queryParams billingmodels.ProductAvailabilityGetQueryParams) ([]billingapi.ProductAvailability, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ProductAvailabilityGet", queryParams)
+	ret0, _ := ret[0].([]billingapi.ProductAvailability)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ProductAvailabilityGet indicates an expected call of ProductAvailabilityGet.
+func (mr *MockBillingSdkClientMockRecorder) ProductAvailabilityGet(queryParams interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProductAvailabilityGet", reflect.TypeOf((*MockBillingSdkClient)(nil).ProductAvailabilityGet), queryParams)
+}
+
 // ProductsGet mocks base method.
 func (m *MockBillingSdkClient) ProductsGet(queryParams billingmodels.ProductsGetQueryParams) ([]billingapi.ProductsGet200ResponseInner, *http.Response, error) {
 	m.ctrl.T.Helper()
@@ -82,4 +114,100 @@ func (m *MockBillingSdkClient) RatedUsageMonthToDateGet(queryParams billingmodel
 func (mr *MockBillingSdkClientMockRecorder) RatedUsageMonthToDateGet(queryParams interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RatedUsageMonthToDateGet", reflect.TypeOf((*MockBillingSdkClient)(nil).RatedUsageMonthToDateGet), queryParams)
+}
+
+// ReservationConvert mocks base method.
+func (m *MockBillingSdkClient) ReservationConvert(id string, request billingapi.ReservationRequest) (*billingapi.Reservation, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReservationConvert", id, request)
+	ret0, _ := ret[0].(*billingapi.Reservation)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ReservationConvert indicates an expected call of ReservationConvert.
+func (mr *MockBillingSdkClientMockRecorder) ReservationConvert(id, request interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReservationConvert", reflect.TypeOf((*MockBillingSdkClient)(nil).ReservationConvert), id, request)
+}
+
+// ReservationDisableAutoRenew mocks base method.
+func (m *MockBillingSdkClient) ReservationDisableAutoRenew(id string, request billingapi.ReservationAutoRenewDisableRequest) (*billingapi.Reservation, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReservationDisableAutoRenew", id, request)
+	ret0, _ := ret[0].(*billingapi.Reservation)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ReservationDisableAutoRenew indicates an expected call of ReservationDisableAutoRenew.
+func (mr *MockBillingSdkClientMockRecorder) ReservationDisableAutoRenew(id, request interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReservationDisableAutoRenew", reflect.TypeOf((*MockBillingSdkClient)(nil).ReservationDisableAutoRenew), id, request)
+}
+
+// ReservationEnableAutoRenew mocks base method.
+func (m *MockBillingSdkClient) ReservationEnableAutoRenew(id string) (*billingapi.Reservation, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReservationEnableAutoRenew", id)
+	ret0, _ := ret[0].(*billingapi.Reservation)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ReservationEnableAutoRenew indicates an expected call of ReservationEnableAutoRenew.
+func (mr *MockBillingSdkClientMockRecorder) ReservationEnableAutoRenew(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReservationEnableAutoRenew", reflect.TypeOf((*MockBillingSdkClient)(nil).ReservationEnableAutoRenew), id)
+}
+
+// ReservationGetById mocks base method.
+func (m *MockBillingSdkClient) ReservationGetById(id string) (*billingapi.Reservation, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReservationGetById", id)
+	ret0, _ := ret[0].(*billingapi.Reservation)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ReservationGetById indicates an expected call of ReservationGetById.
+func (mr *MockBillingSdkClientMockRecorder) ReservationGetById(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReservationGetById", reflect.TypeOf((*MockBillingSdkClient)(nil).ReservationGetById), id)
+}
+
+// ReservationsGet mocks base method.
+func (m *MockBillingSdkClient) ReservationsGet(queryParams billingmodels.ReservationsGetQueryParams) ([]billingapi.Reservation, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReservationsGet", queryParams)
+	ret0, _ := ret[0].([]billingapi.Reservation)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ReservationsGet indicates an expected call of ReservationsGet.
+func (mr *MockBillingSdkClientMockRecorder) ReservationsGet(queryParams interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReservationsGet", reflect.TypeOf((*MockBillingSdkClient)(nil).ReservationsGet), queryParams)
+}
+
+// ReservationsPost mocks base method.
+func (m *MockBillingSdkClient) ReservationsPost(request billingapi.ReservationRequest) (*billingapi.Reservation, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReservationsPost", request)
+	ret0, _ := ret[0].(*billingapi.Reservation)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ReservationsPost indicates an expected call of ReservationsPost.
+func (mr *MockBillingSdkClientMockRecorder) ReservationsPost(request interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReservationsPost", reflect.TypeOf((*MockBillingSdkClient)(nil).ReservationsPost), request)
 }
