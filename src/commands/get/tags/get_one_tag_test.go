@@ -20,7 +20,7 @@ func TestGetTagSuccess(test_framework *testing.T) {
 
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(&*tag, WithResponse(200, WithBody(tag)), nil)
+		Return(tag, WithResponse(200, WithBody(tag)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tagTable, "get tags").
@@ -75,7 +75,7 @@ func TestGetTagPrinterFailure(test_framework *testing.T) {
 
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(&*tag, WithResponse(200, WithBody(tag)), nil)
+		Return(tag, WithResponse(200, WithBody(tag)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tagTable, "get tags").
