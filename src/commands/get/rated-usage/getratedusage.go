@@ -64,6 +64,6 @@ func init() {
 	GetRatedUsageCmd.PersistentFlags().StringVar(&ToYearMonth, "to", "", "To year month (inclusive) to filter rated usage records by.")
 	GetRatedUsageCmd.PersistentFlags().StringVar(&ProductCategory, "category", "", "The product category to filter by.")
 
-	GetRatedUsageCmd.MarkPersistentFlagRequired("fromYearMonth")
-	GetRatedUsageCmd.MarkPersistentFlagRequired("toYearMonth")
+	GetRatedUsageCmd.MarkPersistentFlagRequired("from")
+	GetRatedUsageCmd.MarkPersistentFlagRequired("to")
 }

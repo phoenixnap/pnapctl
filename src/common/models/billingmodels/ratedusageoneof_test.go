@@ -53,10 +53,10 @@ func TestRatedUsageActualFromSdk_ServerRecord(test_framework *testing.T) {
 
 func assertEqualAsBandwidthRecord(
 	test_framework *testing.T,
-	cliRecord interface{},
+	cliOneOf interface{},
 	sdkBandwidth billingapi.BandwidthRecord,
 ) {
-	cliBandwidth := cliRecord.(*ratedusageoneof.BandwidthRecord)
+	cliBandwidth := cliOneOf.(*ratedusageoneof.BandwidthRecord)
 
 	assert.Equal(test_framework, cliBandwidth.Id, sdkBandwidth.GetId())
 	assert.Equal(test_framework, string(cliBandwidth.ProductCategory), sdkBandwidth.GetProductCategory())
@@ -83,10 +83,10 @@ func assertEqualAsBandwidthRecord(
 
 func assertEqualAsOperatingSystemRecord(
 	test_framework *testing.T,
-	cliRecord interface{},
+	cliOneOf interface{},
 	sdkOperatingSystem billingapi.OperatingSystemRecord,
 ) {
-	cliOperatingSystem := cliRecord.(*ratedusageoneof.OperatingSystemRecord)
+	cliOperatingSystem := cliOneOf.(*ratedusageoneof.OperatingSystemRecord)
 
 	assert.Equal(test_framework, cliOperatingSystem.Id, sdkOperatingSystem.GetId())
 	assert.Equal(test_framework, string(cliOperatingSystem.ProductCategory), sdkOperatingSystem.GetProductCategory())
@@ -111,10 +111,10 @@ func assertEqualAsOperatingSystemRecord(
 
 func assertEqualAsPublicSubnetRecord(
 	test_framework *testing.T,
-	cliRecord interface{},
+	cliOneOf interface{},
 	sdkPublicSubnet billingapi.PublicSubnetRecord,
 ) {
-	cliPublicSubnet := cliRecord.(*ratedusageoneof.PublicSubnetRecord)
+	cliPublicSubnet := cliOneOf.(*ratedusageoneof.PublicSubnetRecord)
 
 	assert.Equal(test_framework, cliPublicSubnet.Id, sdkPublicSubnet.GetId())
 	assert.Equal(test_framework, string(cliPublicSubnet.ProductCategory), sdkPublicSubnet.GetProductCategory())
@@ -140,10 +140,10 @@ func assertEqualAsPublicSubnetRecord(
 
 func assertEqualAsServerRecord(
 	test_framework *testing.T,
-	cliRecord interface{},
+	cliOneOf interface{},
 	sdkServer billingapi.ServerRecord,
 ) {
-	cliServer := cliRecord.(*ratedusageoneof.ServerRecord)
+	cliServer := cliOneOf.(*ratedusageoneof.ServerRecord)
 
 	assert.Equal(test_framework, cliServer.Id, sdkServer.GetId())
 	assert.Equal(test_framework, string(cliServer.ProductCategory), sdkServer.GetProductCategory())

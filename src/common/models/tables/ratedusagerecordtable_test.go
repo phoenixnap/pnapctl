@@ -48,8 +48,6 @@ func TestRatedUsageRecordFromServerSdk(test_framework *testing.T) {
 // Full assertions
 func assertFullBandwidthRecordsEqual(test_framework *testing.T, bandwidthRecord billingapi.BandwidthRecord, cliOneOf RatedUsageRecordTable) {
 	assert.Equal(test_framework, bandwidthRecord.Id, cliOneOf.Id)
-
-	assert.Equal(test_framework, bandwidthRecord.Id, cliOneOf.Id)
 	assert.Equal(test_framework, bandwidthRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, bandwidthRecord.ProductCode, cliOneOf.ProductCode)
 	assert.Equal(test_framework, string(bandwidthRecord.Location), cliOneOf.Location)
@@ -74,8 +72,6 @@ func assertFullBandwidthRecordsEqual(test_framework *testing.T, bandwidthRecord 
 
 func assertFullOperatingSystemRecordsEqual(test_framework *testing.T, operatingSystemRecord billingapi.OperatingSystemRecord, cliOneOf RatedUsageRecordTable) {
 	assert.Equal(test_framework, operatingSystemRecord.Id, cliOneOf.Id)
-
-	assert.Equal(test_framework, operatingSystemRecord.Id, cliOneOf.Id)
 	assert.Equal(test_framework, operatingSystemRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, operatingSystemRecord.ProductCode, cliOneOf.ProductCode)
 	assert.Equal(test_framework, string(operatingSystemRecord.Location), cliOneOf.Location)
@@ -97,8 +93,6 @@ func assertFullOperatingSystemRecordsEqual(test_framework *testing.T, operatingS
 }
 
 func assertFullPublicSubnetRecordsEqual(test_framework *testing.T, publicSubnetRecord billingapi.PublicSubnetRecord, cliOneOf RatedUsageRecordTable) {
-	assert.Equal(test_framework, publicSubnetRecord.Id, cliOneOf.Id)
-
 	assert.Equal(test_framework, publicSubnetRecord.Id, cliOneOf.Id)
 	assert.Equal(test_framework, publicSubnetRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, publicSubnetRecord.ProductCode, cliOneOf.ProductCode)
@@ -122,8 +116,6 @@ func assertFullPublicSubnetRecordsEqual(test_framework *testing.T, publicSubnetR
 }
 
 func assertFullServerRecordsEqual(test_framework *testing.T, serverRecord billingapi.ServerRecord, cliOneOf RatedUsageRecordTable) {
-	assert.Equal(test_framework, serverRecord.Id, cliOneOf.Id)
-
 	assert.Equal(test_framework, serverRecord.Id, cliOneOf.Id)
 	assert.Equal(test_framework, serverRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, serverRecord.ProductCode, cliOneOf.ProductCode)

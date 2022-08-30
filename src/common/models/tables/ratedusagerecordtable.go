@@ -127,11 +127,11 @@ type ShortRatedUsageRecordTable struct {
 }
 
 // Extracts a ShortRatedUsageRecordTable using the full table.
-func ShortRatedUsageRecordFromSdk(sdk billingapisdk.RatedUsageGet200ResponseInner) *ShortRatedUsageRecordTable {
+func ShortRatedUsageRecordFromSdk(sdk billingapisdk.RatedUsageGet200ResponseInner) ShortRatedUsageRecordTable {
 	fullTable := RatedUsageRecordTable{}
 	fullTable.parseCommon(sdk)
 
-	return &ShortRatedUsageRecordTable{
+	return ShortRatedUsageRecordTable{
 		Id:              fullTable.Id,
 		ProductCategory: fullTable.ProductCategory,
 		ProductCode:     fullTable.ProductCode,

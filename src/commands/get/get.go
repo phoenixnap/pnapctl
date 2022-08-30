@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnapctl/commands/get/events"
 	ip_blocks "phoenixnap.com/pnapctl/commands/get/ip-blocks"
 	"phoenixnap.com/pnapctl/commands/get/privatenetwork"
+	"phoenixnap.com/pnapctl/commands/get/products"
 	"phoenixnap.com/pnapctl/commands/get/quotas"
 	rated_usage "phoenixnap.com/pnapctl/commands/get/rated-usage"
 	"phoenixnap.com/pnapctl/commands/get/servers"
@@ -35,4 +36,5 @@ func init() {
 	GetCmd.AddCommand(privatenetwork.GetPrivateNetworksCmd)
 	GetCmd.AddCommand(ip_blocks.GetIpBlockCmd)
 	GetCmd.AddCommand(rated_usage.GetRatedUsageCmd)
+	GetCmd.AddCommand(products.GetProductsCmd)
 }

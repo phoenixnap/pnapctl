@@ -521,7 +521,55 @@ func TestPrepareRatedUsageRecordForPrintingTableShort(test_framework *testing.T)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "*tables.ShortRatedUsageRecordTable")
+	assert.Equal(test_framework, outputType, "tables.ShortRatedUsageRecordTable")
+}
+
+func TestPrepareProductForPrintingNonTable_BandwidthProduct(test_framework *testing.T) {
+	OutputFormat = "json"
+	product := billingapi.ProductsGet200ResponseInner{
+		Product: billingmodels.GenerateBandwidthProduct(),
+	}
+	prepared := PrepareProductForPrinting(product)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*productoneof.Product")
+}
+
+func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework *testing.T) {
+	OutputFormat = "json"
+	product := billingapi.ProductsGet200ResponseInner{
+		Product: billingmodels.GenerateOperatingSystemProduct(),
+	}
+	prepared := PrepareProductForPrinting(product)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*productoneof.Product")
+}
+
+func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing.T) {
+	OutputFormat = "json"
+	product := billingapi.ProductsGet200ResponseInner{
+		ServerProduct: billingmodels.GenerateServerProduct(),
+	}
+	prepared := PrepareProductForPrinting(product)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*productoneof.ServerProduct")
+}
+
+func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
+	OutputFormat = "table"
+	product := billingapi.ProductsGet200ResponseInner{
+		Product: billingmodels.GenerateBandwidthProduct(),
+	}
+	prepared := PrepareProductForPrinting(product)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.ProductTable")
 }
 
 func ExamplePrintOutputTableFormatEmpty() {
