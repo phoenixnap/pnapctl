@@ -1,12 +1,12 @@
 package billingmodels
 
 import (
-	"fmt"
-
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
+// Retrieved from API spec
 var allowedProductCategories = []string{
 	"SERVER",
 }
@@ -33,11 +33,11 @@ func NewProductAvailabilityGetQueryParams(
 ) (queryParams *ProductAvailabilityGetQueryParams, err error) {
 
 	if invalid := iterutils.FindElementThat(productCategory, productCategoryIsNotAllowed); invalid != nil {
-		return nil, fmt.Errorf("category '%s' is invalid. Allowed values are %v", *invalid, allowedProductCategories)
+		return nil, ctlerrors.InvalidFlagValuePassedError("category", *invalid, allowedProductCategories)
 	}
 
 	if invalid := iterutils.FindElementThat(location, locationIsNotAllowed); invalid != nil {
-		return nil, fmt.Errorf("location '%s' is invalid. Allowed values are %v", *invalid, billingapi.AllowedLocationEnumEnumValues)
+		return nil, ctlerrors.InvalidFlagValuePassedError("location", *invalid, billingapi.AllowedLocationEnumEnumValues)
 	}
 
 	parsedLocation := iterutils.Map(location, func(str string) billingapi.LocationEnum {
@@ -45,7 +45,7 @@ func NewProductAvailabilityGetQueryParams(
 	})
 
 	if invalid := iterutils.FindElementThat(solution, solutionIsNotAllowed); invalid != nil {
-		return nil, fmt.Errorf("solution '%s' is invalid. Allowed values are %v", *invalid, allowedSolutions)
+		return nil, ctlerrors.InvalidFlagValuePassedError("solution", *invalid, allowedSolutions)
 	}
 
 	return &ProductAvailabilityGetQueryParams{
