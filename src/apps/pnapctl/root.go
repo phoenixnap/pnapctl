@@ -3,7 +3,9 @@ package commands
 import (
 	"fmt"
 	"os"
+
 	"phoenixnap.com/pnapctl/commands/deprovision"
+	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/client/ip"
 
 	"github.com/mitchellh/go-homedir"
@@ -152,6 +154,7 @@ func initConfig() {
 		customTagsHostname := viper.GetString("tagsHostname")
 		customNetworksHostname := viper.GetString("networksHostname")
 		customIpHostname := viper.GetString("ipHostname")
+		customBillingHostname := viper.GetString("billingHostname")
 		customTokenUrl := viper.GetString("tokenURL")
 
 		bmcapi.Client = bmcapi.NewMainClient(clientId, clientSecret, customBmcApiHostname, customTokenUrl)
@@ -160,6 +163,7 @@ func initConfig() {
 		tags.Client = tags.NewMainClient(clientId, clientSecret, customTagsHostname, customTokenUrl)
 		networks.Client = networks.NewMainClient(clientId, clientSecret, customNetworksHostname, customTokenUrl)
 		ip.Client = ip.NewMainClient(clientId, clientSecret, customIpHostname, customTokenUrl)
+		billing.Client = billing.NewMainClient(clientId, clientSecret, customBillingHostname, customTokenUrl)
 	}
 }
 

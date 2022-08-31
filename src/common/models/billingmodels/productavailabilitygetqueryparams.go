@@ -58,7 +58,7 @@ func NewProductAvailabilityGetQueryParams(
 	}, nil
 }
 
-func (queryParams *ProductAvailabilityGetQueryParams) AttachToRequest(request *billingapi.ApiProductAvailabilityGetRequest) {
+func (queryParams *ProductAvailabilityGetQueryParams) AttachToRequest(request billingapi.ApiProductAvailabilityGetRequest) billingapi.ApiProductAvailabilityGetRequest {
 	if queryParams.ProductCategory != nil {
 		request.ProductCategory(queryParams.ProductCategory)
 	}
@@ -69,6 +69,7 @@ func (queryParams *ProductAvailabilityGetQueryParams) AttachToRequest(request *b
 	if queryParams.Location != nil {
 		request.Location(queryParams.Location)
 	}
+	return request
 }
 
 // Predicates

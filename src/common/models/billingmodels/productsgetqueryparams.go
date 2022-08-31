@@ -20,7 +20,7 @@ func NewProductsGetQueryParams(productCode string, productCategory string, skuCo
 	}
 }
 
-func (queries ProductsGetQueryParams) AttachToRequest(request *billingapisdk.ApiProductsGetRequest) {
+func (queries ProductsGetQueryParams) AttachToRequest(request billingapisdk.ApiProductsGetRequest) billingapisdk.ApiProductsGetRequest {
 	if queries.ProductCode != nil {
 		request.ProductCode(*queries.ProductCode)
 	}
@@ -33,6 +33,7 @@ func (queries ProductsGetQueryParams) AttachToRequest(request *billingapisdk.Api
 	if queries.Location != nil {
 		request.Location(*queries.Location)
 	}
+	return request
 }
 
 func stringToParam(param string) *string {

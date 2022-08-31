@@ -73,28 +73,28 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 
 func (m MainClient) RatedUsageGet(queryParams billingmodels.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
 	request := m.RatedUsageApiClient.RatedUsageGet(context.Background())
-	queryParams.AttachToRequest(&request)
+	request = queryParams.AttachToRequest(request)
 
 	return request.Execute()
 }
 
 func (m MainClient) RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageMonthToDateGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
 	request := m.RatedUsageApiClient.RatedUsageMonthToDateGet(context.Background())
-	queryParams.AttachToRequest(&request)
+	request = queryParams.AttachToRequest(request)
 
 	return request.Execute()
 }
 
 func (m MainClient) ProductsGet(queryParams billingmodels.ProductsGetQueryParams) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error) {
 	request := m.ProductsApiClient.ProductsGet(context.Background())
-	queryParams.AttachToRequest(&request)
+	request = queryParams.AttachToRequest(request)
 
 	return request.Execute()
 }
 
 func (m MainClient) ReservationsGet(queryParams billingmodels.ReservationsGetQueryParams) ([]billingapisdk.Reservation, *http.Response, error) {
 	request := m.ReservationApiClient.ReservationsGet(context.Background())
-	queryParams.AttachToRequest(&request)
+	request = queryParams.AttachToRequest(request)
 
 	return request.Execute()
 }
@@ -125,7 +125,7 @@ func (m MainClient) AccountBillingConfigurationGet() (*billingapisdk.Configurati
 
 func (m MainClient) ProductAvailabilityGet(queryParams billingmodels.ProductAvailabilityGetQueryParams) ([]billingapisdk.ProductAvailability, *http.Response, error) {
 	request := m.ProductsApiClient.ProductAvailabilityGet(context.Background())
-	queryParams.AttachToRequest(&request)
+	request = queryParams.AttachToRequest(request)
 
 	return request.Execute()
 }

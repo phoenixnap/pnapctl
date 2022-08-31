@@ -14,7 +14,7 @@ type RatedUsageGetQueryParams struct {
 }
 
 func NewRatedUsageGetQueryParams(fromYearMonth string, toYearMonth string, productCategory string) (*RatedUsageGetQueryParams, error) {
-	validYearMonth := regexp.MustCompile("[0-9]{4}-0[1-9]|1[0-2]")
+	validYearMonth := regexp.MustCompile("^([0-9]{4})(-){1}(0[1-9]|1[0-2]){1}$")
 
 	if !validYearMonth.MatchString(fromYearMonth) {
 		return nil, fmt.Errorf("'FromYearMonth' (%s) is not in the valid format (YYYY-MM)", fromYearMonth)
@@ -35,13 +35,15 @@ func NewRatedUsageGetQueryParams(fromYearMonth string, toYearMonth string, produ
 	}, nil
 }
 
-func (queries RatedUsageGetQueryParams) AttachToRequest(request *billingapisdk.ApiRatedUsageGetRequest) {
-	request.FromYearMonth(queries.FromYearMonth)
-	request.ToYearMonth(queries.ToYearMonth)
+func (queries RatedUsageGetQueryParams) AttachToRequest(request billingapisdk.ApiRatedUsageGetRequest) billingapisdk.ApiRatedUsageGetRequest {
+	request = request.FromYearMonth(queries.FromYearMonth)
+	request = request.ToYearMonth(queries.ToYearMonth)
 
 	if queries.ProductCategory != nil {
-		request.ProductCategory(*queries.ProductCategory)
+		request = request.ProductCategory(*queries.ProductCategory)
 	}
+
+	return request
 }
 
 type RatedUsageMonthToDateGetQueryParams struct {
@@ -60,10 +62,11 @@ func NewRatedUsageGetMonthToDateQueryParams(productCategory string) (*RatedUsage
 	}, nil
 }
 
-func (queries RatedUsageMonthToDateGetQueryParams) AttachToRequest(request *billingapisdk.ApiRatedUsageMonthToDateGetRequest) {
+func (queries RatedUsageMonthToDateGetQueryParams) AttachToRequest(request billingapisdk.ApiRatedUsageMonthToDateGetRequest) billingapisdk.ApiRatedUsageMonthToDateGetRequest {
 	if queries.ProductCategory != nil {
-		request.ProductCategory(*queries.ProductCategory)
+		request = request.ProductCategory(*queries.ProductCategory)
 	}
+	return request
 }
 
 // Private methods
