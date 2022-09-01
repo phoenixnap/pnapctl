@@ -66,7 +66,7 @@ type RatedUsageCommon struct {
 
 // Uses type assertions to convert the OneOf into a RatedUsage.
 func RatedUsageFromSdkOneOf(sdk *billingapisdk.RatedUsageGet200ResponseInner) *RatedUsageCommon {
-	if sdk == nil {
+	if sdk == nil || sdk.GetActualInstance() == nil {
 		return nil
 	}
 

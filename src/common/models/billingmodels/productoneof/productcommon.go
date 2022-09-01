@@ -32,7 +32,7 @@ type ProductCommon struct {
 }
 
 func ProductCommonFromSdkOneOf(sdk *billingapi.ProductsGet200ResponseInner) *ProductCommon {
-	if sdk == nil {
+	if sdk == nil || sdk.GetActualInstance() == nil {
 		return nil
 	}
 

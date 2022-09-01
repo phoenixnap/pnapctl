@@ -18,7 +18,7 @@ func TestProductActualFromSdk_BandwidthProduct(test_framework *testing.T) {
 	}
 
 	actual := ProductTableFromSdk(ProductsResponse)
-	assertEqualAsProduct(test_framework, actual, *bandwidthProduct)
+	assertEqualAsProduct(test_framework, *bandwidthProduct, *actual)
 }
 
 func TestProductActualFromSdk_OperatingSystemProduct(test_framework *testing.T) {
@@ -28,7 +28,7 @@ func TestProductActualFromSdk_OperatingSystemProduct(test_framework *testing.T) 
 	}
 
 	actual := ProductTableFromSdk(ProductsResponse)
-	assertEqualAsProduct(test_framework, actual, *operatingSystemProduct)
+	assertEqualAsProduct(test_framework, *operatingSystemProduct, *actual)
 }
 
 func TestProductActualFromSdk_ServerProduct(test_framework *testing.T) {
@@ -38,14 +38,14 @@ func TestProductActualFromSdk_ServerProduct(test_framework *testing.T) {
 	}
 
 	actual := ProductTableFromSdk(ProductsResponse)
-	assertEqualAsServerProduct(test_framework, actual, *serverProduct)
+	assertEqualAsServerProduct(test_framework, *serverProduct, *actual)
 }
 
 // Assertions
 func assertEqualAsProduct(
 	test_framework *testing.T,
-	cliTable ProductTable,
 	sdkProduct billingapi.Product,
+	cliTable ProductTable,
 ) {
 	assert.Equal(test_framework, sdkProduct.ProductCode, cliTable.ProductCode)
 	assert.Equal(test_framework, sdkProduct.ProductCategory, string(cliTable.ProductCategory))
@@ -57,8 +57,8 @@ func assertEqualAsProduct(
 
 func assertEqualAsServerProduct(
 	test_framework *testing.T,
-	cliTable ProductTable,
 	sdkProduct billingapi.ServerProduct,
+	cliTable ProductTable,
 ) {
 	assert.Equal(test_framework, sdkProduct.ProductCode, cliTable.ProductCode)
 	assert.Equal(test_framework, sdkProduct.ProductCategory, string(cliTable.ProductCategory))

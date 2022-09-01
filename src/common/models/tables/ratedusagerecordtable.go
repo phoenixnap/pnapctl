@@ -56,35 +56,44 @@ type RatedUsageRecordTable struct {
 	Metadata             map[string]interface{}        `header:"Metadata"`
 }
 
-func RatedUsageRecordTableFromSdk(sdk billingapisdk.RatedUsageGet200ResponseInner) RatedUsageRecordTable {
-	ratedUsage := RatedUsageRecordTable{}
-	ratedUsage.parseCommon(sdk)
-	ratedUsage.attachMetadata(sdk)
+func RatedUsageRecordTableFromSdk(sdk billingapisdk.RatedUsageGet200ResponseInner) *RatedUsageRecordTable {
+	ratedUsage := parseCommonRatedUsage(sdk)
+	if ratedUsage == nil {
+		return nil
+	}
+
+	ratedUsage.attachUnique(sdk)
 	return ratedUsage
 }
 
-func (r *RatedUsageRecordTable) parseCommon(sdk billingapisdk.RatedUsageGet200ResponseInner) {
+func parseCommonRatedUsage(sdk billingapisdk.RatedUsageGet200ResponseInner) *RatedUsageRecordTable {
 	ratedUsage := ratedusageoneof.RatedUsageFromSdkOneOf(&sdk)
 
-	r.Id = ratedUsage.Id
-	r.ProductCategory = ratedUsage.ProductCategory
-	r.ProductCode = ratedUsage.ProductCode
-	r.Location = ratedUsage.Location
-	r.YearMonth = ratedUsage.YearMonth
-	r.StartDateTime = ratedUsage.StartDateTime.String()
-	r.EndDateTime = ratedUsage.EndDateTime.String()
-	r.Cost = ratedUsage.Cost
-	r.PriceModel = ratedUsage.PriceModel
-	r.UnitPrice = ratedUsage.UnitPrice
-	r.UnitPriceDescription = ratedUsage.UnitPriceDescription
-	r.Quantity = ratedUsage.Quantity
-	r.Active = ratedUsage.Active
-	r.UsageSessionId = ratedUsage.UsageSessionId
-	r.CorrelationId = ratedUsage.CorrelationId
-	r.ReservationId = ratedUsage.ReservationId
+	if ratedUsage == nil {
+		return nil
+	}
+
+	return &RatedUsageRecordTable{
+		Id:                   ratedUsage.Id,
+		ProductCategory:      ratedUsage.ProductCategory,
+		ProductCode:          ratedUsage.ProductCode,
+		Location:             ratedUsage.Location,
+		YearMonth:            ratedUsage.YearMonth,
+		StartDateTime:        ratedUsage.StartDateTime.String(),
+		EndDateTime:          ratedUsage.EndDateTime.String(),
+		Cost:                 ratedUsage.Cost,
+		PriceModel:           ratedUsage.PriceModel,
+		UnitPrice:            ratedUsage.UnitPrice,
+		UnitPriceDescription: ratedUsage.UnitPriceDescription,
+		Quantity:             ratedUsage.Quantity,
+		Active:               ratedUsage.Active,
+		UsageSessionId:       ratedUsage.UsageSessionId,
+		CorrelationId:        ratedUsage.CorrelationId,
+		ReservationId:        ratedUsage.ReservationId,
+	}
 }
 
-func (table *RatedUsageRecordTable) attachMetadata(sdk billingapisdk.RatedUsageGet200ResponseInner) {
+func (table *RatedUsageRecordTable) attachUnique(sdk billingapisdk.RatedUsageGet200ResponseInner) {
 	switch table.ProductCategory {
 
 	case ratedusageoneof.BANDWIDTH:
@@ -127,11 +136,13 @@ type ShortRatedUsageRecordTable struct {
 }
 
 // Extracts a ShortRatedUsageRecordTable using the full table.
-func ShortRatedUsageRecordFromSdk(sdk billingapisdk.RatedUsageGet200ResponseInner) ShortRatedUsageRecordTable {
-	fullTable := RatedUsageRecordTable{}
-	fullTable.parseCommon(sdk)
+func ShortRatedUsageRecordFromSdk(sdk billingapisdk.RatedUsageGet200ResponseInner) *ShortRatedUsageRecordTable {
+	fullTable := parseCommonRatedUsage(sdk)
+	if fullTable == nil {
+		return nil
+	}
 
-	return ShortRatedUsageRecordTable{
+	return &ShortRatedUsageRecordTable{
 		Id:              fullTable.Id,
 		ProductCategory: fullTable.ProductCategory,
 		ProductCode:     fullTable.ProductCode,

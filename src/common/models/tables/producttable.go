@@ -27,22 +27,31 @@ type ProductTable struct {
 	Metadata map[string]interface{}
 }
 
-func ProductTableFromSdk(sdk billingapisdk.ProductsGet200ResponseInner) ProductTable {
-	product := ProductTable{}
-	product.parseCommon(sdk)
-	product.attachMetadata(sdk)
+func ProductTableFromSdk(sdk billingapisdk.ProductsGet200ResponseInner) *ProductTable {
+	product := parseCommonProduct(sdk)
+	if product == nil {
+		return nil
+	}
+
+	product.attachUnique(sdk)
 	return product
 }
 
-func (p *ProductTable) parseCommon(sdk billingapisdk.ProductsGet200ResponseInner) {
+func parseCommonProduct(sdk billingapisdk.ProductsGet200ResponseInner) *ProductTable {
 	productCommon := productoneof.ProductCommonFromSdkOneOf(&sdk)
 
-	p.ProductCode = productCommon.ProductCode
-	p.ProductCategory = productCommon.ProductCategory
-	p.Plans = iterutils.Map(productCommon.Plans, productoneof.PricingPlanToTableString)
+	if productCommon == nil {
+		return nil
+	}
+
+	return &ProductTable{
+		ProductCode:     productCommon.ProductCode,
+		ProductCategory: productCommon.ProductCategory,
+		Plans:           iterutils.Map(productCommon.Plans, productoneof.PricingPlanToTableString),
+	}
 }
 
-func (p *ProductTable) attachMetadata(sdk billingapisdk.ProductsGet200ResponseInner) {
+func (p *ProductTable) attachUnique(sdk billingapisdk.ProductsGet200ResponseInner) {
 	switch p.ProductCategory {
 	case productoneof.BANDWIDTH, productoneof.OPERATING_SYSTEM:
 		return

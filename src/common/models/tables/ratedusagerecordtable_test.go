@@ -13,7 +13,7 @@ func TestRatedUsageRecordFromBandwidthSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
 		BandwidthRecord: billingmodels.GenerateBandwidthRecordSdk(),
 	}
-	table := RatedUsageRecordTableFromSdk(record)
+	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullBandwidthRecordsEqual(test_framework, *record.BandwidthRecord, table)
 }
@@ -22,7 +22,7 @@ func TestRatedUsageRecordFromOperatingSystemSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
 		OperatingSystemRecord: billingmodels.GenerateOperatingSystemRecordSdk(),
 	}
-	table := RatedUsageRecordTableFromSdk(record)
+	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullOperatingSystemRecordsEqual(test_framework, *record.OperatingSystemRecord, table)
 }
@@ -31,7 +31,7 @@ func TestRatedUsageRecordFromPublicSubnetSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
 		PublicSubnetRecord: billingmodels.GeneratePublicSubnetRecordSdk(),
 	}
-	table := RatedUsageRecordTableFromSdk(record)
+	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullPublicSubnetRecordsEqual(test_framework, *record.PublicSubnetRecord, table)
 }
@@ -40,7 +40,7 @@ func TestRatedUsageRecordFromServerSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
 		ServerRecord: billingmodels.GenerateServerRecordSdk(),
 	}
-	table := RatedUsageRecordTableFromSdk(record)
+	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullServerRecordsEqual(test_framework, *record.ServerRecord, table)
 }

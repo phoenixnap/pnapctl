@@ -4,7 +4,6 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"phoenixnap.com/pnapctl/common/models/billingmodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 // Rated Usage
@@ -14,8 +13,8 @@ func PrintRatedUsageResponse(ratedUsage *billingapi.RatedUsageGet200ResponseInne
 }
 
 func PrintRatedUsageListResponse(ratedUsages []billingapi.RatedUsageGet200ResponseInner, full bool, commandName string) error {
-	ratedUsageToPrint := iterutils.BiMap(ratedUsages, full, PrepareRatedUsageForPrinting)
-	return MainPrinter.PrintOutput(ratedUsageToPrint, commandName)
+	ratedUsagesToPrint := prepareOneOfWith(ratedUsages, withFull(full, PrepareRatedUsageForPrinting))
+	return MainPrinter.PrintOutput(ratedUsagesToPrint, commandName)
 }
 
 func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200ResponseInner, full bool) interface{} {
@@ -40,7 +39,7 @@ func PrintProductResponse(product *billingapi.ProductsGet200ResponseInner, full 
 }
 
 func PrintProductListResponse(products []billingapi.ProductsGet200ResponseInner, commandName string) error {
-	productsToPrint := iterutils.Map(products, PrepareProductForPrinting)
+	productsToPrint := prepareOneOfWith(products, PrepareProductForPrinting)
 	return MainPrinter.PrintOutput(productsToPrint, commandName)
 }
 

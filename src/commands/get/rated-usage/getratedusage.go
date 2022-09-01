@@ -60,8 +60,9 @@ func init() {
 
 	GetRatedUsageCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 	GetRatedUsageCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
-	GetRatedUsageCmd.PersistentFlags().StringVar(&FromYearMonth, "from", "", "From year month (inclusive) to filter rated usage records by.")
-	GetRatedUsageCmd.PersistentFlags().StringVar(&ToYearMonth, "to", "", "To year month (inclusive) to filter rated usage records by.")
+
+	GetRatedUsageCmd.Flags().StringVar(&FromYearMonth, "from", "", "From year month (inclusive) to filter rated usage records by.")
+	GetRatedUsageCmd.Flags().StringVar(&ToYearMonth, "to", "", "To year month (inclusive) to filter rated usage records by.")
 	GetRatedUsageCmd.PersistentFlags().StringVar(&ProductCategory, "category", "", "The product category to filter by.")
 
 	GetRatedUsageCmd.MarkFlagRequired("from")
