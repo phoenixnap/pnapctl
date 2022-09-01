@@ -1,14 +1,15 @@
 package billingmodels
 
 import (
-	"fmt"
-
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 )
 
-type ReservationRequest struct{}
+type ReservationRequest struct {
+	Sku string `json:"sku" yaml:"sku"`
+}
 
-func p4() {
-	x := billingapi.ReservationRequest{}
-	fmt.Println("%v", x)
+func ReservationRequestFromSdk(sdk billingapi.ReservationRequest) ReservationRequest {
+	return ReservationRequest{
+		Sku: sdk.Sku,
+	}
 }

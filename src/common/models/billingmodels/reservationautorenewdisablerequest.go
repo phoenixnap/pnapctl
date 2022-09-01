@@ -1,14 +1,15 @@
 package billingmodels
 
 import (
-	"fmt"
-
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 )
 
-type ReservationAutoRenewDisableRequest struct{}
+type ReservationAutoRenewDisableRequest struct {
+	AutoRenewDisableReason *string `json:"autoRenewDisableReason,omitempty" yaml:"autoRenewDisableReason,omitempty"`
+}
 
-func p3() {
-	x := billingapi.ReservationAutoRenewDisableRequest{}
-	fmt.Println("%v", x)
+func ReservationAutoRenewDisableRequestFromSdk(sdk billingapi.ReservationAutoRenewDisableRequest) ReservationAutoRenewDisableRequest {
+	return ReservationAutoRenewDisableRequest{
+		AutoRenewDisableReason: sdk.AutoRenewDisableReason,
+	}
 }
