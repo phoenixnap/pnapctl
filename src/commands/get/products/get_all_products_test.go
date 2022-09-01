@@ -21,7 +21,7 @@ func TestGetAllProducts_FullTable(test_framework *testing.T) {
 	var products []interface{}
 
 	for _, product := range responseList {
-		products = append(products, tables.ProductTableFromSdk(product))
+		products = append(products, *tables.ProductTableFromSdk(product))
 	}
 
 	// Mocking
@@ -62,7 +62,7 @@ func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
 	var products []interface{}
 
 	for _, product := range responseList {
-		products = append(products, tables.ProductTableFromSdk(product))
+		products = append(products, *tables.ProductTableFromSdk(product))
 	}
 
 	// Mocking

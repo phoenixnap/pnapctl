@@ -24,7 +24,7 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 	var recordTables []interface{}
 
 	for _, record := range responseList {
-		recordTables = append(recordTables, tables.RatedUsageRecordTableFromSdk(record))
+		recordTables = append(recordTables, *tables.RatedUsageRecordTableFromSdk(record))
 	}
 
 	// Mocking
@@ -52,7 +52,7 @@ func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 	var recordTables []interface{}
 
 	for _, record := range responseList {
-		recordTables = append(recordTables, tables.ShortRatedUsageRecordFromSdk(record))
+		recordTables = append(recordTables, *tables.ShortRatedUsageRecordFromSdk(record))
 	}
 
 	// Mocking
@@ -93,7 +93,7 @@ func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 	var recordTables []interface{}
 
 	for _, record := range responseList {
-		recordTables = append(recordTables, tables.ShortRatedUsageRecordFromSdk(record))
+		recordTables = append(recordTables, *tables.ShortRatedUsageRecordFromSdk(record))
 	}
 
 	// Mocking

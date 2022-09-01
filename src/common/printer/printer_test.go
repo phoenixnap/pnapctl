@@ -509,7 +509,7 @@ func TestPrepareRatedUsageRecordForPrintingTableFull(test_framework *testing.T) 
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "tables.RatedUsageRecordTable")
+	assert.Equal(test_framework, outputType, "*tables.RatedUsageRecordTable")
 }
 
 func TestPrepareRatedUsageRecordForPrintingTableShort(test_framework *testing.T) {
@@ -521,7 +521,7 @@ func TestPrepareRatedUsageRecordForPrintingTableShort(test_framework *testing.T)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "tables.ShortRatedUsageRecordTable")
+	assert.Equal(test_framework, outputType, "*tables.ShortRatedUsageRecordTable")
 }
 
 func TestPrepareProductForPrintingNonTable_BandwidthProduct(test_framework *testing.T) {
@@ -569,7 +569,7 @@ func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "tables.ProductTable")
+	assert.Equal(test_framework, outputType, "*tables.ProductTable")
 }
 
 func ExamplePrintOutputTableFormatEmpty() {

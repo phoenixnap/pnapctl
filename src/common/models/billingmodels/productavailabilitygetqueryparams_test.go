@@ -1,7 +1,6 @@
 package billingmodels
 
 import (
-	"errors"
 	"math/rand"
 	"testing"
 
@@ -27,13 +26,13 @@ func TestProductAvailabilityGetQueryParams_valid(test_framework *testing.T) {
 	assert.Equal(test_framework, productCategory, queryParams.ProductCategory)
 	assert.Equal(test_framework, productCode, queryParams.ProductCode)
 	assert.Equal(test_framework, showOnlyMinQuantityAvailable, queryParams.ShowOnlyMinQuantityAvailable)
-	assert.Equal(test_framework, location, queryParams.Location)
+	assert.Equal(test_framework, billingapi.AllowedLocationEnumEnumValues, queryParams.Location)
 	assert.Equal(test_framework, solution, queryParams.Solution)
-	assert.Equal(test_framework, minQuantity, queryParams.MinQuantity)
+	assert.Equal(test_framework, &minQuantity, queryParams.MinQuantity)
 }
 
 func TestProductAvailabilityGetQueryParams_invalidProductCategory(test_framework *testing.T) {
-	productCategory := []string{"INVALID"}
+	productCategory := []string{"unknown"}
 	productCode := []string{"SRVCODE"}
 	showOnlyMinQuantityAvailable := false
 	location := iterutils.Map(billingapi.AllowedLocationEnumEnumValues, func(loc billingapi.LocationEnum) string {
@@ -45,5 +44,5 @@ func TestProductAvailabilityGetQueryParams_invalidProductCategory(test_framework
 	queryParams, err := NewProductAvailabilityGetQueryParams(productCategory, productCode, showOnlyMinQuantityAvailable, location, solution, &minQuantity)
 
 	assert.Nil(test_framework, queryParams)
-	assert.ErrorIs(test_framework, err, errors.New(""))
+	assert.EqualError(test_framework, err, "category 'unknown' is invalid. Allowed values are [SERVER]")
 }
