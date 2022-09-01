@@ -2,9 +2,6 @@ package iterutils
 
 import (
 	"reflect"
-	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 /* TYPES */
@@ -29,15 +26,6 @@ type Mapper[In, Out any] func(In) Out
 //	var doubler Mapper[int, int]
 //	doubler := Curry(mul, 2)
 type Currier[In, Const, Out any] func(In, Const) Out
-
-// Defines a function that performs an assertion on T and U.
-//
-//	var mustBeEqual AssertFn[int, int]
-//
-//	mustBeEqual := func(t *testing.T, x int, y int) {
-//		assert.Equal(t, x, y)
-//	}
-type AssertFn[T, U any] func(*testing.T, T, U)
 
 // Defines a function that performs a check on the item passed.
 //
@@ -105,25 +93,6 @@ func Contains[T comparable](slice []T, item T) bool {
 		}
 	}
 	return false
-}
-
-// Asserts that elements on both 'expected' and 'actual' both pass the assertions in 'asserter'
-// Also asserts that 'expected' and 'actual' are both of the same length.
-//
-//	nums1 := []int{1, 2, 3}
-//	nums2 := []int{1, 2, 3}
-//
-//	isEqual := func(t *testing.T, a int, b int) {
-//		assert.IsEqual(t, a, b)
-//	}
-//
-//	AssertOnListElements(t, nums1, nums2, isEqual) // passes
-func AssertOnListElements[T, U any](t *testing.T, expected []T, actual []U, asserter AssertFn[T, U]) {
-	assert.Len(t, expected, len(actual))
-
-	for i := range expected {
-		asserter(t, expected[i], actual[i])
-	}
 }
 
 // Returns the first element in a list that satisfies the predicate passed.

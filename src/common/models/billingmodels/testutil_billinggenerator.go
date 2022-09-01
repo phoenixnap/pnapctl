@@ -262,8 +262,8 @@ func GenerateLocationAvailabilityDetail() billingapi.LocationAvailabilityDetail 
 }
 
 // Reservation
-func GenerateReservation() billingapi.Reservation {
-	return billingapi.Reservation{
+func GenerateReservation() *billingapi.Reservation {
+	return &billingapi.Reservation{
 		Id:                  testutil.RandSeq(10),
 		ProductCode:         testutil.RandSeq(10),
 		ProductCategory:     testutil.RandSeq(10),
@@ -279,5 +279,17 @@ func GenerateReservation() billingapi.Reservation {
 		Price:               rand.Float32(),
 		PriceUnit:           billingapi.GB,
 		AssignedResourceId:  testutil.AsPointer(testutil.RandSeq(10)),
+	}
+}
+
+func GenerateReservationAutoRenewDisableRequest() *billingapi.ReservationAutoRenewDisableRequest {
+	return &billingapi.ReservationAutoRenewDisableRequest{
+		AutoRenewDisableReason: testutil.AsPointer(testutil.RandSeq(10)),
+	}
+}
+
+func GenerateReservationRequest() *billingapi.ReservationRequest {
+	return &billingapi.ReservationRequest{
+		Sku: testutil.RandSeq(10),
 	}
 }

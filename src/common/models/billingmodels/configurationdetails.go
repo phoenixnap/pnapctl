@@ -12,8 +12,12 @@ type ThresholdConfigurationDetails struct {
 	ThresholdAmount float32 `json:"thresholdAmount" yaml:"thresholdAmount"`
 }
 
-func ConfigurationDetailsFromSdk(sdk billingapi.ConfigurationDetails) ConfigurationDetails {
-	return ConfigurationDetails{
+func ConfigurationDetailsFromSdk(sdk *billingapi.ConfigurationDetails) *ConfigurationDetails {
+	if sdk == nil {
+		return nil
+	}
+
+	return &ConfigurationDetails{
 		ThresholdConfiguration: thresholdConfigurationDetailsFromSdk(sdk.ThresholdConfiguration),
 	}
 }

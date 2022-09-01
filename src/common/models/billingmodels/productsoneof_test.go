@@ -6,7 +6,7 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models/billingmodels/productoneof"
-	"phoenixnap.com/pnapctl/common/utils/iterutils"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 // FromSdk tests
@@ -52,12 +52,8 @@ func assertEqualAsProduct(
 	assert.Equal(test_framework, cliProduct.ProductCode, sdkProduct.ProductCode)
 	assert.Equal(test_framework, string(cliProduct.ProductCategory), sdkProduct.ProductCategory)
 
-	iterutils.AssertOnListElements(
-		test_framework,
-		cliProduct.Plans,
-		sdkProduct.Plans,
-		assertEqualPricingPlan,
-	)
+	testutil.ForEachPair(cliProduct.Plans, sdkProduct.Plans).
+		Do(test_framework, assertEqualPricingPlan)
 }
 
 func assertEqualAsServerProduct(
@@ -70,12 +66,8 @@ func assertEqualAsServerProduct(
 	assert.Equal(test_framework, cliServerProduct.ProductCode, sdkServerProduct.ProductCode)
 	assert.Equal(test_framework, string(cliServerProduct.ProductCategory), sdkServerProduct.ProductCategory)
 
-	iterutils.AssertOnListElements(
-		test_framework,
-		cliServerProduct.Plans,
-		sdkServerProduct.Plans,
-		assertEqualPricingPlan,
-	)
+	testutil.ForEachPair(cliServerProduct.Plans, sdkServerProduct.Plans).
+		Do(test_framework, assertEqualPricingPlan)
 }
 
 // Nested asserts

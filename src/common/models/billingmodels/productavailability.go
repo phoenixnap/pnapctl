@@ -19,8 +19,12 @@ type LocationAvailabilityDetail struct {
 	Solutions            []string                `json:"solutions" yaml:"solutions"`
 }
 
-func ProductAvailabilityFromSdk(sdk billingapi.ProductAvailability) ProductAvailability {
-	return ProductAvailability{
+func ProductAvailabilityFromSdk(sdk *billingapi.ProductAvailability) *ProductAvailability {
+	if sdk == nil {
+		return nil
+	}
+
+	return &ProductAvailability{
 		ProductCode:     sdk.ProductCode,
 		ProductCategory: sdk.ProductCategory,
 		LocationAvailabilityDetails: iterutils.Map(

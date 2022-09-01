@@ -24,8 +24,12 @@ type Reservation struct {
 	AssignedResourceId  *string                                   `json:"assignedResourceId,omitempty" yaml:"assignedResourceId,omitempty"`
 }
 
-func ReservationFromSdk(sdk billingapi.Reservation) Reservation {
-	return Reservation{
+func ReservationFromSdk(sdk *billingapi.Reservation) *Reservation {
+	if sdk == nil {
+		return nil
+	}
+
+	return &Reservation{
 		Id:                  sdk.Id,
 		ProductCode:         sdk.ProductCode,
 		ProductCategory:     sdk.ProductCategory,
