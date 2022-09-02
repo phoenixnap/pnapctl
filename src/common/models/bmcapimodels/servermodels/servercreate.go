@@ -6,20 +6,20 @@ import (
 )
 
 type ServerCreate struct {
-	Hostname              string                  `yaml:"hostname" json:"hostname"`
-	Description           *string                 `yaml:"description,omitempty" json:"description,omitempty"`
-	Os                    string                  `yaml:"os" json:"os"`
-	Type                  string                  `yaml:"type" json:"type"`
-	Location              string                  `yaml:"location" json:"location"`
-	InstallDefaultSshKeys *bool                   `yaml:"installDefaultSshKeys,omitempty" json:"installDefaultSshKeys,omitempty"`
-	SshKeys               []string                `yaml:"sshKeys,omitempty" json:"sshKeys,omitempty"`
-	SshKeyIds             []string                `yaml:"sshKeyIds,omitempty" json:"sshKeyIds,omitempty"`
-	ReservationId         *string                 `yaml:"reservationId,omitempty" json:"reservationId,omitempty"`
-	PricingModel          *string                 `yaml:"pricingModel,omitempty" json:"pricingModel,omitempty"`
-	NetworkType           *string                 `yaml:"networkType,omitempty" json:"networkType,omitempty"`
-	OsConfiguration       *OsConfiguration        `yaml:"osConfiguration,omitempty" json:"osConfiguration,omitempty"`
-	Tags                  *[]TagAssignmentRequest `yaml:"tags,omitempty" json:"tags,omitempty"`
-	NetworkConfiguration  *NetworkConfiguration   `yaml:"networkConfiguration,omitempty" json:"networkConfiguration,omitempty"`
+	Hostname              string                 `yaml:"hostname" json:"hostname"`
+	Description           *string                `yaml:"description,omitempty" json:"description,omitempty"`
+	Os                    string                 `yaml:"os" json:"os"`
+	Type                  string                 `yaml:"type" json:"type"`
+	Location              string                 `yaml:"location" json:"location"`
+	InstallDefaultSshKeys *bool                  `yaml:"installDefaultSshKeys,omitempty" json:"installDefaultSshKeys,omitempty"`
+	SshKeys               []string               `yaml:"sshKeys,omitempty" json:"sshKeys,omitempty"`
+	SshKeyIds             []string               `yaml:"sshKeyIds,omitempty" json:"sshKeyIds,omitempty"`
+	ReservationId         *string                `yaml:"reservationId,omitempty" json:"reservationId,omitempty"`
+	PricingModel          *string                `yaml:"pricingModel,omitempty" json:"pricingModel,omitempty"`
+	NetworkType           *string                `yaml:"networkType,omitempty" json:"networkType,omitempty"`
+	OsConfiguration       *OsConfiguration       `yaml:"osConfiguration,omitempty" json:"osConfiguration,omitempty"`
+	Tags                  []TagAssignmentRequest `yaml:"tags,omitempty" json:"tags,omitempty"`
+	NetworkConfiguration  *NetworkConfiguration  `yaml:"networkConfiguration,omitempty" json:"networkConfiguration,omitempty"`
 }
 
 func CreateServerRequestFromFile(filename string, commandname string) (*bmcapisdk.ServerCreate, error) {

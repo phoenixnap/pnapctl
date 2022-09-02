@@ -37,17 +37,17 @@ func TagServerRequestFromFile(filename string, commandname string) ([]bmcapisdk.
 		return nil, err
 	}
 
-	return mapTagAssignmentRequestToSdk(&tagAssignmentRequests), nil
+	return mapTagAssignmentRequestToSdk(tagAssignmentRequests), nil
 }
 
-func mapTagAssignmentRequestToSdk(tagAssignmentRequest *[]TagAssignmentRequest) []bmcapisdk.TagAssignmentRequest {
+func mapTagAssignmentRequestToSdk(tagAssignmentRequest []TagAssignmentRequest) []bmcapisdk.TagAssignmentRequest {
 	if tagAssignmentRequest == nil {
 		return nil
 	}
 
 	var tagAssignmentRequests []bmcapisdk.TagAssignmentRequest
 
-	for _, tagAssignmentRequest := range *tagAssignmentRequest {
+	for _, tagAssignmentRequest := range tagAssignmentRequest {
 		tagAssignmentRequests = append(tagAssignmentRequests, tagAssignmentRequest.toSdk())
 	}
 

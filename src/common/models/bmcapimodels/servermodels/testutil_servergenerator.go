@@ -69,7 +69,7 @@ func GenerateServerCreateCli() ServerCreate {
 		PricingModel:          testutil.RandSeqPointer(10),
 		NetworkType:           testutil.RandSeqPointer(10),
 		OsConfiguration:       &osConfiguration,
-		Tags:                  &tagAssignmentRequests,
+		Tags:                  tagAssignmentRequests,
 		NetworkConfiguration:  &networkConfiguration,
 	}
 }
