@@ -32,6 +32,12 @@ func GenerateIpBlockCreateCLI() IpBlockCreate {
 	}
 }
 
+func GenerateIpBlockPatchCLI() IpBlockPatch {
+	return IpBlockPatch{
+		Description: testutil.RandSeqPointer(10),
+	}
+}
+
 func GenerateDeleteIpBlockResultSdk() *ipapisdk.DeleteIpBlockResult {
 	return &ipapisdk.DeleteIpBlockResult{
 		Result:    testutil.RandSeq(10),

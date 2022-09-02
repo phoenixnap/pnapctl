@@ -98,3 +98,19 @@ func (mr *MockIpSdkClientMockRecorder) IpBlocksIpBlockIdDelete(ipBlockId interfa
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IpBlocksIpBlockIdDelete", reflect.TypeOf((*MockIpSdkClient)(nil).IpBlocksIpBlockIdDelete), ipBlockId)
 }
+
+// IpBlocksIpBlockIdPatch mocks base method.
+func (m *MockIpSdkClient) IpBlocksIpBlockIdPatch(ipBlockId string, ipBlockPatch ipapi.IpBlockPatch) (*ipapi.IpBlock, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "IpBlocksIpBlockIdPatch", ipBlockId, ipBlockPatch)
+	ret0, _ := ret[0].(*ipapi.IpBlock)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// IpBlocksIpBlockIdPatch indicates an expected call of IpBlocksIpBlockIdPatch.
+func (mr *MockIpSdkClientMockRecorder) IpBlocksIpBlockIdPatch(ipBlockId, ipBlockPatch interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IpBlocksIpBlockIdPatch", reflect.TypeOf((*MockIpSdkClient)(nil).IpBlocksIpBlockIdPatch), ipBlockId, ipBlockPatch)
+}
