@@ -45,10 +45,14 @@ func getRatedUsageMonthToDate() error {
 	}
 }
 
-var Full bool
-var ProductCategory string
+var (
+	Full            bool
+	ProductCategory string
+)
 
 func init() {
-	GetRatedUsageMonthToDateCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
+	utils.SetupOutputFlag(GetRatedUsageMonthToDateCmd)
+	utils.SetupFullFlag(GetRatedUsageMonthToDateCmd, &Full, "rated-usage")
+
 	GetRatedUsageMonthToDateCmd.PersistentFlags().StringVar(&ProductCategory, "category", "", "The product category to filter by.")
 }

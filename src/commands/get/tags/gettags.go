@@ -3,6 +3,7 @@ package tags
 import (
 	netHttp "net/http"
 
+	"github.com/phoenixnap/go-sdk-bmc/tagapi"
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	tagclient "phoenixnap.com/pnapctl/common/client/tags"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -67,6 +68,19 @@ func getTags(tagID string) error {
 			return printer.PrintTagResponse(tag, commandName)
 		}
 	}
+}
+
+func getTagsCmd(cmd *cobra.Command, args []string) error {
+	return utils.UseIdFor[tagapi.Tag](args).
+		IfPresent(
+			tagclient.Client.TagGetById,
+			printer.PrintTagResponse,
+		).
+		Else(
+			utils.DoRequestWith(tagclient.Client.TagsGet, Name),
+			printer.PrintTagListResponse,
+		).
+		Execute(commandName)
 }
 
 func init() {

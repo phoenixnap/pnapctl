@@ -65,7 +65,7 @@ func (m MainClient) TagsGet(name string) ([]tagapisdk.Tag, *http.Response, error
 	request := m.TagSdkClient.TagsGet(context.Background())
 
 	if name != "" {
-		request.Name(name)
+		request = request.Name(name)
 	}
 
 	return request.Execute()

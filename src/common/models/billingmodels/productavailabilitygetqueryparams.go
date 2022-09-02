@@ -29,7 +29,7 @@ func NewProductAvailabilityGetQueryParams(
 	showOnlyMinQuantityAvailable bool, // default true
 	location []string,
 	solution []string,
-	minQuantity *float32,
+	minQuantity float32,
 ) (queryParams *ProductAvailabilityGetQueryParams, err error) {
 
 	if invalid := iterutils.FindElementThat(productCategory, productCategoryIsNotAllowed); invalid != nil {
@@ -48,13 +48,18 @@ func NewProductAvailabilityGetQueryParams(
 		return nil, ctlerrors.InvalidFlagValuePassedError("solution", *invalid, allowedSolutions)
 	}
 
+	var preparedMinQuantity *float32
+	if minQuantity != 0.0 {
+		preparedMinQuantity = &minQuantity
+	}
+
 	return &ProductAvailabilityGetQueryParams{
 		ProductCategory:              productCategory,
 		ProductCode:                  productCode,
 		ShowOnlyMinQuantityAvailable: showOnlyMinQuantityAvailable,
 		Location:                     parsedLocation,
 		Solution:                     solution,
-		MinQuantity:                  minQuantity,
+		MinQuantity:                  preparedMinQuantity,
 	}, nil
 }
 

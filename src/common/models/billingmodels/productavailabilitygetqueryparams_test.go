@@ -19,7 +19,7 @@ func TestProductAvailabilityGetQueryParams_valid(test_framework *testing.T) {
 	solution := allowedSolutions
 	minQuantity := rand.Float32()
 
-	queryParams, err := NewProductAvailabilityGetQueryParams(productCategory, productCode, showOnlyMinQuantityAvailable, location, solution, &minQuantity)
+	queryParams, err := NewProductAvailabilityGetQueryParams(productCategory, productCode, showOnlyMinQuantityAvailable, location, solution, minQuantity)
 
 	assert.Nil(test_framework, err)
 
@@ -41,7 +41,7 @@ func TestProductAvailabilityGetQueryParams_invalidProductCategory(test_framework
 	solution := allowedSolutions
 	minQuantity := rand.Float32()
 
-	queryParams, err := NewProductAvailabilityGetQueryParams(productCategory, productCode, showOnlyMinQuantityAvailable, location, solution, &minQuantity)
+	queryParams, err := NewProductAvailabilityGetQueryParams(productCategory, productCode, showOnlyMinQuantityAvailable, location, solution, minQuantity)
 
 	assert.Nil(test_framework, queryParams)
 	assert.EqualError(test_framework, err, "category 'unknown' is invalid. Allowed values are [SERVER]")

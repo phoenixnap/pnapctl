@@ -41,6 +41,6 @@ func init() {
 	GetCmd.AddCommand(rated_usage.GetRatedUsageCmd)
 	GetCmd.AddCommand(products.GetProductsCmd)
 	GetCmd.AddCommand(reservations.GetReservationsCmd)
-	GetCmd.AddCommand(product_availability.GetProductAvailabilityCmd)
+	GetCmd.AddCommand(product_availability.GetProductAvailabilitiesCmd)
 	GetCmd.AddCommand(account_billing_configuration.GetAccountBillingConfigurationCmd)
 }

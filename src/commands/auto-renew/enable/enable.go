@@ -18,5 +18,5 @@ var EnableAutoRenewCmd = &cobra.Command{
 }
 
 func init() {
-	EnableAutoRenewCmd.AddCommand(reservation.AutoRenewEnableReservation)
+	EnableAutoRenewCmd.AddCommand(reservation.AutoRenewEnableReservationCmd)
 }

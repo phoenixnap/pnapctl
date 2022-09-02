@@ -61,7 +61,7 @@ func PrintReservationResponse(reservation *billingapi.Reservation, full bool, co
 	return MainPrinter.PrintOutput(reservationToPrint, commandName)
 }
 
-func PrepareReservationListForPrinting(reservations []billingapi.Reservation, full bool, commandName string) error {
+func PrintReservationListResponse(reservations []billingapi.Reservation, full bool, commandName string) error {
 	reservationsToPrint := iterutils.Map(reservations, withFull(full, PrepareReservationForPrinting))
 	return MainPrinter.PrintOutput(reservationsToPrint, commandName)
 }
@@ -82,6 +82,16 @@ func PrepareReservationForPrinting(reservation billingapi.Reservation, full bool
 }
 
 // Configuration Details
+func PrintConfigurationDetailsResponse(configurationDetails *billingapi.ConfigurationDetails, commandName string) error {
+	configurationDetailsToPrint := PrepareConfigurationDetailsForPrinting(*configurationDetails)
+	return MainPrinter.PrintOutput(configurationDetailsToPrint, commandName)
+}
+
+func PrintConfigurationDetailsListResponse(configurationDetails []billingapi.ConfigurationDetails, commandName string) error {
+	configurationDetailsToPrint := iterutils.Map(configurationDetails, PrepareConfigurationDetailsForPrinting)
+	return MainPrinter.PrintOutput(configurationDetailsToPrint, commandName)
+}
+
 func PrepareConfigurationDetailsForPrinting(configurationDetails billingapi.ConfigurationDetails) interface{} {
 	table := OutputIsTable()
 
@@ -94,6 +104,16 @@ func PrepareConfigurationDetailsForPrinting(configurationDetails billingapi.Conf
 }
 
 // Product Availability
+func PrintProductAvailabilityResponse(productAvailability *billingapi.ProductAvailability, commandName string) error {
+	productAvailabilityToPrint := PrepareProductAvailabilityForPrinting(*productAvailability)
+	return MainPrinter.PrintOutput(productAvailabilityToPrint, commandName)
+}
+
+func PrintProductAvailabilityListResponse(productAvailability []billingapi.ProductAvailability, commandName string) error {
+	productAvailabilityToPrint := iterutils.Map(productAvailability, PrepareProductAvailabilityForPrinting)
+	return MainPrinter.PrintOutput(productAvailabilityToPrint, commandName)
+}
+
 func PrepareProductAvailabilityForPrinting(productAvailability billingapi.ProductAvailability) interface{} {
 	table := OutputIsTable()
 

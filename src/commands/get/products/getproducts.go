@@ -39,15 +39,18 @@ func getProducts() error {
 	}
 }
 
-var ProductCode string
-var ProductCategory string
-var SkuCode string
-var Location string
+var (
+	ProductCode     string
+	ProductCategory string
+	SkuCode         string
+	Location        string
+)
 
 func init() {
-	GetProductsCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	utils.SetupOutputFlag(GetProductsCmd)
+
 	GetProductsCmd.PersistentFlags().StringVar(&ProductCode, "product-code", "", "Product code to filter products by.")
-	GetProductsCmd.PersistentFlags().StringVar(&ProductCode, "category", "", "Product category to filter products by.")
-	GetProductsCmd.PersistentFlags().StringVar(&ProductCode, "sku-code", "", "Sku code to filter products by.")
-	GetProductsCmd.PersistentFlags().StringVar(&ProductCode, "location", "", "Location to filter products by.")
+	GetProductsCmd.PersistentFlags().StringVar(&ProductCategory, "category", "", "Product category to filter products by.")
+	GetProductsCmd.PersistentFlags().StringVar(&SkuCode, "sku-code", "", "Sku code to filter products by.")
+	GetProductsCmd.PersistentFlags().StringVar(&Location, "location", "", "Location to filter products by.")
 }

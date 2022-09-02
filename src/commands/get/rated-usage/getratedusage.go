@@ -50,16 +50,18 @@ func getRatedUsage() error {
 	}
 }
 
-var Full bool
-var FromYearMonth string
-var ToYearMonth string
-var ProductCategory string
+var (
+	Full            bool
+	FromYearMonth   string
+	ToYearMonth     string
+	ProductCategory string
+)
 
 func init() {
 	GetRatedUsageCmd.AddCommand(month_to_date.GetRatedUsageMonthToDateCmd)
 
-	GetRatedUsageCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	GetRatedUsageCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
+	utils.SetupOutputFlag(GetRatedUsageCmd)
+	utils.SetupFullFlag(GetRatedUsageCmd, &Full, "rated usage")
 
 	GetRatedUsageCmd.Flags().StringVar(&FromYearMonth, "from", "", "From year month (inclusive) to filter rated usage records by.")
 	GetRatedUsageCmd.Flags().StringVar(&ToYearMonth, "to", "", "To year month (inclusive) to filter rated usage records by.")
