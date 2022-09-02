@@ -21,7 +21,7 @@ func TestRancherClusterCertificateFromSdk(test_framework *testing.T) {
 	assertEqualRancherClusterCertificates(test_framework, rancherRancherClusterCertificates, sdkRancherClusterCertificates)
 }
 
-func assertEqualRancherClusterCertificates(test_framework *testing.T, cliRancherClusterCertificates RancherClusterCertificates, sdkRancherClusterCertificates ranchersdk.RancherClusterCertificates) {
+func assertEqualRancherClusterCertificates(test_framework *testing.T, cliRancherClusterCertificates RancherClusterCertificates, sdkRancherClusterCertificates ranchersdk.RancherClusterConfigCertificates) {
 	assert.Equal(test_framework, cliRancherClusterCertificates.CaCertificate, sdkRancherClusterCertificates.CaCertificate)
 	assert.Equal(test_framework, cliRancherClusterCertificates.Certificate, sdkRancherClusterCertificates.Certificate)
 	assert.Equal(test_framework, cliRancherClusterCertificates.CertificateKey, sdkRancherClusterCertificates.CertificateKey)

@@ -18,7 +18,7 @@ func TestTagFromSdk(test_framework *testing.T) {
 
 func TestTagWithResourceAssignmentsFromSdk(test_framework *testing.T) {
 	sdkTag := GenerateTagSdk()
-	sdkTag.ResourceAssignments = &[]tagapisdk.ResourceAssignment{*GenerateResourceAssignmentSdk()}
+	sdkTag.ResourceAssignments = []tagapisdk.ResourceAssignment{*GenerateResourceAssignmentSdk()}
 	tag := TagFromSdk(sdkTag)
 
 	assertEqualTag(test_framework, *tag, *sdkTag)
@@ -40,9 +40,9 @@ func assertEqualTag(test_framework *testing.T, tag Tag, sdkTag tagapisdk.Tag) {
 	assert.Equal(test_framework, tag.CreatedBy, sdkTag.CreatedBy)
 
 	if testutil.AssertNilEquality(test_framework, "Tag's Resource Assignments", tag.ResourceAssignments, sdkTag.ResourceAssignments) {
-		assert.Equal(test_framework, len(*tag.ResourceAssignments), len(*sdkTag.ResourceAssignments))
-		for i, _ := range *tag.ResourceAssignments {
-			assertEqualResourceAssignment(test_framework, (*tag.ResourceAssignments)[i], (*sdkTag.ResourceAssignments)[i])
+		assert.Equal(test_framework, len(tag.ResourceAssignments), len(sdkTag.ResourceAssignments))
+		for i, _ := range tag.ResourceAssignments {
+			assertEqualResourceAssignment(test_framework, (tag.ResourceAssignments)[i], (sdkTag.ResourceAssignments)[i])
 		}
 	}
 }

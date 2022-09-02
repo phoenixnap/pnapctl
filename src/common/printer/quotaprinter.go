@@ -6,8 +6,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintQuotaResponse(quota bmcapisdk.Quota, commandName string) error {
-	quotaToPrint := PrepareQuotaForPrinting(quota)
+func PrintQuotaResponse(quota *bmcapisdk.Quota, commandName string) error {
+	quotaToPrint := PrepareQuotaForPrinting(*quota)
 	return MainPrinter.PrintOutput(quotaToPrint, commandName)
 }
 

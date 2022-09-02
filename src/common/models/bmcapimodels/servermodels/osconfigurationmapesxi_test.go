@@ -37,10 +37,10 @@ func assertEqualOsConfigurationMapEsxi(test_framework *testing.T, cliOsConfigura
 	assert.Equal(test_framework, cliOsConfigurationMapEsxi.ManagementUiUrl, sdkOsConfigurationMapEsxi.ManagementUiUrl)
 
 	if testutil.AssertNilEquality(test_framework, "Management Access Allowed IPs", cliOsConfigurationMapEsxi.ManagementAccessAllowedIps, sdkOsConfigurationMapEsxi.ManagementAccessAllowedIps) {
-		assert.Equal(test_framework, len(*cliOsConfigurationMapEsxi.ManagementAccessAllowedIps), len(*sdkOsConfigurationMapEsxi.ManagementAccessAllowedIps))
+		assert.Equal(test_framework, len(cliOsConfigurationMapEsxi.ManagementAccessAllowedIps), len(sdkOsConfigurationMapEsxi.ManagementAccessAllowedIps))
 
-		for i := range *cliOsConfigurationMapEsxi.ManagementAccessAllowedIps {
-			assert.Equal(test_framework, (*cliOsConfigurationMapEsxi.ManagementAccessAllowedIps)[i], (*sdkOsConfigurationMapEsxi.ManagementAccessAllowedIps)[i])
+		for i := range cliOsConfigurationMapEsxi.ManagementAccessAllowedIps {
+			assert.Equal(test_framework, (cliOsConfigurationMapEsxi.ManagementAccessAllowedIps)[i], (sdkOsConfigurationMapEsxi.ManagementAccessAllowedIps)[i])
 		}
 	}
 }

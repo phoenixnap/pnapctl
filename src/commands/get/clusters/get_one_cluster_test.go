@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/ranchermodels"
@@ -20,7 +19,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 
 	PrepareRancherMockClient(test_framework).
 		ClusterGetById(RESOURCEID).
-		Return(cluster, WithResponse(200, WithBody(cluster)), nil)
+		Return(&cluster, WithResponse(200, WithBody(cluster)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(clusterTable, "get clusters").
@@ -35,7 +34,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 func TestGetServerNotFound(test_framework *testing.T) {
 	PrepareRancherMockClient(test_framework).
 		ClusterGetById(RESOURCEID).
-		Return(ranchersdk.Cluster{}, WithResponse(400, nil), nil)
+		Return(nil, WithResponse(400, nil), nil)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
 
@@ -47,7 +46,7 @@ func TestGetServerNotFound(test_framework *testing.T) {
 func TestGetServerClientFailure(test_framework *testing.T) {
 	PrepareRancherMockClient(test_framework).
 		ClusterGetById(RESOURCEID).
-		Return(ranchersdk.Cluster{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
 
@@ -61,7 +60,7 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 func TestGetServerKeycloakFailure(test_framework *testing.T) {
 	PrepareRancherMockClient(test_framework).
 		ClusterGetById(RESOURCEID).
-		Return(ranchersdk.Cluster{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
 
@@ -75,7 +74,7 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 
 	PrepareRancherMockClient(test_framework).
 		ClusterGetById(RESOURCEID).
-		Return(cluster, WithResponse(200, WithBody(cluster)), nil)
+		Return(&cluster, WithResponse(200, WithBody(cluster)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(clusterTable, "get clusters").

@@ -45,7 +45,7 @@ pnapctl get ssh-key <SSH_KEY_ID> [--full] [--output <OUTPUT_TYPE>]`,
 func getSshKeys(sshKeyId string) error {
 	var httpResponse *netHttp.Response
 	var err error
-	var sshKey bmcapisdk.SshKey
+	var sshKey *bmcapisdk.SshKey
 	var sshKeys []bmcapisdk.SshKey
 
 	if sshKeyId == "" {

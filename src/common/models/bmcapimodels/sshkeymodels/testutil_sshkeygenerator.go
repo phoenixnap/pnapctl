@@ -27,15 +27,15 @@ func GenerateSshKeyListSdk(n int) []bmcapisdk.SshKey {
 	return sshKeyList
 }
 
-func GenerateSshKeyDeleteResultSdk() bmcapisdk.DeleteSshKeyResult {
-	return bmcapisdk.DeleteSshKeyResult{
+func GenerateSshKeyDeleteResultSdk() *bmcapisdk.DeleteSshKeyResult {
+	return &bmcapisdk.DeleteSshKeyResult{
 		Result:   testutil.RandSeq(10),
 		SshKeyId: testutil.RandSeq(10),
 	}
 }
 
-func GenerateSshKeyCreateSdk() bmcapisdk.SshKeyCreate {
-	return bmcapisdk.SshKeyCreate{
+func GenerateSshKeyCreateSdk() *bmcapisdk.SshKeyCreate {
+	return &bmcapisdk.SshKeyCreate{
 		Default: false,
 		Name:    testutil.RandSeq(10),
 		Key:     testutil.RandSeq(10),
@@ -52,8 +52,8 @@ func GenerateSshKeyCreateCli() SshKeyCreate {
 
 }
 
-func GenerateSshKeyUpdateSdk() bmcapisdk.SshKeyUpdate {
-	return bmcapisdk.SshKeyUpdate{
+func GenerateSshKeyUpdateSdk() *bmcapisdk.SshKeyUpdate {
+	return &bmcapisdk.SshKeyUpdate{
 		Default: false,
 		Name:    testutil.RandSeq(10),
 	}

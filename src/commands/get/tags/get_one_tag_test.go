@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/tables"
@@ -21,7 +20,7 @@ func TestGetTagSuccess(test_framework *testing.T) {
 
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(*tag, WithResponse(200, WithBody(tag)), nil)
+		Return(tag, WithResponse(200, WithBody(tag)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tagTable, "get tags").
@@ -36,7 +35,7 @@ func TestGetTagSuccess(test_framework *testing.T) {
 func TestGetTagNotFound(test_framework *testing.T) {
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(tagapisdk.Tag{}, WithResponse(400, nil), nil)
+		Return(nil, WithResponse(400, nil), nil)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
 
@@ -48,7 +47,7 @@ func TestGetTagNotFound(test_framework *testing.T) {
 func TestGetTagClientFailure(test_framework *testing.T) {
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(tagapisdk.Tag{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
 
@@ -62,7 +61,7 @@ func TestGetTagClientFailure(test_framework *testing.T) {
 func TestGetTagKeycloakFailure(test_framework *testing.T) {
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(tagapisdk.Tag{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
 
@@ -76,7 +75,7 @@ func TestGetTagPrinterFailure(test_framework *testing.T) {
 
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(*tag, WithResponse(200, WithBody(tag)), nil)
+		Return(tag, WithResponse(200, WithBody(tag)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tagTable, "get tags").

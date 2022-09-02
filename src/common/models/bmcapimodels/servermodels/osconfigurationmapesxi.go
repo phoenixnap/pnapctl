@@ -5,9 +5,9 @@ import (
 )
 
 type OsConfigurationMapEsxi struct {
-	RootPassword               *string   `json:"rootPassword,omitempty" yaml:"rootPassword,omitempty"`
-	ManagementUiUrl            *string   `json:"managementUiUrl,omitempty" yaml:"managementUiUrl,omitempty"`
-	ManagementAccessAllowedIps *[]string `json:"managementAccessAllowedIps,omitempty" yaml:"managementAccessAllowedIps,omitempty"`
+	RootPassword               *string  `json:"rootPassword,omitempty" yaml:"rootPassword,omitempty"`
+	ManagementUiUrl            *string  `json:"managementUiUrl,omitempty" yaml:"managementUiUrl,omitempty"`
+	ManagementAccessAllowedIps []string `json:"managementAccessAllowedIps,omitempty" yaml:"managementAccessAllowedIps,omitempty"`
 }
 
 func (osConfExsi *OsConfigurationMapEsxi) toSdk() *bmcapisdk.OsConfigurationMapEsxi {

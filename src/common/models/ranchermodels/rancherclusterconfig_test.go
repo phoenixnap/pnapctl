@@ -36,11 +36,11 @@ func TestNodePoolsToTableStrings_withClusterConfig(test_framework *testing.T) {
 	assert.Equal(test_framework, result, generateClusterConfigResultString(&sdkModel))
 }
 
-func generateClusterConfigResultString(config *ranchersdk.RancherClusterConfig) string {
+func generateClusterConfigResultString(config *ranchersdk.ClusterConfiguration) string {
 	return fmt.Sprintf("Token: %s, Domain: %s", *config.Token, *config.ClusterDomain)
 }
 
-func assertEqualRancherClusterConfig(test_framework *testing.T, cliRancherClusterConfig RancherClusterConfig, sdkRancherClusterConfig ranchersdk.RancherClusterConfig) {
+func assertEqualRancherClusterConfig(test_framework *testing.T, cliRancherClusterConfig RancherClusterConfig, sdkRancherClusterConfig ranchersdk.ClusterConfiguration) {
 	assert.Equal(test_framework, cliRancherClusterConfig.Token, sdkRancherClusterConfig.Token)
 	assert.Equal(test_framework, cliRancherClusterConfig.TlsSan, sdkRancherClusterConfig.TlsSan)
 	assert.Equal(test_framework, cliRancherClusterConfig.EtcdSnapshotScheduleCron, sdkRancherClusterConfig.EtcdSnapshotScheduleCron)

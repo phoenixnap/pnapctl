@@ -10,9 +10,9 @@ import (
 
 func TestTagAssignmentListFromSdk(test_framework *testing.T) {
 	sdkModels := GenerateTagAssignmentListSdk(2)
-	tagAssignmentList := TagAssignmentListFromSdk(&sdkModels)
+	tagAssignmentList := TagAssignmentListFromSdk(sdkModels)
 
-	for i, tagAssignment := range *tagAssignmentList {
+	for i, tagAssignment := range tagAssignmentList {
 		assertEqualTagAssignment(test_framework, tagAssignment, sdkModels[i])
 	}
 }
@@ -29,7 +29,7 @@ func TestTagsToTableStrings_nilList(test_framework *testing.T) {
 
 func TestTagsToTableStrings(test_framework *testing.T) {
 	sdkModels := GenerateTagAssignmentListSdk(1)
-	result := TagsToTableStrings(&sdkModels)
+	result := TagsToTableStrings(sdkModels)
 
 	assert.Equal(test_framework, result[0], generateResultString(sdkModels[0]))
 }

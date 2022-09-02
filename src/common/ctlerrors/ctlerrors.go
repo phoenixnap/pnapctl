@@ -17,6 +17,7 @@ import (
 		00 : General
 		01 : In ctlerrors
 		02 : In printer
+		03 : In file processing
 */
 const (
 	// Reading Body Failure errors: 01XX
@@ -37,6 +38,7 @@ const (
 	Marshalling          = "0400"
 	MarshallingInPrinter = "0402"
 
+	// File processing errors: 05XX
 	FileReading = "0503"
 
 	// Miscellaneous errors: 99XX

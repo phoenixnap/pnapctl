@@ -3,15 +3,15 @@ package ipblocks
 import (
 	"encoding/json"
 	"errors"
+	"testing"
+
 	"github.com/golang/mock/gomock"
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-	"testing"
 )
 
 func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
@@ -26,13 +26,13 @@ func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(serverIpBlockSdk, WithResponse(202, WithBody(serverIpBlockSdk)), nil).
+		Return(&serverIpBlockSdk, WithResponse(202, WithBody(serverIpBlockSdk)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -55,13 +55,13 @@ func TestCreateServerIpBlockSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(serverIpBlockSdk, WithResponse(202, WithBody(serverIpBlockSdk)), nil).
+		Return(&serverIpBlockSdk, WithResponse(202, WithBody(serverIpBlockSdk)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -78,7 +78,7 @@ func TestCreateServerIpBlockFileNotFoundFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
@@ -103,7 +103,7 @@ func TestCreateServerIpBlockUnmarshallingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -125,7 +125,7 @@ func TestCreateServerIpBlockFileReadingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command 'create server-private-network' has been performed, but something went wrong. Error code: 0503",
 		}).
@@ -152,13 +152,13 @@ func TestCreateServerIpBlockBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(bmcapisdk.ServerIpBlock{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -184,13 +184,13 @@ func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(bmcapisdk.ServerIpBlock{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -216,13 +216,13 @@ func TestCreateServerIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(bmcapisdk.ServerIpBlock{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 

@@ -1,10 +1,11 @@
 package servermodels
 
 import (
+	"testing"
+
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-	"testing"
 )
 
 // tests
@@ -35,10 +36,10 @@ func assertEqualOsConfigurationMapProxmox(test_framework *testing.T, cliOsConfig
 	assert.Equal(test_framework, cliOsConfigurationMapProxmox.ManagementUiUrl, sdkOsConfigurationMapProxmox.ManagementUiUrl)
 
 	if testutil.AssertNilEquality(test_framework, "Management Access Allowed IPs", cliOsConfigurationMapProxmox.ManagementAccessAllowedIps, sdkOsConfigurationMapProxmox.ManagementAccessAllowedIps) {
-		assert.Equal(test_framework, len(*cliOsConfigurationMapProxmox.ManagementAccessAllowedIps), len(*sdkOsConfigurationMapProxmox.ManagementAccessAllowedIps))
+		assert.Equal(test_framework, len(cliOsConfigurationMapProxmox.ManagementAccessAllowedIps), len(sdkOsConfigurationMapProxmox.ManagementAccessAllowedIps))
 
-		for i := range *cliOsConfigurationMapProxmox.ManagementAccessAllowedIps {
-			assert.Equal(test_framework, (*cliOsConfigurationMapProxmox.ManagementAccessAllowedIps)[i], (*sdkOsConfigurationMapProxmox.ManagementAccessAllowedIps)[i])
+		for i := range cliOsConfigurationMapProxmox.ManagementAccessAllowedIps {
+			assert.Equal(test_framework, (cliOsConfigurationMapProxmox.ManagementAccessAllowedIps)[i], (sdkOsConfigurationMapProxmox.ManagementAccessAllowedIps)[i])
 		}
 	}
 }

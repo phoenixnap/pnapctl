@@ -12,8 +12,6 @@ import (
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-
-	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
 )
 
 func TestUpdatePrivateNetworkSuccessYAML(test_framework *testing.T) {
@@ -31,13 +29,13 @@ func TestUpdatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(*privateNetworkUpdate.ToSdk())).
-		Return(privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil).
+		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -63,13 +61,13 @@ func TestUpdatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(*privateNetworkUpdate.ToSdk())).
-		Return(privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil).
+		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -86,7 +84,7 @@ func TestUpdatePrivateNetworkFileNotFoundFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
@@ -111,7 +109,7 @@ func TestUpdatePrivateNetworkUnmarshallingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -133,7 +131,7 @@ func TestUpdatePrivateNetworkFileReadingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command 'update private-network' has been performed, but something went wrong. Error code: 0503",
 		}).
@@ -161,13 +159,13 @@ func TestUpdatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(*privateNetworkUpdate.ToSdk())).
-		Return(networksdk.PrivateNetwork{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -193,13 +191,13 @@ func TestUpdatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(*privateNetworkUpdate.ToSdk())).
-		Return(networksdk.PrivateNetwork{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -225,13 +223,13 @@ func TestUpdatePrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(*privateNetworkUpdate.ToSdk())).
-		Return(networksdk.PrivateNetwork{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 

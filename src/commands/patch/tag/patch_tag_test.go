@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
@@ -26,13 +25,13 @@ func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(*tagEdit.ToSdk())).
-		Return(tag, WithResponse(200, WithBody(nil)), nil).
+		Return(&tag, WithResponse(200, WithBody(nil)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -52,13 +51,13 @@ func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(*tagEdit.ToSdk())).
-		Return(tag, WithResponse(200, WithBody(nil)), nil).
+		Return(&tag, WithResponse(200, WithBody(nil)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -74,7 +73,7 @@ func TestSubmitTagEditFileNotFoundFailure(test_framework *testing.T) {
 
 	// prepare mocks
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
@@ -97,7 +96,7 @@ func TestSubmitTagEditUnmarshallingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -119,7 +118,7 @@ func TestSubmitTagEditYAMLUnmarshallingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -139,7 +138,7 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command 'patch tag' has been performed, but something went wrong. Error code: 0503",
 		}).
@@ -163,13 +162,13 @@ func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(*tagEdit.ToSdk())).
-		Return(tagapisdk.Tag{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -191,13 +190,13 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(*tagEdit.ToSdk())).
-		Return(tagapisdk.Tag{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -219,13 +218,13 @@ func TestSubmitTagEditKeycloakFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(*tagEdit.ToSdk())).
-		Return(tagapisdk.Tag{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 

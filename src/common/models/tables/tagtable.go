@@ -19,7 +19,7 @@ func TagFromSdk(tag tagapisdk.Tag) TagTable {
 	var resourceAssignments []string
 
 	if tag.ResourceAssignments != nil {
-		for _, x := range *tag.ResourceAssignments {
+		for _, x := range tag.ResourceAssignments {
 			resourceAssignments = append(resourceAssignments, tagmodels.ResourceAssignmentToTableStrings(x))
 		}
 	}
@@ -27,7 +27,7 @@ func TagFromSdk(tag tagapisdk.Tag) TagTable {
 	return TagTable{
 		Id:                  tag.Id,
 		Name:                tag.Name,
-		Values:              DerefStringList(tag.Values),
+		Values:              tag.Values,
 		Description:         DerefString(tag.Description),
 		IsBillingTag:        tag.IsBillingTag,
 		ResourceAssignments: resourceAssignments,

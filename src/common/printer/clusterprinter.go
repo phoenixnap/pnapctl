@@ -6,8 +6,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintClusterResponse(cluster ranchersdk.Cluster, commandName string) error {
-	clusterToPrint := PrepareClusterForPrinting(cluster)
+func PrintClusterResponse(cluster *ranchersdk.Cluster, commandName string) error {
+	clusterToPrint := PrepareClusterForPrinting(*cluster)
 	return MainPrinter.PrintOutput(clusterToPrint, commandName)
 }
 

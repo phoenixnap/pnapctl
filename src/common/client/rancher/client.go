@@ -13,10 +13,10 @@ import (
 var Client RancherSdkClient
 
 type RancherSdkClient interface {
-	ClusterPost(clusterCreate ranchersdk.Cluster) (ranchersdk.Cluster, *http.Response, error)
+	ClusterPost(clusterCreate ranchersdk.Cluster) (*ranchersdk.Cluster, *http.Response, error)
 	ClustersGet() ([]ranchersdk.Cluster, *http.Response, error)
-	ClusterGetById(clusterId string) (ranchersdk.Cluster, *http.Response, error)
-	ClusterDelete(clusterId string) (ranchersdk.DeleteResult, *http.Response, error)
+	ClusterGetById(clusterId string) (*ranchersdk.Cluster, *http.Response, error)
+	ClusterDelete(clusterId string) (*ranchersdk.DeleteResult, *http.Response, error)
 }
 
 type MainClient struct {
@@ -56,7 +56,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	}
 }
 
-func (m MainClient) ClusterPost(cluster ranchersdk.Cluster) (ranchersdk.Cluster, *http.Response, error) {
+func (m MainClient) ClusterPost(cluster ranchersdk.Cluster) (*ranchersdk.Cluster, *http.Response, error) {
 	return m.RancherSdkClient.ClustersPost(context.Background()).Cluster(cluster).Execute()
 }
 
@@ -64,10 +64,10 @@ func (m MainClient) ClustersGet() ([]ranchersdk.Cluster, *http.Response, error) 
 	return m.RancherSdkClient.ClustersGet(context.Background()).Execute()
 }
 
-func (m MainClient) ClusterGetById(clusterId string) (ranchersdk.Cluster, *http.Response, error) {
+func (m MainClient) ClusterGetById(clusterId string) (*ranchersdk.Cluster, *http.Response, error) {
 	return m.RancherSdkClient.ClustersIdGet(context.Background(), clusterId).Execute()
 }
 
-func (m MainClient) ClusterDelete(clusterId string) (ranchersdk.DeleteResult, *http.Response, error) {
+func (m MainClient) ClusterDelete(clusterId string) (*ranchersdk.DeleteResult, *http.Response, error) {
 	return m.RancherSdkClient.ClustersIdDelete(context.Background(), clusterId).Execute()
 }

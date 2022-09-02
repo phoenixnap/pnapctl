@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
@@ -31,7 +30,7 @@ func TestPowerOffServerSuccess(test_framework *testing.T) {
 func TestPowerOffServerNotFound(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
+		Return(nil, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := PowerOffServerCmd.RunE(PowerOffServerCmd, []string{RESOURCEID})
@@ -43,7 +42,7 @@ func TestPowerOffServerNotFound(test_framework *testing.T) {
 func TestPowerOffServerError(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
 	err := PowerOffServerCmd.RunE(PowerOffServerCmd, []string{RESOURCEID})
@@ -58,7 +57,7 @@ func TestPowerOffServerError(test_framework *testing.T) {
 func TestPowerOffServerClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	// Run command
 	err := PowerOffServerCmd.RunE(PowerOffServerCmd, []string{RESOURCEID})
@@ -73,7 +72,7 @@ func TestPowerOffServerClientFailure(test_framework *testing.T) {
 func TestPowerOffServerKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(RESOURCEID).
-		Return(bmcapisdk.ActionResult{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := PowerOffServerCmd.RunE(PowerOffServerCmd, []string{RESOURCEID})

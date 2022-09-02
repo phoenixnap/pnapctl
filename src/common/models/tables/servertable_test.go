@@ -24,9 +24,9 @@ func TestToLongServerTable(test_framework *testing.T) {
 
 func TestToServerPrivateNetworkTable(test_framework *testing.T) {
 	network := servermodels.GenerateServerPrivateNetworkSdk()
-	table := ToServerPrivateNetworkTable(network)
+	table := ToServerPrivateNetworkTable(*network)
 
-	assertServerPrivateNetworksEqual(test_framework, network, table)
+	assertServerPrivateNetworksEqual(test_framework, *network, table)
 }
 
 func TestToServerIpBlockTable(test_framework *testing.T) {
@@ -79,7 +79,7 @@ func assertServerPrivateNetworksEqual(test_framework *testing.T, privateNetwork 
 	}
 
 	assert.Equal(test_framework, privateNetwork.Id, table.Id)
-	assert.Equal(test_framework, DerefStringList(privateNetwork.Ips), table.Ips)
+	assert.Equal(test_framework, privateNetwork.Ips, table.Ips)
 	assert.Equal(test_framework, Dhcp, table.Dhcp)
 	assert.Equal(test_framework, DerefString(privateNetwork.StatusDescription), table.StatusDescription)
 }

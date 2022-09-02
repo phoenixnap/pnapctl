@@ -1,6 +1,8 @@
 package testutil
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
@@ -17,12 +19,12 @@ func RandSeqPointer(n int) *string {
 	return &random
 }
 
-func RandListStringPointer(n int) *[]string {
-	b := []string{}
+func RandListStringPointer(n int) []string {
+	b := make([]string, n)
 	for i := range b {
 		b[i] = RandSeq(10)
 	}
-	return &b
+	return b
 }
 
 func RanNumberPointer() *int32 {

@@ -16,8 +16,8 @@ type RancherClusterConfig struct {
 	Certificates             *RancherClusterCertificates
 }
 
-func (r RancherClusterConfig) ToSdk() *ranchersdk.RancherClusterConfig {
-	return &ranchersdk.RancherClusterConfig{
+func (r RancherClusterConfig) ToSdk() *ranchersdk.ClusterConfiguration {
+	return &ranchersdk.ClusterConfiguration{
 		Token:                    r.Token,
 		TlsSan:                   r.TlsSan,
 		EtcdSnapshotScheduleCron: r.EtcdSnapshotScheduleCron,
@@ -28,7 +28,7 @@ func (r RancherClusterConfig) ToSdk() *ranchersdk.RancherClusterConfig {
 	}
 }
 
-func RancherClusterConfigFromSdk(config *ranchersdk.RancherClusterConfig) *RancherClusterConfig {
+func RancherClusterConfigFromSdk(config *ranchersdk.ClusterConfiguration) *RancherClusterConfig {
 	if config == nil {
 		return nil
 	}
@@ -44,7 +44,7 @@ func RancherClusterConfigFromSdk(config *ranchersdk.RancherClusterConfig) *Ranch
 	}
 }
 
-func RancherClusterConfigToTableString(config *ranchersdk.RancherClusterConfig) string {
+func RancherClusterConfigToTableString(config *ranchersdk.ClusterConfiguration) string {
 	if config == nil {
 		return ""
 	}

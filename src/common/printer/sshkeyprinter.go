@@ -6,8 +6,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintSshKeyResponse(sshKey bmcapisdk.SshKey, full bool, commandName string) error {
-	sshKeyToPrint := PrepareSshKeyForPrinting(sshKey, full)
+func PrintSshKeyResponse(sshKey *bmcapisdk.SshKey, full bool, commandName string) error {
+	sshKeyToPrint := PrepareSshKeyForPrinting(*sshKey, full)
 	return MainPrinter.PrintOutput(sshKeyToPrint, commandName)
 }
 

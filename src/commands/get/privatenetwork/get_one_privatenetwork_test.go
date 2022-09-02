@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
@@ -20,7 +19,7 @@ func TestGetPrivateNetworkSuccess(test_framework *testing.T) {
 
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkGetById(RESOURCEID).
-		Return(privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil)
+		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(privateNetworkTable, "get private-network").
@@ -35,7 +34,7 @@ func TestGetPrivateNetworkSuccess(test_framework *testing.T) {
 func TestGetPrivateNetworkNotFound(test_framework *testing.T) {
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkGetById(RESOURCEID).
-		Return(networksdk.PrivateNetwork{}, WithResponse(400, nil), nil)
+		Return(nil, WithResponse(400, nil), nil)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
 
@@ -47,7 +46,7 @@ func TestGetPrivateNetworkNotFound(test_framework *testing.T) {
 func TestGetPrivateNetworkClientFailure(test_framework *testing.T) {
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkGetById(RESOURCEID).
-		Return(networksdk.PrivateNetwork{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
 
@@ -61,7 +60,7 @@ func TestGetPrivateNetworkClientFailure(test_framework *testing.T) {
 func TestGetPrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkGetById(RESOURCEID).
-		Return(networksdk.PrivateNetwork{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
 
@@ -75,7 +74,7 @@ func TestGetPrivateNetworkPrinterFailure(test_framework *testing.T) {
 
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkGetById(RESOURCEID).
-		Return(privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil)
+		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(privateNetworkTable, "get private-network").

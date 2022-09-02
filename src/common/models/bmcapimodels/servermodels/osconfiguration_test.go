@@ -32,9 +32,9 @@ func TestNilOsConfigurationToSdk(test_framework *testing.T) {
 
 func TestOsConfigurationFromSdk(test_framework *testing.T) {
 	sdkModel := GenerateOsConfigurationSdk()
-	cliModel := osConfigurationFromSdk(&sdkModel)
+	cliModel := osConfigurationFromSdk(sdkModel)
 
-	assertEqualOsConfiguration(test_framework, *cliModel, sdkModel)
+	assertEqualOsConfiguration(test_framework, *cliModel, *sdkModel)
 }
 
 func TestEmptyOsConfigurationFromSdk(test_framework *testing.T) {
@@ -90,10 +90,10 @@ func assertEqualOsConfiguration(test_framework *testing.T, cliOsConfiguration Os
 	assert.Equal(test_framework, cliOsConfiguration.ManagementUiUrl, sdkOsConfiguration.ManagementUiUrl)
 
 	if testutil.AssertNilEquality(test_framework, "Management Access Allowed IPs", cliOsConfiguration.ManagementAccessAllowedIps, sdkOsConfiguration.ManagementAccessAllowedIps) {
-		assert.Equal(test_framework, len(*cliOsConfiguration.ManagementAccessAllowedIps), len(*sdkOsConfiguration.ManagementAccessAllowedIps))
+		assert.Equal(test_framework, len(cliOsConfiguration.ManagementAccessAllowedIps), len(sdkOsConfiguration.ManagementAccessAllowedIps))
 
-		for i := range *cliOsConfiguration.ManagementAccessAllowedIps {
-			assert.Equal(test_framework, (*cliOsConfiguration.ManagementAccessAllowedIps)[i], (*sdkOsConfiguration.ManagementAccessAllowedIps)[i])
+		for i := range cliOsConfiguration.ManagementAccessAllowedIps {
+			assert.Equal(test_framework, (cliOsConfiguration.ManagementAccessAllowedIps)[i], (sdkOsConfiguration.ManagementAccessAllowedIps)[i])
 		}
 	}
 }

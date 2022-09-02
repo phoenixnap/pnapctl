@@ -5,7 +5,7 @@ import (
 )
 
 type OsConfigurationWindows struct {
-	RdpAllowedIps *[]string `yaml:"rdpAllowedIps,omitempty" json:"rdpAllowedIps,omitempty"`
+	RdpAllowedIps []string `yaml:"rdpAllowedIps,omitempty" json:"rdpAllowedIps,omitempty"`
 }
 
 func (osConfigurationWindows *OsConfigurationWindows) toSdk() *bmcapisdk.OsConfigurationWindows {

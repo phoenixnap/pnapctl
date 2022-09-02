@@ -3,9 +3,9 @@ package ip_blocks
 import (
 	"encoding/json"
 	"errors"
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
 	"testing"
+
+	"phoenixnap.com/pnapctl/common/models/ipmodels"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -29,13 +29,13 @@ func TestCreateIpBlockSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(*ipBlockCreateCli.ToSdk())).
-		Return(ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
+		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -60,13 +60,13 @@ func TestCreateIpBlockSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(*ipBlockCreateCli.ToSdk())).
-		Return(ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
+		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -83,7 +83,7 @@ func TestCreateIpBlockFileNotFoundFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
@@ -108,7 +108,7 @@ func TestCreateIpBlockUnmarshallingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -130,7 +130,7 @@ func TestCreateIpBlockFileReadingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command 'create ip-block' has been performed, but something went wrong. Error code: 0503",
 		}).
@@ -158,13 +158,13 @@ func TestCreateIpBlockBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(*ipBlockCreate.ToSdk())).
-		Return(ipapisdk.IpBlock{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -190,13 +190,13 @@ func TestCreateIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(*ipBlockCreate.ToSdk())).
-		Return(ipapisdk.IpBlock{}, nil, testutil.TestError).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -222,13 +222,13 @@ func TestCreateIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(*ipBlockCreate.ToSdk())).
-		Return(ipapisdk.IpBlock{}, nil, testutil.TestKeycloakError).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 

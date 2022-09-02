@@ -47,7 +47,7 @@ pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
 func getTags(tagID string) error {
 	var httpResponse *netHttp.Response
 	var err error
-	var tag tagapisdk.Tag
+	var tag *tagapisdk.Tag
 	var tags []tagapisdk.Tag
 
 	if tagID == "" {

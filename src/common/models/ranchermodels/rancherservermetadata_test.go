@@ -28,7 +28,7 @@ func TestRancherServerMetadataToTableString_nilMetadata(test_framework *testing.
 }
 
 func TestRancherServerMetadataToTableString_urlOnly(test_framework *testing.T) {
-	sdkModel := ranchersdk.RancherServerMetadata{
+	sdkModel := ranchersdk.ClusterMetadata{
 		Url:      testutil.RandSeqPointer(10),
 		Password: nil,
 		Username: nil,
@@ -38,7 +38,7 @@ func TestRancherServerMetadataToTableString_urlOnly(test_framework *testing.T) {
 }
 
 func TestRancherServerMetadataToTableString_passwordOnly(test_framework *testing.T) {
-	sdkModel := ranchersdk.RancherServerMetadata{
+	sdkModel := ranchersdk.ClusterMetadata{
 		Url:      nil,
 		Password: testutil.RandSeqPointer(10),
 		Username: nil,
@@ -48,7 +48,7 @@ func TestRancherServerMetadataToTableString_passwordOnly(test_framework *testing
 }
 
 func TestRancherServerMetadataToTableString_usernameOnly(test_framework *testing.T) {
-	sdkModel := ranchersdk.RancherServerMetadata{
+	sdkModel := ranchersdk.ClusterMetadata{
 		Url:      nil,
 		Password: nil,
 		Username: testutil.RandSeqPointer(10),
@@ -58,7 +58,7 @@ func TestRancherServerMetadataToTableString_usernameOnly(test_framework *testing
 }
 
 func TestRancherServerMetadataToTableString_fullMetadata(test_framework *testing.T) {
-	sdkModel := ranchersdk.RancherServerMetadata{
+	sdkModel := ranchersdk.ClusterMetadata{
 		Url:      testutil.RandSeqPointer(10),
 		Password: testutil.RandSeqPointer(10),
 		Username: testutil.RandSeqPointer(10),
@@ -70,7 +70,7 @@ func TestRancherServerMetadataToTableString_fullMetadata(test_framework *testing
 	assert.Equal(test_framework, expectedResult, result)
 }
 
-func assertEqualRancherServerMetadata(test_framework *testing.T, cliRancherServerMetadata RancherServerMetadata, sdkRancherServerMetadata ranchersdk.RancherServerMetadata) {
+func assertEqualRancherServerMetadata(test_framework *testing.T, cliRancherServerMetadata RancherServerMetadata, sdkRancherServerMetadata ranchersdk.ClusterMetadata) {
 	assert.Equal(test_framework, cliRancherServerMetadata.Url, sdkRancherServerMetadata.Url)
 	assert.Equal(test_framework, cliRancherServerMetadata.Username, sdkRancherServerMetadata.Username)
 	assert.Equal(test_framework, cliRancherServerMetadata.Password, sdkRancherServerMetadata.Password)

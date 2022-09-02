@@ -19,14 +19,14 @@ func assertTagsEqual(test_framework *testing.T, tag tagapisdk.Tag, table TagTabl
 	var resourceAssignments []string
 
 	if tag.ResourceAssignments != nil {
-		for _, x := range *tag.ResourceAssignments {
+		for _, x := range tag.ResourceAssignments {
 			resourceAssignments = append(resourceAssignments, tagmodels.ResourceAssignmentToTableStrings(x))
 		}
 	}
 
 	assert.Equal(test_framework, tag.Id, table.Id)
 	assert.Equal(test_framework, tag.Name, table.Name)
-	assert.Equal(test_framework, DerefStringList(tag.Values), table.Values)
+	assert.Equal(test_framework, tag.Values, table.Values)
 	assert.Equal(test_framework, DerefString(tag.Description), table.Description)
 	assert.Equal(test_framework, tag.IsBillingTag, table.IsBillingTag)
 	assert.Equal(test_framework, resourceAssignments, table.ResourceAssignments)

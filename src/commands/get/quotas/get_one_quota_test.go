@@ -10,8 +10,6 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 )
 
 func TestGetQuotaSuccess(test_framework *testing.T) {
@@ -20,7 +18,7 @@ func TestGetQuotaSuccess(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		QuotaGetById(RESOURCEID).
-		Return(quota, WithResponse(200, WithBody(quota)), nil)
+		Return(&quota, WithResponse(200, WithBody(quota)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tableQuota, "get quotas").
@@ -35,7 +33,7 @@ func TestGetQuotaSuccess(test_framework *testing.T) {
 func TestGetQuotaNotFound(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		QuotaGetById(RESOURCEID).
-		Return(bmcapisdk.Quota{}, WithResponse(400, nil), nil)
+		Return(nil, WithResponse(400, nil), nil)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
 
@@ -47,7 +45,7 @@ func TestGetQuotaNotFound(test_framework *testing.T) {
 func TestGetQuotaClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		QuotaGetById(RESOURCEID).
-		Return(bmcapisdk.Quota{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
 
@@ -61,7 +59,7 @@ func TestGetQuotaClientFailure(test_framework *testing.T) {
 func TestGetQuotaKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		QuotaGetById(RESOURCEID).
-		Return(bmcapisdk.Quota{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
 
@@ -75,7 +73,7 @@ func TestGetQuotaPrinterFailure(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		QuotaGetById(RESOURCEID).
-		Return(quota, WithResponse(200, WithBody(tableQuota)), nil)
+		Return(&quota, WithResponse(200, WithBody(tableQuota)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tableQuota, "get quotas").

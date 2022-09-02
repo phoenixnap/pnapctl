@@ -45,7 +45,7 @@ pnapctl get private-networks <PRIVATE_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
 func getPrivateNetworks(privateNetworkID string) error {
 	var httpResponse *netHttp.Response
 	var err error
-	var privateNetwork networkapisdk.PrivateNetwork
+	var privateNetwork *networkapisdk.PrivateNetwork
 	var privateNetworks []networkapisdk.PrivateNetwork
 
 	if privateNetworkID == "" {

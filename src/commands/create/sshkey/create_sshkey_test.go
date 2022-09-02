@@ -12,8 +12,6 @@ import (
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 )
 
 func TestCreateSshKeySuccessYAML(test_framework *testing.T) {
@@ -30,14 +28,14 @@ func TestCreateSshKeySuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(sshKey, WithResponse(201, WithBody(sshKey)), nil).
+		SshKeyPost(gomock.Eq(*sshKeyCreate)).
+		Return(&sshKey, WithResponse(201, WithBody(sshKey)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -62,14 +60,14 @@ func TestCreateSshKeySuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(sshKey, WithResponse(201, WithBody(sshKey)), nil).
+		SshKeyPost(gomock.Eq(*sshKeyCreate)).
+		Return(&sshKey, WithResponse(201, WithBody(sshKey)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -86,7 +84,7 @@ func TestCreateSshKeyFileNotFoundFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
@@ -111,7 +109,7 @@ func TestCreateSshKeyUnmarshallingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -133,7 +131,7 @@ func TestCreateSshKeyFileReadingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command 'create ssh-key' has been performed, but something went wrong. Error code: 0503",
 		}).
@@ -160,14 +158,14 @@ func TestCreateSshKeyBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(bmcapisdk.SshKey{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		SshKeyPost(gomock.Eq(*sshKeyCreate)).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -192,14 +190,14 @@ func TestCreateSshKeyClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(bmcapisdk.SshKey{}, nil, testutil.TestError).
+		SshKeyPost(gomock.Eq(*sshKeyCreate)).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -224,14 +222,14 @@ func TestCreateSshKeyKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(bmcapisdk.SshKey{}, nil, testutil.TestKeycloakError).
+		SshKeyPost(gomock.Eq(*sshKeyCreate)).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 

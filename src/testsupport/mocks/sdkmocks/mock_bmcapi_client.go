@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapi "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 )
 
 // MockBmcApiSdkClient is a mock of BmcApiSdkClient interface.
@@ -35,11 +35,58 @@ func (m *MockBmcApiSdkClient) EXPECT() *MockBmcApiSdkClientMockRecorder {
 	return m.recorder
 }
 
+// QuotaEditById mocks base method.
+func (m *MockBmcApiSdkClient) QuotaEditById(quotaId string, quotaEditRequest bmcapi.QuotaEditLimitRequest) (*http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QuotaEditById", quotaId, quotaEditRequest)
+	ret0, _ := ret[0].(*http.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QuotaEditById indicates an expected call of QuotaEditById.
+func (mr *MockBmcApiSdkClientMockRecorder) QuotaEditById(quotaId, quotaEditRequest interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuotaEditById", reflect.TypeOf((*MockBmcApiSdkClient)(nil).QuotaEditById), quotaId, quotaEditRequest)
+}
+
+// QuotaGetById mocks base method.
+func (m *MockBmcApiSdkClient) QuotaGetById(quotaId string) (*bmcapi.Quota, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QuotaGetById", quotaId)
+	ret0, _ := ret[0].(*bmcapi.Quota)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// QuotaGetById indicates an expected call of QuotaGetById.
+func (mr *MockBmcApiSdkClientMockRecorder) QuotaGetById(quotaId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuotaGetById", reflect.TypeOf((*MockBmcApiSdkClient)(nil).QuotaGetById), quotaId)
+}
+
+// QuotasGet mocks base method.
+func (m *MockBmcApiSdkClient) QuotasGet() ([]bmcapi.Quota, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QuotasGet")
+	ret0, _ := ret[0].([]bmcapi.Quota)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// QuotasGet indicates an expected call of QuotasGet.
+func (mr *MockBmcApiSdkClientMockRecorder) QuotasGet() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuotasGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).QuotasGet))
+}
+
 // ServerDelete mocks base method.
-func (m *MockBmcApiSdkClient) ServerDelete(serverId string) (bmcapisdk.DeleteResult, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerDelete(serverId string) (*bmcapi.DeleteResult, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServerDelete", serverId)
-	ret0, _ := ret[0].(bmcapisdk.DeleteResult)
+	ret0, _ := ret[0].(*bmcapi.DeleteResult)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -51,11 +98,27 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerDelete(serverId interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerDelete), serverId)
 }
 
+// ServerDeprovision mocks base method.
+func (m *MockBmcApiSdkClient) ServerDeprovision(serverId string, relinquishIpBlock bmcapi.RelinquishIpBlock) (string, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerDeprovision", serverId, relinquishIpBlock)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerDeprovision indicates an expected call of ServerDeprovision.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerDeprovision(serverId, relinquishIpBlock interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerDeprovision", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerDeprovision), serverId, relinquishIpBlock)
+}
+
 // ServerGetById mocks base method.
-func (m *MockBmcApiSdkClient) ServerGetById(serverId string) (bmcapisdk.Server, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerGetById(serverId string) (*bmcapi.Server, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServerGetById", serverId)
-	ret0, _ := ret[0].(bmcapisdk.Server)
+	ret0, _ := ret[0].(*bmcapi.Server)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -67,232 +130,8 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerGetById(serverId interface{}) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerGetById", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerGetById), serverId)
 }
 
-// ServerPowerOff mocks base method.
-func (m *MockBmcApiSdkClient) ServerPowerOff(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerPowerOff", serverId)
-	ret0, _ := ret[0].(bmcapisdk.ActionResult)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerPowerOff indicates an expected call of ServerPowerOff.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerPowerOff(serverId interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPowerOff", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPowerOff), serverId)
-}
-
-// ServerPowerOn mocks base method.
-func (m *MockBmcApiSdkClient) ServerPowerOn(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerPowerOn", serverId)
-	ret0, _ := ret[0].(bmcapisdk.ActionResult)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerPowerOn indicates an expected call of ServerPowerOn.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerPowerOn(serverId interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPowerOn", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPowerOn), serverId)
-}
-
-// ServerReboot mocks base method.
-func (m *MockBmcApiSdkClient) ServerReboot(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerReboot", serverId)
-	ret0, _ := ret[0].(bmcapisdk.ActionResult)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerReboot indicates an expected call of ServerReboot.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerReboot(serverId interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerReboot", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerReboot), serverId)
-}
-
-// ServerReset mocks base method.
-func (m *MockBmcApiSdkClient) ServerReset(serverId string, serverReset bmcapisdk.ServerReset) (bmcapisdk.ResetResult, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerReset", serverId, serverReset)
-	ret0, _ := ret[0].(bmcapisdk.ResetResult)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerReset indicates an expected call of ServerReset.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerReset(serverId, serverReset interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerReset", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerReset), serverId, serverReset)
-}
-
-// ServerShutdown mocks base method.
-func (m *MockBmcApiSdkClient) ServerShutdown(serverId string) (bmcapisdk.ActionResult, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerShutdown", serverId)
-	ret0, _ := ret[0].(bmcapisdk.ActionResult)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerShutdown indicates an expected call of ServerShutdown.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerShutdown(serverId interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerShutdown", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerShutdown), serverId)
-}
-
-// ServerReserve mocks base method.
-func (m *MockBmcApiSdkClient) ServerReserve(serverId string, serverReserve bmcapisdk.ServerReserve) (bmcapisdk.Server, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerReserve", serverReserve)
-	ret0, _ := ret[0].(bmcapisdk.Server)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerReserve indicates an expected call of ServerReserve.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerReserve(serverId, serverReserve interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerReserve", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerReserve), serverReserve)
-}
-
-// ServersGet mocks base method.
-func (m *MockBmcApiSdkClient) ServersGet(tags []string) ([]bmcapisdk.Server, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServersGet")
-	ret0, _ := ret[0].([]bmcapisdk.Server)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServersGet indicates an expected call of ServersGet.
-func (mr *MockBmcApiSdkClientMockRecorder) ServersGet(tags interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersGet))
-}
-
-// ServersPost mocks base method.
-func (m *MockBmcApiSdkClient) ServersPost(serverCreate bmcapisdk.ServerCreate) (bmcapisdk.Server, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServersPost", serverCreate)
-	ret0, _ := ret[0].(bmcapisdk.Server)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServersPost indicates an expected call of ServersPost.
-func (mr *MockBmcApiSdkClientMockRecorder) ServersPost(serverCreate interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersPost), serverCreate)
-}
-
-// ServerPatch mocks base method.
-func (m *MockBmcApiSdkClient) ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (bmcapisdk.Server, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerPatch", serverPatch)
-	ret0, _ := ret[0].(bmcapisdk.Server)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerPatch indicates an expected call of ServerPatch.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerPatch(serverId, serverPatch interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPatch", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPatch), serverPatch)
-}
-
-// ServerTag mocks base method.
-func (m *MockBmcApiSdkClient) ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (bmcapisdk.Server, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerTag", tagAssignmentRequests)
-	ret0, _ := ret[0].(bmcapisdk.Server)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerTag indicates an expected call of ServerTag.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerTag(serverId, tagAssignmentRequests interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerTag", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerTag), tagAssignmentRequests)
-}
-
-// ServerDeprovision mocks base method.
-func (m *MockBmcApiSdkClient) ServerDeprovision(serverId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerDeprovision", relinquishIpBlock)
-	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerDeprovision indicates an expected call of ServerDeprovision.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerDeprovision(serverId, relinquishIpBlock interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerDeprovision", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerDeprovision), relinquishIpBlock)
-}
-
-// ServerPrivateNetworkPost mocks base method.
-func (m *MockBmcApiSdkClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (bmcapisdk.ServerPrivateNetwork, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerPrivateNetworkPost", serverPrivateNetwork)
-	ret0, _ := ret[0].(bmcapisdk.ServerPrivateNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerPrivateNetworkPost indicates an expected call of ServerPrivateNetworkPost.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkPost(serverId, serverPrivateNetwork interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkPost), serverPrivateNetwork)
-}
-
-// ServerPrivateNetworkDelete mocks base method.
-func (m *MockBmcApiSdkClient) ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerPrivateNetworkDelete", serverId, networkId)
-	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerPrivateNetworkDelete indicates an expected call of ServerPrivateNetworkDelete.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkDelete(serverId, networkId interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkDelete), serverId, networkId)
-}
-
-// ServerIpBlockPost mocks base method.
-func (m *MockBmcApiSdkClient) ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (bmcapisdk.ServerIpBlock, *http.Response, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerIpBlockPost", serverId, serverIpBlock)
-	ret0, _ := ret[0].(bmcapisdk.ServerIpBlock)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ServerIpBlockPost indicates an expected call of ServerIpBlockPost.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerIpBlockPost(serverId, serverIpBlock interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerIpBlockPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerIpBlockPost), serverId, serverIpBlock)
-}
-
 // ServerIpBlockDelete mocks base method.
-func (m *MockBmcApiSdkClient) ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, *http.Response, error) {
+func (m *MockBmcApiSdkClient) ServerIpBlockDelete(serverId, ipBlockId string, relinquishIpBlock bmcapi.RelinquishIpBlock) (string, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ServerIpBlockDelete", serverId, ipBlockId, relinquishIpBlock)
 	ret0, _ := ret[0].(string)
@@ -307,76 +146,219 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerIpBlockDelete(serverId, ipBlock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerIpBlockDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerIpBlockDelete), serverId, ipBlockId, relinquishIpBlock)
 }
 
-/*---- SSH KEYS -----*/
-// SshKeyPost mocks base method.
-func (m *MockBmcApiSdkClient) SshKeyPost(sshKeyCreate bmcapisdk.SshKeyCreate) (bmcapisdk.SshKey, *http.Response, error) {
+// ServerIpBlockPost mocks base method.
+func (m *MockBmcApiSdkClient) ServerIpBlockPost(serverId string, serverIpBlock bmcapi.ServerIpBlock) (*bmcapi.ServerIpBlock, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SshKeyPost", sshKeyCreate)
-	ret0, _ := ret[0].(bmcapisdk.SshKey)
+	ret := m.ctrl.Call(m, "ServerIpBlockPost", serverId, serverIpBlock)
+	ret0, _ := ret[0].(*bmcapi.ServerIpBlock)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }
 
-// SshKeyPost indicates an expected call of SshKeyPost.
-func (mr *MockBmcApiSdkClientMockRecorder) SshKeyPost(sshKeyCreate interface{}) *gomock.Call {
+// ServerIpBlockPost indicates an expected call of ServerIpBlockPost.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerIpBlockPost(serverId, serverIpBlock interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeyPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeyPost), sshKeyCreate)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerIpBlockPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerIpBlockPost), serverId, serverIpBlock)
 }
 
-// SshKeyGetById mocks base method.
-func (m *MockBmcApiSdkClient) SshKeyGetById(sshKeyId string) (bmcapisdk.SshKey, *http.Response, error) {
+// ServerPatch mocks base method.
+func (m *MockBmcApiSdkClient) ServerPatch(serverId string, serverPatch bmcapi.ServerPatch) (*bmcapi.Server, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SshKeyGetById", sshKeyId)
-	ret0, _ := ret[0].(bmcapisdk.SshKey)
+	ret := m.ctrl.Call(m, "ServerPatch", serverId, serverPatch)
+	ret0, _ := ret[0].(*bmcapi.Server)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }
 
-// SshKeyGetById indicates an expected call of ServerGetById.
-func (mr *MockBmcApiSdkClientMockRecorder) SshKeyGetById(sshKeyId interface{}) *gomock.Call {
+// ServerPatch indicates an expected call of ServerPatch.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPatch(serverId, serverPatch interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeyGetById", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeyGetById), sshKeyId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPatch", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPatch), serverId, serverPatch)
 }
 
-// SshKeysGet mocks base method.
-func (m *MockBmcApiSdkClient) SshKeysGet() ([]bmcapisdk.SshKey, *http.Response, error) {
+// ServerPowerOff mocks base method.
+func (m *MockBmcApiSdkClient) ServerPowerOff(serverId string) (*bmcapi.ActionResult, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SshKeysGet")
-	ret0, _ := ret[0].([]bmcapisdk.SshKey)
+	ret := m.ctrl.Call(m, "ServerPowerOff", serverId)
+	ret0, _ := ret[0].(*bmcapi.ActionResult)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }
 
-// SshKeysGet indicates an expected call of SshKeysGet.
-func (mr *MockBmcApiSdkClientMockRecorder) SshKeysGet() *gomock.Call {
+// ServerPowerOff indicates an expected call of ServerPowerOff.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPowerOff(serverId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeysGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeysGet))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPowerOff", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPowerOff), serverId)
 }
 
-// SshKeyPut mocks base method.
-func (m *MockBmcApiSdkClient) SshKeyPut(sshKeyId string, sshKeyUpdate bmcapisdk.SshKeyUpdate) (bmcapisdk.SshKey, *http.Response, error) {
+// ServerPowerOn mocks base method.
+func (m *MockBmcApiSdkClient) ServerPowerOn(serverId string) (*bmcapi.ActionResult, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SshKeyPut", sshKeyUpdate)
-	ret0, _ := ret[0].(bmcapisdk.SshKey)
+	ret := m.ctrl.Call(m, "ServerPowerOn", serverId)
+	ret0, _ := ret[0].(*bmcapi.ActionResult)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }
 
-// SshKeyPut indicates an expected call of SshKeyPut.
-func (mr *MockBmcApiSdkClientMockRecorder) SshKeyPut(sshKeyId, sshKeyUpdate interface{}) *gomock.Call {
+// ServerPowerOn indicates an expected call of ServerPowerOn.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPowerOn(serverId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeyPut", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeyPut), sshKeyUpdate)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPowerOn", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPowerOn), serverId)
+}
+
+// ServerPrivateNetworkDelete mocks base method.
+func (m *MockBmcApiSdkClient) ServerPrivateNetworkDelete(serverId, networkId string) (string, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerPrivateNetworkDelete", serverId, networkId)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerPrivateNetworkDelete indicates an expected call of ServerPrivateNetworkDelete.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkDelete(serverId, networkId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkDelete), serverId, networkId)
+}
+
+// ServerPrivateNetworkPost mocks base method.
+func (m *MockBmcApiSdkClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapi.ServerPrivateNetwork) (*bmcapi.ServerPrivateNetwork, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerPrivateNetworkPost", serverId, serverPrivateNetwork)
+	ret0, _ := ret[0].(*bmcapi.ServerPrivateNetwork)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerPrivateNetworkPost indicates an expected call of ServerPrivateNetworkPost.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkPost(serverId, serverPrivateNetwork interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkPost), serverId, serverPrivateNetwork)
+}
+
+// ServerReboot mocks base method.
+func (m *MockBmcApiSdkClient) ServerReboot(serverId string) (*bmcapi.ActionResult, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerReboot", serverId)
+	ret0, _ := ret[0].(*bmcapi.ActionResult)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerReboot indicates an expected call of ServerReboot.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerReboot(serverId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerReboot", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerReboot), serverId)
+}
+
+// ServerReserve mocks base method.
+func (m *MockBmcApiSdkClient) ServerReserve(serverId string, serverReserve bmcapi.ServerReserve) (*bmcapi.Server, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerReserve", serverId, serverReserve)
+	ret0, _ := ret[0].(*bmcapi.Server)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerReserve indicates an expected call of ServerReserve.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerReserve(serverId, serverReserve interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerReserve", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerReserve), serverId, serverReserve)
+}
+
+// ServerReset mocks base method.
+func (m *MockBmcApiSdkClient) ServerReset(serverId string, serverReset bmcapi.ServerReset) (*bmcapi.ResetResult, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerReset", serverId, serverReset)
+	ret0, _ := ret[0].(*bmcapi.ResetResult)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerReset indicates an expected call of ServerReset.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerReset(serverId, serverReset interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerReset", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerReset), serverId, serverReset)
+}
+
+// ServerShutdown mocks base method.
+func (m *MockBmcApiSdkClient) ServerShutdown(serverId string) (*bmcapi.ActionResult, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerShutdown", serverId)
+	ret0, _ := ret[0].(*bmcapi.ActionResult)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerShutdown indicates an expected call of ServerShutdown.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerShutdown(serverId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerShutdown", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerShutdown), serverId)
+}
+
+// ServerTag mocks base method.
+func (m *MockBmcApiSdkClient) ServerTag(serverId string, tagAssignmentRequests []bmcapi.TagAssignmentRequest) (*bmcapi.Server, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerTag", serverId, tagAssignmentRequests)
+	ret0, _ := ret[0].(*bmcapi.Server)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerTag indicates an expected call of ServerTag.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerTag(serverId, tagAssignmentRequests interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerTag", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerTag), serverId, tagAssignmentRequests)
+}
+
+// ServersGet mocks base method.
+func (m *MockBmcApiSdkClient) ServersGet(arg0 []string) ([]bmcapi.Server, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServersGet", arg0)
+	ret0, _ := ret[0].([]bmcapi.Server)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServersGet indicates an expected call of ServersGet.
+func (mr *MockBmcApiSdkClientMockRecorder) ServersGet(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersGet), arg0)
+}
+
+// ServersPost mocks base method.
+func (m *MockBmcApiSdkClient) ServersPost(serverCreate bmcapi.ServerCreate) (*bmcapi.Server, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServersPost", serverCreate)
+	ret0, _ := ret[0].(*bmcapi.Server)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServersPost indicates an expected call of ServersPost.
+func (mr *MockBmcApiSdkClientMockRecorder) ServersPost(serverCreate interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersPost), serverCreate)
 }
 
 // SshKeyDelete mocks base method.
-func (m *MockBmcApiSdkClient) SshKeyDelete(sshKeyId string) (bmcapisdk.DeleteSshKeyResult, *http.Response, error) {
+func (m *MockBmcApiSdkClient) SshKeyDelete(sshKeyId string) (*bmcapi.DeleteSshKeyResult, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SshKeyDelete", sshKeyId)
-	ret0, _ := ret[0].(bmcapisdk.DeleteSshKeyResult)
+	ret0, _ := ret[0].(*bmcapi.DeleteSshKeyResult)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -388,50 +370,66 @@ func (mr *MockBmcApiSdkClientMockRecorder) SshKeyDelete(sshKeyId interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeyDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeyDelete), sshKeyId)
 }
 
-/*---- QUOTA -----*/
-// QuotaGetById mocks base method.
-func (m *MockBmcApiSdkClient) QuotaGetById(quotaId string) (bmcapisdk.Quota, *http.Response, error) {
+// SshKeyGetById mocks base method.
+func (m *MockBmcApiSdkClient) SshKeyGetById(sshKeyId string) (*bmcapi.SshKey, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QuotaGetById", quotaId)
-	ret0, _ := ret[0].(bmcapisdk.Quota)
+	ret := m.ctrl.Call(m, "SshKeyGetById", sshKeyId)
+	ret0, _ := ret[0].(*bmcapi.SshKey)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }
 
-// QuotaGetById indicates an expected call of ServerGetById.
-func (mr *MockBmcApiSdkClientMockRecorder) QuotaGetById(quotaId interface{}) *gomock.Call {
+// SshKeyGetById indicates an expected call of SshKeyGetById.
+func (mr *MockBmcApiSdkClientMockRecorder) SshKeyGetById(sshKeyId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuotaGetById", reflect.TypeOf((*MockBmcApiSdkClient)(nil).QuotaGetById), quotaId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeyGetById", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeyGetById), sshKeyId)
 }
 
-// QuotasGet mocks base method.
-func (m *MockBmcApiSdkClient) QuotasGet() ([]bmcapisdk.Quota, *http.Response, error) {
+// SshKeyPost mocks base method.
+func (m *MockBmcApiSdkClient) SshKeyPost(sshkeyCreate bmcapi.SshKeyCreate) (*bmcapi.SshKey, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QuotasGet")
-	ret0, _ := ret[0].([]bmcapisdk.Quota)
+	ret := m.ctrl.Call(m, "SshKeyPost", sshkeyCreate)
+	ret0, _ := ret[0].(*bmcapi.SshKey)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
 }
 
-// QuotasGet indicates an expected call of ServersGet.
-func (mr *MockBmcApiSdkClientMockRecorder) QuotasGet() *gomock.Call {
+// SshKeyPost indicates an expected call of SshKeyPost.
+func (mr *MockBmcApiSdkClientMockRecorder) SshKeyPost(sshkeyCreate interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuotasGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).QuotasGet))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeyPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeyPost), sshkeyCreate)
 }
 
-// QuotasEdit mocks base method.
-func (m *MockBmcApiSdkClient) QuotaEditById(quotaId string, quotaEditRequest bmcapisdk.QuotaEditLimitRequest) (*http.Response, error) {
+// SshKeyPut mocks base method.
+func (m *MockBmcApiSdkClient) SshKeyPut(sshKeyId string, sshKeyUpdate bmcapi.SshKeyUpdate) (*bmcapi.SshKey, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QuotaEditById")
-	ret0, _ := ret[0].(*http.Response)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret := m.ctrl.Call(m, "SshKeyPut", sshKeyId, sshKeyUpdate)
+	ret0, _ := ret[0].(*bmcapi.SshKey)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
-// QuotasEdit indicates an expected call of ServersGet.
-func (mr *MockBmcApiSdkClientMockRecorder) QuotaEditById(quotaId interface{}, quotaEditRequest interface{}) *gomock.Call {
+// SshKeyPut indicates an expected call of SshKeyPut.
+func (mr *MockBmcApiSdkClientMockRecorder) SshKeyPut(sshKeyId, sshKeyUpdate interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuotaEditById", reflect.TypeOf((*MockBmcApiSdkClient)(nil).QuotaEditById))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeyPut", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeyPut), sshKeyId, sshKeyUpdate)
+}
+
+// SshKeysGet mocks base method.
+func (m *MockBmcApiSdkClient) SshKeysGet() ([]bmcapi.SshKey, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SshKeysGet")
+	ret0, _ := ret[0].([]bmcapi.SshKey)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// SshKeysGet indicates an expected call of SshKeysGet.
+func (mr *MockBmcApiSdkClientMockRecorder) SshKeysGet() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SshKeysGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).SshKeysGet))
 }

@@ -13,7 +13,6 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
@@ -36,14 +35,14 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
-		Return(server, WithResponse(200, WithBody(server)), nil).
+		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		Return(&server, WithResponse(200, WithBody(server)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -68,14 +67,14 @@ func TestPatchServerSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
-		Return(server, WithResponse(200, WithBody(server)), nil).
+		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		Return(&server, WithResponse(200, WithBody(server)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -93,7 +92,7 @@ func TestPatchServerFileNotFoundFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
@@ -119,7 +118,7 @@ func TestPatchServerUnmarshallingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -141,7 +140,7 @@ func TestPatchServerFileReadingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command 'patch server' has been performed, but something went wrong. Error code: 0503",
 		}).
@@ -168,14 +167,14 @@ func TestPatchServerBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
-		Return(bmcapisdk.Server{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -200,14 +199,14 @@ func TestPatchServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
-		Return(bmcapisdk.Server{}, nil, testutil.TestError).
+		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -232,14 +231,14 @@ func TestPatchServerKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
-		Return(bmcapisdk.Server{}, nil, testutil.TestKeycloakError).
+		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 

@@ -2,14 +2,14 @@ package ip_blocks
 
 import (
 	"errors"
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/ipmodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-	"testing"
 )
 
 func TestGetIpBlocksSuccess(test_framework *testing.T) {
@@ -18,7 +18,7 @@ func TestGetIpBlocksSuccess(test_framework *testing.T) {
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(ipBlock, WithResponse(200, WithBody(ipBlock)), nil)
+		Return(&ipBlock, WithResponse(200, WithBody(ipBlock)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tableIpBlock, "get ip-blocks").
@@ -33,7 +33,7 @@ func TestGetIpBlocksSuccess(test_framework *testing.T) {
 func TestGetIpBlocksNotFound(test_framework *testing.T) {
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(ipapisdk.IpBlock{}, WithResponse(400, nil), nil)
+		Return(nil, WithResponse(400, nil), nil)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
 
@@ -45,7 +45,7 @@ func TestGetIpBlocksNotFound(test_framework *testing.T) {
 func TestGetIpBlocksClientFailure(test_framework *testing.T) {
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(ipapisdk.IpBlock{}, nil, testutil.TestError)
+		Return(nil, nil, testutil.TestError)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
 
@@ -59,7 +59,7 @@ func TestGetIpBlocksClientFailure(test_framework *testing.T) {
 func TestGetIpBlocksKeycloakFailure(test_framework *testing.T) {
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(ipapisdk.IpBlock{}, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
 
@@ -73,7 +73,7 @@ func TestGetIpBlocksPrinterFailure(test_framework *testing.T) {
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(ipBlock, WithResponse(200, WithBody(tableIpBlock)), nil)
+		Return(&ipBlock, WithResponse(200, WithBody(tableIpBlock)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tableIpBlock, "get ip-blocks").

@@ -44,7 +44,7 @@ pnapctl get quota <QUOTA_ID> [--output <OUTPUT_TYPE>]`,
 func getQuotas(quotaId string) error {
 	var httpResponse *netHttp.Response
 	var err error
-	var quota bmcapisdk.Quota
+	var quota *bmcapisdk.Quota
 	var quotas []bmcapisdk.Quota
 
 	if quotaId == "" {

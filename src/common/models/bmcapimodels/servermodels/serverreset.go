@@ -7,8 +7,8 @@ import (
 
 type ServerReset struct {
 	InstallDefaultSshKeys *bool               `json:"installDefaultSshKeys,omitempty" yaml:"installDefaultSshKeys,omitempty"`
-	SshKeys               *[]string           `json:"sshKeys,omitempty" yaml:"sshKeys,omitempty"`
-	SshKeyIds             *[]string           `json:"sshKeyIds,omitempty" yaml:"sshKeyIds,omitempty"`
+	SshKeys               []string            `json:"sshKeys,omitempty" yaml:"sshKeys,omitempty"`
+	SshKeyIds             []string            `json:"sshKeyIds,omitempty" yaml:"sshKeyIds,omitempty"`
 	OsConfiguration       *OsConfigurationMap `json:"osConfiguration,omitempty" yaml:"osConfiguration,omitempty"`
 }
 

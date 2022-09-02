@@ -11,16 +11,16 @@ type NodePool struct {
 	NodeCount  *int32     `json:"nodeCount" yaml:"nodeCount"`
 	ServerType *string    `json:"serverType" yaml:"serverType"`
 	SshConfig  *SshConfig `json:"sshConfig" yaml:"sshConfig"`
-	Nodes      *[]Node    `json:"nodes" yaml:"nodes"`
+	Nodes      []Node     `json:"nodes" yaml:"nodes"`
 }
 
 func (n NodePool) ToSdk() *ranchersdk.NodePool {
-	var nodes *[]ranchersdk.Node
+	var nodes []ranchersdk.Node
 
 	if n.Nodes != nil {
-		nodes = &[]ranchersdk.Node{}
-		for _, node := range *n.Nodes {
-			*nodes = append(*nodes, *node.ToSdk())
+		nodes = []ranchersdk.Node{}
+		for _, node := range n.Nodes {
+			nodes = append(nodes, *node.ToSdk())
 		}
 	}
 
@@ -34,12 +34,12 @@ func (n NodePool) ToSdk() *ranchersdk.NodePool {
 }
 
 func NodePoolFromSdk(nodepool ranchersdk.NodePool) NodePool {
-	var nodes *[]Node
+	var nodes []Node
 
 	if nodepool.Nodes != nil {
-		nodes = &[]Node{}
-		for _, node := range *nodepool.Nodes {
-			*nodes = append(*nodes, NodeFromSdk(node))
+		nodes = []Node{}
+		for _, node := range nodepool.Nodes {
+			nodes = append(nodes, NodeFromSdk(node))
 		}
 	}
 
@@ -52,14 +52,14 @@ func NodePoolFromSdk(nodepool ranchersdk.NodePool) NodePool {
 	}
 }
 
-func NodePoolsToTableStrings(pools *[]ranchersdk.NodePool) []string {
+func NodePoolsToTableStrings(pools []ranchersdk.NodePool) []string {
 	if pools == nil {
 		return []string{}
 	}
 
 	var strings = []string{}
 
-	for _, pool := range *pools {
+	for _, pool := range pools {
 		strings = append(strings, fmt.Sprintf("%s - %d nodes", *pool.Name, *pool.NodeCount))
 	}
 

@@ -2,9 +2,10 @@ package ip
 
 import (
 	"context"
+	"net/http"
+
 	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
 	"golang.org/x/oauth2/clientcredentials"
-	"net/http"
 	"phoenixnap.com/pnapctl/commands/version"
 	configuration "phoenixnap.com/pnapctl/configs"
 )
@@ -13,10 +14,10 @@ var Client IpSdkClient
 
 type IpSdkClient interface {
 	// Ip Blocks
-	IpBlockPost(ipBlockCreate ipapisdk.IpBlockCreate) (ipapisdk.IpBlock, *http.Response, error)
+	IpBlockPost(ipBlockCreate ipapisdk.IpBlockCreate) (*ipapisdk.IpBlock, *http.Response, error)
 	IpBlocksGet() ([]ipapisdk.IpBlock, *http.Response, error)
-	IpBlocksGetById(ipBlockId string) (ipapisdk.IpBlock, *http.Response, error)
-	IpBlocksIpBlockIdDelete(ipBlockId string) (ipapisdk.DeleteIpBlockResult, *http.Response, error)
+	IpBlocksGetById(ipBlockId string) (*ipapisdk.IpBlock, *http.Response, error)
+	IpBlocksIpBlockIdDelete(ipBlockId string) (*ipapisdk.DeleteIpBlockResult, *http.Response, error)
 }
 
 type MainClient struct {
@@ -57,7 +58,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 }
 
 // IP APIs
-func (m MainClient) IpBlockPost(ipBlockCreate ipapisdk.IpBlockCreate) (ipapisdk.IpBlock, *http.Response, error) {
+func (m MainClient) IpBlockPost(ipBlockCreate ipapisdk.IpBlockCreate) (*ipapisdk.IpBlock, *http.Response, error) {
 	return m.IpBlocksApiClient.IpBlocksPost(context.Background()).IpBlockCreate(ipBlockCreate).Execute()
 }
 
@@ -65,10 +66,10 @@ func (m MainClient) IpBlocksGet() ([]ipapisdk.IpBlock, *http.Response, error) {
 	return m.IpBlocksApiClient.IpBlocksGet(context.Background()).Execute()
 }
 
-func (m MainClient) IpBlocksGetById(ipBlockId string) (ipapisdk.IpBlock, *http.Response, error) {
+func (m MainClient) IpBlocksGetById(ipBlockId string) (*ipapisdk.IpBlock, *http.Response, error) {
 	return m.IpBlocksApiClient.IpBlocksIpBlockIdGet(context.Background(), ipBlockId).Execute()
 }
 
-func (m MainClient) IpBlocksIpBlockIdDelete(ipBlockId string) (ipapisdk.DeleteIpBlockResult, *http.Response, error) {
+func (m MainClient) IpBlocksIpBlockIdDelete(ipBlockId string) (*ipapisdk.DeleteIpBlockResult, *http.Response, error) {
 	return m.IpBlocksApiClient.IpBlocksIpBlockIdDelete(context.Background(), ipBlockId).Execute()
 }

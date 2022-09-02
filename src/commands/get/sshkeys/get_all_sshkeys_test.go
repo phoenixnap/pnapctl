@@ -4,7 +4,6 @@ import (
 	"errors"
 	"testing"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
@@ -38,11 +37,10 @@ func TestGetAllSshKeysSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllSshKeysKeycloakFailure(test_framework *testing.T) {
-	sshKey := []bmcapisdk.SshKey{sshkeymodels.GenerateSshKeySdk()}
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeysGet().
-		Return(sshKey, nil, testutil.TestKeycloakError)
+		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
 

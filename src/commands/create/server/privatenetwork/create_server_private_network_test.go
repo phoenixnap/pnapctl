@@ -13,7 +13,6 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
@@ -35,14 +34,14 @@ func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
 		Return(serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -64,14 +63,14 @@ func TestCreateServerPrivateNetworkSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
 		Return(serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -89,7 +88,7 @@ func TestCreateServerPrivateNetworkFileNotFoundFailure(test_framework *testing.T
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
@@ -114,7 +113,7 @@ func TestCreateServerPrivateNetworkUnmarshallingFailure(test_framework *testing.
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -136,7 +135,7 @@ func TestCreateServerPrivateNetworkFileReadingFailure(test_framework *testing.T)
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command 'create server-private-network' has been performed, but something went wrong. Error code: 0503",
 		}).
@@ -162,14 +161,14 @@ func TestCreateServerPrivateNetworkBackendErrorFailure(test_framework *testing.T
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(bmcapisdk.ServerPrivateNetwork{}, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -194,14 +193,14 @@ func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(bmcapisdk.ServerPrivateNetwork{}, nil, testutil.TestError).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
+		Return(nil, nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -226,14 +225,14 @@ func TestCreateServerPrivateNetworkKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(bmcapisdk.ServerPrivateNetwork{}, nil, testutil.TestKeycloakError).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
+		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME).
+		ReadFile(FILENAME, commandName).
 		Return(jsonmarshal, nil).
 		Times(1)
 

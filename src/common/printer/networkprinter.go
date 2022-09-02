@@ -6,8 +6,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintPrivateNetworkResponse(network networksdk.PrivateNetwork, commandName string) error {
-	networkToPrint := PreparePrivateNetworkForPrinting(network)
+func PrintPrivateNetworkResponse(network *networksdk.PrivateNetwork, commandName string) error {
+	networkToPrint := PreparePrivateNetworkForPrinting(*network)
 	return MainPrinter.PrintOutput(networkToPrint, commandName)
 }
 

@@ -8,7 +8,7 @@ type OsConfiguration struct {
 	Windows                    *OsConfigurationWindows `yaml:"windows,omitempty" json:"windows,omitempty"`
 	RootPassword               *string                 `yaml:"rootPassword,omitempty" json:"rootPassword,omitempty"`
 	ManagementUiUrl            *string                 `yaml:"managementUiUrl,omitempty" json:"managementUiUrl,omitempty"`
-	ManagementAccessAllowedIps *[]string               `yaml:"managementAccessAllowedIps,omitempty" json:"managementAccessAllowedIps,omitempty"`
+	ManagementAccessAllowedIps []string                `yaml:"managementAccessAllowedIps,omitempty" json:"managementAccessAllowedIps,omitempty"`
 }
 
 func (osConfiguration *OsConfiguration) toSdk() *bmcapisdk.OsConfiguration {

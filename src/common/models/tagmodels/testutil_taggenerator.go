@@ -11,7 +11,7 @@ func GenerateTagSdk() *tagapisdk.Tag {
 	return &tagapisdk.Tag{
 		Id:          testutil.RandSeq(10),
 		Name:        testutil.RandSeq(10),
-		Values:      &values,
+		Values:      values,
 		Description: testutil.RandSeqPointer(10),
 		CreatedBy:   testutil.RandSeqPointer(5),
 	}
@@ -41,8 +41,8 @@ func GenerateTagListSdk(n int) []tagapisdk.Tag {
 	return tagList
 }
 
-func GenerateTagsDeleteResultSdk() tagapisdk.DeleteResult {
-	return tagapisdk.DeleteResult{
+func GenerateTagsDeleteResultSdk() *tagapisdk.DeleteResult {
+	return &tagapisdk.DeleteResult{
 		Result: testutil.RandSeq(10),
 		TagId:  testutil.RandSeq(10),
 	}
