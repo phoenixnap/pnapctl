@@ -33,7 +33,7 @@ export GO111MODULE=on
 $(BIN):
 	@mkdir -p $@
 $(BIN)/%: | $(BIN) ; $(info $(M) building $(PACKAGE)…)
-	   tmp=$$(mktemp -d); \
+	$Q tmp=$$(mktemp -d); \
 	   env GO111MODULE=off GOPATH=$$tmp GOBIN=$(BIN) $(GO) get $(PACKAGE) \
 		|| ret=$$?; \
 	   rm -rf $$tmp ; exit $$ret
