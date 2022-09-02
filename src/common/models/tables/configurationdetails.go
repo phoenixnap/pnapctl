@@ -1,15 +1,16 @@
 package tables
 
-import "github.com/phoenixnap/go-sdk-bmc/billingapi"
+import (
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
+	"phoenixnap.com/pnapctl/common/models/billingmodels"
+)
 
 type ConfigurationDetailsTable struct {
-	ThresholdConfiguration string //wrapping a float32
+	ThresholdConfiguration string `header:"Threshold Configuration"`
 }
 
-func AccountBillingConfigurationTableFromSdk(sdk *billingapi.ConfigurationDetails) *ConfigurationDetailsTable {
-	if sdk == nil {
-		return nil
+func ConfigurationDetailsTableFromSdk(sdk billingapi.ConfigurationDetails) ConfigurationDetailsTable {
+	return ConfigurationDetailsTable{
+		ThresholdConfiguration: billingmodels.ThresholdConfigurationToTableString(sdk.ThresholdConfiguration),
 	}
-
-	return &ConfigurationDetailsTable{}
 }

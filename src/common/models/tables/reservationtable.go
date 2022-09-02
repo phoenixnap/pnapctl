@@ -3,29 +3,34 @@ package tables
 import "github.com/phoenixnap/go-sdk-bmc/billingapi"
 
 type ReservationTable struct {
-	Id                  string
-	ProductCode         string
-	ProductCategory     string
-	Location            string
-	ReservationModel    string
-	InitialInvoiceModel string
-	StartDateTime       string
-	EndDateTime         string
-	LastRenewalDateTime string
-	NextRenewalDateTime string
-	AutoRenew           bool
-	Sku                 string
-	Price               float32
-	PriceUnit           string
-	AssignedResourceId  string
+	Id                  string  `header:"ID"`
+	ProductCode         string  `header:"Product Code"`
+	ProductCategory     string  `header:"Product Category"`
+	Location            string  `header:"Location"`
+	ReservationModel    string  `header:"Reservation"`
+	InitialInvoiceModel string  `header:"Initial Invoice"`
+	StartDateTime       string  `header:"Start Date"`
+	EndDateTime         string  `header:"End Date"`
+	LastRenewalDateTime string  `header:"Last Renewal"`
+	NextRenewalDateTime string  `header:"Next Renewal"`
+	AutoRenew           bool    `header:"Auto Renew"`
+	Sku                 string  `header:"Sku"`
+	Price               float32 `header:"Price"`
+	PriceUnit           string  `header:"Unit"`
+	AssignedResourceId  string  `header:"Assigned Resource ID"`
 }
 
-func ReservationTableFromSdk(sdk *billingapi.Reservation) *ReservationTable {
-	if sdk == nil {
-		return nil
-	}
+type ShortReservationTable struct {
+	Id              string  `header:"ID"`
+	ProductCode     string  `header:"Product Code"`
+	ProductCategory string  `header:"Product Category"`
+	Location        string  `header:"Location"`
+	Price           float32 `header:"Price"`
+	PriceUnit       string  `header:"Unit"`
+}
 
-	return &ReservationTable{
+func ReservationTableFromSdk(sdk billingapi.Reservation) ReservationTable {
+	return ReservationTable{
 		Id:                  sdk.Id,
 		ProductCode:         sdk.ProductCode,
 		ProductCategory:     sdk.ProductCategory,
@@ -41,5 +46,16 @@ func ReservationTableFromSdk(sdk *billingapi.Reservation) *ReservationTable {
 		Price:               sdk.Price,
 		PriceUnit:           string(sdk.PriceUnit),
 		AssignedResourceId:  DerefString(sdk.AssignedResourceId),
+	}
+}
+
+func ShortReservationTableFromSdk(sdk billingapi.Reservation) ShortReservationTable {
+	return ShortReservationTable{
+		Id:              sdk.Id,
+		ProductCode:     sdk.ProductCode,
+		ProductCategory: sdk.ProductCategory,
+		Location:        string(sdk.Location),
+		Price:           sdk.Price,
+		PriceUnit:       string(sdk.PriceUnit),
 	}
 }

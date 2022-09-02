@@ -9,20 +9,13 @@ import (
 )
 
 func TestProductAvailabilityFromSdk_NotNil(t *testing.T) {
-	sdk := GenerateProductAvailability()
+	sdk := *GenerateProductAvailability()
 	cli := ProductAvailabilityFromSdk(sdk)
-
-	assert.NotNil(t, sdk)
-	assert.NotNil(t, cli)
 
 	assertEqualProductAvailability(t, sdk, cli)
 }
 
-func TestProductAvailabilityFromSdk_Nil(t *testing.T) {
-	assert.Nil(t, ProductAvailabilityFromSdk(nil))
-}
-
-func assertEqualProductAvailability(t *testing.T, sdk *billingapi.ProductAvailability, cli *ProductAvailability) {
+func assertEqualProductAvailability(t *testing.T, sdk billingapi.ProductAvailability, cli ProductAvailability) {
 	assert.Equal(t, sdk.ProductCategory, cli.ProductCategory)
 	assert.Equal(t, sdk.ProductCode, cli.ProductCode)
 

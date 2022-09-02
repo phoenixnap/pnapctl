@@ -1,6 +1,8 @@
 package billingmodels
 
 import (
+	"fmt"
+
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
@@ -19,12 +21,8 @@ type LocationAvailabilityDetail struct {
 	Solutions            []string                `json:"solutions" yaml:"solutions"`
 }
 
-func ProductAvailabilityFromSdk(sdk *billingapi.ProductAvailability) *ProductAvailability {
-	if sdk == nil {
-		return nil
-	}
-
-	return &ProductAvailability{
+func ProductAvailabilityFromSdk(sdk billingapi.ProductAvailability) ProductAvailability {
+	return ProductAvailability{
 		ProductCode:     sdk.ProductCode,
 		ProductCategory: sdk.ProductCategory,
 		LocationAvailabilityDetails: iterutils.Map(
@@ -42,4 +40,8 @@ func locationAvailabilityDetailsFromSdk(sdk billingapi.LocationAvailabilityDetai
 		AvailableQuantity:    sdk.AvailableQuantity,
 		Solutions:            sdk.Solutions,
 	}
+}
+
+func LocationAvailabilityDetailsToTableString(sdk billingapi.LocationAvailabilityDetail) string {
+	return fmt.Sprintf("%s - (Req: %f/Available: %f)", sdk.Location, sdk.MinQuantityRequested, sdk.AvailableQuantity)
 }

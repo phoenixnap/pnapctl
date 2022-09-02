@@ -4,6 +4,7 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"phoenixnap.com/pnapctl/common/models/billingmodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 // Rated Usage
@@ -51,5 +52,55 @@ func PrepareProductForPrinting(product billingapi.ProductsGet200ResponseInner) i
 		return tables.ProductTableFromSdk(product)
 	default:
 		return billingmodels.ProductActualFromSdk(product)
+	}
+}
+
+// Reservations
+func PrintReservationResponse(reservation *billingapi.Reservation, full bool, commandName string) error {
+	reservationToPrint := PrepareReservationForPrinting(*reservation, full)
+	return MainPrinter.PrintOutput(reservationToPrint, commandName)
+}
+
+func PrepareReservationListForPrinting(reservations []billingapi.Reservation, full bool, commandName string) error {
+	reservationsToPrint := iterutils.Map(reservations, withFull(full, PrepareReservationForPrinting))
+	return MainPrinter.PrintOutput(reservationsToPrint, commandName)
+}
+
+func PrepareReservationForPrinting(reservation billingapi.Reservation, full bool) interface{} {
+	table := OutputIsTable()
+
+	switch {
+	case table && full:
+		return tables.ReservationTableFromSdk(reservation)
+	case table:
+		return tables.ShortReservationTableFromSdk(reservation)
+	case full:
+		return billingmodels.ReservationFromSdk(reservation)
+	default:
+		return billingmodels.ShortReservationFromSdk(reservation)
+	}
+}
+
+// Configuration Details
+func PrepareConfigurationDetailsForPrinting(configurationDetails billingapi.ConfigurationDetails) interface{} {
+	table := OutputIsTable()
+
+	switch {
+	case table:
+		return tables.ConfigurationDetailsTableFromSdk(configurationDetails)
+	default:
+		return billingmodels.ConfigurationDetailsFromSdk(configurationDetails)
+	}
+}
+
+// Product Availability
+func PrepareProductAvailabilityForPrinting(productAvailability billingapi.ProductAvailability) interface{} {
+	table := OutputIsTable()
+
+	switch {
+	case table:
+		return tables.ProductAvailabilityTableFromSdk(productAvailability)
+	default:
+		return billingmodels.ProductAvailabilityFromSdk(productAvailability)
 	}
 }

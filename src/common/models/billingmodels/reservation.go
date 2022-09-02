@@ -24,12 +24,17 @@ type Reservation struct {
 	AssignedResourceId  *string                                   `json:"assignedResourceId,omitempty" yaml:"assignedResourceId,omitempty"`
 }
 
-func ReservationFromSdk(sdk *billingapi.Reservation) *Reservation {
-	if sdk == nil {
-		return nil
-	}
+type ShortReservation struct {
+	Id              string                   `json:"id" yaml:"id"`
+	ProductCode     string                   `json:"productCode" yaml:"productCode"`
+	ProductCategory string                   `json:"productCategory" yaml:"productCategory"`
+	Location        billingapi.LocationEnum  `json:"location" yaml:"location"`
+	Price           float32                  `json:"price" yaml:"price"`
+	PriceUnit       billingapi.PriceUnitEnum `json:"priceUnit" yaml:"priceUnit"`
+}
 
-	return &Reservation{
+func ReservationFromSdk(sdk billingapi.Reservation) Reservation {
+	return Reservation{
 		Id:                  sdk.Id,
 		ProductCode:         sdk.ProductCode,
 		ProductCategory:     sdk.ProductCategory,
@@ -45,5 +50,16 @@ func ReservationFromSdk(sdk *billingapi.Reservation) *Reservation {
 		Price:               sdk.Price,
 		PriceUnit:           sdk.PriceUnit,
 		AssignedResourceId:  sdk.AssignedResourceId,
+	}
+}
+
+func ShortReservationFromSdk(sdk billingapi.Reservation) ShortReservation {
+	return ShortReservation{
+		Id:              sdk.Id,
+		ProductCode:     sdk.ProductCode,
+		ProductCategory: sdk.ProductCategory,
+		Location:        sdk.Location,
+		Price:           sdk.Price,
+		PriceUnit:       sdk.PriceUnit,
 	}
 }

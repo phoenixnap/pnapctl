@@ -8,7 +8,7 @@ import (
 )
 
 func TestReservationFromSdk(t *testing.T) {
-	sdk := GenerateReservation()
+	sdk := *GenerateReservation()
 	cli := ReservationFromSdk(sdk)
 
 	assert.NotNil(t, sdk)
@@ -17,11 +17,7 @@ func TestReservationFromSdk(t *testing.T) {
 	assertEqualReservation(t, sdk, cli)
 }
 
-func TestReservationFromSdk_Nil(t *testing.T) {
-	assert.Nil(t, ReservationFromSdk(nil))
-}
-
-func assertEqualReservation(t *testing.T, sdk *billingapi.Reservation, cli *Reservation) {
+func assertEqualReservation(t *testing.T, sdk billingapi.Reservation, cli Reservation) {
 	assert.Equal(t, sdk.Id, cli.Id)
 	assert.Equal(t, sdk.ProductCode, cli.ProductCode)
 	assert.Equal(t, sdk.ProductCategory, cli.ProductCategory)
