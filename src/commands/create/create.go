@@ -1,11 +1,13 @@
 package create
 
 import (
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/commands/create/cluster"
-	"phoenixnap.com/pnapctl/commands/create/ip-blocks"
+	ip_blocks "phoenixnap.com/pnapctl/commands/create/ip-blocks"
 	"phoenixnap.com/pnapctl/commands/create/privatenetwork"
+	"phoenixnap.com/pnapctl/commands/create/reservation"
 	"phoenixnap.com/pnapctl/commands/create/server"
 	serveripblock "phoenixnap.com/pnapctl/commands/create/server/ipblocks"
 	serverprivatenetwork "phoenixnap.com/pnapctl/commands/create/server/privatenetwork"
@@ -32,4 +34,5 @@ func init() {
 	CreateCmd.AddCommand(sshkey.CreateSshKeyCmd)
 	CreateCmd.AddCommand(privatenetwork.CreatePrivateNetworkCmd)
 	CreateCmd.AddCommand(ip_blocks.CreateIpBlockCmd)
+	CreateCmd.AddCommand(reservation.CreateReservationCmd)
 }
