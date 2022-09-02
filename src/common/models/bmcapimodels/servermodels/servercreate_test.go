@@ -24,7 +24,7 @@ func TestServerCreateToSDK(test_framework *testing.T) {
 	assertEqualOsConfiguration(test_framework, *cliModel.OsConfiguration, *sdkModel.OsConfiguration)
 
 	sdkTags := sdkModel.Tags
-	for i, tagAssignmentRequest := range *cliModel.Tags {
+	for i, tagAssignmentRequest := range cliModel.Tags {
 		assertEqualTagAssignmentRequest(test_framework, tagAssignmentRequest, sdkTags[i])
 	}
 
