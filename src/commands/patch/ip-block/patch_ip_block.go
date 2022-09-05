@@ -31,6 +31,11 @@ Requires a file (yaml or json) containing the information needed to update the i
 		}
 
 		response, httpResponse, err := ip.Client.IpBlocksIpBlockIdPatch(args[0], *ipBlockPatch)
+
+		if err != nil {
+			return err
+		}
+
 		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
 		if *generatedError != nil {

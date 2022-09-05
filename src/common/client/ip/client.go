@@ -19,6 +19,7 @@ type IpSdkClient interface {
 	IpBlocksGetById(ipBlockId string) (*ipapisdk.IpBlock, *http.Response, error)
 	IpBlocksIpBlockIdDelete(ipBlockId string) (*ipapisdk.DeleteIpBlockResult, *http.Response, error)
 	IpBlocksIpBlockIdPatch(ipBlockId string, ipBlockPatch ipapisdk.IpBlockPatch) (*ipapisdk.IpBlock, *http.Response, error)
+	IpBlocksIpBlockIdTagsPut(ipBlockId string) (*ipapisdk.IpBlock, *http.Response, error)
 }
 
 type MainClient struct {
@@ -77,4 +78,8 @@ func (m MainClient) IpBlocksIpBlockIdDelete(ipBlockId string) (*ipapisdk.DeleteI
 
 func (m MainClient) IpBlocksIpBlockIdPatch(ipBlockId string, ipBlockPatch ipapisdk.IpBlockPatch) (*ipapisdk.IpBlock, *http.Response, error) {
 	return m.IpBlocksApiClient.IpBlocksIpBlockIdPatch(context.Background(), ipBlockId).IpBlockPatch(ipBlockPatch).Execute()
+}
+
+func (m MainClient) IpBlocksIpBlockIdTagsPut(ipBlockId string) (*ipapisdk.IpBlock, *http.Response, error) {
+	return m.IpBlocksApiClient.IpBlocksIpBlockIdTagsPut(context.Background(), ipBlockId).Execute()
 }

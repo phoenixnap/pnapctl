@@ -44,3 +44,15 @@ func GenerateDeleteIpBlockResultSdk() *ipapisdk.DeleteIpBlockResult {
 		IpBlockId: testutil.RandSeq(10),
 	}
 }
+
+func GeneratePutTagIpBlockSdk() *ipapisdk.IpBlock {
+	return &ipapisdk.IpBlock{
+		Id:                   testutil.RandSeq(10),
+		Location:             testutil.RandSeq(10),
+		CidrBlockSize:        testutil.RandSeq(10),
+		Cidr:                 testutil.RandSeq(10),
+		Status:               testutil.RandSeq(10),
+		AssignedResourceId:   testutil.RandSeqPointer(10),
+		AssignedResourceType: testutil.RandSeqPointer(10),
+	}
+}
