@@ -1,10 +1,10 @@
 package networkmodels
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
@@ -28,5 +28,5 @@ func TestPublicNetworksGetQueryParamsInvalid_Error(test_framework *testing.T) {
 	queryParams, err := NewPublicNetworksGetQueryParams("NOTVALID")
 
 	assert.Nil(test_framework, queryParams)
-	assert.EqualError(test_framework, err, fmt.Sprintf("location '%s' is invalid. Allowed values are %v", "NOTVALID", allowedLocations))
+	assert.Equal(test_framework, ctlerrors.InvalidFlagValuePassedError("location", "NOTVALID", allowedLocations), err)
 }

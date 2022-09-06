@@ -1,6 +1,7 @@
 package networkmodels
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/phoenixnap/go-sdk-bmc/networkapi"
@@ -27,6 +28,8 @@ type NetworkMembership struct {
 type PublicNetworkIpBlock struct {
 	Id string `json:"id" yaml:"id"`
 }
+
+// From SDK
 
 func PublicNetworkFromSdk(sdk networkapi.PublicNetwork) PublicNetwork {
 	return PublicNetwork{
@@ -55,8 +58,20 @@ func PublicNetworkIpBlockFromSdk(sdk networkapi.PublicNetworkIpBlock) PublicNetw
 	}
 }
 
+// To SDK
+
 func (cli *PublicNetworkIpBlock) ToSdk() networkapi.PublicNetworkIpBlock {
 	return networkapi.PublicNetworkIpBlock{
 		Id: cli.Id,
 	}
+}
+
+// To Table Strings
+
+func NetworkMembershipToTableStrings(sdk networkapi.NetworkMembership) string {
+	return fmt.Sprintf("%s(%s)\n%v", sdk.ResourceType, sdk.ResourceId, sdk.Ips)
+}
+
+func PublicNetworkIpBlockToTableStrings(sdk networkapi.PublicNetworkIpBlock) string {
+	return fmt.Sprintf("ID: %s", sdk.Id)
 }
