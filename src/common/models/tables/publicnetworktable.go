@@ -29,21 +29,3 @@ func PublicNetworkTableFromSdk(sdk networkapi.PublicNetwork) PublicNetworkTable 
 		IpBlocks:    iterutils.Map(sdk.IpBlocks, networkmodels.PublicNetworkIpBlockToTableStrings),
 	}
 }
-
-type ShortPublicNetworkTable struct {
-	Id          string `header:"ID"`
-	VlanId      int32  `header:"Vlan ID"`
-	Name        string `header:"Name"`
-	Description string `header:"Description"`
-	CreatedOn   string `header:"Created On"`
-}
-
-func ShortPublicNetworkTableFromSdk(sdk networkapi.PublicNetwork) PublicNetworkTable {
-	return PublicNetworkTable{
-		Id:          sdk.Id,
-		VlanId:      sdk.VlanId,
-		Name:        sdk.Name,
-		Description: DerefString(sdk.Description),
-		CreatedOn:   sdk.CreatedOn.String(),
-	}
-}
