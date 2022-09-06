@@ -13,7 +13,7 @@ var GetAccountBillingConfigurationCmd = &cobra.Command{
 	Use:          "account-billing-configuration",
 	Short:        "Retrieve your account billing configuration",
 	SilenceUsage: true,
-	Args:         cobra.ExactArgs(1),
+	Args:         cobra.ExactArgs(0),
 	Long:         `Retrieve your account billing configuration.`,
 	Example: `
 # Retrieve your account billing configuration
