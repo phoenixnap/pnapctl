@@ -12,10 +12,10 @@ var commandName = "create reservation"
 
 var CreateReservationCmd = &cobra.Command{
 	Use:          "reservation [RESERVATION_ID]",
-	Short:        "Create a reservation",
+	Short:        "Create a new reservation.",
 	SilenceUsage: true,
 	Args:         cobra.ExactArgs(0),
-	Long: `Create a reservation.
+	Long: `Create a new reservation.
 	
 Requires a file (yaml or json) containing the information needed to create the reservation.`,
 	Example: `
