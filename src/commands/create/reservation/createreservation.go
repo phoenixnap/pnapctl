@@ -31,8 +31,6 @@ sku: "skuCode"`,
 			return err
 		}
 
-		// panic(fmt.Sprintf("DEBUGPANIC: [%T] %v", billing.Client, billing.Client))
-
 		// Create the server
 		response, httpResponse, err := billing.Client.ReservationsPost(*reservationCreate)
 		generatedError := utils.CheckForErrors(httpResponse, err, commandName)
