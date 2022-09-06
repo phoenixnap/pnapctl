@@ -1,9 +1,8 @@
 package billingmodels
 
 import (
-	"fmt"
-
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 )
 
 type ReservationsGetQueryParams struct {
@@ -17,7 +16,7 @@ func NewReservationsGetQueryParams(productCategory string) (params *Reservations
 		validCategory, err = billingapi.NewProductCategoryEnumFromValue(productCategory)
 
 		if err != nil {
-			return nil, fmt.Errorf("category '%s' is invalid. Allowed values are %v", productCategory, billingapi.AllowedProductCategoryEnumEnumValues)
+			return nil, ctlerrors.InvalidFlagValuePassedError("category", productCategory, billingapi.AllowedProductCategoryEnumEnumValues)
 		}
 	}
 

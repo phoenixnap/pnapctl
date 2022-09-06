@@ -36,13 +36,13 @@ type Currier[In, Const, Out any] func(In, Const) Out
 //	}
 type Predicate[T any] func(T) bool
 
-// Executes the function `action` for each element in the `slice`.
+// Runs the function `action` on each element in the `slice`.
 //
-//	num := []int{1,2,3}
-//	Each(num, func(n int) { fmt.Println(num) })
-func Each[T any](slice []T, action func(t T)) {
-	for _, v := range slice {
-		action(v)
+//	nums := []int{1, 2, 3}
+//	Each(nums, func(n int) { fmt.Println(n) })
+func Each[T any](slice []T, action func(T)) {
+	for _, item := range slice {
+		action(item)
 	}
 }
 
