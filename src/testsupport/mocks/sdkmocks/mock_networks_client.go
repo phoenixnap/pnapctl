@@ -10,6 +10,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	networkapi "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	networkmodels "phoenixnap.com/pnapctl/common/models/networkmodels"
 )
 
 // MockNetworkSdkClient is a mock of NetworkSdkClient interface.
@@ -112,4 +113,115 @@ func (m *MockNetworkSdkClient) PrivateNetworksPost(privateNetworkCreate networka
 func (mr *MockNetworkSdkClientMockRecorder) PrivateNetworksPost(privateNetworkCreate interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PrivateNetworksPost", reflect.TypeOf((*MockNetworkSdkClient)(nil).PrivateNetworksPost), privateNetworkCreate)
+}
+
+// PublicNetworkDelete mocks base method.
+func (m *MockNetworkSdkClient) PublicNetworkDelete(networkId string) (*http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PublicNetworkDelete", networkId)
+	ret0, _ := ret[0].(*http.Response)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PublicNetworkDelete indicates an expected call of PublicNetworkDelete.
+func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkDelete(networkId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PublicNetworkDelete", reflect.TypeOf((*MockNetworkSdkClient)(nil).PublicNetworkDelete), networkId)
+}
+
+// PublicNetworkGetById mocks base method.
+func (m *MockNetworkSdkClient) PublicNetworkGetById(networkId string) (*networkapi.PublicNetwork, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PublicNetworkGetById", networkId)
+	ret0, _ := ret[0].(*networkapi.PublicNetwork)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// PublicNetworkGetById indicates an expected call of PublicNetworkGetById.
+func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkGetById(networkId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PublicNetworkGetById", reflect.TypeOf((*MockNetworkSdkClient)(nil).PublicNetworkGetById), networkId)
+}
+
+// PublicNetworkIdBlockDelete mocks base method.
+func (m *MockNetworkSdkClient) PublicNetworkIdBlockDelete(networkId, ipBlockId string) (string, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PublicNetworkIdBlockDelete", networkId, ipBlockId)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// PublicNetworkIdBlockDelete indicates an expected call of PublicNetworkIdBlockDelete.
+func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkIdBlockDelete(networkId, ipBlockId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PublicNetworkIdBlockDelete", reflect.TypeOf((*MockNetworkSdkClient)(nil).PublicNetworkIdBlockDelete), networkId, ipBlockId)
+}
+
+// PublicNetworkIdBlockPost mocks base method.
+func (m *MockNetworkSdkClient) PublicNetworkIdBlockPost(networkId string, idBlockCreate networkapi.PublicNetworkIpBlock) (*networkapi.PublicNetworkIpBlock, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PublicNetworkIdBlockPost", networkId, idBlockCreate)
+	ret0, _ := ret[0].(*networkapi.PublicNetworkIpBlock)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// PublicNetworkIdBlockPost indicates an expected call of PublicNetworkIdBlockPost.
+func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkIdBlockPost(networkId, idBlockCreate interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PublicNetworkIdBlockPost", reflect.TypeOf((*MockNetworkSdkClient)(nil).PublicNetworkIdBlockPost), networkId, idBlockCreate)
+}
+
+// PublicNetworkPatch mocks base method.
+func (m *MockNetworkSdkClient) PublicNetworkPatch(networkId string, publicNetworkPatch networkapi.PublicNetworkModify) (*networkapi.PublicNetwork, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PublicNetworkPatch", networkId, publicNetworkPatch)
+	ret0, _ := ret[0].(*networkapi.PublicNetwork)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// PublicNetworkPatch indicates an expected call of PublicNetworkPatch.
+func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkPatch(networkId, publicNetworkPatch interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PublicNetworkPatch", reflect.TypeOf((*MockNetworkSdkClient)(nil).PublicNetworkPatch), networkId, publicNetworkPatch)
+}
+
+// PublicNetworksGet mocks base method.
+func (m *MockNetworkSdkClient) PublicNetworksGet(location networkmodels.PublicNetworksGetQueryParams) ([]networkapi.PublicNetwork, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PublicNetworksGet", location)
+	ret0, _ := ret[0].([]networkapi.PublicNetwork)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// PublicNetworksGet indicates an expected call of PublicNetworksGet.
+func (mr *MockNetworkSdkClientMockRecorder) PublicNetworksGet(location interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PublicNetworksGet", reflect.TypeOf((*MockNetworkSdkClient)(nil).PublicNetworksGet), location)
+}
+
+// PublicNetworksPost mocks base method.
+func (m *MockNetworkSdkClient) PublicNetworksPost(publicNetworkCreate networkapi.PublicNetworkCreate) (*networkapi.PublicNetwork, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PublicNetworksPost", publicNetworkCreate)
+	ret0, _ := ret[0].(*networkapi.PublicNetwork)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// PublicNetworksPost indicates an expected call of PublicNetworksPost.
+func (mr *MockNetworkSdkClientMockRecorder) PublicNetworksPost(publicNetworkCreate interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PublicNetworksPost", reflect.TypeOf((*MockNetworkSdkClient)(nil).PublicNetworksPost), publicNetworkCreate)
 }
