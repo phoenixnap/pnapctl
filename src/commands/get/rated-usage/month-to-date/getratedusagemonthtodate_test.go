@@ -2,7 +2,6 @@ package month_to_date
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
@@ -140,7 +139,7 @@ func TestGetAllRatedUsagesMonthToDate_InvalidParams(test_framework *testing.T) {
 	err := GetRatedUsageMonthToDateCmd.RunE(GetRatedUsageMonthToDateCmd, []string{})
 
 	// Assertions
-	assert.Equal(test_framework, fmt.Sprintf("invalid ProductCategory '%s'. Valid values: %v", invalidCategory, billingapi.AllowedProductCategoryEnumEnumValues), err.Error())
+	assert.Equal(test_framework, ctlerrors.InvalidFlagValuePassedError("category", "NONE", billingapi.AllowedProductCategoryEnumEnumValues), err)
 }
 
 func setQueryParams(queryparams billingmodels.RatedUsageMonthToDateGetQueryParams) {

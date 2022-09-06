@@ -36,6 +36,16 @@ type Currier[In, Const, Out any] func(In, Const) Out
 //	}
 type Predicate[T any] func(T) bool
 
+// Runs the function `action` on each element in the `slice`.
+//
+//	nums := []int{1, 2, 3}
+//	Each(nums, func(n int) { fmt.Println(n) })
+func Each[T any](slice []T, action func(T)) {
+	for _, item := range slice {
+		action(item)
+	}
+}
+
 // Applies the function `mapper` to each element in the `slice`.
 // Returns the resulting mapped array.
 //

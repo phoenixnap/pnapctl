@@ -5,6 +5,7 @@ import (
 	"regexp"
 
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 )
 
 type RatedUsageGetQueryParams struct {
@@ -75,7 +76,7 @@ func parseProductCategory(productCategory string) (validCategory *billingapisdk.
 		validCategory, err = billingapisdk.NewProductCategoryEnumFromValue(productCategory)
 
 		if err != nil {
-			err = fmt.Errorf("invalid ProductCategory '%s'. Valid values: %v", productCategory, billingapisdk.AllowedProductCategoryEnumEnumValues)
+			err = ctlerrors.InvalidFlagValuePassedError("category", productCategory, billingapisdk.AllowedProductCategoryEnumEnumValues)
 		}
 	}
 

@@ -6,6 +6,7 @@ import (
 
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 )
 
 func TestRatedUsageGetQueryParams_valid(test_framework *testing.T) {
@@ -63,10 +64,9 @@ func TestRatedUsageGetQueryParams_invalidProductCategory(test_framework *testing
 	assert.Nil(test_framework, queryParams)
 	assert.NotNil(test_framework, err)
 
-	expectedErr := fmt.Errorf("invalid ProductCategory '%s'. Valid values: %v",
-		productCategory, billingapisdk.AllowedProductCategoryEnumEnumValues)
+	expectedErr := ctlerrors.InvalidFlagValuePassedError("category", "NotValid", billingapisdk.AllowedProductCategoryEnumEnumValues)
 
-	assert.Equal(test_framework, err, expectedErr)
+	assert.Equal(test_framework, expectedErr, err)
 }
 
 // Month to date
@@ -89,8 +89,7 @@ func TestRatedUsageMonthToDateGetQueryParams_invalidProductCategory(test_framewo
 	assert.Nil(test_framework, queryParams)
 	assert.NotNil(test_framework, err)
 
-	expectedErr := fmt.Errorf("invalid ProductCategory '%s'. Valid values: %v",
-		productCategory, billingapisdk.AllowedProductCategoryEnumEnumValues)
+	expectedErr := ctlerrors.InvalidFlagValuePassedError("category", "NotValid", billingapisdk.AllowedProductCategoryEnumEnumValues)
 
-	assert.Equal(test_framework, err, expectedErr)
+	assert.Equal(test_framework, expectedErr, err)
 }
