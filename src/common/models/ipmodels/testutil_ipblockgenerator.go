@@ -38,6 +38,12 @@ func GenerateIpBlockPatchCLI() IpBlockPatch {
 	}
 }
 
+func GenerateIpBlockPutTagCLI() IpBlockPutTag {
+	return IpBlockPutTag{
+		Name: testutil.RandSeq(10),
+	}
+}
+
 func GenerateDeleteIpBlockResultSdk() *ipapisdk.DeleteIpBlockResult {
 	return &ipapisdk.DeleteIpBlockResult{
 		Result:    testutil.RandSeq(10),

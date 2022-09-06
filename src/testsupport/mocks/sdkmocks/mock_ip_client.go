@@ -116,9 +116,9 @@ func (mr *MockIpSdkClientMockRecorder) IpBlocksIpBlockIdPatch(ipBlockId, ipBlock
 }
 
 // IpBlocksIpBlockIdTagsPut mocks base method.
-func (m *MockIpSdkClient) IpBlocksIpBlockIdTagsPut(ipBlockId string) (*ipapi.IpBlock, *http.Response, error) {
+func (m *MockIpSdkClient) IpBlocksIpBlockIdTagsPut(ipBlockId string, tag []ipapi.TagAssignmentRequest) (*ipapi.IpBlock, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IpBlocksIpBlockIdTagsPut", ipBlockId)
+	ret := m.ctrl.Call(m, "IpBlocksIpBlockIdTagsPut", ipBlockId, tag)
 	ret0, _ := ret[0].(*ipapi.IpBlock)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -126,7 +126,7 @@ func (m *MockIpSdkClient) IpBlocksIpBlockIdTagsPut(ipBlockId string) (*ipapi.IpB
 }
 
 // IpBlocksIpBlockIdTagsPut indicates an expected call of IpBlocksIpBlockIdTagsPut.
-func (mr *MockIpSdkClientMockRecorder) IpBlocksIpBlockIdTagsPut(ipBlockId interface{}) *gomock.Call {
+func (mr *MockIpSdkClientMockRecorder) IpBlocksIpBlockIdTagsPut(ipBlockId, tag interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IpBlocksIpBlockIdTagsPut", reflect.TypeOf((*MockIpSdkClient)(nil).IpBlocksIpBlockIdTagsPut), ipBlockId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IpBlocksIpBlockIdTagsPut", reflect.TypeOf((*MockIpSdkClient)(nil).IpBlocksIpBlockIdTagsPut), ipBlockId, tag)
 }
