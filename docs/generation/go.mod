@@ -1,6 +1,6 @@
 module docs
 
-go 1.17
+go 1.19
 
 replace phoenixnap.com/pnapctl => ../../src
 

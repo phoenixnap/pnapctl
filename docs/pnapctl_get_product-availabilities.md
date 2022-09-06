@@ -29,13 +29,13 @@ pnapctl get product-availabilities
 
 ```
       --category stringArray           Category to filter product availabilities by.
-      --code stringArray               Category to filter product availabilities by.
+      --code stringArray               Code to filter product availabilities by.
   -h, --help                           help for product-availabilities
-      --location stringArray           Category to filter product availabilities by.
-      --minQuantity float32            Category to filter product availabilities by.
+      --location stringArray           Location to filter product availabilities by.
+      --minQuantity float32            Minimum quantity to filter product availabilities by.
   -o, --output string                  Define the output format. Possible values: table, json, yaml (default "table")
-      --showOnlyMinQuantityAvailable   Category to filter product availabilities by. (default true)
-      --solution stringArray           Category to filter product availabilities by.
+      --showOnlyMinQuantityAvailable   Whether to show only min quantity available. Defaults to true. (default true)
+      --solution stringArray           Solution to filter product availabilities by.
 ```
 
 ### Options inherited from parent commands
