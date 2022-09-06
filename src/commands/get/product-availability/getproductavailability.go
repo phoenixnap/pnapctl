@@ -62,9 +62,9 @@ func init() {
 	utils.SetupOutputFlag(GetProductAvailabilitiesCmd)
 
 	GetProductAvailabilitiesCmd.Flags().StringArrayVar(&productCategory, "category", []string{}, "Category to filter product availabilities by.")
-	GetProductAvailabilitiesCmd.Flags().StringArrayVar(&productCode, "code", []string{}, "Category to filter product availabilities by.")
-	GetProductAvailabilitiesCmd.Flags().BoolVar(&showOnlyMinQuantityAvailable, "showOnlyMinQuantityAvailable", true, "Category to filter product availabilities by.")
-	GetProductAvailabilitiesCmd.Flags().StringArrayVar(&location, "location", []string{}, "Category to filter product availabilities by.")
-	GetProductAvailabilitiesCmd.Flags().StringArrayVar(&solution, "solution", []string{}, "Category to filter product availabilities by.")
-	GetProductAvailabilitiesCmd.Flags().Float32Var(&minQuantity, "minQuantity", 0.0, "Category to filter product availabilities by.")
+	GetProductAvailabilitiesCmd.Flags().StringArrayVar(&productCode, "code", []string{}, "Code to filter product availabilities by.")
+	GetProductAvailabilitiesCmd.Flags().BoolVar(&showOnlyMinQuantityAvailable, "showOnlyMinQuantityAvailable", true, "Whether to show only min quantity available. Defaults to true.")
+	GetProductAvailabilitiesCmd.Flags().StringArrayVar(&location, "location", []string{}, "Location to filter product availabilities by.")
+	GetProductAvailabilitiesCmd.Flags().StringArrayVar(&solution, "solution", []string{}, "Solution to filter product availabilities by.")
+	GetProductAvailabilitiesCmd.Flags().Float32Var(&minQuantity, "minQuantity", 0.0, "Minimum quantity to filter product availabilities by.")
 }
