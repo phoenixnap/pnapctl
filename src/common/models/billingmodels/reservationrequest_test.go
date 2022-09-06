@@ -8,12 +8,12 @@ import (
 )
 
 func TestReservationRequestFromSdk_NotNil(t *testing.T) {
-	sdk := *GenerateReservationRequest()
-	cli := ReservationRequestFromSdk(sdk)
+	cli := *GenerateReservationRequestCli()
+	sdk := cli.ToSdk()
 
-	assertEqualReservationRequestFromSdk(t, sdk, cli)
+	assertEqualReservationRequestFromSdk(t, cli, sdk)
 }
 
-func assertEqualReservationRequestFromSdk(t *testing.T, sdk billingapi.ReservationRequest, cli ReservationRequest) {
-	assert.Equal(t, sdk.Sku, cli.Sku)
+func assertEqualReservationRequestFromSdk(t *testing.T, cli ReservationRequest, sdk billingapi.ReservationRequest) {
+	assert.Equal(t, cli.Sku, sdk.Sku)
 }

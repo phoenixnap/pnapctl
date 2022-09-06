@@ -116,5 +116,5 @@ func withFull[T any](full bool, mapper iter.Currier[T, bool, interface{}]) iter.
 func prepareOneOfWith[In any](in []In, mapper iter.Mapper[In, interface{}]) (out []interface{}) {
 	out = iter.Map(in, mapper)
 	out = iter.Filter(out, iter.Not(iter.IsNil))
-	return iter.Deref(out)
+	return iter.DerefInterface(out)
 }

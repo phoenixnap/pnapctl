@@ -7,13 +7,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestReservationAutoRenewDisableRequestFromSdk_NotNil(t *testing.T) {
-	sdk := *GenerateReservationAutoRenewDisableRequest()
-	cli := ReservationAutoRenewDisableRequestFromSdk(sdk)
+func TestReservationAutoRenewDisableRequestToSdk_NotNil(t *testing.T) {
+	cli := *GenerateReservationAutoRenewDisableRequestCli()
+	sdk := cli.ToSdk()
 
-	assertEqualReservationAutoRenewDisableRequestFromSdk(t, sdk, cli)
+	assertEqualReservationAutoRenewDisableRequestFromSdk(t, cli, sdk)
 }
 
-func assertEqualReservationAutoRenewDisableRequestFromSdk(t *testing.T, sdk billingapi.ReservationAutoRenewDisableRequest, cli ReservationAutoRenewDisableRequest) {
-	assert.Equal(t, sdk.AutoRenewDisableReason, cli.AutoRenewDisableReason)
+func assertEqualReservationAutoRenewDisableRequestFromSdk(t *testing.T, cli ReservationAutoRenewDisableRequest, sdk billingapi.ReservationAutoRenewDisableRequest) {
+	assert.Equal(t, cli.AutoRenewDisableReason, sdk.AutoRenewDisableReason)
 }

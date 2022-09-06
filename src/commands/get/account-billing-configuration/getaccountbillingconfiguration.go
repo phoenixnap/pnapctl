@@ -14,16 +14,16 @@ var GetAccountBillingConfigurationCmd = &cobra.Command{
 	Short:        "Retrieve your account billing configuration",
 	SilenceUsage: true,
 	Args:         cobra.ExactArgs(1),
-	Long: `Retrieve your account billing configuration.
-	
-// ADD FURTHER NOTES`,
+	Long:         `Retrieve your account billing configuration.`,
 	Example: `
 # Retrieve your account billing configuration
-pnapctl get account-billing-configuration`,
-	RunE: getAccountBillingConfiguration,
+pnapctl get account-billing-configuration [--output=<OUTPUT_TYPE>]`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return getAccountBillingConfiguration()
+	},
 }
 
-func getAccountBillingConfiguration(cmd *cobra.Command, args []string) error {
+func getAccountBillingConfiguration() error {
 	configurationDetails, httpResponse, err := billing.Client.AccountBillingConfigurationGet()
 
 	generatedError := utils.CheckForErrors(httpResponse, err, commandName)

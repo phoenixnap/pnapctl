@@ -9,12 +9,6 @@ type ReservationAutoRenewDisableRequest struct {
 	AutoRenewDisableReason *string `json:"autoRenewDisableReason,omitempty" yaml:"autoRenewDisableReason,omitempty"`
 }
 
-func ReservationAutoRenewDisableRequestFromSdk(sdk billingapi.ReservationAutoRenewDisableRequest) ReservationAutoRenewDisableRequest {
-	return ReservationAutoRenewDisableRequest{
-		AutoRenewDisableReason: sdk.AutoRenewDisableReason,
-	}
-}
-
 func (r *ReservationAutoRenewDisableRequest) ToSdk() billingapi.ReservationAutoRenewDisableRequest {
 	return billingapi.ReservationAutoRenewDisableRequest{
 		AutoRenewDisableReason: r.AutoRenewDisableReason,

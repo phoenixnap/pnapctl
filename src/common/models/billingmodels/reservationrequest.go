@@ -9,12 +9,6 @@ type ReservationRequest struct {
 	Sku string `json:"sku" yaml:"sku"`
 }
 
-func ReservationRequestFromSdk(sdk billingapi.ReservationRequest) ReservationRequest {
-	return ReservationRequest{
-		Sku: sdk.Sku,
-	}
-}
-
 func (r *ReservationRequest) ToSdk() billingapi.ReservationRequest {
 	return billingapi.ReservationRequest{
 		Sku: r.Sku,

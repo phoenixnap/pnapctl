@@ -62,3 +62,21 @@ func GenN[T any](n int, gen Generator[T]) (out []T) {
 
 	return
 }
+
+// Generates n items using the generator passed, and dereferences them.
+//
+//	generateInt := func() *int {
+//		num := rand.Int32()
+//		return &num
+//	}
+//
+//	nums := GenN(10, generateInt) // 10 integers (not pointers)
+func GenNDeref[T any](n int, gen Generator[*T]) (out []T) {
+	out = make([]T, n)
+
+	for i := range out {
+		out[i] = *gen()
+	}
+
+	return
+}

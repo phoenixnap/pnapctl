@@ -15,16 +15,23 @@ var GetProductAvailabilitiesCmd = &cobra.Command{
 	Short:        "Retrieve product availabilities",
 	SilenceUsage: true,
 	Args:         cobra.ExactArgs(0),
-	Long: `Retrieve one or all reservations.
-	
-// ADD FURTHER NOTES`,
+	Long:         `Retrieve one or all reservations.`,
 	Example: `
 # Retrieve all product-availabilities
-pnapctl get product-availabilities`,
-	RunE: getProductAvailabilities,
+pnapctl get product-availabilities 
+	[--output=<OUTPUT_TYPE>] 
+	[--category=<CATEGORY>] 
+	[--code=<CODE>] 
+	[--showOnlyMinQuantityAvailable=false] 
+	[--location=<LOCATION>] 
+	[--solution=<SOLUTION>] 
+	[--minQuantity=<MIN_QUANTITY>]`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return getProductAvailabilities()
+	},
 }
 
-func getProductAvailabilities(cmd *cobra.Command, args []string) error {
+func getProductAvailabilities() error {
 	queryParams, err := billingmodels.NewProductAvailabilityGetQueryParams(productCategory, productCode, showOnlyMinQuantityAvailable, location, solution, minQuantity)
 
 	if err != nil {
@@ -56,7 +63,7 @@ func init() {
 
 	GetProductAvailabilitiesCmd.Flags().StringArrayVar(&productCategory, "category", []string{}, "Category to filter product availabilities by.")
 	GetProductAvailabilitiesCmd.Flags().StringArrayVar(&productCode, "code", []string{}, "Category to filter product availabilities by.")
-	GetProductAvailabilitiesCmd.Flags().BoolVar(&showOnlyMinQuantityAvailable, "showOnlyMinQuantityAvailable", false, "Category to filter product availabilities by.")
+	GetProductAvailabilitiesCmd.Flags().BoolVar(&showOnlyMinQuantityAvailable, "showOnlyMinQuantityAvailable", true, "Category to filter product availabilities by.")
 	GetProductAvailabilitiesCmd.Flags().StringArrayVar(&location, "location", []string{}, "Category to filter product availabilities by.")
 	GetProductAvailabilitiesCmd.Flags().StringArrayVar(&solution, "solution", []string{}, "Category to filter product availabilities by.")
 	GetProductAvailabilitiesCmd.Flags().Float32Var(&minQuantity, "minQuantity", 0.0, "Category to filter product availabilities by.")

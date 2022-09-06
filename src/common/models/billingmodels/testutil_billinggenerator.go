@@ -234,6 +234,17 @@ func GenerateServerProductMetadata() billingapi.ServerProductMetadata {
 }
 
 // Configuration Details
+func GenerateProductAvailabilityGetQueryParams() *ProductAvailabilityGetQueryParams {
+	return &ProductAvailabilityGetQueryParams{
+		ProductCategory:              []string{"SERVER"},
+		ProductCode:                  testutil.RandListStringPointer(10),
+		ShowOnlyMinQuantityAvailable: true,
+		Location:                     billingapi.AllowedLocationEnumEnumValues,
+		Solution:                     []string{"SERVER_RANCHER"},
+		MinQuantity:                  testutil.AsPointer(rand.Float32()),
+	}
+}
+
 func GenerateConfigurationDetails() *billingapi.ConfigurationDetails {
 	return &billingapi.ConfigurationDetails{
 		ThresholdConfiguration: &billingapi.ThresholdConfigurationDetails{
@@ -262,6 +273,12 @@ func GenerateLocationAvailabilityDetail() billingapi.LocationAvailabilityDetail 
 }
 
 // Reservation
+func GenerateReservationGetQueryParams() *ReservationsGetQueryParams {
+	return &ReservationsGetQueryParams{
+		ProductCategory: billingapi.BANDWIDTH.Ptr(),
+	}
+}
+
 func GenerateReservation() *billingapi.Reservation {
 	return &billingapi.Reservation{
 		Id:                  testutil.RandSeq(10),
@@ -282,14 +299,14 @@ func GenerateReservation() *billingapi.Reservation {
 	}
 }
 
-func GenerateReservationAutoRenewDisableRequest() *billingapi.ReservationAutoRenewDisableRequest {
-	return &billingapi.ReservationAutoRenewDisableRequest{
+func GenerateReservationAutoRenewDisableRequestCli() *ReservationAutoRenewDisableRequest {
+	return &ReservationAutoRenewDisableRequest{
 		AutoRenewDisableReason: testutil.AsPointer(testutil.RandSeq(10)),
 	}
 }
 
-func GenerateReservationRequest() *billingapi.ReservationRequest {
-	return &billingapi.ReservationRequest{
+func GenerateReservationRequestCli() *ReservationRequest {
+	return &ReservationRequest{
 		Sku: testutil.RandSeq(10),
 	}
 }

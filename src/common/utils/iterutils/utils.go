@@ -120,10 +120,29 @@ func FindElementThat[T any](slice []T, predicate Predicate[T]) *T {
 // Dereferences each element in a list if they are a pointer.
 // Otherwise it keeps them as is.
 //
+// For a list of interface{} - use DerefInterface.
+//
 //	num := 5
-//	ptrs := []*int{&num, &num} // [&5, &5]
+//	ptrs := []int{}{&num, &num} // [&5, &5]
 //	vals := Deref(ptrs) // [5, 5]
-func Deref(slice []interface{}) []interface{} {
+func Deref[T any](slice []*T) []T {
+	deref := func(item *T) T {
+		return *item
+	}
+
+	return Map(slice, deref)
+}
+
+// Dereferences each element in a list if they are a pointer.
+// Otherwise it keeps them as is.
+//
+// Only works for a list of interface{} - for concrete types,
+// use Deref.
+//
+//	num := 5
+//	ptrs := []interface{}{&num, &num} // [&5, &5]
+//	vals := DerefInterface(ptrs) // [5, 5]
+func DerefInterface(slice []interface{}) []interface{} {
 	deref := func(item interface{}) interface{} {
 		val := reflect.ValueOf(item)
 		if val.Kind() == reflect.Ptr {
@@ -134,6 +153,23 @@ func Deref(slice []interface{}) []interface{} {
 	}
 
 	return Map(slice, deref)
+}
+
+// Same as map, except it implicitly casts the output to an interface{}.
+//
+//	nums := []int{1, 2, 3, 4} // [&5, &5]
+//	doubled := MapInterface(nums, func(n int) int {
+//		return n * 2
+//	})
+//	doubled[0] // 2 as interface{}
+func MapInterface[T, U any](slice []T, mapper Mapper[T, U]) []interface{} {
+	inter := func(item T) interface{} {
+		var elem interface{}
+		elem = mapper(item)
+		return elem
+	}
+
+	return Map(slice, inter)
 }
 
 /* PREDICATES */
@@ -166,5 +202,5 @@ func Not[T any](p Predicate[T]) Predicate[T] {
 //	IsNil(n) // false
 func IsNil(item interface{}) bool {
 	val := reflect.ValueOf(item)
-	return item == nil || val.IsNil()
+	return item == nil || (val.Kind() == reflect.Pointer && val.IsNil())
 }

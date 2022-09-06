@@ -6,6 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 // A generic test error.
@@ -101,4 +102,12 @@ func (a assertPairs[T, U]) Do(t *testing.T, asserter func(*testing.T, T, U)) {
 // Used as shorthand to assert two things are equal.
 func AssertEqual[T any](t *testing.T, a, b T) {
 	assert.Equal(t, a, b)
+}
+
+type Stringlike interface {
+	~string
+}
+
+func AsStrings[S Stringlike](enums []S) []string {
+	return iterutils.Map(enums, func(s S) string { return string(s) })
 }
