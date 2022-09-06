@@ -20,7 +20,11 @@ var PatchIpBlockCmd = &cobra.Command{
 	Long: `Patch an existing ip-block.
 
 Requires a file (yaml or json) containing the information needed to update the ip-block.`,
-	Example: `# Update an existing ip-block`,
+	Example: `# Update an existing ip-block with request body as described in ipblockpatch.yaml
+	pnapctl patch ip-block <IP_BLOCK_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
+	
+	# ipblockpatch.yaml
+	description: ip block description`,
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 
@@ -31,10 +35,6 @@ Requires a file (yaml or json) containing the information needed to update the i
 		}
 
 		response, httpResponse, err := ip.Client.IpBlocksIpBlockIdPatch(args[0], *ipBlockPatch)
-
-		if err != nil {
-			return err
-		}
 
 		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 

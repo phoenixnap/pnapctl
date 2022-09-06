@@ -154,7 +154,7 @@ func TestPatchIpBlockUnmarshallingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateIpBlockFileReadingFailure(test_framework *testing.T) {
+func TestPatchIpBlockFileReadingFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
@@ -178,7 +178,7 @@ func TestCreateIpBlockFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateIpBlockBackendErrorFailure(test_framework *testing.T) {
+func TestPatchIpBlockBackendErrorFailure(test_framework *testing.T) {
 	// Setup
 	ipBlockPatchCli := ipmodels.GenerateIpBlockPatchCLI()
 
@@ -210,7 +210,7 @@ func TestCreateIpBlockBackendErrorFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateIpBlockClientFailure(test_framework *testing.T) {
+func TestPatchIpBlockClientFailure(test_framework *testing.T) {
 	// Setup
 	ipBlockPatchCli := ipmodels.GenerateIpBlockPatchCLI()
 
@@ -242,7 +242,7 @@ func TestCreateIpBlockClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateIpBlockKeycloakFailure(test_framework *testing.T) {
+func TestPatchIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Setup
 	ipBlockPatchCli := ipmodels.GenerateIpBlockPatchCLI()
 
