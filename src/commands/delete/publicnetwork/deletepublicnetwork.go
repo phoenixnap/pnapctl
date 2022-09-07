@@ -19,7 +19,7 @@ var DeletePublicNetworkCmd = &cobra.Command{
 	Long:         `Delete a public network.`,
 	Example: `# Delete a public network
 pnapctl delete public-network <ID>`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		response, err := networks.Client.PublicNetworkDelete(args[0])
 
 		generatedErr := utils.CheckForErrors(response, err, commandName)

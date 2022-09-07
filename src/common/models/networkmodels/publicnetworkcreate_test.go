@@ -12,7 +12,7 @@ func TestPublicNetworkCreateToSdkSuccess(test_framework *testing.T) {
 	cli := GeneratePublicNetworkCreateCli()
 	sdk := cli.ToSdk()
 
-	assertPublicNetworkCreateEqual(test_framework, sdk, cli)
+	assertPublicNetworkCreateEqual(test_framework, *sdk, cli)
 }
 
 func assertPublicNetworkCreateEqual(test_framework *testing.T, sdk networkapi.PublicNetworkCreate, cli PublicNetworkCreate) {

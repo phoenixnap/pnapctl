@@ -1,10 +1,10 @@
 ## pnapctl create reservation
 
-Create a reservation
+Create a new reservation.
 
 ### Synopsis
 
-Create a reservation.
+Create a new reservation.
 	
 Requires a file (yaml or json) containing the information needed to create the reservation.
 

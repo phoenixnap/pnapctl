@@ -2,6 +2,10 @@ package publicnetwork
 
 import (
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnapctl/common/client/networks"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
@@ -21,11 +25,32 @@ pnapctl create public-network --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 # publicNetworkCreate.yaml
 hostname: patched-server
 description: My custom server edit`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return nil
+	RunE: func(_ *cobra.Command, _ []string) error {
+		publicNetworkCreate, err := networkmodels.CreatePublicNetworkCreateFromFile(Filename, commandName)
+
+		if err != nil {
+			return err
+		}
+
+		response, httpResponse, err := networks.Client.PublicNetworksPost(*publicNetworkCreate)
+
+		if httpResponse != nil && httpResponse.StatusCode != 201 {
+			return ctlerrors.HandleBMCError(httpResponse, commandName)
+		} else if err != nil {
+			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		} else {
+			return printer.PrintPublicNetworkResponse(response, commandName)
+		}
 	},
 }
 
+var (
+	Filename string
+)
+
 func init() {
 	utils.SetupOutputFlag(CreatePublicNetworkCmd)
+
+	CreatePublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation.")
+	CreatePublicNetworkCmd.MarkFlagRequired("filename")
 }

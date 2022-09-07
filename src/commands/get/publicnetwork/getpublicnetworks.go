@@ -1,29 +1,82 @@
 package publicnetwork
 
 import (
+	"net/http"
+
+	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnapctl/common/client/networks"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
+var commandName = "get public-network"
+
 var GetPublicNetworksCmd = &cobra.Command{
-	Use:          "public-network [ID]",
-	Short:        "Patch a public network.",
-	Args:         cobra.ExactArgs(1),
+	Use:          "public-network [PUBLIC_NETWORK_ID]",
+	Short:        "Retrieve one or all public networks.",
+	Aliases:      []string{"public-networks"},
+	Args:         cobra.MaximumNArgs(1),
 	SilenceUsage: true,
-	Long: `Patch a public network.
+	Long: `Retrieve one or all public networks.
 
-Requires a file (yaml or json) containing the information needed to patch the server.`,
-	Example: `# Patch a server using the contents of serverPatch.yaml as request body. 
-pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
+Prints detailed information about the public networks.
+By default, the data is printed in table format.
 
-# serverPatch.yaml
-hostname: patched-server
-description: My custom server edit`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return nil
+To print a specific public network, an ID needs to be passed as an argument.`,
+	Example: `
+# List all public networks.
+pnapctl get public-networks [--location <LOCATION>] [--output <OUTPUT_TYPE>]
+
+# List all details of a specific public network.
+pnapctl get public-networks <PUBLIC_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
+	RunE: func(_ *cobra.Command, args []string) error {
+		if len(args) > 0 {
+			return getPublicNetworks(&args[0])
+		}
+		return getPublicNetworks(nil)
 	},
 }
 
+func getPublicNetworks(id *string) error {
+	var httpResponse *http.Response
+	var err error
+	var publicNetwork *networkapi.PublicNetwork
+	var publicNetworks []networkapi.PublicNetwork
+
+	queryParams, err := networkmodels.NewPublicNetworksGetQueryParams(location)
+
+	if err != nil {
+		return err
+	}
+
+	if id == nil {
+		publicNetworks, httpResponse, err = networks.Client.PublicNetworksGet(*queryParams)
+	} else {
+		publicNetwork, httpResponse, err = networks.Client.PublicNetworkGetById(*id)
+	}
+
+	if httpResponse != nil && httpResponse.StatusCode != 200 {
+		return ctlerrors.HandleBMCError(httpResponse, commandName)
+	} else if err != nil {
+		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+	} else {
+		if id == nil {
+			return printer.PrintPublicNetworkListResponse(publicNetworks, commandName)
+		} else {
+			return printer.PrintPublicNetworkResponse(publicNetwork, commandName)
+		}
+	}
+}
+
+var (
+	location string
+)
+
 func init() {
 	utils.SetupOutputFlag(GetPublicNetworksCmd)
+
+	GetPublicNetworksCmd.Flags().StringVar(&location, "location", "", "Filter by location")
 }

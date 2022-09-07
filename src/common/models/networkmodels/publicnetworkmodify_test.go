@@ -11,7 +11,7 @@ func TestPublicNetworkModifyToSdkSuccess(test_framework *testing.T) {
 	cli := GeneratePublicNetworkModifyCli()
 	sdk := cli.ToSdk()
 
-	assertPublicNetworkModifyEqual(test_framework, sdk, cli)
+	assertPublicNetworkModifyEqual(test_framework, *sdk, cli)
 }
 
 func assertPublicNetworkModifyEqual(test_framework *testing.T, sdk networkapi.PublicNetworkModify, cli PublicNetworkModify) {

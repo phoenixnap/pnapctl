@@ -18,18 +18,14 @@ var DeletePublicNetworkIpBlockCmd = &cobra.Command{
 	Long:         `Delete an ip-block on a public network.`,
 	Example: `# Delete an ip-block on a public network.
 pnapctl delete public-network ip-block <NETWORK_ID> <IP_BLOCK_ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		message, response, err := networks.Client.PublicNetworkIpBlockDelete(args[0], args[1])
 
-		if err := utils.CheckForErrors(response, err, commandName); err != nil {
+		if err := utils.CheckForErrors(response, err, commandName); *err != nil {
 			return *err
 		} else {
 			fmt.Println(message)
 		}
 		return nil
 	},
-}
-
-func init() {
-
 }

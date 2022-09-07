@@ -19,7 +19,7 @@ func TestPublicNetworksIpBlockToSdkSuccess(test_framework *testing.T) {
 	cli := GeneratePublicNetworkIpBlockCli()
 	sdk := cli.ToSdk()
 
-	assertPublicNetworksIpBlockEqual(test_framework, sdk, cli)
+	assertPublicNetworksIpBlockEqual(test_framework, *sdk, cli)
 }
 
 func assertPublicNetworksEqual(test_framework *testing.T, sdk networkapi.PublicNetwork, cli PublicNetwork) {

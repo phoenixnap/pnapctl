@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/phoenixnap/go-sdk-bmc/networkapi"
+	files "phoenixnap.com/pnapctl/common/fileprocessor"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
@@ -60,10 +61,31 @@ func PublicNetworkIpBlockFromSdk(sdk networkapi.PublicNetworkIpBlock) PublicNetw
 
 // To SDK
 
-func (cli *PublicNetworkIpBlock) ToSdk() networkapi.PublicNetworkIpBlock {
-	return networkapi.PublicNetworkIpBlock{
+func (cli *PublicNetworkIpBlock) ToSdk() *networkapi.PublicNetworkIpBlock {
+	return &networkapi.PublicNetworkIpBlock{
 		Id: cli.Id,
 	}
+}
+
+func CreatePublicNetworkIpBlockFromFile(filename string, commandName string) (*networkapi.PublicNetworkIpBlock, error) {
+	files.ExpandPath(&filename)
+
+	data, err := files.ReadFile(filename, commandName)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Marshal file into JSON using the struct
+	var publicNetworkIpBlock PublicNetworkIpBlock
+
+	err = files.Unmarshal(data, &publicNetworkIpBlock, commandName)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return publicNetworkIpBlock.ToSdk(), nil
 }
 
 // To Table Strings
