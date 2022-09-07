@@ -20,6 +20,13 @@ var PutIpBlockTagCmd = &cobra.Command{
 	Long: `Update an existing ip-block's tag.
 	
 	`,
+	Example: `# Put a tag on an existing ip-block with request body as described in ipblockputtag.yaml
+	pnapctl put ip-block tag <IP_BLOCK_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
+	
+	# ipblockputtag.yaml
+	name: ip block tag name
+	value: ip block tag value
+	`,
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 
@@ -29,7 +36,7 @@ var PutIpBlockTagCmd = &cobra.Command{
 			return err
 		}
 
-		response, httpResponse, err := ip.Client.IpBlocksIpBlockIdTagsPut(args[0], *ipBlockPutTag)
+		response, httpResponse, err := ip.Client.IpBlocksIpBlockIdTagsPut(args[0], ipBlockPutTag)
 
 		if err != nil {
 			return err
