@@ -26,8 +26,8 @@ type NetworkSdkClient interface {
 	PublicNetworksPost(publicNetworkCreate networkapisdk.PublicNetworkCreate) (*networkapisdk.PublicNetwork, *http.Response, error)
 	PublicNetworkDelete(networkId string) (*http.Response, error)
 	PublicNetworkPatch(networkId string, publicNetworkPatch networkapisdk.PublicNetworkModify) (*networkapisdk.PublicNetwork, *http.Response, error)
-	PublicNetworkIdBlockPost(networkId string, idBlockCreate networkapisdk.PublicNetworkIpBlock) (*networkapisdk.PublicNetworkIpBlock, *http.Response, error)
-	PublicNetworkIdBlockDelete(networkId string, ipBlockId string) (string, *http.Response, error)
+	PublicNetworkIpBlockPost(networkId string, idBlockCreate networkapisdk.PublicNetworkIpBlock) (*networkapisdk.PublicNetworkIpBlock, *http.Response, error)
+	PublicNetworkIpBlockDelete(networkId string, ipBlockId string) (string, *http.Response, error)
 }
 
 type MainClient struct {
@@ -118,10 +118,10 @@ func (m MainClient) PublicNetworkPatch(networkId string, publicNetworkPatch netw
 	return m.PublicNetworksClient.PublicNetworksNetworkIdPatch(context.Background(), networkId).Execute()
 }
 
-func (m MainClient) PublicNetworkIdBlockPost(networkId string, idBlockCreate networkapisdk.PublicNetworkIpBlock) (*networkapisdk.PublicNetworkIpBlock, *http.Response, error) {
+func (m MainClient) PublicNetworkIpBlockPost(networkId string, idBlockCreate networkapisdk.PublicNetworkIpBlock) (*networkapisdk.PublicNetworkIpBlock, *http.Response, error) {
 	return m.PublicNetworksClient.PublicNetworksNetworkIdIpBlocksPost(context.Background(), networkId).PublicNetworkIpBlock(idBlockCreate).Execute()
 }
 
-func (m MainClient) PublicNetworkIdBlockDelete(networkId string, ipBlockId string) (string, *http.Response, error) {
+func (m MainClient) PublicNetworkIpBlockDelete(networkId string, ipBlockId string) (string, *http.Response, error) {
 	return m.PublicNetworksClient.PublicNetworksNetworkIdIpBlocksIpBlockIdDelete(context.Background(), networkId, ipBlockId).Execute()
 }
