@@ -38,10 +38,21 @@ func GenerateIpBlockPatchCLI() IpBlockPatch {
 	}
 }
 
-func GenerateIpBlockPutTagCLI() IpBlockPutTag {
-	return IpBlockPutTag{
-		Name: testutil.RandSeq(10),
+func GenerateIpBlockTagCLI() ipapisdk.TagAssignmentRequest {
+	return ipapisdk.TagAssignmentRequest{
+		Name:  testutil.RandSeq(10),
+		Value: testutil.RandSeqPointer(10),
 	}
+}
+
+func GenerateIpBlockTagListCLI(n int) []ipapisdk.TagAssignmentRequest {
+	var TagAssignmentRequestList []ipapisdk.TagAssignmentRequest
+
+	for i := 0; i < n; i++ {
+		TagAssignmentRequestList = append(TagAssignmentRequestList, GenerateIpBlockTagCLI())
+	}
+
+	return TagAssignmentRequestList
 }
 
 func GenerateDeleteIpBlockResultSdk() *ipapisdk.DeleteIpBlockResult {

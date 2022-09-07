@@ -17,7 +17,7 @@ import (
 )
 
 func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockPutTagCLI()
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockPutTagCli)
@@ -29,7 +29,7 @@ func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(*ipBlockPutTagCli.ToSdk())).
+		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
 		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
 		Times(1)
 
@@ -48,7 +48,7 @@ func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
 }
 
 func TestPutIpBlockTagSuccessJSON(test_framework *testing.T) {
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockPutTagCLI()
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -60,7 +60,7 @@ func TestPutIpBlockTagSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(*ipBlockPutTagCli.ToSdk())).
+		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
 		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
 		Times(1)
 
@@ -81,7 +81,7 @@ func TestPutIpBlockTagSuccessJSON(test_framework *testing.T) {
 func TestIpBlockPutTagIdNotFound(test_framework *testing.T) {
 
 	// Setup
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockPutTagCLI()
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -90,7 +90,7 @@ func TestIpBlockPutTagIdNotFound(test_framework *testing.T) {
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(*ipBlockPutTagCli.ToSdk())).
+		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
 		Return(nil, WithResponse(404, nil), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -180,7 +180,7 @@ func TestIpBlockPutTagFileReadingFailure(test_framework *testing.T) {
 
 func TestIpBlockPutTagBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockPutTagCLI()
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -189,7 +189,7 @@ func TestIpBlockPutTagBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(*ipBlockPutTagCli.ToSdk())).
+		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -212,7 +212,7 @@ func TestIpBlockPutTagBackendErrorFailure(test_framework *testing.T) {
 
 func TestIpBlockPutTagClientFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockPutTagCLI()
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -221,7 +221,7 @@ func TestIpBlockPutTagClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(*ipBlockPutTagCli.ToSdk())).
+		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -244,7 +244,7 @@ func TestIpBlockPutTagClientFailure(test_framework *testing.T) {
 
 func TestIpBlockPutTagKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockPutTagCLI()
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockPutTagCli)
@@ -253,7 +253,7 @@ func TestIpBlockPutTagKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(*ipBlockPutTagCli.ToSdk())).
+		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

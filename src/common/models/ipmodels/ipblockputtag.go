@@ -5,11 +5,12 @@ import (
 	files "phoenixnap.com/pnapctl/common/fileprocessor"
 )
 
-type IpBlockPutTag struct {
-	Name string `yaml:"name" json:"name"`
+type TagAssignmentRequest struct {
+	Name  string  `yaml:"name" json:"name"`
+	Value *string `yaml:"value,omitempty" json:"value,omitempty"`
 }
 
-func PutIpBlockTagRequestFromFile(filename string, commandname string) (*[]ipapisdk.TagAssignmentRequest, error) {
+func PutIpBlockTagRequestFromFile(filename string, commandname string) ([]ipapisdk.TagAssignmentRequest, error) {
 	files.ExpandPath(&filename)
 
 	data, err := files.ReadFile(filename, commandname)
@@ -19,19 +20,36 @@ func PutIpBlockTagRequestFromFile(filename string, commandname string) (*[]ipapi
 	}
 
 	// Marshal file into JSON using the struct
-	var IpBlockPutTag IpBlockPutTag
-
-	err = files.Unmarshal(data, &IpBlockPutTag, commandname)
+	var TagAssignmentRequests []TagAssignmentRequest
+	err = files.Unmarshal(data, &TagAssignmentRequests, commandname)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return IpBlockPutTag.ToSdk(), nil
+	return mapTagAssignmentRequestToSdk(&TagAssignmentRequests), nil
 }
 
-func (ipBlockPutTag IpBlockPutTag) ToSdk() *[]ipapisdk.TagAssignmentRequest {
-	return &[]ipapisdk.TagAssignmentRequest{
-		*ipapisdk.NewTagAssignmentRequest(ipBlockPutTag.Name),
+func (tagAssignmentRequest TagAssignmentRequest) ToSdk() ipapisdk.TagAssignmentRequest {
+	var tagAssignmentRequestSdk = ipapisdk.TagAssignmentRequest{
+		Name:  tagAssignmentRequest.Name,
+		Value: tagAssignmentRequest.Value,
 	}
+
+	return tagAssignmentRequestSdk
+}
+
+func mapTagAssignmentRequestToSdk(TagAssignmentRequest *[]TagAssignmentRequest) []ipapisdk.TagAssignmentRequest {
+
+	if TagAssignmentRequest == nil {
+		return nil
+	}
+
+	var tagAssignmentRequests []ipapisdk.TagAssignmentRequest
+
+	for _, TagAssignmentRequest := range *TagAssignmentRequest {
+		tagAssignmentRequests = append(tagAssignmentRequests, TagAssignmentRequest.ToSdk())
+	}
+
+	return tagAssignmentRequests
 }
