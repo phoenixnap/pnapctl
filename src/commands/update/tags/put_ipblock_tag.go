@@ -14,18 +14,21 @@ const commandName = "put ip-block tag"
 
 var PutIpBlockTagCmd = &cobra.Command{
 	Use:          "ip-block IP_BLOCK_ID",
-	Short:        "Updates a specific ip-block's tag.",
+	Short:        "Updates an ip block's tags.",
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
 	Long: `Update an existing ip-block's tag.
 	
+	Requires a file (yaml or json) containing the information needed to update the ip-block's tags.
 	`,
 	Example: `# Put a tag on an existing ip-block with request body as described in ipblockputtag.yaml
 	pnapctl put ip-block tag <IP_BLOCK_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 	
 	# ipblockputtag.yaml
-	name: ip block tag name
-	value: ip block tag value
+	---
+	tags:
+		- name: ip block tag name
+  		  value: ip block tag value
 	`,
 
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -38,10 +41,6 @@ var PutIpBlockTagCmd = &cobra.Command{
 
 		response, httpResponse, err := ip.Client.IpBlocksIpBlockIdTagsPut(args[0], ipBlockPutTag)
 
-		if err != nil {
-			return err
-		}
-
 		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
 		if *generatedError != nil {
@@ -50,4 +49,10 @@ var PutIpBlockTagCmd = &cobra.Command{
 			return printer.PrintIpBlockResponse(response, commandName)
 		}
 	},
+}
+
+func init() {
+	PutIpBlockTagCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	PutIpBlockTagCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	PutIpBlockTagCmd.MarkFlagRequired("filename")
 }

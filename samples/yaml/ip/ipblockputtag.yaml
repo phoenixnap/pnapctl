@@ -1,2 +1,4 @@
-name: ip block tag name
-value : ip block tag value
+---
+tags:
+- name: ip block tag name
+  value: ip block tag value

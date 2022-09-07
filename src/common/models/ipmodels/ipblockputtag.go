@@ -27,7 +27,7 @@ func PutIpBlockTagRequestFromFile(filename string, commandname string) ([]ipapis
 		return nil, err
 	}
 
-	return mapTagAssignmentRequestToSdk(&TagAssignmentRequests), nil
+	return mapTagAssignmentRequestListToSdk(TagAssignmentRequests), nil
 }
 
 func (tagAssignmentRequest TagAssignmentRequest) ToSdk() ipapisdk.TagAssignmentRequest {
@@ -39,15 +39,15 @@ func (tagAssignmentRequest TagAssignmentRequest) ToSdk() ipapisdk.TagAssignmentR
 	return tagAssignmentRequestSdk
 }
 
-func mapTagAssignmentRequestToSdk(TagAssignmentRequest *[]TagAssignmentRequest) []ipapisdk.TagAssignmentRequest {
+func mapTagAssignmentRequestListToSdk(TagAssignmentRequestList []TagAssignmentRequest) []ipapisdk.TagAssignmentRequest {
 
-	if TagAssignmentRequest == nil {
+	if TagAssignmentRequestList == nil {
 		return nil
 	}
 
 	var tagAssignmentRequests []ipapisdk.TagAssignmentRequest
 
-	for _, TagAssignmentRequest := range *TagAssignmentRequest {
+	for _, TagAssignmentRequest := range TagAssignmentRequestList {
 		tagAssignmentRequests = append(tagAssignmentRequests, TagAssignmentRequest.ToSdk())
 	}
 
