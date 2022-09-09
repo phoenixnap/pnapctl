@@ -33,6 +33,7 @@ pnapctl get [flags]
 * [pnapctl get private-network](pnapctl_get_private-network.md)	 - Retrieve one or all private networks.
 * [pnapctl get product](pnapctl_get_product.md)	 - Retrieves all products.
 * [pnapctl get product-availabilities](pnapctl_get_product-availabilities.md)	 - Retrieve product availabilities
+* [pnapctl get public-networks](pnapctl_get_public-networks.md)	 - Retrieve one or all public networks.
 * [pnapctl get quota](pnapctl_get_quota.md)	 - Retrieve one or all quotas for your account.
 * [pnapctl get rated-usage](pnapctl_get_rated-usage.md)	 - Retrieve all rated-usages for the given time period.
 * [pnapctl get reservation](pnapctl_get_reservation.md)	 - Retrieve one or all reservations

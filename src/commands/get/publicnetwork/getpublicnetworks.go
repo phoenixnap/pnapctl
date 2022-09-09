@@ -14,9 +14,9 @@ import (
 var commandName = "get public-networks"
 
 var GetPublicNetworksCmd = &cobra.Command{
-	Use:          "public-network [PUBLIC_NETWORK_ID]",
+	Use:          "public-networks [PUBLIC_NETWORK_ID]",
 	Short:        "Retrieve one or all public networks.",
-	Aliases:      []string{"public-networks"},
+	Aliases:      []string{"public-network"},
 	Args:         cobra.MaximumNArgs(1),
 	SilenceUsage: true,
 	Long: `Retrieve one or all public networks.

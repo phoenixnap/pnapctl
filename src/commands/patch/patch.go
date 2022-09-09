@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnapctl/commands/patch/publicnetwork"
 	"phoenixnap.com/pnapctl/commands/patch/server"
 	"phoenixnap.com/pnapctl/commands/patch/tag"
 )
@@ -21,4 +22,5 @@ var PatchCmd = &cobra.Command{
 func init() {
 	PatchCmd.AddCommand(tag.PatchTagCmd)
 	PatchCmd.AddCommand(server.PatchServerCmd)
+	PatchCmd.AddCommand(publicnetwork.PatchPublicNetworkCmd)
 }

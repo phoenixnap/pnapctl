@@ -115,7 +115,7 @@ func (m MainClient) PublicNetworkDelete(networkId string) (*http.Response, error
 }
 
 func (m MainClient) PublicNetworkPatch(networkId string, publicNetworkPatch networkapisdk.PublicNetworkModify) (*networkapisdk.PublicNetwork, *http.Response, error) {
-	return m.PublicNetworksClient.PublicNetworksNetworkIdPatch(context.Background(), networkId).Execute()
+	return m.PublicNetworksClient.PublicNetworksNetworkIdPatch(context.Background(), networkId).PublicNetworkModify(publicNetworkPatch).Execute()
 }
 
 func (m MainClient) PublicNetworkIpBlockPost(networkId string, idBlockCreate networkapisdk.PublicNetworkIpBlock) (*networkapisdk.PublicNetworkIpBlock, *http.Response, error) {

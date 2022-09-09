@@ -49,4 +49,6 @@ var (
 
 func init() {
 	utils.SetupOutputFlag(CreatePublicNetworkIpBlockCmd)
+
+	CreatePublicNetworkIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creating.")
 }

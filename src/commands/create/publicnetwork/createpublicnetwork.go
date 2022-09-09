@@ -2,6 +2,7 @@ package publicnetwork
 
 import (
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnapctl/commands/create/publicnetwork/ipblock"
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -52,4 +53,6 @@ func init() {
 
 	CreatePublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation.")
 	CreatePublicNetworkCmd.MarkFlagRequired("filename")
+
+	CreatePublicNetworkCmd.AddCommand(ipblock.CreatePublicNetworkIpBlockCmd)
 }

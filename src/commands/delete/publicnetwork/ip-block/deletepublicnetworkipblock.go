@@ -13,7 +13,7 @@ var commandName = "delete public-network ip-block"
 var DeletePublicNetworkIpBlockCmd = &cobra.Command{
 	Use:          "ip-block [ID]",
 	Short:        "Delete an ip-block on a public network.",
-	Args:         cobra.ExactArgs(1),
+	Args:         cobra.ExactArgs(2),
 	SilenceUsage: true,
 	Long:         `Delete an ip-block on a public network.`,
 	Example: `# Delete an ip-block on a public network.

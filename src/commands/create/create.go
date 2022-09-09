@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/commands/create/cluster"
 	ip_blocks "phoenixnap.com/pnapctl/commands/create/ip-blocks"
 	"phoenixnap.com/pnapctl/commands/create/privatenetwork"
+	"phoenixnap.com/pnapctl/commands/create/publicnetwork"
 	"phoenixnap.com/pnapctl/commands/create/reservation"
 	"phoenixnap.com/pnapctl/commands/create/server"
 	serveripblock "phoenixnap.com/pnapctl/commands/create/server/ipblocks"
@@ -33,6 +34,7 @@ func init() {
 	CreateCmd.AddCommand(tag.CreateTagCmd)
 	CreateCmd.AddCommand(sshkey.CreateSshKeyCmd)
 	CreateCmd.AddCommand(privatenetwork.CreatePrivateNetworkCmd)
+	CreateCmd.AddCommand(publicnetwork.CreatePublicNetworkCmd)
 	CreateCmd.AddCommand(ip_blocks.CreateIpBlockCmd)
 	CreateCmd.AddCommand(reservation.CreateReservationCmd)
 }
