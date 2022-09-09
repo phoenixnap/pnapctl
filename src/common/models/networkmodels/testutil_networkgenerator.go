@@ -21,6 +21,8 @@ func GeneratePrivateNetworkSdk() networkapisdk.PrivateNetwork {
 		LocationDefault: false,
 		Cidr:            testutil.RandSeq(10),
 		Servers:         []networkapisdk.PrivateNetworkServer{},
+		Memberships:     testutil.GenN(2, GenerateNetworkMembershipSdk),
+		CreatedOn:       time.Now(),
 	}
 }
 
