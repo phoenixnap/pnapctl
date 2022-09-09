@@ -22,16 +22,16 @@ func NewProductsGetQueryParams(productCode string, productCategory string, skuCo
 
 func (queries ProductsGetQueryParams) AttachToRequest(request billingapisdk.ApiProductsGetRequest) billingapisdk.ApiProductsGetRequest {
 	if queries.ProductCode != nil {
-		request.ProductCode(*queries.ProductCode)
+		request = request.ProductCode(*queries.ProductCode)
 	}
 	if queries.ProductCategory != nil {
-		request.ProductCategory(*queries.ProductCategory)
+		request = request.ProductCategory(*queries.ProductCategory)
 	}
 	if queries.SkuCode != nil {
-		request.SkuCode(*queries.SkuCode)
+		request = request.SkuCode(*queries.SkuCode)
 	}
 	if queries.Location != nil {
-		request.Location(*queries.Location)
+		request = request.Location(*queries.Location)
 	}
 	return request
 }
