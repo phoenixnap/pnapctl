@@ -6,13 +6,12 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
-var commandName = "get public-network"
+var commandName = "get public-networks"
 
 var GetPublicNetworksCmd = &cobra.Command{
 	Use:          "public-network [PUBLIC_NETWORK_ID]",
@@ -58,10 +57,8 @@ func getPublicNetworks(id *string) error {
 		publicNetwork, httpResponse, err = networks.Client.PublicNetworkGetById(*id)
 	}
 
-	if httpResponse != nil && httpResponse.StatusCode != 200 {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
-	} else if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+	if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
+		return *generatedError
 	} else {
 		if id == nil {
 			return printer.PrintPublicNetworkListResponse(publicNetworks, commandName)

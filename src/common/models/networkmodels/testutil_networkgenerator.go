@@ -106,3 +106,9 @@ func GeneratePublicNetworkIpBlockCli() PublicNetworkIpBlock {
 		Id: testutil.RandSeq(10),
 	}
 }
+
+func GeneratePublicNetworksGetQueryParams() PublicNetworksGetQueryParams {
+	return PublicNetworksGetQueryParams{
+		Location: testutil.AsPointer(allowedLocations[0]),
+	}
+}

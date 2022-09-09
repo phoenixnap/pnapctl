@@ -118,6 +118,28 @@ func TestCreatePublicNetworkUnmarshallingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
+func TestCreatePublicNetworkFileReadingFailure(test_framework *testing.T) {
+	// Setup
+	Filename = FILENAME
+
+	// Mocking
+	PrepareMockFileProcessor(test_framework).
+		ReadFile(FILENAME, commandName).
+		Return(nil, ctlerrors.CLIError{
+			Message: "Command 'create public-network' has been performed, but something went wrong. Error code: 0503",
+		}).
+		Times(1)
+
+	// Run command
+	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
+
+	// Expected error
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "create public-network", err)
+
+	// Assertions
+	assert.EqualError(test_framework, expectedErr, err.Error())
+}
+
 func TestCreatePublicNetworkBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
 	publicNetworkCreate := networkmodels.GeneratePublicNetworkCreateCli()
@@ -130,7 +152,7 @@ func TestCreatePublicNetworkBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksPost(gomock.Eq(*publicNetworkCreate.ToSdk())).
-		Return(nil, WithResponse(200, WithBody(testutil.GenericBMCError)), nil).
+		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -176,7 +198,7 @@ func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.GenericBMCError, "create public-network", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "create public-network", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())

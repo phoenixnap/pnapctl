@@ -3,7 +3,6 @@ package publicnetwork
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -34,10 +33,10 @@ description: My custom server edit`,
 
 		response, httpResponse, err := networks.Client.PublicNetworksPost(*publicNetworkCreate)
 
-		if httpResponse != nil && httpResponse.StatusCode != 201 {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
-		} else if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+		if *generatedError != nil {
+			return *generatedError
 		} else {
 			return printer.PrintPublicNetworkResponse(response, commandName)
 		}
