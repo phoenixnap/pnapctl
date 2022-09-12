@@ -1,9 +1,10 @@
 package tables
 
 import (
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models/ipmodels"
-	"testing"
 )
 
 func TestToIpBlockTable(test_framework *testing.T) {
@@ -15,6 +16,6 @@ func TestToIpBlockTable(test_framework *testing.T) {
 	assert.Equal(test_framework, ipBlock.CidrBlockSize, table.CidrBlockSize)
 	assert.Equal(test_framework, ipBlock.Cidr, table.Cidr)
 	assert.Equal(test_framework, ipBlock.Status, table.Status)
-	assert.Equal(test_framework, ipBlock.AssignedResourceId, table.AssignedResourceId)
-	assert.Equal(test_framework, ipBlock.AssignedResourceType, table.AssignedResourceType)
+	assert.Equal(test_framework, DerefString(ipBlock.AssignedResourceId), table.AssignedResourceId)
+	assert.Equal(test_framework, DerefString(ipBlock.AssignedResourceType), table.AssignedResourceType)
 }
