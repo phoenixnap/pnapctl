@@ -15,7 +15,7 @@ var Client IpSdkClient
 type IpSdkClient interface {
 	// Ip Blocks
 	IpBlockPost(ipBlockCreate ipapisdk.IpBlockCreate) (*ipapisdk.IpBlock, *http.Response, error)
-	IpBlocksGet() ([]ipapisdk.IpBlock, *http.Response, error)
+	IpBlocksGet([]string) ([]ipapisdk.IpBlock, *http.Response, error)
 	IpBlocksGetById(ipBlockId string) (*ipapisdk.IpBlock, *http.Response, error)
 	IpBlocksIpBlockIdDelete(ipBlockId string) (*ipapisdk.DeleteIpBlockResult, *http.Response, error)
 	IpBlocksIpBlockIdPatch(ipBlockId string, ipBlockPatch ipapisdk.IpBlockPatch) (*ipapisdk.IpBlock, *http.Response, error)
@@ -64,8 +64,8 @@ func (m MainClient) IpBlockPost(ipBlockCreate ipapisdk.IpBlockCreate) (*ipapisdk
 	return m.IpBlocksApiClient.IpBlocksPost(context.Background()).IpBlockCreate(ipBlockCreate).Execute()
 }
 
-func (m MainClient) IpBlocksGet() ([]ipapisdk.IpBlock, *http.Response, error) {
-	return m.IpBlocksApiClient.IpBlocksGet(context.Background()).Execute()
+func (m MainClient) IpBlocksGet(tags []string) ([]ipapisdk.IpBlock, *http.Response, error) {
+	return m.IpBlocksApiClient.IpBlocksGet(context.Background()).Tag(tags).Execute()
 }
 
 func (m MainClient) IpBlocksGetById(ipBlockId string) (*ipapisdk.IpBlock, *http.Response, error) {

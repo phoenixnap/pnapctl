@@ -8,7 +8,7 @@ import (
 )
 
 var UpdateIpBlockCmd = &cobra.Command{
-	Use:   "update",
+	Use:   "ip-block",
 	Short: "Update an ip-block.",
 	Long:  `Update an ip-block.`,
 	Run: func(cmd *cobra.Command, args []string) {

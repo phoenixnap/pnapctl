@@ -104,7 +104,7 @@ func TestIpBlockPutTagIdNotFound(test_framework *testing.T) {
 	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'put ip-block tag' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command 'update ip-block tag' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 
 }
@@ -148,7 +148,7 @@ func TestIpBlockPutTagUnmarshallingFailure(test_framework *testing.T) {
 	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "put ip-block tag", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "update ip-block tag", err)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -164,7 +164,7 @@ func TestIpBlockPutTagFileReadingFailure(test_framework *testing.T) {
 	mockFileProcessor.
 		ReadFile(FILENAME, commandName).
 		Return(nil, ctlerrors.CLIError{
-			Message: "Command 'put ip-block tag' has been performed, but something went wrong. Error code: 0503",
+			Message: "Command 'update ip-block tag' has been performed, but something went wrong. Error code: 0503",
 		}).
 		Times(1)
 
@@ -172,7 +172,7 @@ func TestIpBlockPutTagFileReadingFailure(test_framework *testing.T) {
 	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "put ip-block tag", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "update ip-block tag", err)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -236,7 +236,7 @@ func TestIpBlockPutTagClientFailure(test_framework *testing.T) {
 	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "put ip-block tag", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "update ip-block tag", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())

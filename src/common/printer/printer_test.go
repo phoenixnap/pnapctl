@@ -398,17 +398,27 @@ func TestPrepareSshkeyListForPrintingTable(test_framework *testing.T) {
 func TestPrepareIpBlockForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
 	ipBlock := ipmodels.GenerateIpBlockSdk()
-	prepared := PrepareIpBlockForPrinting(ipBlock)
+	prepared := PrepareIpBlockForPrinting(ipBlock, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
 	assert.Equal(test_framework, outputType, "tables.IpBlock")
 }
 
+func TestPrepareIpBlockForPrintingShortTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	ipBlock := ipmodels.GenerateIpBlockSdk()
+	prepared := PrepareIpBlockForPrinting(ipBlock, false)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.IpBlockShort")
+}
+
 func TestPrepareIpBlockForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
 	ipBlock := ipmodels.GenerateIpBlockSdk()
-	prepared := PrepareIpBlockForPrinting(ipBlock)
+	prepared := PrepareIpBlockForPrinting(ipBlock, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -418,7 +428,7 @@ func TestPrepareIpBlockForPrintingNonTable(test_framework *testing.T) {
 func TestPrepareIpBlockListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
 	ipBlocks := ipmodels.GenerateIpBlockSdkList(1)
-	prepared := PrepareIpBlockListForPrinting(ipBlocks)
+	prepared := PrepareIpBlockListForPrinting(ipBlocks, true)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
 
@@ -428,7 +438,7 @@ func TestPrepareIpBlockListForPrintingTable(test_framework *testing.T) {
 func TestPrepareIpBlockListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
 	ipBlocks := ipmodels.GenerateIpBlockSdkList(1)
-	prepared := PrepareIpBlockListForPrinting(ipBlocks)
+	prepared := PrepareIpBlockListForPrinting(ipBlocks, true)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
 

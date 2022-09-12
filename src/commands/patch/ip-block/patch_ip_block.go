@@ -10,6 +10,8 @@ import (
 
 var Filename string
 
+var Full bool
+
 const commandName = "patch ip-block"
 
 var PatchIpBlockCmd = &cobra.Command{
@@ -41,7 +43,7 @@ Requires a file (yaml or json) containing the information needed to update the i
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintIpBlockResponse(response, commandName)
+			return printer.PrintIpBlockResponse(response, Full, commandName)
 		}
 	},
 }
@@ -50,4 +52,5 @@ func init() {
 	PatchIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 	PatchIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for patch")
 	PatchIpBlockCmd.MarkFlagRequired("filename")
+	PatchIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
 }

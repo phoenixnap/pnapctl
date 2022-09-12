@@ -11,6 +11,8 @@ import (
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
+var Full bool
+
 var commandName = "create ip-block"
 
 // CreateIpBlockCmd is the command for creating an ip block.
@@ -42,7 +44,7 @@ location: PHX`,
 		if *generatedError != nil {
 			return *generatedError
 		} else {
-			return printer.PrintIpBlockResponse(response, commandName)
+			return printer.PrintIpBlockResponse(response, Full, commandName)
 		}
 	},
 }
@@ -51,4 +53,5 @@ func init() {
 	CreateIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 	CreateIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
 	CreateIpBlockCmd.MarkFlagRequired("filename")
+	CreateIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
 }

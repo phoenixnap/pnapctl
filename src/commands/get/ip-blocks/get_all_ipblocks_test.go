@@ -18,12 +18,12 @@ func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
 	var IpBlockTables []interface{}
 
 	for _, ipBlock := range ipBlockList {
-		IpBlockTables = append(IpBlockTables, tables.ToIpBlockTable(ipBlock))
+		IpBlockTables = append(IpBlockTables, tables.ToShortIpBlockTable(ipBlock))
 	}
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksGet().
+		IpBlocksGet(tags).
 		Return(ipBlockList, WithResponse(200, WithBody(ipBlockList)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -39,7 +39,7 @@ func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
 func TestGetAllIpBlocksKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksGet().
+		IpBlocksGet(tags).
 		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{})
@@ -54,11 +54,11 @@ func TestGetAllIpBlocksPrinterFailure(test_framework *testing.T) {
 	var ipBlockTables []interface{}
 
 	for _, ipBlock := range ipBlockList {
-		ipBlockTables = append(ipBlockTables, tables.ToIpBlockTable(ipBlock))
+		ipBlockTables = append(ipBlockTables, tables.ToShortIpBlockTable(ipBlock))
 	}
 
 	PrepareIPMockClient(test_framework).
-		IpBlocksGet().
+		IpBlocksGet(tags).
 		Return(ipBlockList, WithResponse(200, WithBody(ipBlockList)), nil)
 
 	PrepareMockPrinter(test_framework).

@@ -52,9 +52,9 @@ func (mr *MockIpSdkClientMockRecorder) IpBlockPost(ipBlockCreate interface{}) *g
 }
 
 // IpBlocksGet mocks base method.
-func (m *MockIpSdkClient) IpBlocksGet() ([]ipapi.IpBlock, *http.Response, error) {
+func (m *MockIpSdkClient) IpBlocksGet(arg0 []string) ([]ipapi.IpBlock, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IpBlocksGet")
+	ret := m.ctrl.Call(m, "IpBlocksGet", arg0)
 	ret0, _ := ret[0].([]ipapi.IpBlock)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -62,9 +62,9 @@ func (m *MockIpSdkClient) IpBlocksGet() ([]ipapi.IpBlock, *http.Response, error)
 }
 
 // IpBlocksGet indicates an expected call of IpBlocksGet.
-func (mr *MockIpSdkClientMockRecorder) IpBlocksGet() *gomock.Call {
+func (mr *MockIpSdkClientMockRecorder) IpBlocksGet(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IpBlocksGet", reflect.TypeOf((*MockIpSdkClient)(nil).IpBlocksGet))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IpBlocksGet", reflect.TypeOf((*MockIpSdkClient)(nil).IpBlocksGet), arg0)
 }
 
 // IpBlocksGetById mocks base method.

@@ -1,7 +1,4 @@
-{
-    "tags": 
-    [{
-            "name" : "ip block tag name",
-            "value" : "ip block tag value"
-    }]
-}
+[{
+        "name" : "ip block tag name",
+        "value" : "ip block tag value"
+}]
