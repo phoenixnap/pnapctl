@@ -1,4 +1,4 @@
-package reservation
+package enable
 
 import (
 	"errors"
@@ -12,7 +12,7 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
-func TestAutoRenewEnableReservationSuccess(test_framework *testing.T) {
+func TestAutoRenewReservationEnableSuccess(test_framework *testing.T) {
 	// Mocking
 	reservation := billingmodels.GenerateReservation()
 	PrepareBillingMockClient(test_framework).
@@ -20,7 +20,7 @@ func TestAutoRenewEnableReservationSuccess(test_framework *testing.T) {
 		Return(reservation, WithResponse(200, WithBody(reservation)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tables.ShortReservationTableFromSdk(*reservation), "auto-renew enable reservation").
+		PrintOutput(tables.ShortReservationTableFromSdk(*reservation), "auto-renew reservation enable").
 		Return(nil)
 
 	// Run command
@@ -30,7 +30,7 @@ func TestAutoRenewEnableReservationSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestAutoRenewEnableReservationClientFailure(test_framework *testing.T) {
+func TestAutoRenewReservationEnableClientFailure(test_framework *testing.T) {
 	PrepareBillingMockClient(test_framework).
 		ReservationEnableAutoRenew(RESOURCEID).
 		Return(nil, nil, testutil.TestError)
@@ -39,13 +39,13 @@ func TestAutoRenewEnableReservationClientFailure(test_framework *testing.T) {
 	err := AutoRenewEnableReservationCmd.RunE(AutoRenewEnableReservationCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "auto-renew enable reservation", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "auto-renew reservation enable", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestAutoRenewEnableReservationKeycloakFailure(test_framework *testing.T) {
+func TestAutoRenewReservationEnableKeycloakFailure(test_framework *testing.T) {
 	PrepareBillingMockClient(test_framework).
 		ReservationEnableAutoRenew(RESOURCEID).
 		Return(nil, nil, testutil.TestKeycloakError)
@@ -57,7 +57,7 @@ func TestAutoRenewEnableReservationKeycloakFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, testutil.TestKeycloakError, err.Error())
 }
 
-func TestAutoRenewEnableReservationNotFoundFailure(test_framework *testing.T) {
+func TestAutoRenewReservationEnableNotFoundFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationEnableAutoRenew(RESOURCEID).
@@ -70,7 +70,7 @@ func TestAutoRenewEnableReservationNotFoundFailure(test_framework *testing.T) {
 	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
 }
 
-func TestAutoRenewEnableReservationBackendErrorFailure(test_framework *testing.T) {
+func TestAutoRenewReservationEnableBackendErrorFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationEnableAutoRenew(RESOURCEID).

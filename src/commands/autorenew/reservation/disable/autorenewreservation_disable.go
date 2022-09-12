@@ -1,4 +1,4 @@
-package reservation
+package disable
 
 import (
 	"github.com/spf13/cobra"
@@ -8,10 +8,10 @@ import (
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
-var commandName = "auto-renew disable reservation"
+var commandName = "auto-renew reservation disable"
 
 var AutoRenewDisableReservationCmd = &cobra.Command{
-	Use:          "reservation [RESERVATION_ID]",
+	Use:          "disable [RESERVATION_ID]",
 	Short:        "Disable auto-renew for a reservation",
 	SilenceUsage: true,
 	Args:         cobra.ExactArgs(1),
@@ -20,7 +20,7 @@ var AutoRenewDisableReservationCmd = &cobra.Command{
 Requires a file (yaml or json) containing the information needed to disable auto-renew.`,
 	Example: `
 # Disable auto-renew for a specific reservation
-pnapctl auto-renew disable reservation <RESERVATION_ID> --filename=<FILENAME>
+pnapctl auto-renew reservation disable <RESERVATION_ID> --filename=<FILENAME>
 
 # reservationAutoRenewDisable.yaml
 autoRenewDisableReasons: "disable reason"`,

@@ -4,8 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnapctl/commands/auto-renew/disable"
-	"phoenixnap.com/pnapctl/commands/auto-renew/enable"
+	"phoenixnap.com/pnapctl/commands/autorenew/reservation"
 )
 
 var AutoRenewCmd = &cobra.Command{
@@ -19,6 +18,5 @@ var AutoRenewCmd = &cobra.Command{
 }
 
 func init() {
-	AutoRenewCmd.AddCommand(disable.DisableAutoRenewCmd)
-	AutoRenewCmd.AddCommand(enable.EnableAutoRenewCmd)
+	AutoRenewCmd.AddCommand(reservation.AutoRenewReservationCmd)
 }

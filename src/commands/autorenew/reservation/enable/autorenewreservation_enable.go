@@ -1,4 +1,4 @@
-package reservation
+package enable
 
 import (
 	"github.com/spf13/cobra"
@@ -7,7 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
-var commandName = "auto-renew enable reservation"
+var commandName = "auto-renew reservation enable"
 
 var AutoRenewEnableReservationCmd = &cobra.Command{
 	Use:          "reservation [RESERVATION_ID]",
@@ -17,7 +17,7 @@ var AutoRenewEnableReservationCmd = &cobra.Command{
 	Long:         `Enable auto-renew for a reservation.`,
 	Example: `
 # Enable auto-renew for a specific reservation
-pnapctl auto-renew enable reservation <RESERVATION_ID>`,
+pnapctl auto-renew reservation enable <RESERVATION_ID>`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		response, httpResponse, err := billing.Client.ReservationEnableAutoRenew(args[0])
 		generatedError := utils.CheckForErrors(httpResponse, err, commandName)
