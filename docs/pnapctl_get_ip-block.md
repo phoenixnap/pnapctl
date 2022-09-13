@@ -29,8 +29,10 @@ pnapctl get ip-block <IP_BLOCK_ID> [--output <OUTPUT_TYPE>]
 ### Options
 
 ```
-  -h, --help            help for ip-block
-  -o, --output string   Define the output format. Possible values: table, json, yaml (default "table")
+      --full              Shows all ip-block details
+  -h, --help              help for ip-block
+  -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
+      --tag stringArray   Filter by tag
 ```
 
 ### Options inherited from parent commands

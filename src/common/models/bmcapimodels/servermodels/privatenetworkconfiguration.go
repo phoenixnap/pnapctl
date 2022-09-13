@@ -22,14 +22,14 @@ func (privateNetConf *PrivateNetworkConfiguration) toSdk() *bmcapisdk.PrivateNet
 	}
 }
 
-func privateNetworkConfigurationFromSdk(privateNetworkConfnfiguration *bmcapisdk.PrivateNetworkConfiguration) *PrivateNetworkConfiguration {
-	if privateNetworkConfnfiguration == nil {
+func privateNetworkConfigurationFromSdk(privateNetworkConfiguration *bmcapisdk.PrivateNetworkConfiguration) *PrivateNetworkConfiguration {
+	if privateNetworkConfiguration == nil {
 		return nil
 	}
 
 	return &PrivateNetworkConfiguration{
-		GatewayAddress:    privateNetworkConfnfiguration.GatewayAddress,
-		ConfigurationType: privateNetworkConfnfiguration.ConfigurationType,
-		PrivateNetworks:   serverPrivateNetworkListFromSdk(privateNetworkConfnfiguration.PrivateNetworks),
+		GatewayAddress:    privateNetworkConfiguration.GatewayAddress,
+		ConfigurationType: privateNetworkConfiguration.ConfigurationType,
+		PrivateNetworks:   serverPrivateNetworkListFromSdk(privateNetworkConfiguration.PrivateNetworks),
 	}
 }

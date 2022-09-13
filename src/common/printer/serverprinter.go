@@ -26,6 +26,16 @@ func PrintServerPrivateNetwork(serverPrivateNetwork *bmcapisdk.ServerPrivateNetw
 	}
 }
 
+func PrintServerPublicNetwork(serverPublicNetwork *bmcapisdk.ServerPublicNetwork, commandName string) error {
+	table := OutputIsTable()
+
+	if table {
+		return MainPrinter.PrintOutput(tables.ToServerPublicNetworkTable(*serverPublicNetwork), commandName)
+	} else {
+		return MainPrinter.PrintOutput(serverPublicNetwork, commandName)
+	}
+}
+
 func PrintServerIpBlock(serverIpBlock *bmcapisdk.ServerIpBlock, commandName string) error {
 	table := OutputIsTable()
 
