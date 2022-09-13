@@ -10,7 +10,7 @@ import (
 var commandName = "auto-renew reservation enable"
 
 var AutoRenewEnableReservationCmd = &cobra.Command{
-	Use:          "reservation [RESERVATION_ID]",
+	Use:          "enable [RESERVATION_ID]",
 	Short:        "Enable auto-renew for a reservation",
 	SilenceUsage: true,
 	Args:         cobra.ExactArgs(1),

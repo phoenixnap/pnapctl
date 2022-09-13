@@ -27,5 +27,5 @@ pnapctl auto-renew reservation [flags]
 
 * [pnapctl auto-renew](pnapctl_auto-renew.md)	 - Modify auto-renew for a resource.
 * [pnapctl auto-renew reservation disable](pnapctl_auto-renew_reservation_disable.md)	 - Disable auto-renew for a reservation
-* [pnapctl auto-renew reservation reservation](pnapctl_auto-renew_reservation_reservation.md)	 - Enable auto-renew for a reservation
+* [pnapctl auto-renew reservation enable](pnapctl_auto-renew_reservation_enable.md)	 - Enable auto-renew for a reservation
 

@@ -1,4 +1,4 @@
-## pnapctl auto-renew enable reservation
+## pnapctl auto-renew reservation enable
 
 Enable auto-renew for a reservation
 
@@ -7,7 +7,7 @@ Enable auto-renew for a reservation
 Enable auto-renew for a reservation.
 
 ```
-pnapctl auto-renew enable reservation [RESERVATION_ID] [flags]
+pnapctl auto-renew reservation enable [RESERVATION_ID] [flags]
 ```
 
 ### Examples
@@ -15,14 +15,14 @@ pnapctl auto-renew enable reservation [RESERVATION_ID] [flags]
 ```
 
 # Enable auto-renew for a specific reservation
-pnapctl auto-renew enable reservation <RESERVATION_ID>
+pnapctl auto-renew reservation enable <RESERVATION_ID>
 ```
 
 ### Options
 
 ```
       --full            Shows all reservation details
-  -h, --help            help for reservation
+  -h, --help            help for enable
   -o, --output string   Define the output format. Possible values: table, json, yaml (default "table")
 ```
 
@@ -35,5 +35,5 @@ pnapctl auto-renew enable reservation <RESERVATION_ID>
 
 ### SEE ALSO
 
-* [pnapctl auto-renew enable](pnapctl_auto-renew_enable.md)	 - Enable auto-renew for a resource.
+* [pnapctl auto-renew reservation](pnapctl_auto-renew_reservation.md)	 - autorenew for a resource.
 
