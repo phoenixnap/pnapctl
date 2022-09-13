@@ -14,7 +14,7 @@ import (
 
 func TestGetIpBlocksSuccess(test_framework *testing.T) {
 	ipBlock := ipmodels.GenerateIpBlockSdk()
-	tableIpBlock := tables.ToIpBlockTable(ipBlock)
+	tableIpBlock := tables.ToShortIpBlockTable(ipBlock)
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
@@ -69,7 +69,7 @@ func TestGetIpBlocksKeycloakFailure(test_framework *testing.T) {
 
 func TestGetIpBlocksPrinterFailure(test_framework *testing.T) {
 	ipBlock := ipmodels.GenerateIpBlockSdk()
-	tableIpBlock := tables.ToIpBlockTable(ipBlock)
+	tableIpBlock := tables.ToShortIpBlockTable(ipBlock)
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).

@@ -6,32 +6,34 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintIpBlockResponse(ipBlock *ipapisdk.IpBlock, commandName string) error {
-	ipBlockToPrint := PrepareIpBlockForPrinting(*ipBlock)
+func PrintIpBlockResponse(ipBlock *ipapisdk.IpBlock, full bool, commandName string) error {
+	ipBlockToPrint := PrepareIpBlockForPrinting(*ipBlock, full)
 	return MainPrinter.PrintOutput(ipBlockToPrint, commandName)
 }
 
-func PrintIpBlockListResponse(ipBlocks []ipapisdk.IpBlock, commandName string) error {
-	ipBlockListToPrint := PrepareIpBlockListForPrinting(ipBlocks)
+func PrintIpBlockListResponse(ipBlocks []ipapisdk.IpBlock, full bool, commandName string) error {
+	ipBlockListToPrint := PrepareIpBlockListForPrinting(ipBlocks, full)
 	return MainPrinter.PrintOutput(ipBlockListToPrint, commandName)
 }
 
-func PrepareIpBlockListForPrinting(ipBlocks []ipapisdk.IpBlock) []interface{} {
+func PrepareIpBlockListForPrinting(ipBlocks []ipapisdk.IpBlock, full bool) []interface{} {
 	var ipBlockList []interface{}
 
 	for _, ipBlock := range ipBlocks {
-		ipBlockList = append(ipBlockList, PrepareIpBlockForPrinting(ipBlock))
+		ipBlockList = append(ipBlockList, PrepareIpBlockForPrinting(ipBlock, full))
 	}
 
 	return ipBlockList
 }
 
-func PrepareIpBlockForPrinting(ipBlock ipapisdk.IpBlock) interface{} {
+func PrepareIpBlockForPrinting(ipBlock ipapisdk.IpBlock, full bool) interface{} {
 	table := OutputIsTable()
 
 	switch {
-	case table:
+	case table && full:
 		return tables.ToIpBlockTable(ipBlock)
+	case table:
+		return tables.ToShortIpBlockTable(ipBlock)
 	default:
 		return ipmodels.IpBlockFromSdk(ipBlock)
 	}

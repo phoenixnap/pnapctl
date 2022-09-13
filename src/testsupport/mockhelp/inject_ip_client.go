@@ -1,8 +1,9 @@
 package mockhelp
 
 import (
-	"phoenixnap.com/pnapctl/common/client/ip"
 	"testing"
+
+	"phoenixnap.com/pnapctl/common/client/ip"
 
 	"github.com/golang/mock/gomock"
 	"phoenixnap.com/pnapctl/testsupport/mocks/sdkmocks"

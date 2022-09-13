@@ -32,9 +32,44 @@ func GenerateIpBlockCreateCLI() IpBlockCreate {
 	}
 }
 
+func GenerateIpBlockPatchCLI() IpBlockPatch {
+	return IpBlockPatch{
+		Description: testutil.RandSeqPointer(10),
+	}
+}
+
+func GenerateIpBlockTagCLI() ipapisdk.TagAssignmentRequest {
+	return ipapisdk.TagAssignmentRequest{
+		Name:  testutil.RandSeq(10),
+		Value: testutil.RandSeqPointer(10),
+	}
+}
+
+func GenerateIpBlockTagListCLI(n int) []ipapisdk.TagAssignmentRequest {
+	var TagAssignmentRequestList []ipapisdk.TagAssignmentRequest
+
+	for i := 0; i < n; i++ {
+		TagAssignmentRequestList = append(TagAssignmentRequestList, GenerateIpBlockTagCLI())
+	}
+
+	return TagAssignmentRequestList
+}
+
 func GenerateDeleteIpBlockResultSdk() *ipapisdk.DeleteIpBlockResult {
 	return &ipapisdk.DeleteIpBlockResult{
 		Result:    testutil.RandSeq(10),
 		IpBlockId: testutil.RandSeq(10),
+	}
+}
+
+func GeneratePutTagIpBlockSdk() *ipapisdk.IpBlock {
+	return &ipapisdk.IpBlock{
+		Id:                   testutil.RandSeq(10),
+		Location:             testutil.RandSeq(10),
+		CidrBlockSize:        testutil.RandSeq(10),
+		Cidr:                 testutil.RandSeq(10),
+		Status:               testutil.RandSeq(10),
+		AssignedResourceId:   testutil.RandSeqPointer(10),
+		AssignedResourceType: testutil.RandSeqPointer(10),
 	}
 }
