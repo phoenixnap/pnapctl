@@ -26,6 +26,5 @@ pnapctl auto-renew [flags]
 ### SEE ALSO
 
 * [pnapctl](pnapctl.md)	 - pnapctl creates new and manages existing bare metal servers.
-* [pnapctl auto-renew disable](pnapctl_auto-renew_disable.md)	 - Disable auto-renew for a resource.
-* [pnapctl auto-renew enable](pnapctl_auto-renew_enable.md)	 - Enable auto-renew for a resource.
+* [pnapctl auto-renew reservation](pnapctl_auto-renew_reservation.md)	 - autorenew for a resource.
 
