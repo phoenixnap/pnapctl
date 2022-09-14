@@ -3,7 +3,11 @@ package commands
 import (
 	"fmt"
 	"os"
+
+	autorenew "phoenixnap.com/pnapctl/commands/autorenew"
+	"phoenixnap.com/pnapctl/commands/convert"
 	"phoenixnap.com/pnapctl/commands/deprovision"
+	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/client/ip"
 
 	"github.com/mitchellh/go-homedir"
@@ -80,6 +84,8 @@ func init() {
 	RootCmd.AddCommand(version.VersionCmd)
 	RootCmd.AddCommand(requestedit.RequestEditCmd)
 	RootCmd.AddCommand(tag.TagCmd)
+	RootCmd.AddCommand(autorenew.AutoRenewCmd)
+	RootCmd.AddCommand(convert.ConvertCmd)
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Warn (default) to Debug.")
@@ -152,6 +158,7 @@ func initConfig() {
 		customTagsHostname := viper.GetString("tagsHostname")
 		customNetworksHostname := viper.GetString("networksHostname")
 		customIpHostname := viper.GetString("ipHostname")
+		customBillingHostname := viper.GetString("billingHostname")
 		customTokenUrl := viper.GetString("tokenURL")
 
 		bmcapi.Client = bmcapi.NewMainClient(clientId, clientSecret, customBmcApiHostname, customTokenUrl)
@@ -160,6 +167,7 @@ func initConfig() {
 		tags.Client = tags.NewMainClient(clientId, clientSecret, customTagsHostname, customTokenUrl)
 		networks.Client = networks.NewMainClient(clientId, clientSecret, customNetworksHostname, customTokenUrl)
 		ip.Client = ip.NewMainClient(clientId, clientSecret, customIpHostname, customTokenUrl)
+		billing.Client = billing.NewMainClient(clientId, clientSecret, customBillingHostname, customTokenUrl)
 	}
 }
 

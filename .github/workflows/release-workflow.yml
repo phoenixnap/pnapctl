@@ -36,6 +36,7 @@ jobs:
   component-tests:
     name: Component Tests
     runs-on: ubuntu-latest
+    container: golang:1.19
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2

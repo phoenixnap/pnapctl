@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"testing"
 
+	"phoenixnap.com/pnapctl/common/models/billingmodels"
 	"phoenixnap.com/pnapctl/common/models/ipmodels"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"phoenixnap.com/pnapctl/common/models/auditmodels"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/quotamodels"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
@@ -444,6 +446,140 @@ func TestPrepareIpBlockListForPrinting(test_framework *testing.T) {
 
 	assert.Equal(test_framework, outputType, "ipmodels.IpBlock")
 	assert.Equal(test_framework, len(prepared), 1)
+}
+
+// Billing
+
+func TestPrepareRatedUsageRecordForPrintingNonTable_Bandwidth(test_framework *testing.T) {
+	OutputFormat = "json"
+	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
+		BandwidthRecord: billingmodels.GenerateBandwidthRecordSdk(),
+	}
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*ratedusageoneof.BandwidthRecord")
+}
+
+func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framework *testing.T) {
+	OutputFormat = "json"
+	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
+		OperatingSystemRecord: billingmodels.GenerateOperatingSystemRecordSdk(),
+	}
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*ratedusageoneof.OperatingSystemRecord")
+}
+
+func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework *testing.T) {
+	OutputFormat = "json"
+	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
+		PublicSubnetRecord: billingmodels.GeneratePublicSubnetRecordSdk(),
+	}
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*ratedusageoneof.PublicSubnetRecord")
+}
+
+func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testing.T) {
+	OutputFormat = "json"
+	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
+		ServerRecord: billingmodels.GenerateServerRecordSdk(),
+	}
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*ratedusageoneof.ServerRecord")
+}
+
+func TestPrepareRatedUsageRecordForPrintingNonTable_Short(test_framework *testing.T) {
+	OutputFormat = "json"
+	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
+		BandwidthRecord: billingmodels.GenerateBandwidthRecordSdk(),
+	}
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, false)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*billingmodels.ShortRatedUsage")
+}
+
+func TestPrepareRatedUsageRecordForPrintingTableFull(test_framework *testing.T) {
+	OutputFormat = "table"
+	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
+		ServerRecord: billingmodels.GenerateServerRecordSdk(),
+	}
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*tables.RatedUsageRecordTable")
+}
+
+func TestPrepareRatedUsageRecordForPrintingTableShort(test_framework *testing.T) {
+	OutputFormat = "table"
+	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
+		ServerRecord: billingmodels.GenerateServerRecordSdk(),
+	}
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, false)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*tables.ShortRatedUsageRecordTable")
+}
+
+func TestPrepareProductForPrintingNonTable_BandwidthProduct(test_framework *testing.T) {
+	OutputFormat = "json"
+	product := billingapi.ProductsGet200ResponseInner{
+		Product: billingmodels.GenerateBandwidthProduct(),
+	}
+	prepared := PrepareProductForPrinting(product)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*productoneof.Product")
+}
+
+func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework *testing.T) {
+	OutputFormat = "json"
+	product := billingapi.ProductsGet200ResponseInner{
+		Product: billingmodels.GenerateOperatingSystemProduct(),
+	}
+	prepared := PrepareProductForPrinting(product)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*productoneof.Product")
+}
+
+func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing.T) {
+	OutputFormat = "json"
+	product := billingapi.ProductsGet200ResponseInner{
+		ServerProduct: billingmodels.GenerateServerProduct(),
+	}
+	prepared := PrepareProductForPrinting(product)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*productoneof.ServerProduct")
+}
+
+func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
+	OutputFormat = "table"
+	product := billingapi.ProductsGet200ResponseInner{
+		Product: billingmodels.GenerateBandwidthProduct(),
+	}
+	prepared := PrepareProductForPrinting(product)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*tables.ProductTable")
 }
 
 func ExamplePrintOutputTableFormatEmpty() {

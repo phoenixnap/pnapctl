@@ -1,13 +1,27 @@
 package tables
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
-func DerefString(str *string) string {
-	if str == nil {
+type actuallyString interface {
+	~string
+}
+
+func DerefString[T actuallyString](item *T) string {
+	if item == nil {
+		return ""
+	}
+	return string(*item)
+}
+
+func DerefStringable[T fmt.Stringer](item *T) string {
+	if item == nil {
 		return ""
 	}
 
-	return *str
+	return (*item).String()
 }
 
 func DerefTimeAsString(time *time.Time) string {

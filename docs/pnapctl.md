@@ -22,6 +22,8 @@ pnapctl [flags]
 
 ### SEE ALSO
 
+* [pnapctl auto-renew](pnapctl_auto-renew.md)	 - Modify auto-renew for a resource.
+* [pnapctl convert](pnapctl_convert.md)	 - Convert a resource.
 * [pnapctl create](pnapctl_create.md)	 - Create a resource.
 * [pnapctl delete](pnapctl_delete.md)	 - Delete a resource.
 * [pnapctl deprovision](pnapctl_deprovision.md)	 - Deprovision a resource.

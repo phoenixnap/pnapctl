@@ -1,25 +1,19 @@
-## pnapctl delete server
+## pnapctl convert
 
-Deletes a specific server.
+Convert a resource.
 
 ### Synopsis
 
-Deletes a specific server.
+Convert a resource.
 
 ```
-pnapctl delete server SERVER_ID [flags]
-```
-
-### Examples
-
-```
-pnapctl delete server <SERVER_ID>
+pnapctl convert [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help   help for server
+  -h, --help   help for convert
 ```
 
 ### Options inherited from parent commands
@@ -31,5 +25,6 @@ pnapctl delete server <SERVER_ID>
 
 ### SEE ALSO
 
-* [pnapctl delete](pnapctl_delete.md)	 - Delete a resource.
+* [pnapctl](pnapctl.md)	 - pnapctl creates new and manages existing bare metal servers.
+* [pnapctl convert reservation](pnapctl_convert_reservation.md)	 - Convert a reservation
 

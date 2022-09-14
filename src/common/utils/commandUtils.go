@@ -1,9 +1,12 @@
 package utils
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/printer"
 )
 
 func is2xxSuccessful(statusCode int) bool {
@@ -23,4 +26,12 @@ func CheckForErrors(httpResponse *http.Response, err error, commandName string) 
 	}
 
 	return &generatedError
+}
+
+func SetupOutputFlag(cmd *cobra.Command) {
+	cmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+}
+
+func SetupFullFlag(cmd *cobra.Command, full *bool, resource string) {
+	cmd.Flags().BoolVar(full, "full", false, fmt.Sprintf("Shows all %s details", resource))
 }

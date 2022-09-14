@@ -9,6 +9,7 @@ import (
 	"github.com/landoop/tableprinter"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	iter "phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 // The main printer used by the application.
@@ -93,4 +94,27 @@ func printTable(body interface{}, tblprinter *tableprinter.Printer, commandName 
 
 func OutputIsTable() bool {
 	return OutputFormat != "json" && OutputFormat != "yaml"
+}
+
+// Used in order to pass a 'prepare' function that uses 'full' into [iterutils.Map].
+//
+//	func PrepareServer(srv Server, full bool) interface{} {
+//		// ...
+//	}
+//
+//	serversToPrint := iterutils.Map(sdkServers, WithFull(true, PrepareServer))
+func withFull[T any](full bool, mapper iter.Currier[T, bool, interface{}]) iter.Mapper[T, interface{}] {
+	return iter.Curry(mapper, full)
+}
+
+// Prepares a OneOf response for printing. It works by:
+//  1. Mapping each item by using the mapper passed.
+//  2. Filtering out all 'nil' values (aka unrecognized types)
+//  3. Dereferencing every value (since we removed all 'nil' values)
+//
+// Step 3. is required as a pointer to a table struct will not print correctly.
+func prepareOneOfWith[In any](in []In, mapper iter.Mapper[In, interface{}]) (out []interface{}) {
+	out = iter.Map(in, mapper)
+	out = iter.Filter(out, iter.Not(iter.IsNil))
+	return iter.DerefInterface(out)
 }

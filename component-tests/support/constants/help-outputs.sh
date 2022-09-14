@@ -7,7 +7,9 @@ Usage:
   pnapctl [command]
 
 Available Commands:
+  auto-renew   Modify auto-renew for a resource.
   completion   generate the autocompletion script for the specified shell
+  convert      Convert a resource.
   create       Create a resource.
   delete       Delete a resource.
   deprovision  Deprovision a resource.
@@ -39,14 +41,19 @@ Usage:
   pnapctl get [command]
 
 Available Commands:
-  cluster         Retrieve one or all clusters.
-  event           Retrieve all events relating to your account.
-  ip-block        Retrieve one or all ip-blocks for your account.
-  private-network Retrieve one or all private networks.
-  quota           Retrieve one or all quotas for your account.
-  server          Retrieve one or all servers.
-  ssh-key         Retrieve one or all ssh-keys for your account.
-  tag             Retrieve one or all tags.
+  account-billing-configuration Retrieve your account billing configuration
+  cluster                       Retrieve one or all clusters.
+  event                         Retrieve all events relating to your account.
+  ip-block                      Retrieve one or all ip-blocks for your account.
+  private-network               Retrieve one or all private networks.
+  product                       Retrieves all products.
+  product-availabilities        Retrieve product availabilities
+  quota                         Retrieve one or all quotas for your account.
+  rated-usage                   Retrieve all rated-usages for the given time period.
+  reservation                   Retrieve one or all reservations
+  server                        Retrieve one or all servers.
+  ssh-key                       Retrieve one or all ssh-keys for your account.
+  tag                           Retrieve one or all tags.
 
 Flags:
   -h, --help   help for get
@@ -67,6 +74,7 @@ Available Commands:
   cluster                Create a new cluster.
   ip-block               Create a new ip-block.
   private-network        Create a new private network.
+  reservation            Create a new reservation.
   server                 Create a new server.
   server-ip-block        Create a new ip-block for server.
   server-private-network Create a new private network for server.
