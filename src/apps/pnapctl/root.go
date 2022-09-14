@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	autorenew "phoenixnap.com/pnapctl/commands/auto-renew"
+	autorenew "phoenixnap.com/pnapctl/commands/autorenew"
 	"phoenixnap.com/pnapctl/commands/convert"
 	"phoenixnap.com/pnapctl/commands/deprovision"
 	"phoenixnap.com/pnapctl/common/client/billing"

@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	ip_blocks "phoenixnap.com/pnapctl/commands/update/ip-blocks"
 	"phoenixnap.com/pnapctl/commands/update/privatenetwork"
 	"phoenixnap.com/pnapctl/commands/update/sshkey"
 )
@@ -21,4 +22,5 @@ var UpdateCmd = &cobra.Command{
 func init() {
 	UpdateCmd.AddCommand(sshkey.UpdateSshKeyCmd)
 	UpdateCmd.AddCommand(privatenetwork.UpdatePrivateNetworkCmd)
+	UpdateCmd.AddCommand(ip_blocks.UpdateIpBlockCmd)
 }

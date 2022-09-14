@@ -27,7 +27,7 @@ func NewReservationsGetQueryParams(productCategory string) (params *Reservations
 
 func (queryParams *ReservationsGetQueryParams) AttachToRequest(request billingapi.ApiReservationsGetRequest) billingapi.ApiReservationsGetRequest {
 	if queryParams.ProductCategory != nil {
-		request.ProductCategory(*queryParams.ProductCategory)
+		request = request.ProductCategory(*queryParams.ProductCategory)
 	}
 
 	return request

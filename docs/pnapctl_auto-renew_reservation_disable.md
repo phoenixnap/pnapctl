@@ -1,4 +1,4 @@
-## pnapctl auto-renew disable reservation
+## pnapctl auto-renew reservation disable
 
 Disable auto-renew for a reservation
 
@@ -9,7 +9,7 @@ Disable auto-renew for a reservation.
 Requires a file (yaml or json) containing the information needed to disable auto-renew.
 
 ```
-pnapctl auto-renew disable reservation [RESERVATION_ID] [flags]
+pnapctl auto-renew reservation disable [RESERVATION_ID] [flags]
 ```
 
 ### Examples
@@ -17,7 +17,7 @@ pnapctl auto-renew disable reservation [RESERVATION_ID] [flags]
 ```
 
 # Disable auto-renew for a specific reservation
-pnapctl auto-renew disable reservation <RESERVATION_ID> --filename=<FILENAME>
+pnapctl auto-renew reservation disable <RESERVATION_ID> --filename=<FILENAME>
 
 # reservationAutoRenewDisable.yaml
 autoRenewDisableReasons: "disable reason"
@@ -28,7 +28,7 @@ autoRenewDisableReasons: "disable reason"
 ```
   -f, --filename string   File containing required information for creation
       --full              Shows all reservation details
-  -h, --help              help for reservation
+  -h, --help              help for disable
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
 ```
 
@@ -41,5 +41,5 @@ autoRenewDisableReasons: "disable reason"
 
 ### SEE ALSO
 
-* [pnapctl auto-renew disable](pnapctl_auto-renew_disable.md)	 - Disable auto-renew for a resource.
+* [pnapctl auto-renew reservation](pnapctl_auto-renew_reservation.md)	 - autorenew for a resource.
 

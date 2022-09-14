@@ -139,6 +139,7 @@ Usage:
   pnapctl patch [command]
 
 Available Commands:
+  ip-block    Updates a specific ip-block.
   server      Patch a server.
   tag         Patch/Update a tag.
 
@@ -325,6 +326,7 @@ Usage:
   pnapctl update [command]
 
 Available Commands:
+  ip-block        Update an ip-block.
   private-network Update a private network.
   ssh-key         Update an ssh-key.
 

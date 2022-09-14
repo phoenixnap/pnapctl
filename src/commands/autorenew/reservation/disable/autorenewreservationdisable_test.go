@@ -1,4 +1,4 @@
-package reservation
+package disable
 
 import (
 	"encoding/json"
@@ -14,7 +14,7 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
-func TestAutoRenewDisableReservationSuccessYAML(test_framework *testing.T) {
+func TestAutoRenewReservationDisableSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
 	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestCli()
 
@@ -43,7 +43,7 @@ func TestAutoRenewDisableReservationSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestAutoRenewDisableReservationSuccessJSON(test_framework *testing.T) {
+func TestAutoRenewReservationDisableSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
 	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestCli()
 
@@ -72,7 +72,7 @@ func TestAutoRenewDisableReservationSuccessJSON(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestAutoRenewDisableReservationFileNotFoundFailure(test_framework *testing.T) {
+func TestAutoRenewReservationDisableFileNotFoundFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	PrepareMockFileProcessor(test_framework).
@@ -90,7 +90,7 @@ func TestAutoRenewDisableReservationFileNotFoundFailure(test_framework *testing.
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestAutoRenewDisableReservationUnmarshallingFailure(test_framework *testing.T) {
+func TestAutoRenewReservationDisableUnmarshallingFailure(test_framework *testing.T) {
 	// Invalid contents of the file
 	filecontents := []byte(`reservation? ["maybe"]`)
 
@@ -105,13 +105,13 @@ func TestAutoRenewDisableReservationUnmarshallingFailure(test_framework *testing
 	err := AutoRenewDisableReservationCmd.RunE(AutoRenewDisableReservationCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "auto-renew disable reservation", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "auto-renew reservation disable", err)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestAutoRenewDisableReservationBackendErrorFailure(test_framework *testing.T) {
+func TestAutoRenewReservationDisableBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
 	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestCli()
 
@@ -141,7 +141,7 @@ func TestAutoRenewDisableReservationBackendErrorFailure(test_framework *testing.
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestAutoRenewDisableReservationClientFailure(test_framework *testing.T) {
+func TestAutoRenewReservationDisableClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestCli()
 
@@ -171,7 +171,7 @@ func TestAutoRenewDisableReservationClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestAutoRenewDisableReservationKeycloakFailure(test_framework *testing.T) {
+func TestAutoRenewReservationDisableKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
 	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestCli()
 

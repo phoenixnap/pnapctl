@@ -65,14 +65,14 @@ func NewProductAvailabilityGetQueryParams(
 
 func (queryParams *ProductAvailabilityGetQueryParams) AttachToRequest(request billingapi.ApiProductAvailabilityGetRequest) billingapi.ApiProductAvailabilityGetRequest {
 	if queryParams.ProductCategory != nil {
-		request.ProductCategory(queryParams.ProductCategory)
+		request = request.ProductCategory(queryParams.ProductCategory)
 	}
 	if queryParams.ProductCode != nil {
-		request.ProductCode(queryParams.ProductCode)
+		request = request.ProductCode(queryParams.ProductCode)
 	}
-	request.ShowOnlyMinQuantityAvailable(queryParams.ShowOnlyMinQuantityAvailable)
+	request = request.ShowOnlyMinQuantityAvailable(queryParams.ShowOnlyMinQuantityAvailable)
 	if queryParams.Location != nil {
-		request.Location(queryParams.Location)
+		request = request.Location(queryParams.Location)
 	}
 	return request
 }

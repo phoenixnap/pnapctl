@@ -14,6 +14,8 @@ import (
 const commandName string = "get ip-blocks"
 
 var ID string
+var tags []string
+var Full bool
 
 var GetIpBlockCmd = &cobra.Command{
 	Use:          "ip-block [IP_BLOCK_ID]",
@@ -49,7 +51,7 @@ func getIpBlocks(ipBlockId string) error {
 	var ipBlocks []ipapisdk.IpBlock
 
 	if ipBlockId == "" {
-		ipBlocks, httpResponse, err = ip.Client.IpBlocksGet()
+		ipBlocks, httpResponse, err = ip.Client.IpBlocksGet(tags)
 	} else {
 		ipBlock, httpResponse, err = ip.Client.IpBlocksGetById(ipBlockId)
 	}
@@ -60,13 +62,15 @@ func getIpBlocks(ipBlockId string) error {
 		return *generatedError
 	} else {
 		if ipBlockId == "" {
-			return printer.PrintIpBlockListResponse(ipBlocks, commandName)
+			return printer.PrintIpBlockListResponse(ipBlocks, Full, commandName)
 		} else {
-			return printer.PrintIpBlockResponse(ipBlock, commandName)
+			return printer.PrintIpBlockResponse(ipBlock, Full, commandName)
 		}
 	}
 }
 
 func init() {
 	GetIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	GetIpBlockCmd.PersistentFlags().StringArrayVar(&tags, "tag", nil, "Filter by tag")
+	GetIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
 }
