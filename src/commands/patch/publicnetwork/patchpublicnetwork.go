@@ -31,10 +31,6 @@ description: My custom server edit`,
 			return err
 		}
 
-		// fmt.Printf("ID: %s\nREQUEST: n:%s, d:%s\n", args[0], publicNetworkPatch.GetName(), publicNetworkPatch.GetDescription())
-
-		// return nil
-
 		response, httpResponse, err := networks.Client.PublicNetworkPatch(args[0], *publicNetworkPatch)
 
 		if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
