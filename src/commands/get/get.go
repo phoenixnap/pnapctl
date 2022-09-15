@@ -11,6 +11,7 @@ import (
 	"phoenixnap.com/pnapctl/commands/get/privatenetwork"
 	product_availability "phoenixnap.com/pnapctl/commands/get/product-availability"
 	"phoenixnap.com/pnapctl/commands/get/products"
+	"phoenixnap.com/pnapctl/commands/get/publicnetwork"
 	"phoenixnap.com/pnapctl/commands/get/quotas"
 	rated_usage "phoenixnap.com/pnapctl/commands/get/rated-usage"
 	"phoenixnap.com/pnapctl/commands/get/reservations"
@@ -37,6 +38,7 @@ func init() {
 	GetCmd.AddCommand(tags.GetTagsCmd)
 	GetCmd.AddCommand(sshkeys.GetSshKeysCmd)
 	GetCmd.AddCommand(privatenetwork.GetPrivateNetworksCmd)
+	GetCmd.AddCommand(publicnetwork.GetPublicNetworksCmd)
 	GetCmd.AddCommand(ip_blocks.GetIpBlockCmd)
 	GetCmd.AddCommand(rated_usage.GetRatedUsageCmd)
 	GetCmd.AddCommand(products.GetProductsCmd)

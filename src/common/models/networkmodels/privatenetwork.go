@@ -1,7 +1,10 @@
 package networkmodels
 
 import (
+	"time"
+
 	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 type PrivateNetwork struct {
@@ -14,6 +17,8 @@ type PrivateNetwork struct {
 	LocationDefault bool                   `json:"locationDefault" yaml:"locationDefault"`
 	Cidr            string                 `json:"cidr" yaml:"cidr"`
 	Servers         []PrivateNetworkServer `json:"server" yaml:"server"`
+	Memberships     []NetworkMembership    `json:"memberships" yaml:"memberships"`
+	CreatedOn       time.Time              `json:"createdOn" yaml:"createdOn"`
 }
 
 func PrivateNetworkFromSdk(network networksdk.PrivateNetwork) PrivateNetwork {
@@ -33,5 +38,7 @@ func PrivateNetworkFromSdk(network networksdk.PrivateNetwork) PrivateNetwork {
 		LocationDefault: network.LocationDefault,
 		Cidr:            network.Cidr,
 		Servers:         servers,
+		Memberships:     iterutils.Map(network.Memberships, NetworkMembershipFromSdk),
+		CreatedOn:       network.CreatedOn,
 	}
 }

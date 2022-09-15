@@ -582,6 +582,46 @@ func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
 	assert.Equal(test_framework, outputType, "*tables.ProductTable")
 }
 
+func TestPreparePublicNetworkForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	publicNetwork := networkmodels.GeneratePublicNetworkSdk()
+	prepared := PreparePublicNetworkForPrinting(publicNetwork)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.PublicNetworkTable")
+}
+
+func TestPreparePublicNetworkForPrintingNonTable(test_framework *testing.T) {
+	OutputFormat = "json"
+	publicNetwork := networkmodels.GeneratePublicNetworkSdk()
+	prepared := PreparePublicNetworkForPrinting(publicNetwork)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "networkmodels.PublicNetwork")
+}
+
+func TestPreparePublicNetworkIpBlockForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	ipBlock := networkmodels.GeneratePublicNetworkIpBlockSdk()
+	prepared := PreparePublicNetworkIpBlockForPrinting(ipBlock)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.PublicNetworkIpBlockTable")
+}
+
+func TestPreparePublicNetworkIpBlockForPrintingNonTable(test_framework *testing.T) {
+	OutputFormat = "json"
+	ipBlock := networkmodels.GeneratePublicNetworkIpBlockSdk()
+	prepared := PreparePublicNetworkIpBlockForPrinting(ipBlock)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "networkmodels.PublicNetworkIpBlock")
+}
+
 func ExamplePrintOutputTableFormatEmpty() {
 	printerSetup()
 	OutputFormat = ""
