@@ -48,6 +48,12 @@ type ServerPrivateNetworkTable struct {
 	StatusDescription string   `header:"Status Description"`
 }
 
+type ServerPublicNetworkTable struct {
+	Id                string   `header:"ID"`
+	Ips               []string `header:"IPs"`
+	StatusDescription string   `header:"Status Description"`
+}
+
 type ServerIpBlockTable struct {
 	Id     string `header:"ID"`
 	VlanId int32  `header:"Vlan ID"`
@@ -107,6 +113,16 @@ func ToServerPrivateNetworkTable(privateNetwork bmcapisdk.ServerPrivateNetwork) 
 		StatusDescription: DerefString(privateNetwork.StatusDescription),
 	}
 }
+
+func ToServerPublicNetworkTable(publicNetwork bmcapisdk.ServerPublicNetwork) ServerPublicNetworkTable {
+
+	return ServerPublicNetworkTable{
+		Id:                publicNetwork.Id,
+		Ips:               publicNetwork.Ips,
+		StatusDescription: DerefString(publicNetwork.StatusDescription),
+	}
+}
+
 
 func ToServerIpBlockTable(serverIpBlock bmcapisdk.ServerIpBlock) ServerIpBlockTable {
 	return ServerIpBlockTable{

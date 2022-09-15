@@ -11,6 +11,7 @@ import (
 	"phoenixnap.com/pnapctl/commands/create/server"
 	serveripblock "phoenixnap.com/pnapctl/commands/create/server/ipblocks"
 	serverprivatenetwork "phoenixnap.com/pnapctl/commands/create/server/privatenetwork"
+	serverpublicnetwork "phoenixnap.com/pnapctl/commands/create/server/publicnetwork"
 	"phoenixnap.com/pnapctl/commands/create/sshkey"
 	"phoenixnap.com/pnapctl/commands/create/tag"
 )
@@ -28,6 +29,7 @@ var CreateCmd = &cobra.Command{
 func init() {
 	CreateCmd.AddCommand(server.CreateServerCmd)
 	CreateCmd.AddCommand(serverprivatenetwork.CreateServerPrivateNetworkCmd)
+	CreateCmd.AddCommand(serverpublicnetwork.CreateServerPublicNetworkCmd)
 	CreateCmd.AddCommand(serveripblock.CreateServerIpBlockCmd)
 	CreateCmd.AddCommand(cluster.CreateClusterCmd)
 	CreateCmd.AddCommand(tag.CreateTagCmd)
