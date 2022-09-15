@@ -19,10 +19,10 @@ pnapctl create server-public-network SERVER_ID [flags]
 pnapctl create server-public-network <SERVER_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 # serverCreatePublicNetwork.yaml
-id: 5ff5cc9bc1acf144d9106233
+id: 6322c9ec9da56569d0ca4add
 ips: 
-  - 10.0.0.1
-  - 10.0.0.2
+  - 10.111.24.25
+  - 10.111.24.26
 statusDescription: in-progress
 
 ```
