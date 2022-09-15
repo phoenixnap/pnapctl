@@ -32,5 +32,5 @@ pnapctl delete public-network ip-block <NETWORK_ID> <IP_BLOCK_ID> [--output <OUT
 
 ### SEE ALSO
 
-* [pnapctl delete public-network](pnapctl_delete_public-network.md)	 - Delete a public network.
+* [pnapctl delete public-network](pnapctl_delete_public-network.md)	 - Deletes a public network.
 

@@ -11,12 +11,12 @@ import (
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
-var commandName = "get public-networks"
+var commandName = "get public-network"
 
 var GetPublicNetworksCmd = &cobra.Command{
-	Use:          "public-networks [PUBLIC_NETWORK_ID]",
+	Use:          "public-network [PUBLIC_NETWORK_ID]",
 	Short:        "Retrieve one or all public networks.",
-	Aliases:      []string{"public-network"},
+	Aliases:      []string{"public-networks"},
 	Args:         cobra.MaximumNArgs(1),
 	SilenceUsage: true,
 	Long: `Retrieve one or all public networks.

@@ -40,5 +40,5 @@ description: My custom server edit
 
 ### SEE ALSO
 
-* [pnapctl create public-network](pnapctl_create_public-network.md)	 - Create a public network.
+* [pnapctl create public-network](pnapctl_create_public-network.md)	 - Create a new public network.
 

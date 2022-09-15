@@ -13,7 +13,7 @@ var commandName = "delete public-network"
 
 var DeletePublicNetworkCmd = &cobra.Command{
 	Use:          "public-network [ID]",
-	Short:        "Delete a public network.",
+	Short:        "Deletes a public network.",
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
 	Long:         `Delete a public network.`,

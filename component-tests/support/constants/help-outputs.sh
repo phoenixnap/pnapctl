@@ -48,6 +48,7 @@ Available Commands:
   private-network               Retrieve one or all private networks.
   product                       Retrieves all products.
   product-availabilities        Retrieve product availabilities
+  public-network                Retrieve one or all public networks.
   quota                         Retrieve one or all quotas for your account.
   rated-usage                   Retrieve all rated-usages for the given time period.
   reservation                   Retrieve one or all reservations
@@ -74,6 +75,7 @@ Available Commands:
   cluster                Create a new cluster.
   ip-block               Create a new ip-block.
   private-network        Create a new private network.
+  public-network         Create a new public network.
   reservation            Create a new reservation.
   server                 Create a new server.
   server-ip-block        Create a new ip-block for server.
@@ -100,6 +102,7 @@ Available Commands:
   cluster                Deletes a specific cluster.
   ip-block               Deletes a specific ip-block.
   private-network        Deletes a specific private network.
+  public-network         Deletes a public network.
   server-ip-block        Remove an ip-block from a server.
   server-private-network Remove a server from a private network.
   ssh-key                Deletes a specific SSH Key.
@@ -139,9 +142,10 @@ Usage:
   pnapctl patch [command]
 
 Available Commands:
-  ip-block    Updates a specific ip-block.
-  server      Patch a server.
-  tag         Patch/Update a tag.
+  ip-block       Updates a specific ip-block.
+  public-network Patch a public network.
+  server         Patch a server.
+  tag            Patch/Update a tag.
 
 Flags:
   -h, --help   help for patch

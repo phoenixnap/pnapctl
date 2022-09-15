@@ -13,7 +13,7 @@ var commandName = "create public-network"
 
 var CreatePublicNetworkCmd = &cobra.Command{
 	Use:          "public-network",
-	Short:        "Create a public network.",
+	Short:        "Create a new public network.",
 	Args:         cobra.ExactArgs(0),
 	SilenceUsage: true,
 	Long: `Create a public network.

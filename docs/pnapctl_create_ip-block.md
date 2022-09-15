@@ -27,6 +27,7 @@ location: PHX
 
 ```
   -f, --filename string   File containing required information for creation
+      --full              Shows all ip-block details
   -h, --help              help for ip-block
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
 ```

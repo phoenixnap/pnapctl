@@ -1,6 +1,6 @@
 ## pnapctl delete public-network
 
-Delete a public network.
+Deletes a public network.
 
 ### Synopsis
 

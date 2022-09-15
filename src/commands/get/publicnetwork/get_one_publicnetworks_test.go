@@ -21,7 +21,7 @@ func TestGetPublicNetworkSuccess(test_framework *testing.T) {
 		Return(&publicNetworkSdk, WithResponse(200, WithBody(publicNetworkSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(publicNetworkTable, "get public-networks").
+		PrintOutput(publicNetworkTable, "get public-network").
 		Return(nil)
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})
@@ -41,7 +41,7 @@ func TestGetPublicNetworkNotFound(test_framework *testing.T) {
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'get public-networks' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command 'get public-network' has been performed, but something went wrong. Error code: 0201"
 	assert.EqualError(test_framework, err, expectedMessage)
 }
 
@@ -53,7 +53,7 @@ func TestGetPublicNetworkClientFailure(test_framework *testing.T) {
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get public-networks", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, "get public-network", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -79,7 +79,7 @@ func TestGetPublicNetworkPrinterFailure(test_framework *testing.T) {
 		Return(&publicNetworkSdk, WithResponse(200, WithBody(publicNetworkSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(publicNetworkTable, "get public-networks").
+		PrintOutput(publicNetworkTable, "get public-network").
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})

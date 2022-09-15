@@ -1,6 +1,6 @@
 ## pnapctl create public-network
 
-Create a public network.
+Create a new public network.
 
 ### Synopsis
 
