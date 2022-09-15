@@ -242,6 +242,38 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkPost(serverId, se
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkPost), serverId, serverPrivateNetwork)
 }
 
+// ServerPublicNetworkDelete mocks base method.
+func (m *MockBmcApiSdkClient) ServerPublicNetworkDelete(serverId, networkId string) (string, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerPublicNetworkDelete", serverId, networkId)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerPublicNetworkDelete indicates an expected call of ServerPublicNetworkDelete.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPublicNetworkDelete(serverId, networkId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPublicNetworkDelete", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPublicNetworkDelete), serverId, networkId)
+}
+
+// ServerPublicNetworkPost mocks base method.
+func (m *MockBmcApiSdkClient) ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapi.ServerPublicNetwork) (*bmcapi.ServerPublicNetwork, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerPublicNetworkPost", serverId, serverPublicNetwork)
+	ret0, _ := ret[0].(*bmcapi.ServerPublicNetwork)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ServerPublicNetworkPost indicates an expected call of ServerPublicNetworkPost.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPublicNetworkPost(serverId, serverPublicNetwork interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPublicNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPublicNetworkPost), serverId, serverPublicNetwork)
+}
+
 // ServerReboot mocks base method.
 func (m *MockBmcApiSdkClient) ServerReboot(serverId string) (*bmcapi.ActionResult, *http.Response, error) {
 	m.ctrl.T.Helper()

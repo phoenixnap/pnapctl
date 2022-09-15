@@ -213,12 +213,26 @@ func GeneratePrivateNetworkConfigurationCli() PrivateNetworkConfiguration {
 	}
 }
 
+func GeneratePublicNetworkConfigurationCli() PublicNetworkConfiguration {
+	serverPublicNetworks := GenerateServerPublicNetworkListCli(2)
+	return PublicNetworkConfiguration{
+		PublicNetworks:   serverPublicNetworks,
+	}
+}
+
 func GeneratePrivateNetworkConfigurationSdk() *bmcapisdk.PrivateNetworkConfiguration {
 	serverPrivateNetworks := GenerateServerPrivateNetworkListSdk(2)
 	return &bmcapisdk.PrivateNetworkConfiguration{
 		GatewayAddress:    testutil.RandSeqPointer(10),
 		ConfigurationType: testutil.RandSeqPointer(10),
 		PrivateNetworks:   serverPrivateNetworks,
+	}
+}
+
+func GeneratePublicNetworkConfigurationSdk() *bmcapisdk.PublicNetworkConfiguration {
+	serverPublicNetworks := GenerateServerPublicNetworkListSdk(2)
+	return &bmcapisdk.PublicNetworkConfiguration{
+		PublicNetworks:   serverPublicNetworks,
 	}
 }
 
@@ -230,10 +244,26 @@ func GenerateServerPrivateNetworkListCli(n int) []ServerPrivateNetwork {
 	return list
 }
 
+func GenerateServerPublicNetworkListCli(n int) []ServerPublicNetwork {
+	var list []ServerPublicNetwork
+	for i := 0; i < n; i++ {
+		list = append(list, GenerateServerPublicNetworkCli())
+	}
+	return list
+}
+
 func GenerateServerPrivateNetworkListSdk(n int) []bmcapisdk.ServerPrivateNetwork {
 	var list []bmcapisdk.ServerPrivateNetwork
 	for i := 0; i < n; i++ {
 		list = append(list, *GenerateServerPrivateNetworkSdk())
+	}
+	return list
+}
+
+func GenerateServerPublicNetworkListSdk(n int) []bmcapisdk.ServerPublicNetwork {
+	var list []bmcapisdk.ServerPublicNetwork
+	for i := 0; i < n; i++ {
+		list = append(list, *GenerateServerPublicNetworkSdk())
 	}
 	return list
 }
@@ -248,12 +278,28 @@ func GenerateServerPrivateNetworkCli() ServerPrivateNetwork {
 	}
 }
 
+func GenerateServerPublicNetworkCli() ServerPublicNetwork {
+	return ServerPublicNetwork{
+		Id:                testutil.RandSeq(10),
+		Ips:               testutil.RandListStringPointer(10),
+		StatusDescription: testutil.RandSeqPointer(10),
+	}
+}
+
 func GenerateServerPrivateNetworkSdk() *bmcapisdk.ServerPrivateNetwork {
 	dhcp := false
 	return &bmcapisdk.ServerPrivateNetwork{
 		Id:                testutil.RandSeq(10),
 		Ips:               testutil.RandListStringPointer(10),
 		Dhcp:              &dhcp,
+		StatusDescription: testutil.RandSeqPointer(10),
+	}
+}
+
+func GenerateServerPublicNetworkSdk() *bmcapisdk.ServerPublicNetwork {
+	return &bmcapisdk.ServerPublicNetwork{
+		Id:                testutil.RandSeq(10),
+		Ips:               testutil.RandListStringPointer(10),
 		StatusDescription: testutil.RandSeqPointer(10),
 	}
 }

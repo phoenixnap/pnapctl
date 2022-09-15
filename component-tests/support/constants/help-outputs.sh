@@ -80,6 +80,7 @@ Available Commands:
   server                 Create a new server.
   server-ip-block        Create a new ip-block for server.
   server-private-network Create a new private network for server.
+  server-public-network  Create a new public network for server.
   ssh-key                Create a new ssh-key.
   tag                    Create a new tag.
 
@@ -105,6 +106,7 @@ Available Commands:
   public-network         Deletes a public network.
   server-ip-block        Remove an ip-block from a server.
   server-private-network Remove a server from a private network.
+  server-public-network  Remove a server from a public network.
   ssh-key                Deletes a specific SSH Key.
   tag                    Deletes a specific tag.
 

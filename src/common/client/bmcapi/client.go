@@ -29,6 +29,8 @@ type BmcApiSdkClient interface {
 	ServerDeprovision(serverId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, *http.Response, error)
 	ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (*bmcapisdk.ServerPrivateNetwork, *http.Response, error)
 	ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error)
+	ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapisdk.ServerPublicNetwork) (*bmcapisdk.ServerPublicNetwork, *http.Response, error)
+	ServerPublicNetworkDelete(serverId string, networkId string) (string, *http.Response, error)
 	ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (*bmcapisdk.ServerIpBlock, *http.Response, error)
 	ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, *http.Response, error)
 
@@ -145,6 +147,14 @@ func (m MainClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwo
 
 func (m MainClient) ServerPrivateNetworkDelete(serverId string, networkId string) (string, *http.Response, error) {
 	return m.ServersApiClient.DeletePrivateNetwork(context.Background(), serverId, networkId).Execute()
+}
+
+func (m MainClient) ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapisdk.ServerPublicNetwork) (*bmcapisdk.ServerPublicNetwork, *http.Response, error){
+	return m.ServersApiClient.ServersServerIdPublicNetworksPost(context.Background(), serverId).ServerPublicNetwork(serverPublicNetwork).Execute()
+}
+
+func (m MainClient) ServerPublicNetworkDelete(serverId string, networkId string) (string, *http.Response, error){
+	return m.ServersApiClient.ServersServerIdPublicNetworksDelete(context.Background(), serverId, networkId).Execute()
 }
 
 func (m MainClient) ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (*bmcapisdk.ServerIpBlock, *http.Response, error) {

@@ -15,6 +15,7 @@ import (
 	"phoenixnap.com/pnapctl/commands/delete/privatenetwork"
 	serveripblock "phoenixnap.com/pnapctl/commands/delete/server/ipblocks"
 	serverprivatenetwork "phoenixnap.com/pnapctl/commands/delete/server/privatenetwork"
+	serverpublicnetwork "phoenixnap.com/pnapctl/commands/delete/server/publicnetwork"
 )
 
 var DeleteCmd = &cobra.Command{
@@ -30,6 +31,7 @@ var DeleteCmd = &cobra.Command{
 func init() {
 	DeleteCmd.AddCommand(server.DeleteServerCmd)
 	DeleteCmd.AddCommand(serverprivatenetwork.DeleteServerPrivateNetworkCmd)
+	DeleteCmd.AddCommand(serverpublicnetwork.DeleteServerPublicNetworkCmd)
 	DeleteCmd.AddCommand(serveripblock.DeleteServerIpBlockCmd)
 	DeleteCmd.AddCommand(cluster.DeleteClusterCmd)
 	DeleteCmd.AddCommand(tag.DeleteTagCmd)
