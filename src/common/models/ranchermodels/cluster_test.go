@@ -3,7 +3,7 @@ package ranchermodels
 import (
 	"testing"
 
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )

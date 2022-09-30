@@ -1,7 +1,7 @@
 package tables
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 )
 
@@ -122,7 +122,6 @@ func ToServerPublicNetworkTable(publicNetwork bmcapisdk.ServerPublicNetwork) Ser
 		StatusDescription: DerefString(publicNetwork.StatusDescription),
 	}
 }
-
 
 func ToServerIpBlockTable(serverIpBlock bmcapisdk.ServerIpBlock) ServerIpBlockTable {
 	return ServerIpBlockTable{

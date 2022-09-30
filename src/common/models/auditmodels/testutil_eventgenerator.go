@@ -3,7 +3,7 @@ package auditmodels
 import (
 	"time"
 
-	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 

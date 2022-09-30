@@ -3,7 +3,7 @@ package auditmodels
 import (
 	"time"
 
-	auditsdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
+	auditsdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 )
 
 type Event struct {

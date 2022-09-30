@@ -1,7 +1,7 @@
 package servermodels
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	files "phoenixnap.com/pnapctl/common/fileprocessor"
 )
 

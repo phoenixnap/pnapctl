@@ -1,9 +1,9 @@
- package servermodels
+package servermodels
 
 import (
 	"testing"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -69,7 +69,6 @@ func TestNilPublicNetworkListFromSdk(test_framework *testing.T) {
 
 	assert.Nil(test_framework, cliModel)
 }
-
 
 // assertion functions
 func assertEqualServerPublicNetworkLists(test_framework *testing.T, cliServerPublicNetworkList []ServerPublicNetwork, sdkServerPublicNetworkList []bmcapisdk.ServerPublicNetwork) {

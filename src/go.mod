@@ -7,13 +7,13 @@ require (
 	github.com/influxdata/influxdb v1.9.4
 	github.com/landoop/tableprinter v0.0.0-20201125135848-89e81fc956e7
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/phoenixnap/go-sdk-bmc/auditapi v1.0.4
-	github.com/phoenixnap/go-sdk-bmc/billingapi v1.0.0
-	github.com/phoenixnap/go-sdk-bmc/bmcapi v1.2.2
-	github.com/phoenixnap/go-sdk-bmc/ipapi v1.1.2
-	github.com/phoenixnap/go-sdk-bmc/networkapi v1.1.3
-	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v1.1.3
-	github.com/phoenixnap/go-sdk-bmc/tagapi v1.1.3
+	github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.1
+	github.com/phoenixnap/go-sdk-bmc/billingapi v1.1.1
+	github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.0.1
+	github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.0
+	github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.0.0
+	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.0
+	github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.0
 	github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.0.2
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.2.1

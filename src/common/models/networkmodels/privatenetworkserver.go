@@ -3,7 +3,7 @@ package networkmodels
 import (
 	"fmt"
 
-	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 )
 
 type PrivateNetworkServer struct {

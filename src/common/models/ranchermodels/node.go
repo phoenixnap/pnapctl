@@ -1,6 +1,6 @@
 package ranchermodels
 
-import ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+import ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 
 type Node struct {
 	ServerId *string `json:"serverId" yaml:"serverId"`

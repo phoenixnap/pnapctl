@@ -3,7 +3,7 @@ package publicnetwork
 import (
 	"net/http"
 
-	"github.com/phoenixnap/go-sdk-bmc/networkapi"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
