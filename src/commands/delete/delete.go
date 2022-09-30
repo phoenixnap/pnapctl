@@ -5,6 +5,7 @@ import (
 
 	ip_blocks "phoenixnap.com/pnapctl/commands/delete/ip-blocks"
 	"phoenixnap.com/pnapctl/commands/delete/publicnetwork"
+	storagenetwork "phoenixnap.com/pnapctl/commands/delete/storage-network"
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/commands/delete/cluster"
@@ -22,7 +23,7 @@ var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Delete a resource.",
 	Long:  `Delete a resource.`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, _ []string) {
 		cmd.Help()
 		os.Exit(0)
 	},
@@ -39,4 +40,5 @@ func init() {
 	DeleteCmd.AddCommand(privatenetwork.DeletePrivateNetworkCmd)
 	DeleteCmd.AddCommand(publicnetwork.DeletePublicNetworkCmd)
 	DeleteCmd.AddCommand(ip_blocks.DeleteIpBlockCmd)
+	DeleteCmd.AddCommand(storagenetwork.DeleteStorageNetworkCmd)
 }

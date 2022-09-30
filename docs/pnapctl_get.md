@@ -39,5 +39,6 @@ pnapctl get [flags]
 * [pnapctl get reservation](pnapctl_get_reservation.md)	 - Retrieve one or all reservations
 * [pnapctl get server](pnapctl_get_server.md)	 - Retrieve one or all servers.
 * [pnapctl get ssh-key](pnapctl_get_ssh-key.md)	 - Retrieve one or all ssh-keys for your account.
+* [pnapctl get storage-network](pnapctl_get_storage-network.md)	 - Retrieve one or all storage networks.
 * [pnapctl get tag](pnapctl_get_tag.md)	 - Retrieve one or all tags.
 

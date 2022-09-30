@@ -36,5 +36,6 @@ pnapctl create [flags]
 * [pnapctl create server-private-network](pnapctl_create_server-private-network.md)	 - Create a new private network for server.
 * [pnapctl create server-public-network](pnapctl_create_server-public-network.md)	 - Create a new public network for server.
 * [pnapctl create ssh-key](pnapctl_create_ssh-key.md)	 - Create a new ssh-key.
+* [pnapctl create storage-network](pnapctl_create_storage-network.md)	 - Create a new storage network.
 * [pnapctl create tag](pnapctl_create_tag.md)	 - Create a new tag.
 
