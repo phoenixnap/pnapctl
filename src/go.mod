@@ -14,6 +14,7 @@ require (
 	github.com/phoenixnap/go-sdk-bmc/networkapi v1.1.3
 	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v1.1.3
 	github.com/phoenixnap/go-sdk-bmc/tagapi v1.1.3
+	github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.0.2
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.9.0
