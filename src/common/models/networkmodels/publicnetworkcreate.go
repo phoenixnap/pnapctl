@@ -1,7 +1,7 @@
 package networkmodels
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/networkapi"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	files "phoenixnap.com/pnapctl/common/fileprocessor"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )

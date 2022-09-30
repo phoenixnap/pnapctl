@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
-	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"phoenixnap.com/pnapctl/common/models/networkmodels"
 )
 

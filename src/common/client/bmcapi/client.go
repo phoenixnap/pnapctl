@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	configuration "phoenixnap.com/pnapctl/configs"
@@ -88,7 +88,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	}
 }
 
-//Servers APIs
+// Servers APIs
 func (m MainClient) ServersPost(serverCreate bmcapisdk.ServerCreate) (*bmcapisdk.Server, *http.Response, error) {
 	return m.ServersApiClient.ServersPost(context.Background()).ServerCreate(serverCreate).Execute()
 }
@@ -149,11 +149,11 @@ func (m MainClient) ServerPrivateNetworkDelete(serverId string, networkId string
 	return m.ServersApiClient.DeletePrivateNetwork(context.Background(), serverId, networkId).Execute()
 }
 
-func (m MainClient) ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapisdk.ServerPublicNetwork) (*bmcapisdk.ServerPublicNetwork, *http.Response, error){
+func (m MainClient) ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapisdk.ServerPublicNetwork) (*bmcapisdk.ServerPublicNetwork, *http.Response, error) {
 	return m.ServersApiClient.ServersServerIdPublicNetworksPost(context.Background(), serverId).ServerPublicNetwork(serverPublicNetwork).Execute()
 }
 
-func (m MainClient) ServerPublicNetworkDelete(serverId string, networkId string) (string, *http.Response, error){
+func (m MainClient) ServerPublicNetworkDelete(serverId string, networkId string) (string, *http.Response, error) {
 	return m.ServersApiClient.ServersServerIdPublicNetworksDelete(context.Background(), serverId, networkId).Execute()
 }
 

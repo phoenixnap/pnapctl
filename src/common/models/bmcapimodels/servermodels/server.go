@@ -3,7 +3,7 @@ package servermodels
 import (
 	"time"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 )
 
 type LongServer struct {

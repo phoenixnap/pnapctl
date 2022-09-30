@@ -3,7 +3,7 @@ package ipmodels
 import (
 	"fmt"
 
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
+	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	files "phoenixnap.com/pnapctl/common/fileprocessor"
 )
 

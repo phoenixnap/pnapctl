@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	configuration "phoenixnap.com/pnapctl/configs"

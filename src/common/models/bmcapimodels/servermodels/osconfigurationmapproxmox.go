@@ -1,6 +1,6 @@
 package servermodels
 
-import "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+import "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 
 type OsConfigurationMapProxmox struct {
 	RootPassword               *string  `json:"rootPassword,omitempty" yaml:"rootPassword,omitempty"`

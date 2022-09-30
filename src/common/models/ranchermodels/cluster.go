@@ -1,7 +1,7 @@
 package ranchermodels
 
 import (
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	files "phoenixnap.com/pnapctl/common/fileprocessor"
 )
 

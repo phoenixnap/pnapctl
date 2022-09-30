@@ -3,7 +3,7 @@ package tags
 import (
 	netHttp "net/http"
 
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	tagclient "phoenixnap.com/pnapctl/common/client/tags"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"

@@ -3,7 +3,7 @@ package networkmodels
 import (
 	"time"
 
-	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 

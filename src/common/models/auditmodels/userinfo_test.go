@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"github.com/stretchr/testify/assert"
 )
 
