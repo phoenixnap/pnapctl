@@ -20,15 +20,16 @@ pnapctl get storage-network volume [ID] [flags]
 ```
 
 # List all volumes.
-pnapctl get volumes [--output <OUTPUT_TYPE>]
+pnapctl get volumes [--full] [--output <OUTPUT_TYPE>]
 
 # List a specific volume.
-pnapctl get volume <ID> [--output <OUTPUT_TYPE>]
+pnapctl get volume <ID> [--full] [--output <OUTPUT_TYPE>]
 ```
 
 ### Options
 
 ```
+      --full   Shows all volume details
   -h, --help   help for volume
 ```
 

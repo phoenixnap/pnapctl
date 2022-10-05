@@ -1,0 +1,11 @@
+{
+    "name": "CLI-JSON-SN",
+    "description": "Created using the CLI from a JSON file.",
+    "location": "PHX",
+    "volumes": [{
+        "name": "volume",
+        "description": "volume description",
+        "pathSuffix": "/clijson",
+        "capacityInGb": 1000
+    }]
+}

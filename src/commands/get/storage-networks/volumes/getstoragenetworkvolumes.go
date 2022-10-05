@@ -14,10 +14,12 @@ const commandName = "get storage-network volumes"
 
 var (
 	STORAGE_ID, VOLUME_ID string
+	Full                  bool
 )
 
 func init() {
 	utils.SetupOutputFlag(GetStorageNetworkVolumesCmd)
+	utils.SetupFullFlag(GetStorageNetworkVolumesCmd, &Full, "volume")
 }
 
 var GetStorageNetworkVolumesCmd = &cobra.Command{
@@ -34,10 +36,10 @@ By default, the data is printed in table format.
 To print a specific volume, an ID needs to be passed as argument.`,
 	Example: `
 # List all volumes.
-pnapctl get volumes [--output <OUTPUT_TYPE>]
+pnapctl get volumes [--full] [--output <OUTPUT_TYPE>]
 
 # List a specific volume.
-pnapctl get volume <ID> [--output <OUTPUT_TYPE>]`,
+pnapctl get volume <ID> [--full] [--output <OUTPUT_TYPE>]`,
 	RunE: func(_ *cobra.Command, args []string) error {
 		STORAGE_ID = args[0]
 		if len(args) >= 2 {
@@ -65,9 +67,9 @@ func getStorageNetworkVolumes() error {
 		return *generatedError
 	} else {
 		if VOLUME_ID == "" {
-			return printer.PrintVolumeListResponse(volumes, commandName)
+			return printer.PrintVolumeListResponse(volumes, Full, commandName)
 		} else {
-			return printer.PrintVolumeResponse(volume, commandName)
+			return printer.PrintVolumeResponse(volume, Full, commandName)
 		}
 	}
 }

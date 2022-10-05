@@ -30,22 +30,24 @@ func PrepareNetworkStorageForPrinting(storageNetwork networkstorageapi.StorageNe
 }
 
 // Volume
-func PrintVolumeResponse(volume *networkstorageapi.Volume, commandName string) error {
-	volumeToPrint := PrepareVolumeForPrinting(*volume)
+func PrintVolumeResponse(volume *networkstorageapi.Volume, full bool, commandName string) error {
+	volumeToPrint := PrepareVolumeForPrinting(*volume, full)
 	return MainPrinter.PrintOutput(volumeToPrint, commandName)
 }
 
-func PrintVolumeListResponse(volumes []networkstorageapi.Volume, commandName string) error {
-	volumesToPrint := iterutils.Map(volumes, PrepareVolumeForPrinting)
+func PrintVolumeListResponse(volumes []networkstorageapi.Volume, full bool, commandName string) error {
+	volumesToPrint := iterutils.Map(volumes, withFull(full, PrepareVolumeForPrinting))
 	return MainPrinter.PrintOutput(volumesToPrint, commandName)
 }
 
-func PrepareVolumeForPrinting(volume networkstorageapi.Volume) interface{} {
+func PrepareVolumeForPrinting(volume networkstorageapi.Volume, full bool) interface{} {
 	table := OutputIsTable()
 
 	switch {
-	case table:
+	case table && full:
 		return tables.VolumeTableFromSdk(volume)
+	case table:
+		return tables.ShortVolumeTableFromSdk(volume)
 	default:
 		return networkstoragemodels.VolumeFromSdk(volume)
 	}

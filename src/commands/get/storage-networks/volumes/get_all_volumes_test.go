@@ -16,7 +16,7 @@ import (
 func TestGetAllVolumesSuccess(test_framework *testing.T) {
 	// What the server should return.
 	volumeSdk := testutil.GenN(2, networkstoragemodels.GenerateVolumeSdk)
-	volumeTables := iterutils.MapInterface(volumeSdk, tables.VolumeTableFromSdk)
+	volumeTables := iterutils.MapInterface(volumeSdk, tables.ShortVolumeTableFromSdk)
 
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
@@ -66,7 +66,7 @@ func TestGetAllVolumesKeycloakFailure(test_framework *testing.T) {
 func TestGetAllVolumesPrinterFailure(test_framework *testing.T) {
 	// What the server should return.
 	volumeSdk := testutil.GenN(2, networkstoragemodels.GenerateVolumeSdk)
-	volumeTables := iterutils.MapInterface(volumeSdk, tables.VolumeTableFromSdk)
+	volumeTables := iterutils.MapInterface(volumeSdk, tables.ShortVolumeTableFromSdk)
 
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).

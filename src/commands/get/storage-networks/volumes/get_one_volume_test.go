@@ -15,7 +15,7 @@ import (
 func TestGetVolumeByIdSuccess(test_framework *testing.T) {
 	// What the server should return.
 	volumeSdk := networkstoragemodels.GenerateVolumeSdk()
-	volumeTable := tables.VolumeTableFromSdk(volumeSdk)
+	volumeTable := tables.ShortVolumeTableFromSdk(volumeSdk)
 
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
@@ -79,7 +79,7 @@ func TestGetVolumeByIdKeycloakFailure(test_framework *testing.T) {
 func TestGetVolumeByIdPrinterFailure(test_framework *testing.T) {
 	// What the server should return.
 	volumeSdk := networkstoragemodels.GenerateVolumeSdk()
-	volumeTable := tables.VolumeTableFromSdk(volumeSdk)
+	volumeTable := tables.ShortVolumeTableFromSdk(volumeSdk)
 
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).

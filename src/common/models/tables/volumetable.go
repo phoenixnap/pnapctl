@@ -6,16 +6,23 @@ import (
 )
 
 type VolumeTable struct {
-	Id           string
-	Name         string
-	Description  string
-	Path         string
-	PathSuffix   string
-	CapacityInGb string
-	Protocol     string
-	Status       string
-	CreatedOn    string
-	Permissions  string
+	Id           string `header:"Id"`
+	Name         string `header:"Name"`
+	Description  string `header:"Description"`
+	Path         string `header:"Path"`
+	PathSuffix   string `header:"Path Suffix"`
+	CapacityInGb string `header:"Capacity In Gb"`
+	Protocol     string `header:"Protocol"`
+	Status       string `header:"Status"`
+	CreatedOn    string `header:"Created On"`
+	Permissions  string `header:"Permissions"`
+}
+
+type ShortVolumeTable struct {
+	Id           string `header:"Id"`
+	Name         string `header:"Name"`
+	CapacityInGb string `header:"Capacity In Gb"`
+	CreatedOn    string `header:"Created On"`
 }
 
 func VolumeTableFromSdk(sdk networkstorageapi.Volume) VolumeTable {
@@ -30,5 +37,14 @@ func VolumeTableFromSdk(sdk networkstorageapi.Volume) VolumeTable {
 		Status:       DerefString(sdk.Status),
 		CreatedOn:    DerefTimeAsString(sdk.CreatedOn),
 		Permissions:  networkstoragemodels.PermissionsToTableString(sdk.Permissions),
+	}
+}
+
+func ShortVolumeTableFromSdk(sdk networkstorageapi.Volume) ShortVolumeTable {
+	return ShortVolumeTable{
+		Id:           DerefString(sdk.Id),
+		Name:         DerefString(sdk.Name),
+		CapacityInGb: Deref(sdk.CapacityInGb),
+		CreatedOn:    DerefTimeAsString(sdk.CreatedOn),
 	}
 }

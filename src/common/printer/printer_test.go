@@ -643,20 +643,30 @@ func TestPrepareStorageNetworkForPrintingNonTable(test_framework *testing.T) {
 	assert.Equal(test_framework, outputType, "networkstoragemodels.StorageNetwork")
 }
 
-func TestPrepareVolumeForPrintingTable(test_framework *testing.T) {
+func TestPrepareVolumeForPrintingTableFull(test_framework *testing.T) {
 	OutputFormat = "table"
 	networkStorage := networkstoragemodels.GenerateVolumeSdk()
-	prepared := PrepareVolumeForPrinting(networkStorage)
+	prepared := PrepareVolumeForPrinting(networkStorage, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
 	assert.Equal(test_framework, outputType, "tables.VolumeTable")
 }
 
+func TestPrepareVolumeForPrintingTableShort(test_framework *testing.T) {
+	OutputFormat = "table"
+	networkStorage := networkstoragemodels.GenerateVolumeSdk()
+	prepared := PrepareVolumeForPrinting(networkStorage, false)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.ShortVolumeTable")
+}
+
 func TestPrepareVolumeForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
 	networkStorage := networkstoragemodels.GenerateVolumeSdk()
-	prepared := PrepareVolumeForPrinting(networkStorage)
+	prepared := PrepareVolumeForPrinting(networkStorage, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
