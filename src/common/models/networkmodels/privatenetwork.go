@@ -19,6 +19,7 @@ type PrivateNetwork struct {
 	Servers         []PrivateNetworkServer `json:"server" yaml:"server"`
 	Memberships     []NetworkMembership    `json:"memberships" yaml:"memberships"`
 	CreatedOn       time.Time              `json:"createdOn" yaml:"createdOn"`
+	Status          string                 `json:"status" yaml:"status"`
 }
 
 func PrivateNetworkFromSdk(network networksdk.PrivateNetwork) PrivateNetwork {
@@ -40,5 +41,6 @@ func PrivateNetworkFromSdk(network networksdk.PrivateNetwork) PrivateNetwork {
 		Servers:         servers,
 		Memberships:     iterutils.Map(network.Memberships, NetworkMembershipFromSdk),
 		CreatedOn:       network.CreatedOn,
+		Status:          network.Status,
 	}
 }

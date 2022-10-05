@@ -88,6 +88,7 @@ func assertEqualOsConfiguration(test_framework *testing.T, cliOsConfiguration Os
 
 	assert.Equal(test_framework, cliOsConfiguration.RootPassword, sdkOsConfiguration.RootPassword)
 	assert.Equal(test_framework, cliOsConfiguration.ManagementUiUrl, sdkOsConfiguration.ManagementUiUrl)
+	assert.Equal(test_framework, cliOsConfiguration.InstallOsToRam, sdkOsConfiguration.InstallOsToRam)
 
 	if testutil.AssertNilEquality(test_framework, "Management Access Allowed IPs", cliOsConfiguration.ManagementAccessAllowedIps, sdkOsConfiguration.ManagementAccessAllowedIps) {
 		assert.Equal(test_framework, len(cliOsConfiguration.ManagementAccessAllowedIps), len(sdkOsConfiguration.ManagementAccessAllowedIps))

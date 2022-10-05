@@ -498,6 +498,18 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testi
 	assert.Equal(test_framework, outputType, "*ratedusageoneof.ServerRecord")
 }
 
+func TestPrepareRatedUsageRecordForPrintingNonTable_Storage(test_framework *testing.T) {
+	OutputFormat = "json"
+	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
+		StorageRecord: billingmodels.GenerateStorageRecordSdk(),
+	}
+	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*ratedusageoneof.StorageRecord")
+}
+
 func TestPrepareRatedUsageRecordForPrintingNonTable_Short(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
@@ -550,6 +562,18 @@ func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework
 	OutputFormat = "json"
 	product := billingapi.ProductsGet200ResponseInner{
 		Product: billingmodels.GenerateOperatingSystemProduct(),
+	}
+	prepared := PrepareProductForPrinting(product)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "*productoneof.Product")
+}
+
+func TestPrepareProductForPrintingNonTable_StorageProduct(test_framework *testing.T) {
+	OutputFormat = "json"
+	product := billingapi.ProductsGet200ResponseInner{
+		Product: billingmodels.GenerateStorageProduct(),
 	}
 	prepared := PrepareProductForPrinting(product)
 

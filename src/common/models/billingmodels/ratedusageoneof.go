@@ -41,6 +41,11 @@ func RatedUsageActualFromSdk(ratedUsageOneOf billingapisdk.RatedUsageGet200Respo
 			RatedUsageCommon: *ratedUsage,
 			Metadata:         *ServerDetailsFromSdk(&ratedUsageOneOf.ServerRecord.Metadata),
 		}
+	case ratedUsage.IsActually(STORAGE):
+		return &StorageRecord{
+			RatedUsageCommon: *ratedUsage,
+			Metadata:         *StorageDetailsFromSdk(&ratedUsageOneOf.StorageRecord.Metadata),
+		}
 	}
 
 	return nil

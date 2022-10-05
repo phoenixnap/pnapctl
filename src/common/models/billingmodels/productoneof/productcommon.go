@@ -17,6 +17,7 @@ const (
 	// Product
 	BANDWIDTH        Discriminator = "BANDWIDTH"
 	OPERATING_SYSTEM Discriminator = "OPERATING_SYSTEM"
+	STORAGE          Discriminator = "STORAGE"
 )
 
 type ProductSdk interface {
