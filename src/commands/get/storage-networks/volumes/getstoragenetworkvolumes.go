@@ -1,12 +1,12 @@
 package volumes
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
+	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
@@ -61,16 +61,13 @@ func getStorageNetworkVolumes() error {
 
 	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
 
-	// to silence usage errors
-	fmt.Println(volume, volumes)
-
 	if *generatedError != nil {
 		return *generatedError
 	} else {
 		if VOLUME_ID == "" {
-			return nil // TODO add printer
+			return printer.PrintVolumeListResponse(volumes, commandName)
 		} else {
-			return nil // TODO add printer
+			return printer.PrintVolumeResponse(volume, commandName)
 		}
 	}
 }

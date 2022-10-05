@@ -1,11 +1,10 @@
 package storagenetwork
 
 import (
-	"fmt"
-
-	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
+	"phoenixnap.com/pnapctl/common/models/networkstoragemodels"
+	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
@@ -39,23 +38,17 @@ pnapctl patch storage-network <ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE
 	},
 }
 
-// TODO: Remove
-func dummy() (*networkstorageapi.StorageNetworkUpdate, error) { return nil, nil }
-
 func patchStorageNetwork() error {
-	request, err := dummy()
+	request, err := networkstoragemodels.CreateStorageNetworkUpdateFromFile(Filename, commandName)
 	if err != nil {
 		return err
 	}
 
 	sdkResponse, httpResponse, err := networkstorage.Client.NetworkStoragePatch(ID, *request)
 
-	// for silencing usage errors
-	fmt.Println(sdkResponse)
-
 	if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
 		return *generatedError
 	} else {
-		return nil // TODO add printer
+		return printer.PrintStorageNetworkResponse(sdkResponse, commandName)
 	}
 }

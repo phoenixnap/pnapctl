@@ -7,6 +7,7 @@ import (
 
 	"phoenixnap.com/pnapctl/common/models/billingmodels"
 	"phoenixnap.com/pnapctl/common/models/ipmodels"
+	"phoenixnap.com/pnapctl/common/models/networkstoragemodels"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
@@ -620,6 +621,46 @@ func TestPreparePublicNetworkIpBlockForPrintingNonTable(test_framework *testing.
 	outputType := fmt.Sprintf("%T", prepared)
 
 	assert.Equal(test_framework, outputType, "networkmodels.PublicNetworkIpBlock")
+}
+
+func TestPrepareStorageNetworkForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	networkStorage := networkstoragemodels.GenerateStorageNetworkSdk()
+	prepared := PrepareNetworkStorageForPrinting(networkStorage)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.StorageNetworkTable")
+}
+
+func TestPrepareStorageNetworkForPrintingNonTable(test_framework *testing.T) {
+	OutputFormat = "json"
+	networkStorage := networkstoragemodels.GenerateStorageNetworkSdk()
+	prepared := PrepareNetworkStorageForPrinting(networkStorage)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "networkstoragemodels.StorageNetwork")
+}
+
+func TestPrepareVolumeForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	networkStorage := networkstoragemodels.GenerateVolumeSdk()
+	prepared := PrepareVolumeForPrinting(networkStorage)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "tables.VolumeTable")
+}
+
+func TestPrepareVolumeForPrintingNonTable(test_framework *testing.T) {
+	OutputFormat = "json"
+	networkStorage := networkstoragemodels.GenerateVolumeSdk()
+	prepared := PrepareVolumeForPrinting(networkStorage)
+
+	outputType := fmt.Sprintf("%T", prepared)
+
+	assert.Equal(test_framework, outputType, "networkstoragemodels.Volume")
 }
 
 func ExamplePrintOutputTableFormatEmpty() {

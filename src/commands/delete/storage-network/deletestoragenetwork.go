@@ -28,8 +28,7 @@ var DeleteStorageNetworkCmd = &cobra.Command{
 func deleteStorageNetwork() error {
 	httpResponse, err := networkstorage.Client.NetworkStorageDelete(ID)
 
-	// TODO update status code
-	if httpResponse != nil && httpResponse.StatusCode != 000 {
+	if httpResponse != nil && httpResponse.StatusCode != 204 {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	}
 
