@@ -11,7 +11,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
-	"gopkg.in/yaml.v2"
+	"sigs.k8s.io/yaml"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
@@ -20,13 +20,8 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
 	serverPatch := servermodels.GenerateServerPatchSdk()
 
-	serverPatchModel := servermodels.ServerPatch{
-		Hostname:    serverPatch.Hostname,
-		Description: serverPatch.Description,
-	}
-
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverPatchModel)
+	yamlmarshal, _ := yaml.Marshal(serverPatch)
 
 	Filename = FILENAME
 
@@ -110,7 +105,7 @@ func TestPatchServerFileNotFoundFailure(test_framework *testing.T) {
 func TestPatchServerUnmarshallingFailure(test_framework *testing.T) {
 	// Invalid contents of the file
 	// filecontents := make([]byte, 10)
-	filecontents := []byte(`Description: desc`)
+	filecontents := []byte(`notproperty: desc`)
 
 	Filename = FILENAME
 

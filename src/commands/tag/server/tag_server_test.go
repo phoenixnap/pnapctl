@@ -11,7 +11,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
-	"gopkg.in/yaml.v2"
+	"sigs.k8s.io/yaml"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -21,20 +21,8 @@ func TestTagServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
 	tagAssignmentRequests := servermodels.GenerateTagAssignmentRequestListSdk(2)
 
-	tagAssignmentModel_1 := servermodels.TagAssignmentRequest{
-		Name:  tagAssignmentRequests[0].Name,
-		Value: tagAssignmentRequests[0].Value,
-	}
-
-	tagAssignmentModel_2 := servermodels.TagAssignmentRequest{
-		Name:  tagAssignmentRequests[1].Name,
-		Value: tagAssignmentRequests[1].Value,
-	}
-
-	tagAssignmentRequestModels := []servermodels.TagAssignmentRequest{tagAssignmentModel_1, tagAssignmentModel_2}
-
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(tagAssignmentRequestModels)
+	yamlmarshal, _ := yaml.Marshal(tagAssignmentRequests)
 
 	Filename = FILENAME
 

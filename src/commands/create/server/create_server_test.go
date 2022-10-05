@@ -11,15 +11,15 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"sigs.k8s.io/yaml"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
 func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	serverCreate := servermodels.GenerateServerCreateCli()
+	serverCreate := servermodels.GenerateServerCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
@@ -31,7 +31,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
+		ServersPost(gomock.Eq(*serverCreate)).
 		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
@@ -51,7 +51,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 
 func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	serverCreate := servermodels.GenerateServerCreateCli()
+	serverCreate := servermodels.GenerateServerCreateSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverCreate)
@@ -63,7 +63,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
+		ServersPost(gomock.Eq(*serverCreate)).
 		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
@@ -153,7 +153,7 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 
 func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverCreate := servermodels.GenerateServerCreateCli()
+	serverCreate := servermodels.GenerateServerCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
@@ -162,7 +162,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
+		ServersPost(gomock.Eq(*serverCreate)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -186,7 +186,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 func TestCreateServerClientFailure(test_framework *testing.T) {
 
 	// Setup
-	serverCreate := servermodels.GenerateServerCreateCli()
+	serverCreate := servermodels.GenerateServerCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
@@ -195,7 +195,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
+		ServersPost(gomock.Eq(*serverCreate)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -218,7 +218,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 
 func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverCreate := servermodels.GenerateServerCreateCli()
+	serverCreate := servermodels.GenerateServerCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
@@ -227,7 +227,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate.ToSdk())).
+		ServersPost(gomock.Eq(*serverCreate)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

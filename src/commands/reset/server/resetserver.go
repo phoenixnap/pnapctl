@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
@@ -64,6 +64,6 @@ func createResetRequest() (*bmcapisdk.ServerReset, error) {
 	if len(Filename) < 1 {
 		return &bmcapisdk.ServerReset{}, nil
 	} else {
-		return servermodels.CreateResetRequestFromFile(Filename, commandName)
+		return models.CreateRequestFromFile[bmcapisdk.ServerReset](Filename, commandName)
 	}
 }

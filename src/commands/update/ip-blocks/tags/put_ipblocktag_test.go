@@ -12,8 +12,8 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 
-	"gopkg.in/yaml.v2"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+	"sigs.k8s.io/yaml"
 )
 
 func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {

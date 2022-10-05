@@ -9,8 +9,8 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"sigs.k8s.io/yaml"
 
 	"github.com/stretchr/testify/assert"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -21,16 +21,8 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 	serverReset := servermodels.GenerateServerResetSdk()
 	resetResult := servermodels.GenerateResetResultSdk()
 
-	// to be used for marshaling only
-	serverResetModel := servermodels.ServerReset{
-		InstallDefaultSshKeys: nil,
-		SshKeys:               serverReset.SshKeys,
-		SshKeyIds:             serverReset.SshKeyIds,
-		OsConfiguration:       nil,
-	}
-
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverResetModel)
+	yamlmarshal, _ := yaml.Marshal(serverReset)
 
 	Filename = FILENAME
 

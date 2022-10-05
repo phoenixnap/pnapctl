@@ -1,9 +1,10 @@
 package sshkey
 
 import (
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -31,7 +32,7 @@ pnapctl update ssh-key <SSH_KEY_ID> --filename <FILE_PATH> [--full] [--output <O
 default: true
 name: default ssh key`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		sshKeyUpdate, err := sshkeymodels.CreateSshKeyUpdateRequestFromFile(Filename, commandName)
+		sshKeyUpdate, err := models.CreateRequestFromFile[bmcapisdk.SshKeyUpdate](Filename, commandName)
 
 		if err != nil {
 			return err

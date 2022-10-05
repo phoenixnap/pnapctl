@@ -21,19 +21,6 @@ func GenerateQuotaSdk() bmcapisdk.Quota {
 	}
 }
 
-func GenerateQuotaCli() Quota {
-	return Quota{
-		ID:                           testutil.RandSeq(10),
-		Name:                         testutil.RandSeq(10),
-		Description:                  testutil.RandSeq(10),
-		Status:                       testutil.RandSeq(10),
-		Limit:                        int32(rand.Int()),
-		Unit:                         testutil.RandSeq(10),
-		Used:                         int32(rand.Int()),
-		QuotaEditLimitRequestDetails: []QuotaEditLimitRequestDetails{},
-	}
-}
-
 func GenerateQuotaSdkList(n int) []bmcapisdk.Quota {
 	var quotaList []bmcapisdk.Quota
 	for i := 0; i < n; i++ {
@@ -44,13 +31,6 @@ func GenerateQuotaSdkList(n int) []bmcapisdk.Quota {
 
 func GenerateQuotaEditLimitRequestSdk() bmcapisdk.QuotaEditLimitRequest {
 	return bmcapisdk.QuotaEditLimitRequest{
-		Limit:  int32(rand.Int()),
-		Reason: testutil.RandSeq(10),
-	}
-}
-
-func GenerateQuotaEditLimitRequestCli() QuotaEditRequest {
-	return QuotaEditRequest{
 		Limit:  int32(rand.Int()),
 		Reason: testutil.RandSeq(10),
 	}

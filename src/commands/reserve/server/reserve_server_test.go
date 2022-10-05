@@ -11,7 +11,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
-	"gopkg.in/yaml.v2"
+	"sigs.k8s.io/yaml"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
@@ -20,12 +20,8 @@ func TestReserveServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
 	serverReserve := servermodels.GenerateServerReserveSdk()
 
-	serverReserveModel := servermodels.ServerReserve{
-		PricingModel: serverReserve.PricingModel,
-	}
-
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReserveModel)
+	yamlmarshal, _ := yaml.Marshal(serverReserve)
 
 	Filename = FILENAME
 

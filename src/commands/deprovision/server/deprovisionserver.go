@@ -3,9 +3,10 @@ package server
 import (
 	"fmt"
 
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
@@ -29,7 +30,7 @@ pnapctl deprovision server <SERVER_ID> --filename <FILE_PATH>
 # serverdeprovision.yaml
 deleteIpBlocks: false`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		relinquishIpBlockRequest, err := servermodels.CreateRelinquishIpBlockRequestFromFile(Filename, commandName)
+		relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename, commandName)
 		if err != nil {
 			return err
 		}

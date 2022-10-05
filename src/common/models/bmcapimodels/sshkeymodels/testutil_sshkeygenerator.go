@@ -43,24 +43,8 @@ func GenerateSshKeyCreateSdk() *bmcapisdk.SshKeyCreate {
 
 }
 
-func GenerateSshKeyCreateCli() SshKeyCreate {
-	return SshKeyCreate{
-		Default: false,
-		Name:    testutil.RandSeq(10),
-		Key:     testutil.RandSeq(10),
-	}
-
-}
-
 func GenerateSshKeyUpdateSdk() *bmcapisdk.SshKeyUpdate {
 	return &bmcapisdk.SshKeyUpdate{
-		Default: false,
-		Name:    testutil.RandSeq(10),
-	}
-}
-
-func GenerateSshKeyUpdateCli() SshKeyUpdate {
-	return SshKeyUpdate{
 		Default: false,
 		Name:    testutil.RandSeq(10),
 	}

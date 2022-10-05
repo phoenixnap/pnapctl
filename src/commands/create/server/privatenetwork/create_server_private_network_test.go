@@ -6,12 +6,13 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
-	"gopkg.in/yaml.v2"
+	"sigs.k8s.io/yaml"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
@@ -20,7 +21,7 @@ func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
 	serverPrivateNetwork := servermodels.GenerateServerPrivateNetworkSdk()
 
-	serverPrivateNetworkModel := servermodels.ServerPrivateNetwork{
+	serverPrivateNetworkModel := bmcapi.ServerPrivateNetwork{
 		Id:                serverPrivateNetwork.Id,
 		Ips:               serverPrivateNetwork.Ips,
 		Dhcp:              serverPrivateNetwork.Dhcp,

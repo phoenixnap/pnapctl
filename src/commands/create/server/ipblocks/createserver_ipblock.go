@@ -1,9 +1,10 @@
 package ipblocks
 
 import (
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -28,8 +29,8 @@ pnapctl create server-ip-block <SERVER_ID> --filename <FILE_PATH> [--output <OUT
 # servercreateipblock.yaml
 id: 5ff5cc9bc1acf144d9106233
 vlanId: 11`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		serverIpBlock, err := servermodels.CreateServerIpBlockFromFile(Filename, commandName)
+	RunE: func(_ *cobra.Command, args []string) error {
+		serverIpBlock, err := models.CreateRequestFromFile[bmcapisdk.ServerIpBlock](Filename, commandName)
 
 		if err != nil {
 			return err

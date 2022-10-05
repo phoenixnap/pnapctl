@@ -21,8 +21,8 @@ import (
 )
 
 type ExampleStruct1 struct {
-	ID     string `header:"id"`
-	Status string `header:"status"`
+	ID     string `header:"id" json:"id"`
+	Status string `header:"status" json:"status"`
 }
 
 // Setup
@@ -62,8 +62,8 @@ func ExamplePrintOutputJsonFormat() {
 	MainPrinter.PrintOutput(inputStruct, "dummy command")
 
 	// Output: {
-	//     "ID": "123",
-	//     "Status": "OK"
+	//     "id": "123",
+	//     "status": "OK"
 	// }
 }
 
@@ -163,24 +163,14 @@ func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 	assert.Equal(test_framework, outputType, "tables.ShortServerTable")
 }
 
-func TestPrepareServerForPrintingLongServer(test_framework *testing.T) {
-	OutputFormat = "json"
-	server := servermodels.GenerateServerSdk()
-	prepared := PrepareServerForPrinting(server, true)
-
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "servermodels.LongServer")
-}
-
-func TestPrepareServerForPrintingShortServer(test_framework *testing.T) {
+func TestPrepareServerForPrintingServer(test_framework *testing.T) {
 	OutputFormat = "json"
 	server := servermodels.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "servermodels.ShortServer")
+	assert.Equal(test_framework, outputType, "bmcapi.Server")
 }
 
 func TestPrepareServerListForPrinting(test_framework *testing.T) {
@@ -190,7 +180,7 @@ func TestPrepareServerListForPrinting(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared[0])
 
-	assert.Equal(test_framework, outputType, "servermodels.ShortServer")
+	assert.Equal(test_framework, outputType, "bmcapi.Server")
 	assert.Equal(test_framework, len(prepared), 1)
 }
 
@@ -334,7 +324,7 @@ func TestPrepareQuotaForPrintingNonTable(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "quotamodels.Quota")
+	assert.Equal(test_framework, outputType, "bmcapi.Quota")
 }
 
 func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
@@ -374,7 +364,7 @@ func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "sshkeymodels.SshKey")
+	assert.Equal(test_framework, outputType, "bmcapi.SshKey")
 }
 
 func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {

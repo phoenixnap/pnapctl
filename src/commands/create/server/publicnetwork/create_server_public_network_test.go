@@ -6,11 +6,12 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 
-	"gopkg.in/yaml.v2"
+	"sigs.k8s.io/yaml"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -20,7 +21,7 @@ func TestCreateServerPublicNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
 	serverPublicNetwork := servermodels.GenerateServerPublicNetworkSdk()
 
-	serverPublicNetworkModel := servermodels.ServerPublicNetwork{
+	serverPublicNetworkModel := bmcapi.ServerPublicNetwork{
 		Id:                serverPublicNetwork.Id,
 		Ips:               serverPublicNetwork.Ips,
 		StatusDescription: serverPublicNetwork.StatusDescription,
