@@ -191,7 +191,7 @@ func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "*auditmodels.Event")
+	assert.Equal(test_framework, outputType, "auditapi.Event")
 }
 
 func TestPrepareEventForPrintingTable(test_framework *testing.T) {

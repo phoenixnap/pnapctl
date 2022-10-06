@@ -2,7 +2,6 @@ package printer
 
 import (
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
-	"phoenixnap.com/pnapctl/common/models/auditmodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
@@ -18,7 +17,7 @@ func PrepareEventForPrinting(event auditapisdk.Event) interface{} {
 	case table:
 		return tables.ToEventTable(event)
 	default:
-		return auditmodels.EventFromSdk(&event)
+		return event
 	}
 }
 
