@@ -2,7 +2,7 @@ package tables
 
 import (
 	"github.com/phoenixnap/go-sdk-bmc/networkapi"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
@@ -21,11 +21,11 @@ func PublicNetworkTableFromSdk(sdk networkapi.PublicNetwork) PublicNetworkTable 
 	return PublicNetworkTable{
 		Id:          sdk.Id,
 		VlanId:      sdk.VlanId,
-		Memberships: iterutils.Map(sdk.Memberships, networkmodels.NetworkMembershipToTableString),
+		Memberships: iterutils.Map(sdk.Memberships, models.NetworkMembershipToTableString),
 		Name:        sdk.Name,
 		Location:    sdk.Location,
 		Description: DerefString(sdk.Description),
 		CreatedOn:   sdk.CreatedOn.String(),
-		IpBlocks:    iterutils.Map(sdk.IpBlocks, networkmodels.PublicNetworkIpBlockToTableString),
+		IpBlocks:    iterutils.Map(sdk.IpBlocks, models.PublicNetworkIpBlockToTableString),
 	}
 }

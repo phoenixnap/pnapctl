@@ -8,7 +8,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"sigs.k8s.io/yaml"
@@ -18,7 +18,7 @@ import (
 
 func TestPatchServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	serverPatch := servermodels.GenerateServerPatchSdk()
+	serverPatch := generators.GenerateServerPatchSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverPatch)
@@ -26,7 +26,7 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -50,7 +50,7 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 
 func TestPatchServerSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	serverPatch := servermodels.GenerateServerPatchSdk()
+	serverPatch := generators.GenerateServerPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)
@@ -58,7 +58,7 @@ func TestPatchServerSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -153,7 +153,7 @@ func TestPatchServerFileReadingFailure(test_framework *testing.T) {
 
 func TestPatchServerBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverPatch := servermodels.GenerateServerPatchSdk()
+	serverPatch := generators.GenerateServerPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)
@@ -185,7 +185,7 @@ func TestPatchServerBackendErrorFailure(test_framework *testing.T) {
 
 func TestPatchServerClientFailure(test_framework *testing.T) {
 	// Setup
-	serverPatch := servermodels.GenerateServerPatchSdk()
+	serverPatch := generators.GenerateServerPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)
@@ -217,7 +217,7 @@ func TestPatchServerClientFailure(test_framework *testing.T) {
 
 func TestPatchServerKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverPatch := servermodels.GenerateServerPatchSdk()
+	serverPatch := generators.GenerateServerPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)

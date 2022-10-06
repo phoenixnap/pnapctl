@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -19,7 +19,7 @@ import (
 
 func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	serverCreate := servermodels.GenerateServerCreateSdk()
+	serverCreate := generators.GenerateServerCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
@@ -27,7 +27,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdServer := servermodels.GenerateServerSdk()
+	createdServer := generators.GenerateServerSdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -51,7 +51,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 
 func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	serverCreate := servermodels.GenerateServerCreateSdk()
+	serverCreate := generators.GenerateServerCreateSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverCreate)
@@ -59,7 +59,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdServer := servermodels.GenerateServerSdk()
+	createdServer := generators.GenerateServerSdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -153,7 +153,7 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 
 func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverCreate := servermodels.GenerateServerCreateSdk()
+	serverCreate := generators.GenerateServerCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
@@ -186,7 +186,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 func TestCreateServerClientFailure(test_framework *testing.T) {
 
 	// Setup
-	serverCreate := servermodels.GenerateServerCreateSdk()
+	serverCreate := generators.GenerateServerCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
@@ -218,7 +218,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 
 func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverCreate := servermodels.GenerateServerCreateSdk()
+	serverCreate := generators.GenerateServerCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)

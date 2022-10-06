@@ -2,7 +2,7 @@ package tables
 
 import (
 	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
+	"phoenixnap.com/pnapctl/common/models"
 )
 
 type IpBlock struct {
@@ -20,14 +20,14 @@ type IpBlock struct {
 }
 
 type IpBlockShort struct {
-	Id                   string   `header:"ID"`
-	Location             string   `header:"Location"`
-	CidrBlockSize        string   `header:"Cidr Block Size"`
-	Cidr                 string   `header:"Cidr"`
-	Status               string   `header:"Status"`
-	Description          string   `header:"Description"`
-	Tags                 []string `header:"Tags"`
-	CreatedOn            string   `header:"Created On"`
+	Id            string   `header:"ID"`
+	Location      string   `header:"Location"`
+	CidrBlockSize string   `header:"Cidr Block Size"`
+	Cidr          string   `header:"Cidr"`
+	Status        string   `header:"Status"`
+	Description   string   `header:"Description"`
+	Tags          []string `header:"Tags"`
+	CreatedOn     string   `header:"Created On"`
 }
 
 func ToIpBlockTable(ipBlock ipapisdk.IpBlock) IpBlock {
@@ -35,7 +35,7 @@ func ToIpBlockTable(ipBlock ipapisdk.IpBlock) IpBlock {
 	var tags []string
 
 	for _, tag := range ipBlock.Tags {
-		tags = append(tags, ipmodels.TagAssignmentToTableString(&tag))
+		tags = append(tags, models.TagAssignmentToTableString(&tag))
 	}
 
 	return IpBlock{
@@ -58,17 +58,17 @@ func ToShortIpBlockTable(ipBlock ipapisdk.IpBlock) IpBlockShort {
 	var tags []string
 
 	for _, tag := range ipBlock.Tags {
-		tags = append(tags, ipmodels.TagAssignmentToTableString(&tag))
+		tags = append(tags, models.TagAssignmentToTableString(&tag))
 	}
 
 	return IpBlockShort{
-		Id:                   ipBlock.Id,
-		Location:             ipBlock.Location,
-		CidrBlockSize:        ipBlock.CidrBlockSize,
-		Cidr:                 ipBlock.Cidr,
-		Status:               ipBlock.Status,
-		Description:          DerefString(ipBlock.Description),
-		Tags:                 tags,
-		CreatedOn:            ipBlock.CreatedOn.String(),
+		Id:            ipBlock.Id,
+		Location:      ipBlock.Location,
+		CidrBlockSize: ipBlock.CidrBlockSize,
+		Cidr:          ipBlock.Cidr,
+		Status:        ipBlock.Status,
+		Description:   DerefString(ipBlock.Description),
+		Tags:          tags,
+		CreatedOn:     ipBlock.CreatedOn.String(),
 	}
 }

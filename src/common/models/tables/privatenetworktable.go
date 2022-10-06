@@ -2,7 +2,7 @@ package tables
 
 import (
 	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models"
 )
 
 type PrivateNetworkTable struct {
@@ -21,7 +21,7 @@ func PrivateNetworkFromSdk(network networksdk.PrivateNetwork) PrivateNetworkTabl
 	var servers []string
 
 	for _, server := range network.Servers {
-		servers = append(servers, networkmodels.PrivateNetworkServerToTableString(&server))
+		servers = append(servers, models.PrivateNetworkServerToTableString(&server))
 	}
 
 	return PrivateNetworkTable{

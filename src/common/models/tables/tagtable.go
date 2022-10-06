@@ -2,7 +2,7 @@ package tables
 
 import (
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
-	"phoenixnap.com/pnapctl/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/common/models"
 )
 
 type TagTable struct {
@@ -20,7 +20,7 @@ func TagFromSdk(tag tagapisdk.Tag) TagTable {
 
 	if tag.ResourceAssignments != nil {
 		for _, x := range tag.ResourceAssignments {
-			resourceAssignments = append(resourceAssignments, tagmodels.ResourceAssignmentToTableString(x))
+			resourceAssignments = append(resourceAssignments, models.ResourceAssignmentToTableString(x))
 		}
 	}
 

@@ -5,11 +5,12 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
-	"phoenixnap.com/pnapctl/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 func TestTagFromSdk(test_framework *testing.T) {
-	tag := tagmodels.GenerateTagSdk()
+	tag := generators.GenerateTagSdk()
 	table := TagFromSdk(*tag)
 
 	assertTagsEqual(test_framework, *tag, table)
@@ -20,7 +21,7 @@ func assertTagsEqual(test_framework *testing.T, tag tagapisdk.Tag, table TagTabl
 
 	if tag.ResourceAssignments != nil {
 		for _, x := range tag.ResourceAssignments {
-			resourceAssignments = append(resourceAssignments, tagmodels.ResourceAssignmentToTableString(x))
+			resourceAssignments = append(resourceAssignments, models.ResourceAssignmentToTableString(x))
 		}
 	}
 

@@ -5,18 +5,18 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 func TestToSshKeyTable(test_framework *testing.T) {
-	sshkey := sshkeymodels.GenerateSshKeySdk()
+	sshkey := generators.GenerateSshKeySdk()
 	table := ToSshKeyTable(sshkey)
 
 	assertSshKeysEqual(test_framework, sshkey, table)
 }
 
 func TestToSshKeyTableFull(test_framework *testing.T) {
-	sshkey := sshkeymodels.GenerateSshKeySdk()
+	sshkey := generators.GenerateSshKeySdk()
 	table := ToSshKeyTableFull(sshkey)
 
 	assertSshKeysFullEqual(test_framework, sshkey, table)

@@ -6,7 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -14,8 +15,8 @@ import (
 )
 
 func TestGetAllProductAvailabilitiesSuccess(test_framework *testing.T) {
-	productAvailabilities := testutil.GenNDeref(5, billingmodels.GenerateProductAvailability)
-	queryParams := billingmodels.GenerateProductAvailabilityGetQueryParams()
+	productAvailabilities := testutil.GenNDeref(5, generators.GenerateProductAvailability)
+	queryParams := generators.GenerateProductAvailabilityGetQueryParams()
 	setQueryParams(*queryParams)
 
 	productAvailabilitiesTable := iterutils.MapInterface(
@@ -39,7 +40,7 @@ func TestGetAllProductAvailabilitiesSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllProductAvailabilitiesClientFailure(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateProductAvailabilityGetQueryParams()
+	queryParams := generators.GenerateProductAvailabilityGetQueryParams()
 	setQueryParams(*queryParams)
 
 	// Mocking
@@ -57,7 +58,7 @@ func TestGetAllProductAvailabilitiesClientFailure(test_framework *testing.T) {
 }
 
 func TestGetAllProductAvailabilitiesKeycloakFailure(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateProductAvailabilityGetQueryParams()
+	queryParams := generators.GenerateProductAvailabilityGetQueryParams()
 	setQueryParams(*queryParams)
 
 	// Mocking
@@ -72,8 +73,8 @@ func TestGetAllProductAvailabilitiesKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllProductAvailabilitiesPrinterFailure(test_framework *testing.T) {
-	productAvailabilities := testutil.GenNDeref(5, billingmodels.GenerateProductAvailability)
-	queryParams := billingmodels.GenerateProductAvailabilityGetQueryParams()
+	productAvailabilities := testutil.GenNDeref(5, generators.GenerateProductAvailability)
+	queryParams := generators.GenerateProductAvailabilityGetQueryParams()
 	setQueryParams(*queryParams)
 
 	productAvailabilitiesTable := iterutils.MapInterface(
@@ -96,7 +97,7 @@ func TestGetAllProductAvailabilitiesPrinterFailure(test_framework *testing.T) {
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
 }
 
-func setQueryParams(queryparams billingmodels.ProductAvailabilityGetQueryParams) {
+func setQueryParams(queryparams billing.ProductAvailabilityGetQueryParams) {
 	productCategory = queryparams.ProductCategory
 	productCode = queryparams.ProductCode
 	showOnlyMinQuantityAvailable = queryparams.ShowOnlyMinQuantityAvailable

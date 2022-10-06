@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
@@ -12,7 +12,7 @@ import (
 )
 
 func TestPowerOnServerSuccess(test_framework *testing.T) {
-	actionResult := servermodels.GenerateActionResultSdk()
+	actionResult := generators.GenerateActionResultSdk()
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOn(RESOURCEID).

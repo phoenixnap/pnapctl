@@ -7,7 +7,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -16,7 +16,7 @@ import (
 const deleteResult = "The specified IP block is being removed from the server."
 
 func TestDeleteServerIpBlockSuccessYAML(test_framework *testing.T) {
-	relinquishIpBlock := servermodels.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(relinquishIpBlock)
@@ -43,7 +43,7 @@ func TestDeleteServerIpBlockSuccessYAML(test_framework *testing.T) {
 }
 
 func TestDeleteServerIpBlockSuccessJSON(test_framework *testing.T) {
-	relinquishIpBlock := servermodels.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(relinquishIpBlock)
@@ -70,7 +70,7 @@ func TestDeleteServerIpBlockSuccessJSON(test_framework *testing.T) {
 }
 
 func TestDeleteServerIpBlockNotFound(test_framework *testing.T) {
-	relinquishIpBlock := servermodels.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(relinquishIpBlock)
@@ -99,7 +99,7 @@ func TestDeleteServerIpBlockNotFound(test_framework *testing.T) {
 }
 
 func TestDeleteServerIpBlockError(test_framework *testing.T) {
-	relinquishIpBlock := servermodels.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(relinquishIpBlock)
@@ -128,7 +128,7 @@ func TestDeleteServerIpBlockError(test_framework *testing.T) {
 }
 
 func TestDeleteServerIpBlockSdkentFailure(test_framework *testing.T) {
-	relinquishIpBlock := servermodels.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(relinquishIpBlock)
@@ -158,7 +158,7 @@ func TestDeleteServerIpBlockSdkentFailure(test_framework *testing.T) {
 }
 
 func TestDeleteServerIpBlockKeycloakFailure(test_framework *testing.T) {
-	relinquishIpBlock := servermodels.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(relinquishIpBlock)

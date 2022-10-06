@@ -8,7 +8,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -16,7 +16,7 @@ import (
 
 func TestPatchPublicNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifySdk()
+	publicNetworkModifyCli := generators.GeneratePublicNetworkModifySdk()
 	publicNetworkModifySdk := publicNetworkModifyCli
 
 	// Assumed contents of the file.
@@ -25,7 +25,7 @@ func TestPatchPublicNetworkSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	publicNetwork := networkmodels.GeneratePublicNetworkSdk()
+	publicNetwork := generators.GeneratePublicNetworkSdk()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -49,7 +49,7 @@ func TestPatchPublicNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestPatchPublicNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifySdk()
+	publicNetworkModifyCli := generators.GeneratePublicNetworkModifySdk()
 	publicNetworkModifySdk := publicNetworkModifyCli
 
 	// Assumed contents of the file.
@@ -58,7 +58,7 @@ func TestPatchPublicNetworkSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	publicNetwork := networkmodels.GeneratePublicNetworkSdk()
+	publicNetwork := generators.GeneratePublicNetworkSdk()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -147,7 +147,7 @@ func TestPatchPublicNetworkFileReadingFailure(test_framework *testing.T) {
 
 func TestPatchPublicNetworkBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifySdk()
+	publicNetworkModifyCli := generators.GeneratePublicNetworkModifySdk()
 	publicNetworkModifySdk := publicNetworkModifyCli
 
 	// Assumed contents of the file.
@@ -180,7 +180,7 @@ func TestPatchPublicNetworkBackendErrorFailure(test_framework *testing.T) {
 
 func TestPatchPublicNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifySdk()
+	publicNetworkModifyCli := generators.GeneratePublicNetworkModifySdk()
 	publicNetworkModifySdk := publicNetworkModifyCli
 
 	// Assumed contents of the file.
@@ -213,7 +213,7 @@ func TestPatchPublicNetworkClientFailure(test_framework *testing.T) {
 
 func TestPatchPublicNetworkKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifySdk()
+	publicNetworkModifyCli := generators.GeneratePublicNetworkModifySdk()
 	publicNetworkModifySdk := publicNetworkModifyCli
 
 	// Assumed contents of the file.

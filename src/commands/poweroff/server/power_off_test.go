@@ -9,13 +9,13 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 // Each test needs to have a name like `TestXXX`
 // They also need a parameter of `*testing.T`
 func TestPowerOffServerSuccess(test_framework *testing.T) {
-	actionResult := servermodels.GenerateActionResultSdk()
+	actionResult := generators.GenerateActionResultSdk()
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(RESOURCEID).
 		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)

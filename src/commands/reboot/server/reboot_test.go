@@ -6,14 +6,14 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestRebootServerSuccess(test_framework *testing.T) {
 	// Mocking
-	actionResult := servermodels.GenerateActionResultSdk()
+	actionResult := generators.GenerateActionResultSdk()
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(RESOURCEID).
 		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)

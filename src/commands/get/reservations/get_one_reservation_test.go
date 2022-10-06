@@ -6,14 +6,14 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetReservationShortSuccess(test_framework *testing.T) {
-	reservation := billingmodels.GenerateReservation()
+	reservation := generators.GenerateReservation()
 	var shortReservation = tables.ShortReservationTableFromSdk(*reservation)
 
 	PrepareBillingMockClient(test_framework).
@@ -32,7 +32,7 @@ func TestGetReservationShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetReservationFullSuccess(test_framework *testing.T) {
-	reservation := billingmodels.GenerateReservation()
+	reservation := generators.GenerateReservation()
 	var reservationTable = tables.ReservationTableFromSdk(*reservation)
 
 	PrepareBillingMockClient(test_framework).
@@ -90,7 +90,7 @@ func TestGetReservationKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetReservationPrinterFailure(test_framework *testing.T) {
-	reservation := billingmodels.GenerateReservation()
+	reservation := generators.GenerateReservation()
 	var shortReservation = tables.ShortReservationTableFromSdk(*reservation)
 
 	PrepareBillingMockClient(test_framework).

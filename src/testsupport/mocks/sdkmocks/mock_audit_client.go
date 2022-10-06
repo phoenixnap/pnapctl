@@ -10,7 +10,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	auditapi "github.com/phoenixnap/go-sdk-bmc/auditapi"
-	auditmodels "phoenixnap.com/pnapctl/common/models/auditmodels"
+	audit "phoenixnap.com/pnapctl/common/models/queryparams/audit"
 )
 
 // MockAuditSdkClient is a mock of AuditSdkClient interface.
@@ -37,7 +37,7 @@ func (m *MockAuditSdkClient) EXPECT() *MockAuditSdkClientMockRecorder {
 }
 
 // EventsGet mocks base method.
-func (m *MockAuditSdkClient) EventsGet(queryParams auditmodels.EventsGetQueryParams) ([]auditapi.Event, *http.Response, error) {
+func (m *MockAuditSdkClient) EventsGet(queryParams audit.EventsGetQueryParams) ([]auditapi.Event, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "EventsGet", queryParams)
 	ret0, _ := ret[0].([]auditapi.Event)

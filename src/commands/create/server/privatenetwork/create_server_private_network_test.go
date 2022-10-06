@@ -9,7 +9,7 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"sigs.k8s.io/yaml"
@@ -19,7 +19,7 @@ import (
 
 func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	serverPrivateNetwork := servermodels.GenerateServerPrivateNetworkSdk()
+	serverPrivateNetwork := generators.GenerateServerPrivateNetworkSdk()
 
 	serverPrivateNetworkModel := bmcapi.ServerPrivateNetwork{
 		Id:                serverPrivateNetwork.Id,
@@ -55,7 +55,7 @@ func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestCreateServerPrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	serverPrivateNetwork := servermodels.GenerateServerPrivateNetworkSdk()
+	serverPrivateNetwork := generators.GenerateServerPrivateNetworkSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
@@ -154,7 +154,7 @@ func TestCreateServerPrivateNetworkFileReadingFailure(test_framework *testing.T)
 
 func TestCreateServerPrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverPrivateNetwork := servermodels.GenerateServerPrivateNetworkSdk()
+	serverPrivateNetwork := generators.GenerateServerPrivateNetworkSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
@@ -185,7 +185,7 @@ func TestCreateServerPrivateNetworkBackendErrorFailure(test_framework *testing.T
 
 func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
 	// Setup
-	serverPrivateNetwork := servermodels.GenerateServerPrivateNetworkSdk()
+	serverPrivateNetwork := generators.GenerateServerPrivateNetworkSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
@@ -217,7 +217,7 @@ func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
 
 func TestCreateServerPrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverPrivateNetwork := servermodels.GenerateServerPrivateNetworkSdk()
+	serverPrivateNetwork := generators.GenerateServerPrivateNetworkSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)

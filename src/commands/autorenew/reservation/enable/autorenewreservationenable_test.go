@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -14,7 +14,7 @@ import (
 
 func TestAutoRenewReservationEnableSuccess(test_framework *testing.T) {
 	// Mocking
-	reservation := billingmodels.GenerateReservation()
+	reservation := generators.GenerateReservation()
 	PrepareBillingMockClient(test_framework).
 		ReservationEnableAutoRenew(RESOURCEID).
 		Return(reservation, WithResponse(200, WithBody(reservation)), nil)

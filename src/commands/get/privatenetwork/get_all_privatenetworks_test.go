@@ -6,14 +6,14 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllPrivateNetworksShortSuccess(test_framework *testing.T) {
-	privateNetworks := networkmodels.GeneratePrivateNetworkListSdk(5)
+	privateNetworks := generators.GeneratePrivateNetworkListSdk(5)
 
 	var privateNetworkList []interface{}
 
@@ -64,7 +64,7 @@ func TestGetAllPrivateNetworksKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllPrivateNetworksPrinterFailure(test_framework *testing.T) {
-	privateNetworks := networkmodels.GeneratePrivateNetworkListSdk(5)
+	privateNetworks := generators.GeneratePrivateNetworkListSdk(5)
 
 	var privateNetworkList []interface{}
 

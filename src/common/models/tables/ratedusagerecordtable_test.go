@@ -6,13 +6,13 @@ import (
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 // Full version
 func TestRatedUsageRecordFromBandwidthSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
-		BandwidthRecord: billingmodels.GenerateBandwidthRecordSdk(),
+		BandwidthRecord: generators.GenerateBandwidthRecordSdk(),
 	}
 	table := *RatedUsageRecordTableFromSdk(record)
 
@@ -21,7 +21,7 @@ func TestRatedUsageRecordFromBandwidthSdk(test_framework *testing.T) {
 
 func TestRatedUsageRecordFromOperatingSystemSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
-		OperatingSystemRecord: billingmodels.GenerateOperatingSystemRecordSdk(),
+		OperatingSystemRecord: generators.GenerateOperatingSystemRecordSdk(),
 	}
 	table := *RatedUsageRecordTableFromSdk(record)
 
@@ -30,7 +30,7 @@ func TestRatedUsageRecordFromOperatingSystemSdk(test_framework *testing.T) {
 
 func TestRatedUsageRecordFromPublicSubnetSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
-		PublicSubnetRecord: billingmodels.GeneratePublicSubnetRecordSdk(),
+		PublicSubnetRecord: generators.GeneratePublicSubnetRecordSdk(),
 	}
 	table := *RatedUsageRecordTableFromSdk(record)
 
@@ -39,7 +39,7 @@ func TestRatedUsageRecordFromPublicSubnetSdk(test_framework *testing.T) {
 
 func TestRatedUsageRecordFromServerSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
-		ServerRecord: billingmodels.GenerateServerRecordSdk(),
+		ServerRecord: generators.GenerateServerRecordSdk(),
 	}
 	table := *RatedUsageRecordTableFromSdk(record)
 

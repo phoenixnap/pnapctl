@@ -8,7 +8,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -16,7 +16,7 @@ import (
 
 func TestConvertReservationSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	reservationConvert := billingmodels.GenerateReservationRequestSdk()
+	reservationConvert := generators.GenerateReservationRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(reservationConvert)
@@ -24,7 +24,7 @@ func TestConvertReservationSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdReservation := billingmodels.GenerateReservation()
+	createdReservation := generators.GenerateReservation()
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
@@ -45,7 +45,7 @@ func TestConvertReservationSuccessYAML(test_framework *testing.T) {
 
 func TestConvertReservationSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	reservationConvert := billingmodels.GenerateReservationRequestSdk()
+	reservationConvert := generators.GenerateReservationRequestSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(reservationConvert)
@@ -53,7 +53,7 @@ func TestConvertReservationSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdReservation := billingmodels.GenerateReservation()
+	createdReservation := generators.GenerateReservation()
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
@@ -113,7 +113,7 @@ func TestConvertReservationUnmarshallingFailure(test_framework *testing.T) {
 
 func TestConvertReservationBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	reservationConvert := billingmodels.GenerateReservationRequestSdk()
+	reservationConvert := generators.GenerateReservationRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(reservationConvert)
@@ -143,7 +143,7 @@ func TestConvertReservationBackendErrorFailure(test_framework *testing.T) {
 
 func TestConvertReservationClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	reservationConvert := billingmodels.GenerateReservationRequestSdk()
+	reservationConvert := generators.GenerateReservationRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(reservationConvert)
@@ -173,7 +173,7 @@ func TestConvertReservationClientFailure(test_framework *testing.T) {
 
 func TestConvertReservationKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	reservationConvert := billingmodels.GenerateReservationRequestSdk()
+	reservationConvert := generators.GenerateReservationRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(reservationConvert)

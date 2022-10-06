@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -14,7 +14,7 @@ func TestDeleteSshKeySuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyDelete(RESOURCEID).
-		Return(sshkeymodels.GenerateSshKeyDeleteResultSdk(), WithResponse(200, nil), nil)
+		Return(generators.GenerateSshKeyDeleteResultSdk(), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteSshKeyCmd.RunE(DeleteSshKeyCmd, []string{RESOURCEID})

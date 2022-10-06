@@ -7,7 +7,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/models/tables"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -15,8 +16,8 @@ import (
 )
 
 func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
-	responseList := billingmodels.GenerateRatedUsageRecordSdkList()
-	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
+	responseList := generators.GenerateRatedUsageRecordSdkList()
+	queryParams := generators.GenerateRatedUsageGetQueryParams()
 	setQueryParams(queryParams)
 
 	Full = true
@@ -43,8 +44,8 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
-	responseList := billingmodels.GenerateRatedUsageRecordSdkList()
-	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
+	responseList := generators.GenerateRatedUsageRecordSdkList()
+	queryParams := generators.GenerateRatedUsageGetQueryParams()
 	setQueryParams(queryParams)
 
 	Full = false
@@ -71,7 +72,7 @@ func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsages_KeycloakFailure(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
+	queryParams := generators.GenerateRatedUsageGetQueryParams()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -86,8 +87,8 @@ func TestGetAllRatedUsages_KeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
-	responseList := billingmodels.GenerateRatedUsageRecordSdkList()
-	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
+	responseList := generators.GenerateRatedUsageRecordSdkList()
+	queryParams := generators.GenerateRatedUsageGetQueryParams()
 	setQueryParams(queryParams)
 
 	var recordTables []interface{}
@@ -112,7 +113,7 @@ func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsages_ServerError(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
+	queryParams := generators.GenerateRatedUsageGetQueryParams()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -128,7 +129,7 @@ func TestGetAllRatedUsages_ServerError(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsages_InvalidParams(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateRatedUsageGetQueryParams()
+	queryParams := generators.GenerateRatedUsageGetQueryParams()
 	queryParams.FromYearMonth = "0000/00"
 	setQueryParams(queryParams)
 
@@ -138,7 +139,7 @@ func TestGetAllRatedUsages_InvalidParams(test_framework *testing.T) {
 	assert.Equal(test_framework, fmt.Sprintf("'FromYearMonth' (%s) is not in the valid format (YYYY-MM)", FromYearMonth), err.Error())
 }
 
-func setQueryParams(queryparams billingmodels.RatedUsageGetQueryParams) {
+func setQueryParams(queryparams billing.RatedUsageGetQueryParams) {
 	FromYearMonth = queryparams.FromYearMonth
 	ToYearMonth = queryparams.ToYearMonth
 	ProductCategory = string(*queryparams.ProductCategory)

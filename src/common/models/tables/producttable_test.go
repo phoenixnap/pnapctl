@@ -5,13 +5,14 @@ import (
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 // Full version
 func TestProductActualFromSdk_BandwidthProduct(test_framework *testing.T) {
-	bandwidthProduct := billingmodels.GenerateBandwidthProduct()
+	bandwidthProduct := generators.GenerateBandwidthProduct()
 	ProductsResponse := billingapi.ProductsGet200ResponseInner{
 		Product: bandwidthProduct,
 	}
@@ -21,7 +22,7 @@ func TestProductActualFromSdk_BandwidthProduct(test_framework *testing.T) {
 }
 
 func TestProductActualFromSdk_OperatingSystemProduct(test_framework *testing.T) {
-	operatingSystemProduct := billingmodels.GenerateOperatingSystemProduct()
+	operatingSystemProduct := generators.GenerateOperatingSystemProduct()
 	ProductsResponse := billingapi.ProductsGet200ResponseInner{
 		Product: operatingSystemProduct,
 	}
@@ -31,7 +32,7 @@ func TestProductActualFromSdk_OperatingSystemProduct(test_framework *testing.T) 
 }
 
 func TestProductActualFromSdk_ServerProduct(test_framework *testing.T) {
-	serverProduct := billingmodels.GenerateServerProduct()
+	serverProduct := generators.GenerateServerProduct()
 	ProductsResponse := billingapi.ProductsGet200ResponseInner{
 		ServerProduct: serverProduct,
 	}
@@ -49,7 +50,7 @@ func assertEqualAsProduct(
 	assert.Equal(test_framework, sdkProduct.ProductCode, cliTable.ProductCode)
 	assert.Equal(test_framework, sdkProduct.ProductCategory, string(cliTable.ProductCategory))
 
-	sdkAsTableStrings := iterutils.Map(sdkProduct.Plans, billingmodels.PricingPlanToTableString)
+	sdkAsTableStrings := iterutils.Map(sdkProduct.Plans, models.PricingPlanToTableString)
 
 	assert.Equal(test_framework, sdkAsTableStrings, cliTable.Plans)
 }
@@ -62,7 +63,7 @@ func assertEqualAsServerProduct(
 	assert.Equal(test_framework, sdkProduct.ProductCode, cliTable.ProductCode)
 	assert.Equal(test_framework, sdkProduct.ProductCategory, string(cliTable.ProductCategory))
 
-	sdkAsTableStrings := iterutils.Map(sdkProduct.Plans, billingmodels.PricingPlanToTableString)
+	sdkAsTableStrings := iterutils.Map(sdkProduct.Plans, models.PricingPlanToTableString)
 	assert.Equal(test_framework, cliTable.Plans, sdkAsTableStrings)
 
 	assert.Equal(test_framework, sdkProduct.Metadata.RamInGb, cliTable.Metadata[RAM_IN_GB])

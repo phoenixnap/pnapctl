@@ -8,7 +8,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"sigs.k8s.io/yaml"
@@ -19,7 +19,7 @@ import (
 
 func TestTagServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	tagAssignmentRequests := servermodels.GenerateTagAssignmentRequestListSdk(2)
+	tagAssignmentRequests := generators.GenerateTagAssignmentRequestListSdk(2)
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagAssignmentRequests)
@@ -27,7 +27,7 @@ func TestTagServerSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -57,7 +57,7 @@ func TestTagServerEmptyBodySuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -81,7 +81,7 @@ func TestTagServerEmptyBodySuccessYAML(test_framework *testing.T) {
 
 func TestTagServerSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	tagAssignmentRequests := servermodels.GenerateTagAssignmentRequestListSdk(2)
+	tagAssignmentRequests := generators.GenerateTagAssignmentRequestListSdk(2)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(tagAssignmentRequests)
@@ -89,7 +89,7 @@ func TestTagServerSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -183,7 +183,7 @@ func TestTagServerFileReadingFailure(test_framework *testing.T) {
 
 func TestTagServerBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	tagAssignmentRequests := servermodels.GenerateTagAssignmentRequestListSdk(2)
+	tagAssignmentRequests := generators.GenerateTagAssignmentRequestListSdk(2)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(tagAssignmentRequests)
@@ -214,7 +214,7 @@ func TestTagServerBackendErrorFailure(test_framework *testing.T) {
 
 func TestTagServerClientFailure(test_framework *testing.T) {
 	// Setup
-	tagAssignmentRequests := servermodels.GenerateTagAssignmentRequestListSdk(2)
+	tagAssignmentRequests := generators.GenerateTagAssignmentRequestListSdk(2)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(tagAssignmentRequests)
@@ -246,7 +246,7 @@ func TestTagServerClientFailure(test_framework *testing.T) {
 
 func TestTagServerKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	tagAssignmentRequests := servermodels.GenerateTagAssignmentRequestListSdk(2)
+	tagAssignmentRequests := generators.GenerateTagAssignmentRequestListSdk(2)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(tagAssignmentRequests)

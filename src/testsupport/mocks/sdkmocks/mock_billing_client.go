@@ -10,7 +10,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	billingapi "github.com/phoenixnap/go-sdk-bmc/billingapi"
-	billingmodels "phoenixnap.com/pnapctl/common/models/billingmodels"
+	billing "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 )
 
 // MockBillingSdkClient is a mock of BillingSdkClient interface.
@@ -53,7 +53,7 @@ func (mr *MockBillingSdkClientMockRecorder) AccountBillingConfigurationGet() *go
 }
 
 // ProductAvailabilityGet mocks base method.
-func (m *MockBillingSdkClient) ProductAvailabilityGet(queryParams billingmodels.ProductAvailabilityGetQueryParams) ([]billingapi.ProductAvailability, *http.Response, error) {
+func (m *MockBillingSdkClient) ProductAvailabilityGet(queryParams billing.ProductAvailabilityGetQueryParams) ([]billingapi.ProductAvailability, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ProductAvailabilityGet", queryParams)
 	ret0, _ := ret[0].([]billingapi.ProductAvailability)
@@ -69,7 +69,7 @@ func (mr *MockBillingSdkClientMockRecorder) ProductAvailabilityGet(queryParams i
 }
 
 // ProductsGet mocks base method.
-func (m *MockBillingSdkClient) ProductsGet(queryParams billingmodels.ProductsGetQueryParams) ([]billingapi.ProductsGet200ResponseInner, *http.Response, error) {
+func (m *MockBillingSdkClient) ProductsGet(queryParams billing.ProductsGetQueryParams) ([]billingapi.ProductsGet200ResponseInner, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ProductsGet", queryParams)
 	ret0, _ := ret[0].([]billingapi.ProductsGet200ResponseInner)
@@ -85,7 +85,7 @@ func (mr *MockBillingSdkClientMockRecorder) ProductsGet(queryParams interface{})
 }
 
 // RatedUsageGet mocks base method.
-func (m *MockBillingSdkClient) RatedUsageGet(queryParams billingmodels.RatedUsageGetQueryParams) ([]billingapi.RatedUsageGet200ResponseInner, *http.Response, error) {
+func (m *MockBillingSdkClient) RatedUsageGet(queryParams billing.RatedUsageGetQueryParams) ([]billingapi.RatedUsageGet200ResponseInner, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RatedUsageGet", queryParams)
 	ret0, _ := ret[0].([]billingapi.RatedUsageGet200ResponseInner)
@@ -101,7 +101,7 @@ func (mr *MockBillingSdkClientMockRecorder) RatedUsageGet(queryParams interface{
 }
 
 // RatedUsageMonthToDateGet mocks base method.
-func (m *MockBillingSdkClient) RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageMonthToDateGetQueryParams) ([]billingapi.RatedUsageGet200ResponseInner, *http.Response, error) {
+func (m *MockBillingSdkClient) RatedUsageMonthToDateGet(queryParams billing.RatedUsageMonthToDateGetQueryParams) ([]billingapi.RatedUsageGet200ResponseInner, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RatedUsageMonthToDateGet", queryParams)
 	ret0, _ := ret[0].([]billingapi.RatedUsageGet200ResponseInner)
@@ -181,7 +181,7 @@ func (mr *MockBillingSdkClientMockRecorder) ReservationGetById(id interface{}) *
 }
 
 // ReservationsGet mocks base method.
-func (m *MockBillingSdkClient) ReservationsGet(queryParams billingmodels.ReservationsGetQueryParams) ([]billingapi.Reservation, *http.Response, error) {
+func (m *MockBillingSdkClient) ReservationsGet(queryParams billing.ReservationsGetQueryParams) ([]billingapi.Reservation, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReservationsGet", queryParams)
 	ret0, _ := ret[0].([]billingapi.Reservation)

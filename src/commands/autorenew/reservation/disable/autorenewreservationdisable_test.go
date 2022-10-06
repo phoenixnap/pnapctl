@@ -8,7 +8,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -16,7 +16,7 @@ import (
 
 func TestAutoRenewReservationDisableSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestSdk()
+	autoRenewDisableRequest := generators.GenerateReservationAutoRenewDisableRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(autoRenewDisableRequest)
@@ -24,7 +24,7 @@ func TestAutoRenewReservationDisableSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdReservation := billingmodels.GenerateReservation()
+	createdReservation := generators.GenerateReservation()
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
@@ -45,7 +45,7 @@ func TestAutoRenewReservationDisableSuccessYAML(test_framework *testing.T) {
 
 func TestAutoRenewReservationDisableSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestSdk()
+	autoRenewDisableRequest := generators.GenerateReservationAutoRenewDisableRequestSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(autoRenewDisableRequest)
@@ -53,7 +53,7 @@ func TestAutoRenewReservationDisableSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdReservation := billingmodels.GenerateReservation()
+	createdReservation := generators.GenerateReservation()
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
@@ -113,7 +113,7 @@ func TestAutoRenewReservationDisableUnmarshallingFailure(test_framework *testing
 
 func TestAutoRenewReservationDisableBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestSdk()
+	autoRenewDisableRequest := generators.GenerateReservationAutoRenewDisableRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(autoRenewDisableRequest)
@@ -143,7 +143,7 @@ func TestAutoRenewReservationDisableBackendErrorFailure(test_framework *testing.
 
 func TestAutoRenewReservationDisableClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestSdk()
+	autoRenewDisableRequest := generators.GenerateReservationAutoRenewDisableRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(autoRenewDisableRequest)
@@ -173,7 +173,7 @@ func TestAutoRenewReservationDisableClientFailure(test_framework *testing.T) {
 
 func TestAutoRenewReservationDisableKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestSdk()
+	autoRenewDisableRequest := generators.GenerateReservationAutoRenewDisableRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(autoRenewDisableRequest)

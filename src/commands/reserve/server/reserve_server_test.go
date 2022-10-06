@@ -8,7 +8,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"sigs.k8s.io/yaml"
@@ -18,7 +18,7 @@ import (
 
 func TestReserveServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	serverReserve := servermodels.GenerateServerReserveSdk()
+	serverReserve := generators.GenerateServerReserveSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverReserve)
@@ -26,7 +26,7 @@ func TestReserveServerSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -50,7 +50,7 @@ func TestReserveServerSuccessYAML(test_framework *testing.T) {
 
 func TestReserveServerSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	serverReserve := servermodels.GenerateServerReserveSdk()
+	serverReserve := generators.GenerateServerReserveSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverReserve)
@@ -58,7 +58,7 @@ func TestReserveServerSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -152,7 +152,7 @@ func TestReserveServerFileReadingFailure(test_framework *testing.T) {
 
 func TestReserveServerBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverReserve := servermodels.GenerateServerReserveSdk()
+	serverReserve := generators.GenerateServerReserveSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverReserve)
@@ -183,7 +183,7 @@ func TestReserveServerBackendErrorFailure(test_framework *testing.T) {
 
 func TestReserveServerClientFailure(test_framework *testing.T) {
 	// Setup
-	serverReserve := servermodels.GenerateServerReserveSdk()
+	serverReserve := generators.GenerateServerReserveSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverReserve)
@@ -215,7 +215,7 @@ func TestReserveServerClientFailure(test_framework *testing.T) {
 
 func TestReserveServerKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverReserve := servermodels.GenerateServerReserveSdk()
+	serverReserve := generators.GenerateServerReserveSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverReserve)

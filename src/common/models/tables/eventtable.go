@@ -2,7 +2,7 @@ package tables
 
 import (
 	auditsdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
-	"phoenixnap.com/pnapctl/common/models/auditmodels"
+	"phoenixnap.com/pnapctl/common/models"
 )
 
 type Event struct {
@@ -15,6 +15,6 @@ func ToEventTable(event auditsdk.Event) Event {
 	return Event{
 		Name:      DerefString(event.Name),
 		Timestamp: event.Timestamp.String(),
-		UserInfo:  auditmodels.UserInfoToTableString(&event.UserInfo),
+		UserInfo:  models.UserInfoToTableString(&event.UserInfo),
 	}
 }

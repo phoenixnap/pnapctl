@@ -5,19 +5,10 @@ import (
 	"fmt"
 	"testing"
 
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
-
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"phoenixnap.com/pnapctl/common/models/auditmodels"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/quotamodels"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
-	"phoenixnap.com/pnapctl/common/models/ranchermodels"
-	"phoenixnap.com/pnapctl/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 type ExampleStruct1 struct {
@@ -145,7 +136,7 @@ func TestPrintOutputTableFormat(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -155,7 +146,7 @@ func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -165,7 +156,7 @@ func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingServer(test_framework *testing.T) {
 	OutputFormat = "json"
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 	prepared := PrepareServerForPrinting(server, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -175,7 +166,7 @@ func TestPrepareServerForPrintingServer(test_framework *testing.T) {
 
 func TestPrepareServerListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	servers := servermodels.GenerateServerListSdk(1)
+	servers := generators.GenerateServerListSdk(1)
 	prepared := PrepareServerListForPrinting(servers, false)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -186,7 +177,7 @@ func TestPrepareServerListForPrinting(test_framework *testing.T) {
 
 func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	event := auditmodels.GenerateEventSdk()
+	event := generators.GenerateEventSdk()
 	prepared := PrepareEventForPrinting(*event)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -196,7 +187,7 @@ func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 
 func TestPrepareEventForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	event := auditmodels.GenerateEventSdk()
+	event := generators.GenerateEventSdk()
 	prepared := PrepareEventForPrinting(*event)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -206,7 +197,7 @@ func TestPrepareEventForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareEventListForPrinting(test_framework *testing.T) {
 	OutputFormat = "table"
-	events := auditmodels.GenerateEventListSdk(1)
+	events := generators.GenerateEventListSdk(1)
 	prepared := PrepareEventListForPrinting(events)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -216,7 +207,7 @@ func TestPrepareEventListForPrinting(test_framework *testing.T) {
 
 func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	cluster := ranchermodels.GenerateClusterSdk()
+	cluster := generators.GenerateClusterSdk()
 	prepared := PrepareClusterForPrinting(cluster)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -226,7 +217,7 @@ func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
 	OutputFormat = "json"
-	cluster := ranchermodels.GenerateClusterSdk()
+	cluster := generators.GenerateClusterSdk()
 	prepared := PrepareClusterForPrinting(cluster)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -236,7 +227,7 @@ func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
 
 func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	clusters := ranchermodels.GenerateClusterListSdk(1)
+	clusters := generators.GenerateClusterListSdk(1)
 	prepared := PrepareClusterListForPrinting(clusters)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -247,7 +238,7 @@ func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	tag := tagmodels.GenerateTagSdk()
+	tag := generators.GenerateTagSdk()
 	prepared := PrepareTagForPrinting(*tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -257,7 +248,7 @@ func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 	OutputFormat = "json"
-	tag := *tagmodels.GenerateTagSdk()
+	tag := *generators.GenerateTagSdk()
 	prepared := PrepareTagForPrinting(tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -267,7 +258,7 @@ func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 
 func TestPrepareTagListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	tags := tagmodels.GenerateTagListSdk(1)
+	tags := generators.GenerateTagListSdk(1)
 	prepared := PrepareTagListForPrinting(tags)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -278,7 +269,7 @@ func TestPrepareTagListForPrinting(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	privateNetwork := networkmodels.GeneratePrivateNetworkSdk()
+	privateNetwork := generators.GeneratePrivateNetworkSdk()
 	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -288,7 +279,7 @@ func TestPreparePrivateNetworkForPrintingTable(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	privateNetwork := networkmodels.GeneratePrivateNetworkSdk()
+	privateNetwork := generators.GeneratePrivateNetworkSdk()
 	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -298,7 +289,7 @@ func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	privateNetworks := networkmodels.GeneratePrivateNetworkListSdk(1)
+	privateNetworks := generators.GeneratePrivateNetworkListSdk(1)
 	prepared := PreparePrivateNetworkListForPrinting(privateNetworks)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -309,7 +300,7 @@ func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
 
 func TestPrepareQuotaForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	quota := quotamodels.GenerateQuotaSdk()
+	quota := generators.GenerateQuotaSdk()
 	prepared := PrepareQuotaForPrinting(quota)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -319,7 +310,7 @@ func TestPrepareQuotaForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareQuotaForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	quota := quotamodels.GenerateQuotaSdk()
+	quota := generators.GenerateQuotaSdk()
 	prepared := PrepareQuotaForPrinting(quota)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -329,7 +320,7 @@ func TestPrepareQuotaForPrintingNonTable(test_framework *testing.T) {
 
 func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	quotas := quotamodels.GenerateQuotaSdkList(1)
+	quotas := generators.GenerateQuotaSdkList(1)
 	prepared := PrepareQuotaListForPrinting(quotas)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -339,7 +330,7 @@ func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := sshkeymodels.GenerateSshKeySdk()
+	sshkey := generators.GenerateSshKeySdk()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -349,7 +340,7 @@ func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := sshkeymodels.GenerateSshKeySdk()
+	sshkey := generators.GenerateSshKeySdk()
 	prepared := PrepareSshKeyForPrinting(sshkey, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -359,7 +350,7 @@ func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	sshkey := sshkeymodels.GenerateSshKeySdk()
+	sshkey := generators.GenerateSshKeySdk()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -369,7 +360,7 @@ func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkeys := sshkeymodels.GenerateSshKeyListSdk(1)
+	sshkeys := generators.GenerateSshKeyListSdk(1)
 	prepared := PrepareSshKeyListForPrinting(sshkeys, true)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -379,7 +370,7 @@ func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkeys := sshkeymodels.GenerateSshKeyListSdk(1)
+	sshkeys := generators.GenerateSshKeyListSdk(1)
 	prepared := PrepareSshKeyListForPrinting(sshkeys, false)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -389,7 +380,7 @@ func TestPrepareSshkeyListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareIpBlockForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	ipBlock := ipmodels.GenerateIpBlockSdk()
+	ipBlock := generators.GenerateIpBlockSdk()
 	prepared := PrepareIpBlockForPrinting(ipBlock, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -399,7 +390,7 @@ func TestPrepareIpBlockForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareIpBlockForPrintingShortTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	ipBlock := ipmodels.GenerateIpBlockSdk()
+	ipBlock := generators.GenerateIpBlockSdk()
 	prepared := PrepareIpBlockForPrinting(ipBlock, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -409,7 +400,7 @@ func TestPrepareIpBlockForPrintingShortTable(test_framework *testing.T) {
 
 func TestPrepareIpBlockForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	ipBlock := ipmodels.GenerateIpBlockSdk()
+	ipBlock := generators.GenerateIpBlockSdk()
 	prepared := PrepareIpBlockForPrinting(ipBlock, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -419,7 +410,7 @@ func TestPrepareIpBlockForPrintingNonTable(test_framework *testing.T) {
 
 func TestPrepareIpBlockListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	ipBlocks := ipmodels.GenerateIpBlockSdkList(1)
+	ipBlocks := generators.GenerateIpBlockSdkList(1)
 	prepared := PrepareIpBlockListForPrinting(ipBlocks, true)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -429,7 +420,7 @@ func TestPrepareIpBlockListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareIpBlockListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	ipBlocks := ipmodels.GenerateIpBlockSdkList(1)
+	ipBlocks := generators.GenerateIpBlockSdkList(1)
 	prepared := PrepareIpBlockListForPrinting(ipBlocks, true)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -443,7 +434,7 @@ func TestPrepareIpBlockListForPrinting(test_framework *testing.T) {
 func TestPrepareRatedUsageRecordForPrintingNonTable_Bandwidth(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		BandwidthRecord: billingmodels.GenerateBandwidthRecordSdk(),
+		BandwidthRecord: generators.GenerateBandwidthRecordSdk(),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
@@ -455,7 +446,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Bandwidth(test_framework *te
 func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		OperatingSystemRecord: billingmodels.GenerateOperatingSystemRecordSdk(),
+		OperatingSystemRecord: generators.GenerateOperatingSystemRecordSdk(),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
@@ -467,7 +458,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framewo
 func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		PublicSubnetRecord: billingmodels.GeneratePublicSubnetRecordSdk(),
+		PublicSubnetRecord: generators.GeneratePublicSubnetRecordSdk(),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
@@ -479,7 +470,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework 
 func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		ServerRecord: billingmodels.GenerateServerRecordSdk(),
+		ServerRecord: generators.GenerateServerRecordSdk(),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
@@ -491,7 +482,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testi
 func TestPrepareRatedUsageRecordForPrintingNonTable_Short(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		BandwidthRecord: billingmodels.GenerateBandwidthRecordSdk(),
+		BandwidthRecord: generators.GenerateBandwidthRecordSdk(),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, false)
 
@@ -503,7 +494,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Short(test_framework *testin
 func TestPrepareRatedUsageRecordForPrintingTableFull(test_framework *testing.T) {
 	OutputFormat = "table"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		ServerRecord: billingmodels.GenerateServerRecordSdk(),
+		ServerRecord: generators.GenerateServerRecordSdk(),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
@@ -515,7 +506,7 @@ func TestPrepareRatedUsageRecordForPrintingTableFull(test_framework *testing.T) 
 func TestPrepareRatedUsageRecordForPrintingTableShort(test_framework *testing.T) {
 	OutputFormat = "table"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		ServerRecord: billingmodels.GenerateServerRecordSdk(),
+		ServerRecord: generators.GenerateServerRecordSdk(),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, false)
 
@@ -527,7 +518,7 @@ func TestPrepareRatedUsageRecordForPrintingTableShort(test_framework *testing.T)
 func TestPrepareProductForPrintingNonTable_BandwidthProduct(test_framework *testing.T) {
 	OutputFormat = "json"
 	product := billingapi.ProductsGet200ResponseInner{
-		Product: billingmodels.GenerateBandwidthProduct(),
+		Product: generators.GenerateBandwidthProduct(),
 	}
 	prepared := PrepareProductForPrinting(product)
 
@@ -539,7 +530,7 @@ func TestPrepareProductForPrintingNonTable_BandwidthProduct(test_framework *test
 func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework *testing.T) {
 	OutputFormat = "json"
 	product := billingapi.ProductsGet200ResponseInner{
-		Product: billingmodels.GenerateOperatingSystemProduct(),
+		Product: generators.GenerateOperatingSystemProduct(),
 	}
 	prepared := PrepareProductForPrinting(product)
 
@@ -551,7 +542,7 @@ func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework
 func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing.T) {
 	OutputFormat = "json"
 	product := billingapi.ProductsGet200ResponseInner{
-		ServerProduct: billingmodels.GenerateServerProduct(),
+		ServerProduct: generators.GenerateServerProduct(),
 	}
 	prepared := PrepareProductForPrinting(product)
 
@@ -563,7 +554,7 @@ func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing
 func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
 	OutputFormat = "table"
 	product := billingapi.ProductsGet200ResponseInner{
-		Product: billingmodels.GenerateBandwidthProduct(),
+		Product: generators.GenerateBandwidthProduct(),
 	}
 	prepared := PrepareProductForPrinting(product)
 
@@ -574,7 +565,7 @@ func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
 
 func TestPreparePublicNetworkForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	publicNetwork := networkmodels.GeneratePublicNetworkSdk()
+	publicNetwork := generators.GeneratePublicNetworkSdk()
 	prepared := PreparePublicNetworkForPrinting(publicNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -584,7 +575,7 @@ func TestPreparePublicNetworkForPrintingTable(test_framework *testing.T) {
 
 func TestPreparePublicNetworkForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	publicNetwork := networkmodels.GeneratePublicNetworkSdk()
+	publicNetwork := generators.GeneratePublicNetworkSdk()
 	prepared := PreparePublicNetworkForPrinting(publicNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -594,7 +585,7 @@ func TestPreparePublicNetworkForPrintingNonTable(test_framework *testing.T) {
 
 func TestPreparePublicNetworkIpBlockForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	ipBlock := networkmodels.GeneratePublicNetworkIpBlockSdk()
+	ipBlock := generators.GeneratePublicNetworkIpBlockSdk()
 	prepared := PreparePublicNetworkIpBlockForPrinting(ipBlock)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -604,7 +595,7 @@ func TestPreparePublicNetworkIpBlockForPrintingTable(test_framework *testing.T) 
 
 func TestPreparePublicNetworkIpBlockForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	ipBlock := networkmodels.GeneratePublicNetworkIpBlockSdk()
+	ipBlock := generators.GeneratePublicNetworkIpBlockSdk()
 	prepared := PreparePublicNetworkIpBlockForPrinting(ipBlock)
 
 	outputType := fmt.Sprintf("%T", prepared)

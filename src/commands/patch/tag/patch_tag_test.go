@@ -8,7 +8,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -16,8 +16,8 @@ import (
 
 func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 	// setup
-	tag := *tagmodels.GenerateTagSdk()
-	tagEdit := tagmodels.GenerateTagUpdateSdk()
+	tag := *generators.GenerateTagSdk()
+	tagEdit := generators.GenerateTagUpdateSdk()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 
 	Filename = FILENAME
@@ -43,8 +43,8 @@ func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 
 func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
 	//setup
-	tag := *tagmodels.GenerateTagSdk()
-	tagEdit := tagmodels.GenerateTagUpdateSdk()
+	tag := *generators.GenerateTagSdk()
+	tagEdit := generators.GenerateTagUpdateSdk()
 	jsonmarshal, _ := json.Marshal(tagEdit)
 	Filename = FILENAME
 
@@ -155,7 +155,7 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := tagmodels.GenerateTagUpdateSdk()
+	tagEdit := generators.GenerateTagUpdateSdk()
 	yamlmarshal, _ := yaml.Marshal(&tagEdit)
 	Filename = FILENAME
 
@@ -183,7 +183,7 @@ func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := tagmodels.GenerateTagUpdateSdk()
+	tagEdit := generators.GenerateTagUpdateSdk()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 	Filename = FILENAME
 
@@ -211,7 +211,7 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditKeycloakFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := tagmodels.GenerateTagUpdateSdk()
+	tagEdit := generators.GenerateTagUpdateSdk()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 	Filename = FILENAME
 

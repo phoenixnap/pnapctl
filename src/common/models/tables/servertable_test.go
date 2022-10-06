@@ -5,33 +5,33 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 func TestToShortServerTable(test_framework *testing.T) {
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 	table := ToShortServerTable(server)
 
 	assertShortServersEqual(test_framework, server, table)
 }
 
 func TestToLongServerTable(test_framework *testing.T) {
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 	table := ToLongServerTable(server)
 
 	assertLongServersEqual(test_framework, server, table)
 }
 
 func TestToServerPrivateNetworkTable(test_framework *testing.T) {
-	network := servermodels.GenerateServerPrivateNetworkSdk()
+	network := generators.GenerateServerPrivateNetworkSdk()
 	table := ToServerPrivateNetworkTable(*network)
 
 	assertServerPrivateNetworksEqual(test_framework, *network, table)
 }
 
 func TestToServerIpBlockTable(test_framework *testing.T) {
-	sdkModel := servermodels.GenerateServerIpBlockSdk()
+	sdkModel := generators.GenerateServerIpBlockSdk()
 	table := ToServerIpBlockTable(sdkModel)
 
 	assertServerIpBlockEqual(test_framework, sdkModel, table)
@@ -67,10 +67,10 @@ func assertLongServersEqual(test_framework *testing.T, server bmcapisdk.Server, 
 	assert.Equal(test_framework, DerefString(server.Password), longServerTable.Password)
 	assert.Equal(test_framework, DerefString(server.NetworkType), longServerTable.NetworkType)
 	assert.Equal(test_framework, DerefString(server.ClusterId), longServerTable.ClusterId)
-	assert.Equal(test_framework, bmcapimodels.TagsToTableStrings(server.Tags), longServerTable.Tags)
+	assert.Equal(test_framework, models.TagsToTableStrings(server.Tags), longServerTable.Tags)
 	assert.Equal(test_framework, DerefTimeAsString(server.ProvisionedOn), longServerTable.ProvisionedOn)
-	assert.Equal(test_framework, bmcapimodels.OsConfigurationToTableString(server.OsConfiguration), longServerTable.OsConfiguration)
-	assert.Equal(test_framework, bmcapimodels.NetworkConfigurationToTableString(server.NetworkConfiguration), longServerTable.NetworkConfiguration)
+	assert.Equal(test_framework, models.OsConfigurationToTableString(server.OsConfiguration), longServerTable.OsConfiguration)
+	assert.Equal(test_framework, models.NetworkConfigurationToTableString(server.NetworkConfiguration), longServerTable.NetworkConfiguration)
 }
 
 func assertServerPrivateNetworksEqual(test_framework *testing.T, privateNetwork bmcapisdk.ServerPrivateNetwork, table ServerPrivateNetworkTable) {

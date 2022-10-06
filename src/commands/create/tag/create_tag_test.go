@@ -8,7 +8,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -16,7 +16,7 @@ import (
 
 func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := tagmodels.GenerateTagCreateSdk()
+	tagCreate := generators.GenerateTagCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -24,7 +24,7 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdTag := *tagmodels.GenerateTagSdk()
+	createdTag := *generators.GenerateTagSdk()
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
@@ -48,7 +48,7 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 
 func TestCreateTagSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := tagmodels.GenerateTagCreateSdk()
+	tagCreate := generators.GenerateTagCreateSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(tagCreate)
@@ -56,7 +56,7 @@ func TestCreateTagSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdTag := *tagmodels.GenerateTagSdk()
+	createdTag := *generators.GenerateTagSdk()
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
@@ -120,7 +120,7 @@ func TestCreateTagUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := tagmodels.GenerateTagCreateSdk()
+	tagCreate := generators.GenerateTagCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -150,7 +150,7 @@ func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateTagClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := tagmodels.GenerateTagCreateSdk()
+	tagCreate := generators.GenerateTagCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -180,7 +180,7 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 
 func TestCreateTagKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := tagmodels.GenerateTagCreateSdk()
+	tagCreate := generators.GenerateTagCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)

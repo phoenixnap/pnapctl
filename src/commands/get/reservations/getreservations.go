@@ -6,7 +6,7 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/billing"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	qp "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -45,7 +45,7 @@ func getReservations(reservationId *string) error {
 		reservations []billingapi.Reservation
 	)
 
-	queryParams, err := billingmodels.NewReservationsGetQueryParams(productCategory)
+	queryParams, err := qp.NewReservationsGetQueryParams(productCategory)
 
 	if err != nil {
 		return err
