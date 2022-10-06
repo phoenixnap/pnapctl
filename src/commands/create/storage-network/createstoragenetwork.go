@@ -29,7 +29,15 @@ Requires a file (yaml or json) containing the information needed to create the s
 	Example: `# Create a storage network using the contents of storageNetworkCreate.yaml as request body.
 pnapctl create storage-network --filename <FILE_PATH> [--output <OUTPUT_TYPE]
 
-# storageNetworkCreate.yaml...`, // TODO Add yaml
+# storageNetworkCreate.yaml
+name: "CreatedSN"
+description: "Description"
+location: "PHX"
+volumes:
+  - name: "VolumeName"
+    description: "VDescription"
+    pathSuffix: "/cliyaml"
+    capacityInGb: 1000`,
 	RunE: func(_ *cobra.Command, _ []string) error {
 		return createStorageNetwork()
 	},

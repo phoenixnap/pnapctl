@@ -31,7 +31,9 @@ Requires a file (yaml or json) containing the information needed to patch the se
 	Example: `# Patch a storage network using the contents of storageNetworkPatch.yaml as request body.
 pnapctl patch storage-network <ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE]
 
-# storageNetworkPatch.yaml...`, // TODO: Update YAML
+# storageNetworkPatch.yaml
+name: "UpdatedSN"
+description: "Description"`,
 	RunE: func(_ *cobra.Command, args []string) error {
 		ID = args[0]
 		return patchStorageNetwork()
