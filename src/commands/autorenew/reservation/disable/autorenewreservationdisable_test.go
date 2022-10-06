@@ -16,7 +16,7 @@ import (
 
 func TestAutoRenewReservationDisableSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestCli()
+	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(autoRenewDisableRequest)
@@ -28,7 +28,7 @@ func TestAutoRenewReservationDisableSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest.ToSdk())).
+		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest)).
 		Return(createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
 
 	PrepareMockFileProcessor(test_framework).
@@ -45,7 +45,7 @@ func TestAutoRenewReservationDisableSuccessYAML(test_framework *testing.T) {
 
 func TestAutoRenewReservationDisableSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestCli()
+	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(autoRenewDisableRequest)
@@ -57,7 +57,7 @@ func TestAutoRenewReservationDisableSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest.ToSdk())).
+		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest)).
 		Return(createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
 
 	PrepareMockFileProcessor(test_framework).
@@ -113,7 +113,7 @@ func TestAutoRenewReservationDisableUnmarshallingFailure(test_framework *testing
 
 func TestAutoRenewReservationDisableBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestCli()
+	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(autoRenewDisableRequest)
@@ -122,7 +122,7 @@ func TestAutoRenewReservationDisableBackendErrorFailure(test_framework *testing.
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest.ToSdk())).
+		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -143,7 +143,7 @@ func TestAutoRenewReservationDisableBackendErrorFailure(test_framework *testing.
 
 func TestAutoRenewReservationDisableClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestCli()
+	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(autoRenewDisableRequest)
@@ -152,7 +152,7 @@ func TestAutoRenewReservationDisableClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest.ToSdk())).
+		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -173,7 +173,7 @@ func TestAutoRenewReservationDisableClientFailure(test_framework *testing.T) {
 
 func TestAutoRenewReservationDisableKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestCli()
+	autoRenewDisableRequest := billingmodels.GenerateReservationAutoRenewDisableRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(autoRenewDisableRequest)
@@ -182,7 +182,7 @@ func TestAutoRenewReservationDisableKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest.ToSdk())).
+		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

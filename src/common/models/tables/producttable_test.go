@@ -1,7 +1,6 @@
 package tables
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
@@ -50,7 +49,7 @@ func assertEqualAsProduct(
 	assert.Equal(test_framework, sdkProduct.ProductCode, cliTable.ProductCode)
 	assert.Equal(test_framework, sdkProduct.ProductCategory, string(cliTable.ProductCategory))
 
-	sdkAsTableStrings := iterutils.Map(sdkProduct.Plans, sdkPricingPlanToTableString)
+	sdkAsTableStrings := iterutils.Map(sdkProduct.Plans, billingmodels.PricingPlanToTableString)
 
 	assert.Equal(test_framework, sdkAsTableStrings, cliTable.Plans)
 }
@@ -63,7 +62,7 @@ func assertEqualAsServerProduct(
 	assert.Equal(test_framework, sdkProduct.ProductCode, cliTable.ProductCode)
 	assert.Equal(test_framework, sdkProduct.ProductCategory, string(cliTable.ProductCategory))
 
-	sdkAsTableStrings := iterutils.Map(sdkProduct.Plans, sdkPricingPlanToTableString)
+	sdkAsTableStrings := iterutils.Map(sdkProduct.Plans, billingmodels.PricingPlanToTableString)
 	assert.Equal(test_framework, cliTable.Plans, sdkAsTableStrings)
 
 	assert.Equal(test_framework, sdkProduct.Metadata.RamInGb, cliTable.Metadata[RAM_IN_GB])
@@ -73,8 +72,4 @@ func assertEqualAsServerProduct(
 	assert.Equal(test_framework, sdkProduct.Metadata.CpuFrequency, cliTable.Metadata[CPU_FREQUENCY])
 	assert.Equal(test_framework, sdkProduct.Metadata.Network, cliTable.Metadata[NETWORK])
 	assert.Equal(test_framework, sdkProduct.Metadata.Storage, cliTable.Metadata[STORAGE])
-}
-
-func sdkPricingPlanToTableString(plan billingapi.PricingPlan) string {
-	return fmt.Sprintf("Sku: %s\nPrice: %f\nPrice Unit: %s", plan.Sku, plan.Price, plan.PriceUnit)
 }

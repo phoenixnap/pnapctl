@@ -1,9 +1,10 @@
 package reservation
 
 import (
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/billing"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -25,7 +26,7 @@ pnapctl create reservation <RESERVATION_ID> --filename=<FILENAME>
 # reservationCreate.yaml
 sku: "skuCode"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		reservationCreate, err := billingmodels.CreateReservationRequestFromFile(Filename, commandName)
+		reservationCreate, err := models.CreateRequestFromFile[billingapi.ReservationRequest](Filename, commandName)
 
 		if err != nil {
 			return err

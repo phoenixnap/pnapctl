@@ -2,7 +2,8 @@ package tables
 
 import (
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"phoenixnap.com/pnapctl/common/models/billingmodels/productoneof"
+	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/models/billingmodels"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
@@ -19,9 +20,9 @@ const (
 
 type ProductTable struct {
 	// Common
-	ProductCode     string                     `header:"Product Code"`
-	ProductCategory productoneof.Discriminator `header:"Product Category"`
-	Plans           []string                   `header:"Plans"`
+	ProductCode     string   `header:"Product Code"`
+	ProductCategory string   `header:"Product Category"`
+	Plans           []string `header:"Plans"`
 
 	// ServerProduct
 	Metadata map[string]interface{}
@@ -38,24 +39,23 @@ func ProductTableFromSdk(sdk billingapisdk.ProductsGet200ResponseInner) *Product
 }
 
 func parseCommonProduct(sdk billingapisdk.ProductsGet200ResponseInner) *ProductTable {
-	productCommon := productoneof.ProductCommonFromSdkOneOf(&sdk)
-
-	if productCommon == nil {
+	product := models.GetFromAllOf[billingapisdk.Product](sdk)
+	if product == nil {
 		return nil
 	}
 
 	return &ProductTable{
-		ProductCode:     productCommon.ProductCode,
-		ProductCategory: productCommon.ProductCategory,
-		Plans:           iterutils.Map(productCommon.Plans, productoneof.PricingPlanToTableString),
+		ProductCode:     product.ProductCode,
+		ProductCategory: product.ProductCategory,
+		Plans:           iterutils.Map(product.Plans, billingmodels.PricingPlanToTableString),
 	}
 }
 
 func (p *ProductTable) attachUnique(sdk billingapisdk.ProductsGet200ResponseInner) {
 	switch p.ProductCategory {
-	case productoneof.BANDWIDTH, productoneof.OPERATING_SYSTEM:
+	case billingmodels.ProductBandwidth, billingmodels.ProductOperatingSystem:
 		return
-	case productoneof.SERVER:
+	case billingmodels.ProductServer:
 		p.Metadata = map[string]interface{}{
 			RAM_IN_GB:     sdk.ServerProduct.Metadata.RamInGb,
 			CPU:           sdk.ServerProduct.Metadata.Cpu,

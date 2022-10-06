@@ -5,9 +5,19 @@ import (
 	"time"
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"phoenixnap.com/pnapctl/common/models/billingmodels/productoneof"
-	"phoenixnap.com/pnapctl/common/models/billingmodels/ratedusageoneof"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+)
+
+// one-of-types
+var (
+	RatedUsageBandwidth       = "bandwidth"
+	RatedUsageOperatingSystem = "operating-system"
+	RatedUsagePublicSubnet    = "public-ip"
+	RatedUsageServer          = "bmc-server"
+
+	ProductBandwidth       = "BANDWIDTH"
+	ProductOperatingSystem = "OPERATING_SYSTEM"
+	ProductServer          = "SERVER"
 )
 
 // Rated Usage
@@ -84,7 +94,7 @@ func populateRatedUsageCommon(sdk RatedUsageCommonSetter) RatedUsageCommonSetter
 // Individual oneof setting
 func GenerateBandwidthRecordSdk() *billingapi.BandwidthRecord {
 	record := billingapi.BandwidthRecord{
-		ProductCategory: string(ratedusageoneof.BANDWIDTH),
+		ProductCategory: string(RatedUsageBandwidth),
 		Metadata:        GenerateBandwidthDetails(),
 	}
 	return populateRatedUsageCommon(&record).(*billingapi.BandwidthRecord)
@@ -101,7 +111,7 @@ func GenerateBandwidthDetails() billingapi.BandwidthDetails {
 
 func GenerateOperatingSystemRecordSdk() *billingapi.OperatingSystemRecord {
 	record := billingapi.OperatingSystemRecord{
-		ProductCategory: string(ratedusageoneof.OPERATING_SYSTEM),
+		ProductCategory: string(RatedUsageOperatingSystem),
 		Metadata:        GenerateOperatingSystemDetails(),
 	}
 	return populateRatedUsageCommon(&record).(*billingapi.OperatingSystemRecord)
@@ -116,7 +126,7 @@ func GenerateOperatingSystemDetails() billingapi.OperatingSystemDetails {
 
 func GeneratePublicSubnetRecordSdk() *billingapi.PublicSubnetRecord {
 	record := billingapi.PublicSubnetRecord{
-		ProductCategory: string(ratedusageoneof.PUBLIC_SUBNET),
+		ProductCategory: string(RatedUsagePublicSubnet),
 		Metadata:        GeneratePublicSubnetDetails(),
 	}
 	return populateRatedUsageCommon(&record).(*billingapi.PublicSubnetRecord)
@@ -132,7 +142,7 @@ func GeneratePublicSubnetDetails() billingapi.PublicSubnetDetails {
 
 func GenerateServerRecordSdk() *billingapi.ServerRecord {
 	record := billingapi.ServerRecord{
-		ProductCategory: string(ratedusageoneof.SERVER),
+		ProductCategory: string(RatedUsageServer),
 		Metadata:        GenerateServerDetails(),
 	}
 	return populateRatedUsageCommon(&record).(*billingapi.ServerRecord)
@@ -142,6 +152,18 @@ func GenerateServerDetails() billingapi.ServerDetails {
 	return billingapi.ServerDetails{
 		Id:       testutil.RandSeq(10),
 		Hostname: testutil.RandSeq(10),
+	}
+}
+
+func GenerateReservationAutoRenewDisableRequestSdk() billingapi.ReservationAutoRenewDisableRequest {
+	return billingapi.ReservationAutoRenewDisableRequest{
+		AutoRenewDisableReason: testutil.RandSeqPointer(10),
+	}
+}
+
+func GenerateReservationRequestSdk() billingapi.ReservationRequest {
+	return billingapi.ReservationRequest{
+		Sku: testutil.RandSeq(10),
 	}
 }
 
@@ -198,7 +220,7 @@ func GeneratePricingPlan() billingapi.PricingPlan {
 // Individual oneof setting
 func GenerateBandwidthProduct() *billingapi.Product {
 	product := &billingapi.Product{
-		ProductCategory: string(productoneof.BANDWIDTH),
+		ProductCategory: string(ProductBandwidth),
 	}
 
 	return populateProductCommon(product).(*billingapi.Product)
@@ -206,7 +228,7 @@ func GenerateBandwidthProduct() *billingapi.Product {
 
 func GenerateOperatingSystemProduct() *billingapi.Product {
 	product := &billingapi.Product{
-		ProductCategory: string(productoneof.OPERATING_SYSTEM),
+		ProductCategory: string(ProductOperatingSystem),
 	}
 
 	return populateProductCommon(product).(*billingapi.Product)
@@ -214,7 +236,7 @@ func GenerateOperatingSystemProduct() *billingapi.Product {
 
 func GenerateServerProduct() *billingapi.ServerProduct {
 	product := &billingapi.ServerProduct{
-		ProductCategory: string(productoneof.SERVER),
+		ProductCategory: string(ProductServer),
 		Metadata:        GenerateServerProductMetadata(),
 	}
 
@@ -296,17 +318,5 @@ func GenerateReservation() *billingapi.Reservation {
 		Price:               rand.Float32(),
 		PriceUnit:           billingapi.GB,
 		AssignedResourceId:  testutil.AsPointer(testutil.RandSeq(10)),
-	}
-}
-
-func GenerateReservationAutoRenewDisableRequestCli() *ReservationAutoRenewDisableRequest {
-	return &ReservationAutoRenewDisableRequest{
-		AutoRenewDisableReason: testutil.AsPointer(testutil.RandSeq(10)),
-	}
-}
-
-func GenerateReservationRequestCli() *ReservationRequest {
-	return &ReservationRequest{
-		Sku: testutil.RandSeq(10),
 	}
 }

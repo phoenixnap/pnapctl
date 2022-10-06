@@ -1,8 +1,11 @@
 package tables
 
 import (
+	"time"
+
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"phoenixnap.com/pnapctl/common/models/billingmodels/ratedusageoneof"
+	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/models/billingmodels"
 )
 
 var ONE_OF_TYPES = []string{
@@ -37,23 +40,23 @@ const (
 // Full Table
 
 type RatedUsageRecordTable struct {
-	Id                   string                        `header:"Id"`
-	ProductCategory      ratedusageoneof.Discriminator `header:"Product Category"`
-	ProductCode          string                        `header:"Product Code"`
-	Location             string                        `header:"Location"`
-	YearMonth            string                        `header:"Year Month"`
-	StartDateTime        string                        `header:"Start Date Time"`
-	EndDateTime          string                        `header:"End Date Time"`
-	Cost                 int64                         `header:"Cost"`
-	PriceModel           string                        `header:"Price Model"`
-	UnitPrice            float32                       `header:"Unit Price"`
-	UnitPriceDescription string                        `header:"Unit Price Description"`
-	Quantity             float32                       `header:"Quantity"`
-	Active               bool                          `header:"Active"`
-	UsageSessionId       string                        `header:"Usage Session Id"`
-	CorrelationId        string                        `header:"Correlation Id"`
-	ReservationId        string                        `header:"Reservation Id"`
-	Metadata             map[string]interface{}        `header:"Metadata"`
+	Id                   string                     `header:"Id"`
+	ProductCategory      string                     `header:"Product Category"`
+	ProductCode          string                     `header:"Product Code"`
+	Location             billingapisdk.LocationEnum `header:"Location"`
+	YearMonth            string                     `header:"Year Month"`
+	StartDateTime        string                     `header:"Start Date Time"`
+	EndDateTime          string                     `header:"End Date Time"`
+	Cost                 int64                      `header:"Cost"`
+	PriceModel           string                     `header:"Price Model"`
+	UnitPrice            float32                    `header:"Unit Price"`
+	UnitPriceDescription string                     `header:"Unit Price Description"`
+	Quantity             float32                    `header:"Quantity"`
+	Active               bool                       `header:"Active"`
+	UsageSessionId       string                     `header:"Usage Session Id"`
+	CorrelationId        string                     `header:"Correlation Id"`
+	ReservationId        string                     `header:"Reservation Id"`
+	Metadata             map[string]interface{}     `header:"Metadata"`
 }
 
 func RatedUsageRecordTableFromSdk(sdk billingapisdk.RatedUsageGet200ResponseInner) *RatedUsageRecordTable {
@@ -67,8 +70,7 @@ func RatedUsageRecordTableFromSdk(sdk billingapisdk.RatedUsageGet200ResponseInne
 }
 
 func parseCommonRatedUsage(sdk billingapisdk.RatedUsageGet200ResponseInner) *RatedUsageRecordTable {
-	ratedUsage := ratedusageoneof.RatedUsageFromSdkOneOf(&sdk)
-
+	ratedUsage := models.GetFromAllOf[billingapisdk.RatedUsageRecord](sdk)
 	if ratedUsage == nil {
 		return nil
 	}
@@ -78,9 +80,9 @@ func parseCommonRatedUsage(sdk billingapisdk.RatedUsageGet200ResponseInner) *Rat
 		ProductCategory:      ratedUsage.ProductCategory,
 		ProductCode:          ratedUsage.ProductCode,
 		Location:             ratedUsage.Location,
-		YearMonth:            ratedUsage.YearMonth,
-		StartDateTime:        ratedUsage.StartDateTime.String(),
-		EndDateTime:          ratedUsage.EndDateTime.String(),
+		YearMonth:            DerefString(ratedUsage.YearMonth),
+		StartDateTime:        ratedUsage.StartDateTime.Format(time.RFC1123),
+		EndDateTime:          ratedUsage.EndDateTime.Format(time.RFC1123),
 		Cost:                 ratedUsage.Cost,
 		PriceModel:           ratedUsage.PriceModel,
 		UnitPrice:            ratedUsage.UnitPrice,
@@ -89,14 +91,14 @@ func parseCommonRatedUsage(sdk billingapisdk.RatedUsageGet200ResponseInner) *Rat
 		Active:               ratedUsage.Active,
 		UsageSessionId:       ratedUsage.UsageSessionId,
 		CorrelationId:        ratedUsage.CorrelationId,
-		ReservationId:        ratedUsage.ReservationId,
+		ReservationId:        DerefString(ratedUsage.ReservationId),
 	}
 }
 
 func (table *RatedUsageRecordTable) attachUnique(sdk billingapisdk.RatedUsageGet200ResponseInner) {
 	switch table.ProductCategory {
 
-	case ratedusageoneof.BANDWIDTH:
+	case billingmodels.RatedUsageBandwidth:
 		table.Metadata = map[string]interface{}{
 			EGRESS_GB:        sdk.BandwidthRecord.Metadata.EgressGb,
 			INGRESS_GB:       sdk.BandwidthRecord.Metadata.IngressGb,
@@ -104,20 +106,20 @@ func (table *RatedUsageRecordTable) attachUnique(sdk billingapisdk.RatedUsageGet
 			PACKAGE_UNIT:     sdk.BandwidthRecord.Metadata.PackageUnit,
 		}
 
-	case ratedusageoneof.OPERATING_SYSTEM:
+	case billingmodels.RatedUsageOperatingSystem:
 		table.Metadata = map[string]interface{}{
 			CORES:          sdk.OperatingSystemRecord.Metadata.Cores,
 			CORRELATION_ID: sdk.OperatingSystemRecord.Metadata.CorrelationId,
 		}
 
-	case ratedusageoneof.PUBLIC_SUBNET:
+	case billingmodels.RatedUsagePublicSubnet:
 		table.Metadata = map[string]interface{}{
 			CIDR:      sdk.PublicSubnetRecord.Metadata.Cidr,
 			SUBNET_ID: sdk.PublicSubnetRecord.Metadata.Id,
 			SIZE:      sdk.PublicSubnetRecord.Metadata.Size,
 		}
 
-	case ratedusageoneof.SERVER:
+	case billingmodels.RatedUsageServer:
 		table.Metadata = map[string]interface{}{
 			SERVER_ID: sdk.ServerRecord.Metadata.Id,
 			HOSTNAME:  sdk.ServerRecord.Metadata.Hostname,
@@ -128,11 +130,11 @@ func (table *RatedUsageRecordTable) attachUnique(sdk billingapisdk.RatedUsageGet
 // Short Version
 
 type ShortRatedUsageRecordTable struct {
-	Id              string                        `header:"Id"`
-	ProductCategory ratedusageoneof.Discriminator `header:"Product Category"`
-	ProductCode     string                        `header:"Product Code"`
-	YearMonth       string                        `header:"Year Month"`
-	Cost            int64                         `header:"Cost"`
+	Id              string `header:"Id"`
+	ProductCategory string `header:"Product Category"`
+	ProductCode     string `header:"Product Code"`
+	YearMonth       string `header:"Year Month"`
+	Cost            int64  `header:"Cost"`
 }
 
 // Extracts a ShortRatedUsageRecordTable using the full table.

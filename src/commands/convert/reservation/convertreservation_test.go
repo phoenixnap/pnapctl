@@ -16,7 +16,7 @@ import (
 
 func TestConvertReservationSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	reservationConvert := billingmodels.GenerateReservationRequestCli()
+	reservationConvert := billingmodels.GenerateReservationRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(reservationConvert)
@@ -28,7 +28,7 @@ func TestConvertReservationSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert.ToSdk())).
+		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
 		Return(createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
 
 	PrepareMockFileProcessor(test_framework).
@@ -45,7 +45,7 @@ func TestConvertReservationSuccessYAML(test_framework *testing.T) {
 
 func TestConvertReservationSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	reservationConvert := billingmodels.GenerateReservationRequestCli()
+	reservationConvert := billingmodels.GenerateReservationRequestSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(reservationConvert)
@@ -57,7 +57,7 @@ func TestConvertReservationSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert.ToSdk())).
+		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
 		Return(createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
 
 	PrepareMockFileProcessor(test_framework).
@@ -113,7 +113,7 @@ func TestConvertReservationUnmarshallingFailure(test_framework *testing.T) {
 
 func TestConvertReservationBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	reservationConvert := billingmodels.GenerateReservationRequestCli()
+	reservationConvert := billingmodels.GenerateReservationRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(reservationConvert)
@@ -122,7 +122,7 @@ func TestConvertReservationBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert.ToSdk())).
+		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -143,7 +143,7 @@ func TestConvertReservationBackendErrorFailure(test_framework *testing.T) {
 
 func TestConvertReservationClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	reservationConvert := billingmodels.GenerateReservationRequestCli()
+	reservationConvert := billingmodels.GenerateReservationRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(reservationConvert)
@@ -152,7 +152,7 @@ func TestConvertReservationClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert.ToSdk())).
+		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -173,7 +173,7 @@ func TestConvertReservationClientFailure(test_framework *testing.T) {
 
 func TestConvertReservationKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	reservationConvert := billingmodels.GenerateReservationRequestCli()
+	reservationConvert := billingmodels.GenerateReservationRequestSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(reservationConvert)
@@ -182,7 +182,7 @@ func TestConvertReservationKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert.ToSdk())).
+		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
