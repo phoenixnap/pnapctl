@@ -17,22 +17,6 @@ func GenerateTagSdk() *tagapisdk.Tag {
 	}
 }
 
-func GenerateTagCreateCli() *TagCreate {
-	return &TagCreate{
-		Name:         testutil.RandSeq(10),
-		Description:  testutil.RandSeqPointer(10),
-		IsBillingTag: false,
-	}
-}
-
-func GenerateTagUpdateCli() *TagUpdate {
-	return &TagUpdate{
-		Name:         testutil.RandSeq(10),
-		Description:  testutil.RandSeqPointer(10),
-		IsBillingTag: false,
-	}
-}
-
 func GenerateTagListSdk(n int) []tagapisdk.Tag {
 	var tagList []tagapisdk.Tag
 	for i := 0; i < n; i++ {
@@ -52,5 +36,21 @@ func GenerateResourceAssignmentSdk() *tagapisdk.ResourceAssignment {
 	return &tagapisdk.ResourceAssignment{
 		ResourceName: testutil.RandSeq(10),
 		Value:        testutil.RandSeqPointer(10),
+	}
+}
+
+func GenerateTagUpdateSdk() tagapisdk.TagUpdate {
+	return tagapisdk.TagUpdate{
+		Name:         testutil.RandSeq(10),
+		Description:  testutil.RandSeqPointer(10),
+		IsBillingTag: true,
+	}
+}
+
+func GenerateTagCreateSdk() tagapisdk.TagCreate {
+	return tagapisdk.TagCreate{
+		Name:         testutil.RandSeq(10),
+		Description:  testutil.RandSeqPointer(10),
+		IsBillingTag: true,
 	}
 }

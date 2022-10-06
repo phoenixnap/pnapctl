@@ -16,8 +16,8 @@ import (
 
 func TestPatchPublicNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifyCli()
-	publicNetworkModifySdk := publicNetworkModifyCli.ToSdk()
+	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifySdk()
+	publicNetworkModifySdk := publicNetworkModifyCli
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(publicNetworkModifyCli)
@@ -29,7 +29,7 @@ func TestPatchPublicNetworkSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworkPatch(RESOURCEID, gomock.Eq(*publicNetworkModifySdk)).
+		PublicNetworkPatch(RESOURCEID, gomock.Eq(publicNetworkModifySdk)).
 		Return(&publicNetwork, WithResponse(201, WithBody(&publicNetwork)), nil).
 		Times(1)
 
@@ -49,8 +49,8 @@ func TestPatchPublicNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestPatchPublicNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifyCli()
-	publicNetworkModifySdk := publicNetworkModifyCli.ToSdk()
+	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifySdk()
+	publicNetworkModifySdk := publicNetworkModifyCli
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(publicNetworkModifySdk)
@@ -62,7 +62,7 @@ func TestPatchPublicNetworkSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworkPatch(RESOURCEID, gomock.Eq(*publicNetworkModifySdk)).
+		PublicNetworkPatch(RESOURCEID, gomock.Eq(publicNetworkModifySdk)).
 		Return(&publicNetwork, WithResponse(201, WithBody(&publicNetwork)), nil).
 		Times(1)
 
@@ -147,8 +147,8 @@ func TestPatchPublicNetworkFileReadingFailure(test_framework *testing.T) {
 
 func TestPatchPublicNetworkBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifyCli()
-	publicNetworkModifySdk := publicNetworkModifyCli.ToSdk()
+	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifySdk()
+	publicNetworkModifySdk := publicNetworkModifyCli
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(publicNetworkModifySdk)
@@ -157,7 +157,7 @@ func TestPatchPublicNetworkBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworkPatch(RESOURCEID, gomock.Eq(*publicNetworkModifySdk)).
+		PublicNetworkPatch(RESOURCEID, gomock.Eq(publicNetworkModifySdk)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -180,8 +180,8 @@ func TestPatchPublicNetworkBackendErrorFailure(test_framework *testing.T) {
 
 func TestPatchPublicNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifyCli()
-	publicNetworkModifySdk := publicNetworkModifyCli.ToSdk()
+	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifySdk()
+	publicNetworkModifySdk := publicNetworkModifyCli
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(publicNetworkModifySdk)
@@ -190,7 +190,7 @@ func TestPatchPublicNetworkClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworkPatch(RESOURCEID, gomock.Eq(*publicNetworkModifySdk)).
+		PublicNetworkPatch(RESOURCEID, gomock.Eq(publicNetworkModifySdk)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -213,8 +213,8 @@ func TestPatchPublicNetworkClientFailure(test_framework *testing.T) {
 
 func TestPatchPublicNetworkKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifyCli()
-	publicNetworkModifySdk := publicNetworkModifyCli.ToSdk()
+	publicNetworkModifyCli := networkmodels.GeneratePublicNetworkModifySdk()
+	publicNetworkModifySdk := publicNetworkModifyCli
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(publicNetworkModifySdk)
@@ -223,7 +223,7 @@ func TestPatchPublicNetworkKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworkPatch(RESOURCEID, gomock.Eq(*publicNetworkModifySdk)).
+		PublicNetworkPatch(RESOURCEID, gomock.Eq(publicNetworkModifySdk)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

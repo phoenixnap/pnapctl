@@ -20,7 +20,7 @@ func assertTagsEqual(test_framework *testing.T, tag tagapisdk.Tag, table TagTabl
 
 	if tag.ResourceAssignments != nil {
 		for _, x := range tag.ResourceAssignments {
-			resourceAssignments = append(resourceAssignments, tagmodels.ResourceAssignmentToTableStrings(x))
+			resourceAssignments = append(resourceAssignments, tagmodels.ResourceAssignmentToTableString(x))
 		}
 	}
 

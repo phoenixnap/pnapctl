@@ -41,24 +41,6 @@ func GeneratePrivateNetworkServerSdk() networkapisdk.PrivateNetworkServer {
 	}
 }
 
-func GeneratePrivateNetworkCreateCli() PrivateNetworkCreate {
-	return PrivateNetworkCreate{
-		Name:            testutil.RandSeq(10),
-		Description:     testutil.RandSeqPointer(10),
-		Location:        testutil.RandSeq(10),
-		LocationDefault: nil,
-		Cidr:            testutil.RandSeq(10),
-	}
-}
-
-func GeneratePrivateNetworkModifyCli() PrivateNetworkModify {
-	return PrivateNetworkModify{
-		Name:            testutil.RandSeq(10),
-		Description:     testutil.RandSeqPointer(10),
-		LocationDefault: false,
-	}
-}
-
 // Public Networks
 func GeneratePublicNetworkSdk() networkapisdk.PublicNetwork {
 	return networkapisdk.PublicNetwork{
@@ -70,22 +52,6 @@ func GeneratePublicNetworkSdk() networkapisdk.PublicNetwork {
 		Description: testutil.AsPointer(testutil.RandSeq(10)),
 		CreatedOn:   time.Now(),
 		IpBlocks:    testutil.GenN(2, GeneratePublicNetworkIpBlockSdk),
-	}
-}
-
-func GeneratePublicNetworkCreateCli() PublicNetworkCreate {
-	return PublicNetworkCreate{
-		Name:        testutil.RandSeq(10),
-		Description: testutil.AsPointer(testutil.RandSeq(10)),
-		Location:    testutil.RandSeq(10),
-		IpBlocks:    testutil.GenN(2, GeneratePublicNetworkIpBlockCli),
-	}
-}
-
-func GeneratePublicNetworkModifyCli() PublicNetworkModify {
-	return PublicNetworkModify{
-		Name:        testutil.AsPointer(testutil.RandSeq(10)),
-		Description: testutil.AsPointer(testutil.RandSeq(10)),
 	}
 }
 
@@ -103,14 +69,36 @@ func GeneratePublicNetworkIpBlockSdk() networkapisdk.PublicNetworkIpBlock {
 	}
 }
 
-func GeneratePublicNetworkIpBlockCli() PublicNetworkIpBlock {
-	return PublicNetworkIpBlock{
-		Id: testutil.RandSeq(10),
-	}
-}
-
 func GeneratePublicNetworksGetQueryParams() PublicNetworksGetQueryParams {
 	return PublicNetworksGetQueryParams{
 		Location: testutil.AsPointer(allowedLocations[0]),
 	}
+}
+
+func GeneratePrivateNetworkModifySdk() networkapisdk.PrivateNetworkModify {
+	return networkapisdk.PrivateNetworkModify{
+		Name:            testutil.RandSeq(10),
+		Description:     testutil.RandSeqPointer(10),
+		LocationDefault: false,
+	}
+}
+
+func GeneratePublicNetworkModifySdk() networkapisdk.PublicNetworkModify {
+	return networkapisdk.PublicNetworkModify{
+		Name:        testutil.RandSeqPointer(10),
+		Description: testutil.RandSeqPointer(10),
+	}
+}
+
+func GeneratePublicNetworkCreateSdk() networkapisdk.PublicNetworkCreate {
+	return networkapisdk.PublicNetworkCreate{
+		Name:        testutil.RandSeq(10),
+		Description: testutil.RandSeqPointer(10),
+		Location:    testutil.RandSeq(10),
+		IpBlocks:    testutil.GenN(10, GeneratePublicNetworkIpBlockSdk),
+	}
+}
+
+func GeneratePrivateNetworkCreateSdk() networkapisdk.PrivateNetworkCreate {
+	return networkapisdk.PrivateNetworkCreate{}
 }

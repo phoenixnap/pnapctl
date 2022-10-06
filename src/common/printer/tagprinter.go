@@ -3,7 +3,6 @@ package printer
 import (
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/models/tagmodels"
 )
 
 func PrintTagResponse(tag *tagapisdk.Tag, commandName string) error {
@@ -23,7 +22,7 @@ func PrepareTagForPrinting(tag tagapisdk.Tag) interface{} {
 	case table:
 		return tables.TagFromSdk(tag)
 	default:
-		return *tagmodels.TagFromSdk(&tag)
+		return tag
 	}
 }
 

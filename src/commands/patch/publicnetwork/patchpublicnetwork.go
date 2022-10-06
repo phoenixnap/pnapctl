@@ -1,9 +1,10 @@
 package publicnetwork
 
 import (
+	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -25,7 +26,7 @@ pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTP
 hostname: patched-server
 description: My custom server edit`,
 	RunE: func(_ *cobra.Command, args []string) error {
-		publicNetworkPatch, err := networkmodels.CreatePublicNetworkModifyFromFile(Filename, commandName)
+		publicNetworkPatch, err := models.CreateRequestFromFile[networkapi.PublicNetworkModify](Filename, commandName)
 
 		if err != nil {
 			return err

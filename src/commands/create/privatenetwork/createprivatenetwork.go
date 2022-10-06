@@ -1,10 +1,11 @@
 package privatenetwork
 
 import (
+	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 )
 
@@ -32,7 +33,7 @@ locationDefault: false,
 description: Example CLI Network,
 cidr: 10.0.0.0/24`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		privateNetworkCreate, err := networkmodels.CreatePrivateNetworkCreateFromFile(Filename, commandName)
+		privateNetworkCreate, err := models.CreateRequestFromFile[networkapi.PrivateNetworkCreate](Filename, commandName)
 
 		if err != nil {
 			return err

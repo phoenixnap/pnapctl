@@ -16,7 +16,7 @@ import (
 
 func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkCreate := networkmodels.GeneratePublicNetworkCreateCli()
+	publicNetworkCreate := networkmodels.GeneratePublicNetworkCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)
@@ -28,7 +28,7 @@ func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworksPost(gomock.Eq(*publicNetworkCreate.ToSdk())).
+		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
 		Return(&createdPublicNetwork, WithResponse(200, WithBody(createdPublicNetwork)), nil).
 		Times(1)
 
@@ -48,7 +48,7 @@ func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestCreatePublicNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkCreate := networkmodels.GeneratePublicNetworkCreateCli()
+	publicNetworkCreate := networkmodels.GeneratePublicNetworkCreateSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(publicNetworkCreate)
@@ -60,7 +60,7 @@ func TestCreatePublicNetworkSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworksPost(gomock.Eq(*publicNetworkCreate.ToSdk())).
+		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
 		Return(&createdPublicNetwork, WithResponse(200, WithBody(createdPublicNetwork)), nil).
 		Times(1)
 
@@ -142,7 +142,7 @@ func TestCreatePublicNetworkFileReadingFailure(test_framework *testing.T) {
 
 func TestCreatePublicNetworkBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkCreate := networkmodels.GeneratePublicNetworkCreateCli()
+	publicNetworkCreate := networkmodels.GeneratePublicNetworkCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)
@@ -151,7 +151,7 @@ func TestCreatePublicNetworkBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworksPost(gomock.Eq(*publicNetworkCreate.ToSdk())).
+		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -174,7 +174,7 @@ func TestCreatePublicNetworkBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkCreate := networkmodels.GeneratePublicNetworkCreateCli()
+	publicNetworkCreate := networkmodels.GeneratePublicNetworkCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)
@@ -183,7 +183,7 @@ func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworksPost(gomock.Eq(*publicNetworkCreate.ToSdk())).
+		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -206,7 +206,7 @@ func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 
 func TestCreatePublicNetworkKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkCreate := networkmodels.GeneratePublicNetworkCreateCli()
+	publicNetworkCreate := networkmodels.GeneratePublicNetworkCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)
@@ -215,7 +215,7 @@ func TestCreatePublicNetworkKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworksPost(gomock.Eq(*publicNetworkCreate.ToSdk())).
+		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

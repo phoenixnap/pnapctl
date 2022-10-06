@@ -1,9 +1,10 @@
 package cluster
 
 import (
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/rancher"
-	"phoenixnap.com/pnapctl/common/models/ranchermodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -30,7 +31,7 @@ nodePools:
   - serverType: s1.c1.medium
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cluster, err := ranchermodels.CreateClusterFromFile(Filename, commandName)
+		cluster, err := models.CreateRequestFromFile[ranchersolutionapi.Cluster](Filename, commandName)
 
 		if err != nil {
 			return err

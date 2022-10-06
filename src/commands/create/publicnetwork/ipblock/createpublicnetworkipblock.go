@@ -1,9 +1,10 @@
 package ipblock
 
 import (
+	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -25,7 +26,7 @@ pnapctl create public-network ip-block <NETWORK_ID> --filename <FILE_PATH> [--ou
 hostname: patched-server
 description: My custom server edit`,
 	RunE: func(_ *cobra.Command, args []string) error {
-		ipBlock, err := networkmodels.CreatePublicNetworkIpBlockFromFile(Filename, commandName)
+		ipBlock, err := models.CreateRequestFromFile[networkapi.PublicNetworkIpBlock](Filename, commandName)
 
 		if err != nil {
 			return err

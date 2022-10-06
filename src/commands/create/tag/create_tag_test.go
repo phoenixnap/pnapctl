@@ -16,7 +16,7 @@ import (
 
 func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := tagmodels.GenerateTagCreateCli()
+	tagCreate := tagmodels.GenerateTagCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -28,7 +28,7 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(*tagCreate.ToSdk())).
+		TagPost(gomock.Eq(tagCreate)).
 		Return(&createdTag, WithResponse(201, WithBody(createdTag)), nil).
 		Times(1)
 
@@ -48,7 +48,7 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 
 func TestCreateTagSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := tagmodels.GenerateTagCreateCli()
+	tagCreate := tagmodels.GenerateTagCreateSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(tagCreate)
@@ -60,7 +60,7 @@ func TestCreateTagSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(*tagCreate.ToSdk())).
+		TagPost(gomock.Eq(tagCreate)).
 		Return(&createdTag, WithResponse(201, WithBody(createdTag)), nil).
 		Times(1)
 
@@ -120,7 +120,7 @@ func TestCreateTagUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := tagmodels.GenerateTagCreateCli()
+	tagCreate := tagmodels.GenerateTagCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -129,7 +129,7 @@ func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(*tagCreate.ToSdk())).
+		TagPost(gomock.Eq(tagCreate)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -150,7 +150,7 @@ func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateTagClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := tagmodels.GenerateTagCreateCli()
+	tagCreate := tagmodels.GenerateTagCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -159,7 +159,7 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(*tagCreate.ToSdk())).
+		TagPost(gomock.Eq(tagCreate)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -180,7 +180,7 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 
 func TestCreateTagKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	tagCreate := tagmodels.GenerateTagCreateCli()
+	tagCreate := tagmodels.GenerateTagCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(tagCreate)
@@ -189,7 +189,7 @@ func TestCreateTagKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(*tagCreate.ToSdk())).
+		TagPost(gomock.Eq(tagCreate)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

@@ -231,7 +231,7 @@ func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "ranchermodels.Cluster")
+	assert.Equal(test_framework, outputType, "ranchersolutionapi.Cluster")
 }
 
 func TestPrepareClusterListForPrinting(test_framework *testing.T) {
@@ -241,7 +241,7 @@ func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared[0])
 
-	assert.Equal(test_framework, outputType, "ranchermodels.Cluster")
+	assert.Equal(test_framework, outputType, "ranchersolutionapi.Cluster")
 	assert.Equal(test_framework, len(prepared), 1)
 }
 
@@ -262,7 +262,7 @@ func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "tagmodels.Tag")
+	assert.Equal(test_framework, outputType, "tagapi.Tag")
 }
 
 func TestPrepareTagListForPrinting(test_framework *testing.T) {
@@ -272,7 +272,7 @@ func TestPrepareTagListForPrinting(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared[0])
 
-	assert.Equal(test_framework, outputType, "tagmodels.Tag")
+	assert.Equal(test_framework, outputType, "tagapi.Tag")
 	assert.Equal(test_framework, len(prepared), 1)
 }
 
@@ -293,7 +293,7 @@ func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "networkmodels.PrivateNetwork")
+	assert.Equal(test_framework, outputType, "networkapi.PrivateNetwork")
 }
 
 func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
@@ -303,7 +303,7 @@ func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared[0])
 
-	assert.Equal(test_framework, outputType, "networkmodels.PrivateNetwork")
+	assert.Equal(test_framework, outputType, "networkapi.PrivateNetwork")
 	assert.Equal(test_framework, len(prepared), 1)
 }
 
@@ -589,7 +589,7 @@ func TestPreparePublicNetworkForPrintingNonTable(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "networkmodels.PublicNetwork")
+	assert.Equal(test_framework, outputType, "networkapi.PublicNetwork")
 }
 
 func TestPreparePublicNetworkIpBlockForPrintingTable(test_framework *testing.T) {
@@ -609,7 +609,7 @@ func TestPreparePublicNetworkIpBlockForPrintingNonTable(test_framework *testing.
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "networkmodels.PublicNetworkIpBlock")
+	assert.Equal(test_framework, outputType, "networkapi.PublicNetworkIpBlock")
 }
 
 func ExamplePrintOutputTableFormatEmpty() {

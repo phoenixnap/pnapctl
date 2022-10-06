@@ -22,7 +22,7 @@ func assertClustersEqual(test_framework *testing.T, cluster ranchersdk.Cluster, 
 	assert.Equal(test_framework, cluster.Location, table.Location)
 	assert.Equal(test_framework, DerefString(cluster.InitialClusterVersion), table.InitialClusterVersion)
 	assert.Equal(test_framework, ranchermodels.NodePoolsToTableStrings(cluster.NodePools), table.NodePools)
-	assert.Equal(test_framework, ranchermodels.RancherClusterConfigToTableString(cluster.Configuration), table.Configuration)
-	assert.Equal(test_framework, ranchermodels.RancherServerMetadataToTableString(cluster.Metadata), table.Metadata)
+	assert.Equal(test_framework, ranchermodels.ClusterConfigurationToTableString(cluster.Configuration), table.Configuration)
+	assert.Equal(test_framework, ranchermodels.ClusterMetadataToTableString(cluster.Metadata), table.Metadata)
 	assert.Equal(test_framework, DerefString(cluster.StatusDescription), table.StatusDescription)
 }

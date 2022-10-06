@@ -28,35 +28,10 @@ func GenerateClusterSdk() ranchersdk.Cluster {
 	}
 }
 
-func GenerateClusterCli() Cluster {
-	return Cluster{
-		Id:                    testutil.RandSeqPointer(10),
-		Name:                  testutil.RandSeqPointer(10),
-		Description:           testutil.RandSeqPointer(10),
-		Location:              testutil.RandSeq(10),
-		InitialClusterVersion: testutil.RandSeqPointer(10),
-		NodePools:             []NodePool{},
-		Configuration:         nil,
-		Metadata:              nil,
-		WorkloadConfiguration: nil,
-		StatusDescription:     testutil.RandSeqPointer(10),
-	}
-}
-
 func GenerateNodePoolSdk() ranchersdk.NodePool {
 	return ranchersdk.NodePool{
 		Name:       testutil.RandSeqPointer(10),
 		NodeCount:  testutil.RanNumberPointer(),
-		ServerType: testutil.RandSeqPointer(10),
-		SshConfig:  nil,
-		Nodes:      nil,
-	}
-}
-
-func GenerateNodePoolCli() NodePool {
-	return NodePool{
-		Name:       testutil.RandSeqPointer(10),
-		NodeCount:  nil,
 		ServerType: testutil.RandSeqPointer(10),
 		SshConfig:  nil,
 		Nodes:      nil,
@@ -69,22 +44,8 @@ func GenerateNodeSdk() ranchersdk.Node {
 	}
 }
 
-func GenerateNodeCli() Node {
-	return Node{
-		ServerId: testutil.RandSeqPointer(10),
-	}
-}
-
 func GenerateRancherClusterCertificatesSdk() ranchersdk.RancherClusterConfigCertificates {
 	return ranchersdk.RancherClusterConfigCertificates{
-		CaCertificate:  testutil.RandSeqPointer(10),
-		Certificate:    testutil.RandSeqPointer(10),
-		CertificateKey: testutil.RandSeqPointer(10),
-	}
-}
-
-func GenerateRancherClusterCertificatesCli() RancherClusterCertificates {
-	return RancherClusterCertificates{
 		CaCertificate:  testutil.RandSeqPointer(10),
 		Certificate:    testutil.RandSeqPointer(10),
 		CertificateKey: testutil.RandSeqPointer(10),
@@ -103,18 +64,6 @@ func GenerateRancherClusterConfigSdk() ranchersdk.ClusterConfiguration {
 	}
 }
 
-func GenerateRancherClusterConfigCli() RancherClusterConfig {
-	return RancherClusterConfig{
-		Token:                    testutil.RandSeqPointer(10),
-		TlsSan:                   testutil.RandSeqPointer(10),
-		EtcdSnapshotScheduleCron: testutil.RandSeqPointer(10),
-		EtcdSnapshotRetention:    nil,
-		NodeTaint:                testutil.RandSeqPointer(10),
-		ClusterDomain:            testutil.RandSeqPointer(10),
-		Certificates:             nil,
-	}
-}
-
 func GenerateRancherServerMetadataSdk() ranchersdk.ClusterMetadata {
 	return ranchersdk.ClusterMetadata{
 		Url:      testutil.RandSeqPointer(10),
@@ -123,24 +72,8 @@ func GenerateRancherServerMetadataSdk() ranchersdk.ClusterMetadata {
 	}
 }
 
-func GenerateRancherServerMetadataCli() RancherServerMetadata {
-	return RancherServerMetadata{
-		Url:      testutil.RandSeqPointer(10),
-		Username: testutil.RandSeqPointer(10),
-		Password: testutil.RandSeqPointer(10),
-	}
-}
-
 func GenerateSshConfigSdk() ranchersdk.NodePoolSshConfig {
 	return ranchersdk.NodePoolSshConfig{
-		InstallDefaultKeys: nil,
-		Keys:               testutil.RandListStringPointer(3),
-		KeyIds:             testutil.RandListStringPointer(3),
-	}
-}
-
-func GenerateSshConfigCli() SshConfig {
-	return SshConfig{
 		InstallDefaultKeys: nil,
 		Keys:               testutil.RandListStringPointer(3),
 		KeyIds:             testutil.RandListStringPointer(3),

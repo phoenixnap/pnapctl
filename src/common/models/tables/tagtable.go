@@ -20,7 +20,7 @@ func TagFromSdk(tag tagapisdk.Tag) TagTable {
 
 	if tag.ResourceAssignments != nil {
 		for _, x := range tag.ResourceAssignments {
-			resourceAssignments = append(resourceAssignments, tagmodels.ResourceAssignmentToTableStrings(x))
+			resourceAssignments = append(resourceAssignments, tagmodels.ResourceAssignmentToTableString(x))
 		}
 	}
 

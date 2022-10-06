@@ -25,8 +25,8 @@ func ClusterFromSdk(cluster ranchersdk.Cluster) ClusterTable {
 		Location:              cluster.Location,
 		InitialClusterVersion: DerefString(cluster.InitialClusterVersion),
 		NodePools:             ranchermodels.NodePoolsToTableStrings(cluster.NodePools),
-		Configuration:         ranchermodels.RancherClusterConfigToTableString(cluster.Configuration),
-		Metadata:              ranchermodels.RancherServerMetadataToTableString(cluster.Metadata),
+		Configuration:         ranchermodels.ClusterConfigurationToTableString(cluster.Configuration),
+		Metadata:              ranchermodels.ClusterMetadataToTableString(cluster.Metadata),
 		StatusDescription:     DerefString(cluster.StatusDescription),
 	}
 }

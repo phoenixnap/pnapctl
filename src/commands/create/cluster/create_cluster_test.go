@@ -16,7 +16,7 @@ import (
 
 func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := ranchermodels.GenerateClusterCli()
+	clusterCreate := ranchermodels.GenerateClusterSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)
@@ -28,7 +28,7 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
+		ClusterPost(gomock.Eq(clusterCreate)).
 		Return(&createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
 		Times(1)
 
@@ -48,7 +48,7 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 
 func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := ranchermodels.GenerateClusterCli()
+	clusterCreate := ranchermodels.GenerateClusterSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(clusterCreate)
@@ -60,7 +60,7 @@ func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
+		ClusterPost(gomock.Eq(clusterCreate)).
 		Return(&createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
 		Times(1)
 
@@ -120,7 +120,7 @@ func TestCreateClusterUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := ranchermodels.GenerateClusterCli()
+	clusterCreate := ranchermodels.GenerateClusterSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)
@@ -129,7 +129,7 @@ func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
+		ClusterPost(gomock.Eq(clusterCreate)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -150,7 +150,7 @@ func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateClusterClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := ranchermodels.GenerateClusterCli()
+	clusterCreate := ranchermodels.GenerateClusterSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)
@@ -159,7 +159,7 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
+		ClusterPost(gomock.Eq(clusterCreate)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -180,7 +180,7 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 
 func TestCreateClusterKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := ranchermodels.GenerateClusterCli()
+	clusterCreate := ranchermodels.GenerateClusterSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)
@@ -189,7 +189,7 @@ func TestCreateClusterKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
+		ClusterPost(gomock.Eq(clusterCreate)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 
