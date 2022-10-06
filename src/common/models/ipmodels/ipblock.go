@@ -3,7 +3,7 @@ package ipmodels
 import (
 	"time"
 
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
+	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 )
 
 type IpBlock struct {

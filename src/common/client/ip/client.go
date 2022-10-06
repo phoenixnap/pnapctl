@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
+	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	configuration "phoenixnap.com/pnapctl/configs"

@@ -1,6 +1,6 @@
 package servermodels
 
-import bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+import bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 
 type ServerIpBlock struct {
 	Id     string `yaml:"id" json:"id"`

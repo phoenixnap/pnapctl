@@ -1,7 +1,7 @@
 package servermodels
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	files "phoenixnap.com/pnapctl/common/fileprocessor"
 )
 
@@ -53,10 +53,10 @@ func serverPublicNetworkListFromSdk(publicNetworks []bmcapisdk.ServerPublicNetwo
 	return bmcServerPublicNetworks
 }
 
-func CreateServerPublicNetworkFromFile(filename string, commandname string) (*bmcapisdk.ServerPublicNetwork, error){
+func CreateServerPublicNetworkFromFile(filename string, commandname string) (*bmcapisdk.ServerPublicNetwork, error) {
 	files.ExpandPath(&filename)
 
-	data,err := files.ReadFile(filename, commandname)
+	data, err := files.ReadFile(filename, commandname)
 
 	if err != nil {
 		return nil, err
@@ -74,4 +74,3 @@ func CreateServerPublicNetworkFromFile(filename string, commandname string) (*bm
 
 	return &serverPublicNetworkSdk, nil
 }
-

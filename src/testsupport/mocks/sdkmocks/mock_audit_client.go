@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	auditapi "github.com/phoenixnap/go-sdk-bmc/auditapi"
+	auditapi "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	auditmodels "phoenixnap.com/pnapctl/common/models/auditmodels"
 )
 

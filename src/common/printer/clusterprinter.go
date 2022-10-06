@@ -1,7 +1,7 @@
 package printer
 
 import (
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"phoenixnap.com/pnapctl/common/models/ranchermodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
 )

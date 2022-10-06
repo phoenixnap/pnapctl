@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"time"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -216,7 +216,7 @@ func GeneratePrivateNetworkConfigurationCli() PrivateNetworkConfiguration {
 func GeneratePublicNetworkConfigurationCli() PublicNetworkConfiguration {
 	serverPublicNetworks := GenerateServerPublicNetworkListCli(2)
 	return PublicNetworkConfiguration{
-		PublicNetworks:   serverPublicNetworks,
+		PublicNetworks: serverPublicNetworks,
 	}
 }
 
@@ -232,7 +232,7 @@ func GeneratePrivateNetworkConfigurationSdk() *bmcapisdk.PrivateNetworkConfigura
 func GeneratePublicNetworkConfigurationSdk() *bmcapisdk.PublicNetworkConfiguration {
 	serverPublicNetworks := GenerateServerPublicNetworkListSdk(2)
 	return &bmcapisdk.PublicNetworkConfiguration{
-		PublicNetworks:   serverPublicNetworks,
+		PublicNetworks: serverPublicNetworks,
 	}
 }
 

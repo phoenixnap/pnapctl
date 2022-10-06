@@ -1,7 +1,7 @@
 package tables
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 )
 
 type SshKeyTableFull struct {

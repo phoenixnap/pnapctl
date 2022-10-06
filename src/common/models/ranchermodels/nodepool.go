@@ -3,7 +3,7 @@ package ranchermodels
 import (
 	"fmt"
 
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 )
 
 type NodePool struct {

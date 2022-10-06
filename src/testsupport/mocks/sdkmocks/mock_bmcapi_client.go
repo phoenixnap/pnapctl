@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	bmcapi "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapi "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 )
 
 // MockBmcApiSdkClient is a mock of BmcApiSdkClient interface.

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
-	"github.com/phoenixnap/go-sdk-bmc/networkapi"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 )
 
 func TestPublicNetworkModifyToSdkSuccess(test_framework *testing.T) {
