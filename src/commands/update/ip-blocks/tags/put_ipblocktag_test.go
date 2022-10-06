@@ -17,7 +17,7 @@ import (
 )
 
 func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListSdk(3)
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockPutTagCli)
@@ -48,7 +48,7 @@ func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
 }
 
 func TestPutIpBlockTagSuccessJSON(test_framework *testing.T) {
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListSdk(3)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -81,7 +81,7 @@ func TestPutIpBlockTagSuccessJSON(test_framework *testing.T) {
 func TestIpBlockPutTagIdNotFound(test_framework *testing.T) {
 
 	// Setup
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListSdk(3)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -180,7 +180,7 @@ func TestIpBlockPutTagFileReadingFailure(test_framework *testing.T) {
 
 func TestIpBlockPutTagBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListSdk(3)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -212,7 +212,7 @@ func TestIpBlockPutTagBackendErrorFailure(test_framework *testing.T) {
 
 func TestIpBlockPutTagClientFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListSdk(3)
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -244,7 +244,7 @@ func TestIpBlockPutTagClientFailure(test_framework *testing.T) {
 
 func TestIpBlockPutTagKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListCLI(3)
+	ipBlockPutTagCli := ipmodels.GenerateIpBlockTagListSdk(3)
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockPutTagCli)

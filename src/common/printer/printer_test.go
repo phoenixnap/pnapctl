@@ -414,7 +414,7 @@ func TestPrepareIpBlockForPrintingNonTable(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "ipmodels.IpBlock")
+	assert.Equal(test_framework, outputType, "ipapi.IpBlock")
 }
 
 func TestPrepareIpBlockListForPrintingTable(test_framework *testing.T) {
@@ -434,7 +434,7 @@ func TestPrepareIpBlockListForPrinting(test_framework *testing.T) {
 
 	outputType := fmt.Sprintf("%T", prepared[0])
 
-	assert.Equal(test_framework, outputType, "ipmodels.IpBlock")
+	assert.Equal(test_framework, outputType, "ipapi.IpBlock")
 	assert.Equal(test_framework, len(prepared), 1)
 }
 
