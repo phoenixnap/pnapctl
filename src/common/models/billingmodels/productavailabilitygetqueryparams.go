@@ -74,6 +74,12 @@ func (queryParams *ProductAvailabilityGetQueryParams) AttachToRequest(request bi
 	if queryParams.Location != nil {
 		request = request.Location(queryParams.Location)
 	}
+	if queryParams.Solution != nil {
+		request = request.Solution(queryParams.Solution)
+	}
+	if queryParams.MinQuantity != nil {
+		request = request.MinQuantity(*queryParams.MinQuantity)
+	}
 	return request
 }
 
