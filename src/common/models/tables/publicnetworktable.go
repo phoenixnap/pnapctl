@@ -21,11 +21,11 @@ func PublicNetworkTableFromSdk(sdk networkapi.PublicNetwork) PublicNetworkTable 
 	return PublicNetworkTable{
 		Id:          sdk.Id,
 		VlanId:      sdk.VlanId,
-		Memberships: iterutils.Map(sdk.Memberships, models.NetworkMembershipToTableString),
+		Memberships: iterutils.MapRef(sdk.Memberships, models.NetworkMembershipToTableString),
 		Name:        sdk.Name,
 		Location:    sdk.Location,
 		Description: DerefString(sdk.Description),
 		CreatedOn:   sdk.CreatedOn.String(),
-		IpBlocks:    iterutils.Map(sdk.IpBlocks, models.PublicNetworkIpBlockToTableString),
+		IpBlocks:    iterutils.MapRef(sdk.IpBlocks, models.PublicNetworkIpBlockToTableString),
 	}
 }

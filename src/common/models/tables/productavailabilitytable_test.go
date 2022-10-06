@@ -21,6 +21,6 @@ func assertProductAvailabilityTablesEqual(t *testing.T, sdk billingapi.ProductAv
 	assert.Equal(t, sdk.ProductCode, tbl.ProductCode)
 	assert.Equal(t, sdk.ProductCategory, tbl.ProductCategory)
 
-	sdkAsTableString := iterutils.Map(sdk.LocationAvailabilityDetails, models.LocationAvailabilityDetailsToTableString)
+	sdkAsTableString := iterutils.MapRef(sdk.LocationAvailabilityDetails, models.LocationAvailabilityDetailsToTableString)
 	assert.Equal(t, sdkAsTableString, tbl.LocationAvailabilityDetails)
 }

@@ -7,6 +7,7 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func TestToQuotaTable(test_framework *testing.T) {
@@ -24,5 +25,5 @@ func assertQuotasEqual(test_framework *testing.T, quota bmcapisdk.Quota, table Q
 	assert.Equal(test_framework, quota.Limit, table.Limit)
 	assert.Equal(test_framework, quota.Unit, table.Unit)
 	assert.Equal(test_framework, quota.Used, table.Used)
-	assert.Equal(test_framework, models.QuotaEditLimitRequestDetailsToTableString(quota.QuotaEditLimitRequestDetails), table.QuotaEditLimitRequestDetails)
+	assert.Equal(test_framework, iterutils.MapRef(quota.QuotaEditLimitRequestDetails, models.QuotaEditLimitRequestDetailsToTableString), table.QuotaEditLimitRequestDetails)
 }

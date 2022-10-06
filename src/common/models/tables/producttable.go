@@ -47,7 +47,7 @@ func parseCommonProduct(sdk billingapisdk.ProductsGet200ResponseInner) *ProductT
 	return &ProductTable{
 		ProductCode:     product.ProductCode,
 		ProductCategory: product.ProductCategory,
-		Plans:           iterutils.Map(product.Plans, models.PricingPlanToTableString),
+		Plans:           iterutils.MapRef(product.Plans, models.PricingPlanToTableString),
 	}
 }
 

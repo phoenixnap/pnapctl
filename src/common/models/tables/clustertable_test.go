@@ -7,6 +7,7 @@ import (
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func TestClusterFromSdk(test_framework *testing.T) {
@@ -22,7 +23,7 @@ func assertClustersEqual(test_framework *testing.T, cluster ranchersdk.Cluster, 
 	assert.Equal(test_framework, DerefString(cluster.Description), table.Description)
 	assert.Equal(test_framework, cluster.Location, table.Location)
 	assert.Equal(test_framework, DerefString(cluster.InitialClusterVersion), table.InitialClusterVersion)
-	assert.Equal(test_framework, models.NodePoolsToTableStrings(cluster.NodePools), table.NodePools)
+	assert.Equal(test_framework, iterutils.MapRef(cluster.NodePools, models.NodePoolToTableString), table.NodePools)
 	assert.Equal(test_framework, models.ClusterConfigurationToTableString(cluster.Configuration), table.Configuration)
 	assert.Equal(test_framework, models.ClusterMetadataToTableString(cluster.Metadata), table.Metadata)
 	assert.Equal(test_framework, DerefString(cluster.StatusDescription), table.StatusDescription)

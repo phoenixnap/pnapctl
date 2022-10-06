@@ -50,7 +50,7 @@ func assertEqualAsProduct(
 	assert.Equal(test_framework, sdkProduct.ProductCode, cliTable.ProductCode)
 	assert.Equal(test_framework, sdkProduct.ProductCategory, string(cliTable.ProductCategory))
 
-	sdkAsTableStrings := iterutils.Map(sdkProduct.Plans, models.PricingPlanToTableString)
+	sdkAsTableStrings := iterutils.MapRef(sdkProduct.Plans, models.PricingPlanToTableString)
 
 	assert.Equal(test_framework, sdkAsTableStrings, cliTable.Plans)
 }
@@ -63,7 +63,7 @@ func assertEqualAsServerProduct(
 	assert.Equal(test_framework, sdkProduct.ProductCode, cliTable.ProductCode)
 	assert.Equal(test_framework, sdkProduct.ProductCategory, string(cliTable.ProductCategory))
 
-	sdkAsTableStrings := iterutils.Map(sdkProduct.Plans, models.PricingPlanToTableString)
+	sdkAsTableStrings := iterutils.MapRef(sdkProduct.Plans, models.PricingPlanToTableString)
 	assert.Equal(test_framework, cliTable.Plans, sdkAsTableStrings)
 
 	assert.Equal(test_framework, sdkProduct.Metadata.RamInGb, cliTable.Metadata[RAM_IN_GB])

@@ -25,8 +25,8 @@ func assertPublicNetworksEqual(test_framework *testing.T, sdk networkapi.PublicN
 	assert.Equal(test_framework, *sdk.Description, tbl.Description)
 	assert.Equal(test_framework, sdk.CreatedOn.String(), tbl.CreatedOn)
 
-	sdkMemberships := iterutils.Map(sdk.Memberships, models.NetworkMembershipToTableString)
-	sdkIpBlocks := iterutils.Map(sdk.IpBlocks, models.PublicNetworkIpBlockToTableString)
+	sdkMemberships := iterutils.MapRef(sdk.Memberships, models.NetworkMembershipToTableString)
+	sdkIpBlocks := iterutils.MapRef(sdk.IpBlocks, models.PublicNetworkIpBlockToTableString)
 
 	assert.Equal(test_framework, sdkMemberships, tbl.Memberships)
 	assert.Equal(test_framework, sdkIpBlocks, tbl.IpBlocks)

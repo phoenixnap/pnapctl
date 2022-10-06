@@ -7,6 +7,7 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func TestToShortServerTable(test_framework *testing.T) {
@@ -67,10 +68,10 @@ func assertLongServersEqual(test_framework *testing.T, server bmcapisdk.Server, 
 	assert.Equal(test_framework, DerefString(server.Password), longServerTable.Password)
 	assert.Equal(test_framework, DerefString(server.NetworkType), longServerTable.NetworkType)
 	assert.Equal(test_framework, DerefString(server.ClusterId), longServerTable.ClusterId)
-	assert.Equal(test_framework, models.TagsToTableStrings(server.Tags), longServerTable.Tags)
+	assert.Equal(test_framework, iterutils.MapRef(server.Tags, models.TagsToTableString), longServerTable.Tags)
 	assert.Equal(test_framework, DerefTimeAsString(server.ProvisionedOn), longServerTable.ProvisionedOn)
 	assert.Equal(test_framework, models.OsConfigurationToTableString(server.OsConfiguration), longServerTable.OsConfiguration)
-	assert.Equal(test_framework, models.NetworkConfigurationToTableString(server.NetworkConfiguration), longServerTable.NetworkConfiguration)
+	assert.Equal(test_framework, models.NetworkConfigurationToTableString(&server.NetworkConfiguration), longServerTable.NetworkConfiguration)
 }
 
 func assertServerPrivateNetworksEqual(test_framework *testing.T, privateNetwork bmcapisdk.ServerPrivateNetwork, table ServerPrivateNetworkTable) {

@@ -12,73 +12,120 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/tagapi"
 )
 
-// auditapi
-func UserInfoToTableString(sdk *auditapi.UserInfo) string {
-	return ""
+// utils
+func toTableString[T, O any](ifPresent func(T) O) func(*T) O {
+	return func(item *T) O {
+		if item == nil {
+			var o O
+			return o
+		}
+		return ifPresent(*item)
+	}
 }
+
+func processNil[T any](item *T) T {
+	if item == nil {
+		var t T
+		return t
+	}
+	return *item
+}
+
+// auditapi
+var UserInfoToTableString = toTableString(func(sdk auditapi.UserInfo) string {
+	return fmt.Sprintf("Account:(%s)\nClientId:(%s)\nUsername:%s", sdk.AccountId, processNil(sdk.ClientId), sdk.Username)
+})
 
 // billingapi
-func LocationAvailabilityDetailsToTableString(sdk billingapi.LocationAvailabilityDetail) string {
-	return ""
-}
+var LocationAvailabilityDetailsToTableString = toTableString(func(sdk billingapi.LocationAvailabilityDetail) string {
+	return fmt.Sprintf("%s - (Req: %f/Available: %f)", sdk.Location, sdk.MinQuantityRequested, sdk.AvailableQuantity)
+})
 
-func ThresholdConfigurationToTableString(sdk *billingapi.ThresholdConfigurationDetails) string {
+var ThresholdConfigurationToTableString = toTableString(func(sdk billingapi.ThresholdConfigurationDetails) string {
 	return fmt.Sprintf("%f", sdk.GetThresholdAmount())
-}
+})
 
-func PricingPlanToTableString(sdk billingapi.PricingPlan) string {
-	return ""
-}
+var PricingPlanToTableString = toTableString(func(sdk billingapi.PricingPlan) string {
+	return fmt.Sprintf("Sku: %s\nPrice: %f\nPrice Unit: %s", sdk.Sku, sdk.Price, sdk.PriceUnit)
+})
 
 // bmcapi
-func QuotaEditLimitRequestDetailsToTableString(sdk []bmcapi.QuotaEditLimitRequestDetails) []string {
-	return []string{}
-}
+var QuotaEditLimitRequestDetailsToTableString = toTableString(func(sdk bmcapi.QuotaEditLimitRequestDetails) string {
+	return fmt.Sprintf("Limit: %d\nReason: %s\nRequestedOn: %s", sdk.Limit, sdk.Reason, sdk.RequestedOn)
+})
 
-func TagsToTableStrings(sdk []bmcapi.TagAssignment) []string {
-	return []string{}
-}
+var TagsToTableString = toTableString(func(sdk bmcapi.TagAssignment) string {
+	var tagValue string
+	if sdk.Value != nil {
+		tagValue = ": " + *sdk.Value
+	}
+	return fmt.Sprintf("(%s) %s%s", sdk.Id, sdk.Name, tagValue)
+})
 
-func OsConfigurationToTableString(sdk *bmcapi.OsConfiguration) string {
-	return ""
-}
+var OsConfigurationToTableString = toTableString(func(sdk bmcapi.OsConfiguration) (out string) {
+	if sdk.RootPassword != nil {
+		out = "Password: " + *sdk.RootPassword
+	}
+	return
+})
 
-func NetworkConfigurationToTableString(sdk bmcapi.NetworkConfiguration) string {
-	return ""
-}
+var NetworkConfigurationToTableString = toTableString(func(sdk bmcapi.NetworkConfiguration) string {
+	if sdk.PrivateNetworkConfiguration == nil {
+		return "Public"
+	} else {
+		return "Private"
+	}
+})
 
 // ipapi
-func TagAssignmentToTableString(sdk *ipapi.TagAssignment) string {
-	return ""
-}
+var TagAssignmentToTableString = toTableString(func(sdk ipapi.TagAssignment) string {
+	return fmt.Sprintf("ID: %s\nName: %s\nValue: %s\nIsBillingTag: %t\nCreated By: %s",
+		sdk.Id, sdk.Name, processNil(sdk.Value), sdk.IsBillingTag, processNil(sdk.CreatedBy))
+})
 
 // networkapi
-func NetworkMembershipToTableString(sdk networkapi.NetworkMembership) string {
-	return ""
-}
+var NetworkMembershipToTableString = toTableString(func(sdk networkapi.NetworkMembership) string {
+	return fmt.Sprintf("%s(%s)\n%v", sdk.ResourceType, sdk.ResourceId, sdk.Ips)
+})
 
-func PublicNetworkIpBlockToTableString(sdk networkapi.PublicNetworkIpBlock) string {
-	return ""
-}
+var PublicNetworkIpBlockToTableString = toTableString(func(sdk networkapi.PublicNetworkIpBlock) string {
+	return fmt.Sprintf("ID: %s", sdk.Id)
+})
 
-func PrivateNetworkServerToTableString(sdk *networkapi.PrivateNetworkServer) string {
-	return ""
-}
+var PrivateNetworkServerToTableString = toTableString(func(sdk networkapi.PrivateNetworkServer) string {
+	return fmt.Sprintf("ID: %s\nIps: %v\n", sdk.Id, sdk.Ips)
+})
 
 // ranchersolutionapi
-func NodePoolsToTableStrings(sdk []ranchersolutionapi.NodePool) []string {
-	return nil
-}
+var NodePoolToTableString = toTableString(func(sdk ranchersolutionapi.NodePool) string {
+	return fmt.Sprintf("%s - %d nodes", processNil(sdk.Name), processNil(sdk.NodeCount))
+})
 
-func ClusterConfigurationToTableString(sdk *ranchersolutionapi.ClusterConfiguration) string {
-	return ""
-}
+var ClusterConfigurationToTableString = toTableString(func(sdk ranchersolutionapi.ClusterConfiguration) string {
+	return fmt.Sprintf("Token: %s, Domain: %s", processNil(sdk.Token), processNil(sdk.ClusterDomain))
+})
 
-func ClusterMetadataToTableString(sdk *ranchersolutionapi.ClusterMetadata) string {
-	return ""
-}
+var ClusterMetadataToTableString = toTableString(func(sdk ranchersolutionapi.ClusterMetadata) string {
+	var username, password, url string
+	if sdk.Username != nil {
+		username = "User: " + *sdk.Username + "\n"
+	}
+	if sdk.Password != nil {
+		password = "Pass: " + *sdk.Password + "\n"
+	}
+	if sdk.Url != nil {
+		url = "Url: " + *sdk.Url + "\n"
+	}
+	return fmt.Sprintf("%s%s%s", username, password, url)
+})
 
 // tagapi
-func ResourceAssignmentToTableString(sdk tagapi.ResourceAssignment) string {
-	return ""
-}
+var ResourceAssignmentToTableString = toTableString(func(sdk tagapi.ResourceAssignment) string {
+	var value string
+	if sdk.Value == nil {
+		value = "N/A"
+	} else {
+		value = *sdk.Value
+	}
+	return fmt.Sprintf("%s: %s", sdk.ResourceName, value)
+})

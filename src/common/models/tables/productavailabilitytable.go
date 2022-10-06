@@ -16,6 +16,6 @@ func ProductAvailabilityTableFromSdk(sdk billingapi.ProductAvailability) Product
 	return ProductAvailabilityTable{
 		ProductCode:                 sdk.ProductCode,
 		ProductCategory:             sdk.ProductCategory,
-		LocationAvailabilityDetails: iterutils.Map(sdk.LocationAvailabilityDetails, models.LocationAvailabilityDetailsToTableString),
+		LocationAvailabilityDetails: iterutils.MapRef(sdk.LocationAvailabilityDetails, models.LocationAvailabilityDetailsToTableString),
 	}
 }

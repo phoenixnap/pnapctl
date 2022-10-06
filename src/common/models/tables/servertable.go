@@ -3,6 +3,7 @@ package tables
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 type LongServerTable struct {
@@ -93,10 +94,10 @@ func ToLongServerTable(server bmcapisdk.Server) LongServerTable {
 		Password:             DerefString(server.Password),
 		NetworkType:          DerefString(server.NetworkType),
 		ClusterId:            DerefString(server.ClusterId),
-		Tags:                 models.TagsToTableStrings(server.Tags),
+		Tags:                 iterutils.MapRef(server.Tags, models.TagsToTableString),
 		ProvisionedOn:        DerefTimeAsString(server.ProvisionedOn),
 		OsConfiguration:      models.OsConfigurationToTableString(server.OsConfiguration),
-		NetworkConfiguration: models.NetworkConfigurationToTableString(server.NetworkConfiguration),
+		NetworkConfiguration: models.NetworkConfigurationToTableString(&server.NetworkConfiguration),
 	}
 }
 

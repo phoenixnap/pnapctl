@@ -15,6 +15,14 @@ func TestMapSuccess(test_framework *testing.T) {
 	assert.Equal(test_framework, doubled, []int{2, 4, 6, 8, 10})
 }
 
+func TestMapRefSuccess(test_framework *testing.T) {
+	nums := []int{1, 2, 3, 4, 5}
+
+	doubled := MapRef(nums, func(n *int) int { return *n * 2 })
+
+	assert.Equal(test_framework, doubled, []int{2, 4, 6, 8, 10})
+}
+
 func TestCurrySuccess(test_framework *testing.T) {
 	multiply := func(num1 int, num2 int) int {
 		return num1 * num2

@@ -3,6 +3,7 @@ package tables
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 type Quota struct {
@@ -25,6 +26,6 @@ func ToQuotaTable(quota bmcapisdk.Quota) Quota {
 		Limit:                        quota.Limit,
 		Unit:                         quota.Unit,
 		Used:                         quota.Used,
-		QuotaEditLimitRequestDetails: models.QuotaEditLimitRequestDetailsToTableString(quota.QuotaEditLimitRequestDetails),
+		QuotaEditLimitRequestDetails: iterutils.MapRef(quota.QuotaEditLimitRequestDetails, models.QuotaEditLimitRequestDetailsToTableString),
 	}
 }
