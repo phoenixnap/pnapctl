@@ -16,7 +16,7 @@ import (
 )
 
 func TestGetAllEventsSuccess(test_framework *testing.T) {
-	eventList := generators.GenerateEventListSdk(2)
+	eventList := testutil.GenN(2, generators.GenerateEventSdk)
 	queryParams := generators.GenerateQueryParamsSdk()
 	setQueryParams(queryParams)
 
@@ -57,7 +57,7 @@ func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
-	eventList := generators.GenerateEventListSdk(2)
+	eventList := testutil.GenN(2, generators.GenerateEventSdk)
 	queryParams := generators.GenerateQueryParamsSdk()
 	setQueryParams(queryParams)
 

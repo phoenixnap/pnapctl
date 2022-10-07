@@ -15,9 +15,9 @@ import (
 )
 
 func TestGetAllProductAvailabilitiesSuccess(test_framework *testing.T) {
-	productAvailabilities := testutil.GenNDeref(5, generators.GenerateProductAvailability)
+	productAvailabilities := testutil.GenN(5, generators.GenerateProductAvailability)
 	queryParams := generators.GenerateProductAvailabilityGetQueryParams()
-	setQueryParams(*queryParams)
+	setQueryParams(queryParams)
 
 	productAvailabilitiesTable := iterutils.MapInterface(
 		productAvailabilities,
@@ -26,7 +26,7 @@ func TestGetAllProductAvailabilitiesSuccess(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ProductAvailabilityGet(*queryParams).
+		ProductAvailabilityGet(queryParams).
 		Return(productAvailabilities, WithResponse(200, WithBody(productAvailabilities)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -41,11 +41,11 @@ func TestGetAllProductAvailabilitiesSuccess(test_framework *testing.T) {
 
 func TestGetAllProductAvailabilitiesClientFailure(test_framework *testing.T) {
 	queryParams := generators.GenerateProductAvailabilityGetQueryParams()
-	setQueryParams(*queryParams)
+	setQueryParams(queryParams)
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ProductAvailabilityGet(*queryParams).
+		ProductAvailabilityGet(queryParams).
 		Return(nil, WithResponse(400, nil), testutil.TestError)
 
 	err := GetProductAvailabilitiesCmd.RunE(GetProductAvailabilitiesCmd, []string{})
@@ -59,11 +59,11 @@ func TestGetAllProductAvailabilitiesClientFailure(test_framework *testing.T) {
 
 func TestGetAllProductAvailabilitiesKeycloakFailure(test_framework *testing.T) {
 	queryParams := generators.GenerateProductAvailabilityGetQueryParams()
-	setQueryParams(*queryParams)
+	setQueryParams(queryParams)
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ProductAvailabilityGet(*queryParams).
+		ProductAvailabilityGet(queryParams).
 		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetProductAvailabilitiesCmd.RunE(GetProductAvailabilitiesCmd, []string{})
@@ -73,9 +73,9 @@ func TestGetAllProductAvailabilitiesKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllProductAvailabilitiesPrinterFailure(test_framework *testing.T) {
-	productAvailabilities := testutil.GenNDeref(5, generators.GenerateProductAvailability)
+	productAvailabilities := testutil.GenN(5, generators.GenerateProductAvailability)
 	queryParams := generators.GenerateProductAvailabilityGetQueryParams()
-	setQueryParams(*queryParams)
+	setQueryParams(queryParams)
 
 	productAvailabilitiesTable := iterutils.MapInterface(
 		productAvailabilities,
@@ -84,7 +84,7 @@ func TestGetAllProductAvailabilitiesPrinterFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ProductAvailabilityGet(*queryParams).
+		ProductAvailabilityGet(queryParams).
 		Return(productAvailabilities, WithResponse(200, WithBody(productAvailabilities)), nil)
 
 	PrepareMockPrinter(test_framework).

@@ -17,10 +17,10 @@ func TestAutoRenewReservationEnableSuccess(test_framework *testing.T) {
 	reservation := generators.GenerateReservation()
 	PrepareBillingMockClient(test_framework).
 		ReservationEnableAutoRenew(RESOURCEID).
-		Return(reservation, WithResponse(200, WithBody(reservation)), nil)
+		Return(&reservation, WithResponse(200, WithBody(reservation)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tables.ShortReservationTableFromSdk(*reservation), "auto-renew reservation enable").
+		PrintOutput(tables.ShortReservationTableFromSdk(reservation), "auto-renew reservation enable").
 		Return(nil)
 
 	// Run command

@@ -29,7 +29,7 @@ func TestCreateReservationSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationsPost(gomock.Eq(reservationCreate)).
-		Return(createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
+		Return(&createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME, commandName).
@@ -58,7 +58,7 @@ func TestCreateReservationSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationsPost(gomock.Eq(reservationCreate)).
-		Return(createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
+		Return(&createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME, commandName).

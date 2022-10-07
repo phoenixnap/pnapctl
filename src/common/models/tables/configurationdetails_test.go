@@ -10,7 +10,7 @@ import (
 )
 
 func TestToConfigurationDetailsTable_NotNil(t *testing.T) {
-	sdk := *generators.GenerateConfigurationDetails()
+	sdk := generators.GenerateConfigurationDetails()
 	tbl := ConfigurationDetailsTableFromSdk(sdk)
 
 	assertConfigurationTablesEqual(t, sdk, tbl)

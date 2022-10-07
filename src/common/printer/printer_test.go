@@ -9,6 +9,7 @@ import (
 	"github.com/landoop/tableprinter"
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 type ExampleStruct1 struct {
@@ -178,7 +179,7 @@ func TestPrepareServerListForPrinting(test_framework *testing.T) {
 func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
 	event := generators.GenerateEventSdk()
-	prepared := PrepareEventForPrinting(*event)
+	prepared := PrepareEventForPrinting(event)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -188,7 +189,7 @@ func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 func TestPrepareEventForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
 	event := generators.GenerateEventSdk()
-	prepared := PrepareEventForPrinting(*event)
+	prepared := PrepareEventForPrinting(event)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -197,7 +198,7 @@ func TestPrepareEventForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareEventListForPrinting(test_framework *testing.T) {
 	OutputFormat = "table"
-	events := generators.GenerateEventListSdk(1)
+	events := testutil.GenN(1, generators.GenerateEventSdk)
 	prepared := PrepareEventListForPrinting(events)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -434,7 +435,7 @@ func TestPrepareIpBlockListForPrinting(test_framework *testing.T) {
 func TestPrepareRatedUsageRecordForPrintingNonTable_Bandwidth(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		BandwidthRecord: generators.GenerateBandwidthRecordSdk(),
+		BandwidthRecord: testutil.AsPointer(generators.GenerateBandwidthRecordSdk()),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
@@ -446,7 +447,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Bandwidth(test_framework *te
 func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		OperatingSystemRecord: generators.GenerateOperatingSystemRecordSdk(),
+		OperatingSystemRecord: testutil.AsPointer(generators.GenerateOperatingSystemRecordSdk()),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
@@ -458,7 +459,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framewo
 func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		PublicSubnetRecord: generators.GeneratePublicSubnetRecordSdk(),
+		PublicSubnetRecord: testutil.AsPointer(generators.GeneratePublicSubnetRecordSdk()),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
@@ -470,7 +471,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework 
 func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		ServerRecord: generators.GenerateServerRecordSdk(),
+		ServerRecord: testutil.AsPointer(generators.GenerateServerRecordSdk()),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
@@ -482,7 +483,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testi
 func TestPrepareRatedUsageRecordForPrintingNonTable_Short(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		BandwidthRecord: generators.GenerateBandwidthRecordSdk(),
+		BandwidthRecord: testutil.AsPointer(generators.GenerateBandwidthRecordSdk()),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, false)
 
@@ -494,7 +495,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Short(test_framework *testin
 func TestPrepareRatedUsageRecordForPrintingTableFull(test_framework *testing.T) {
 	OutputFormat = "table"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		ServerRecord: generators.GenerateServerRecordSdk(),
+		ServerRecord: testutil.AsPointer(generators.GenerateServerRecordSdk()),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
@@ -506,7 +507,7 @@ func TestPrepareRatedUsageRecordForPrintingTableFull(test_framework *testing.T) 
 func TestPrepareRatedUsageRecordForPrintingTableShort(test_framework *testing.T) {
 	OutputFormat = "table"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		ServerRecord: generators.GenerateServerRecordSdk(),
+		ServerRecord: testutil.AsPointer(generators.GenerateServerRecordSdk()),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, false)
 
@@ -518,7 +519,7 @@ func TestPrepareRatedUsageRecordForPrintingTableShort(test_framework *testing.T)
 func TestPrepareProductForPrintingNonTable_BandwidthProduct(test_framework *testing.T) {
 	OutputFormat = "json"
 	product := billingapi.ProductsGet200ResponseInner{
-		Product: generators.GenerateBandwidthProduct(),
+		Product: testutil.AsPointer(generators.GenerateBandwidthProduct()),
 	}
 	prepared := PrepareProductForPrinting(product)
 
@@ -530,7 +531,7 @@ func TestPrepareProductForPrintingNonTable_BandwidthProduct(test_framework *test
 func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework *testing.T) {
 	OutputFormat = "json"
 	product := billingapi.ProductsGet200ResponseInner{
-		Product: generators.GenerateOperatingSystemProduct(),
+		Product: testutil.AsPointer(generators.GenerateOperatingSystemProduct()),
 	}
 	prepared := PrepareProductForPrinting(product)
 
@@ -542,7 +543,7 @@ func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework
 func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing.T) {
 	OutputFormat = "json"
 	product := billingapi.ProductsGet200ResponseInner{
-		ServerProduct: generators.GenerateServerProduct(),
+		ServerProduct: testutil.AsPointer(generators.GenerateServerProduct()),
 	}
 	prepared := PrepareProductForPrinting(product)
 
@@ -554,7 +555,7 @@ func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing
 func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
 	OutputFormat = "table"
 	product := billingapi.ProductsGet200ResponseInner{
-		Product: generators.GenerateBandwidthProduct(),
+		Product: testutil.AsPointer(generators.GenerateBandwidthProduct()),
 	}
 	prepared := PrepareProductForPrinting(product)
 

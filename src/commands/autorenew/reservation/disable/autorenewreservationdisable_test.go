@@ -29,7 +29,7 @@ func TestAutoRenewReservationDisableSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest)).
-		Return(createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
+		Return(&createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME, commandName).
@@ -58,7 +58,7 @@ func TestAutoRenewReservationDisableSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest)).
-		Return(createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
+		Return(&createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME, commandName).
