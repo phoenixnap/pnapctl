@@ -15,6 +15,16 @@ func TestMapSuccess(test_framework *testing.T) {
 	assert.Equal(test_framework, doubled, []int{2, 4, 6, 8, 10})
 }
 
+func TestOptionalMapSuccess(test_framework *testing.T) {
+	var num1 int = 5
+	var num2 *int
+
+	doubler := func(n int) int { return n * 2 }
+
+	assert.Equal(test_framework, *OptionalMapper(doubler)(&num1), 10)
+	assert.Nil(test_framework, OptionalMapper(doubler)(num2))
+}
+
 func TestCurrySuccess(test_framework *testing.T) {
 	multiply := func(num1 int, num2 int) int {
 		return num1 * num2

@@ -170,6 +170,8 @@ github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.0 h1:e9diy+jWyzeQXPWjq66LUwo1DJI7
 github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.0/go.mod h1:6ZPDjGdWiJQ3v4Qo7djX3lVPqNEjZprzcKmaeTi98nQ=
 github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.0.0 h1:4LDSZmf6OP5OhqcYJ59yLrSyy9HBQL839r11g3QjGA0=
 github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.0.0/go.mod h1:zkZLpUrrpt8XdQZnrLus+UhapP6dlbeGGtGTkmgUJts=
+github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.0.2 h1:PH3yZUiTm8ybThkmq5+dssspSRhyc14ti0Fv9WaBpP8=
+github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.0.2/go.mod h1:IV5yA1XAOYNlO1esYGX4jLmbrKOjQ0jbXv5lRl2V18Q=
 github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.0 h1:F1vkNcQa95zOpjy6coFiNYBaYBQqeRbBX8D+P51NQos=
 github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.0/go.mod h1://8OW8iHrlF1kWpwcigZ0fFZpgit4t9I4cemZhonq40=
 github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.0 h1:vV5P55ss1CxBtPDKtenO6/VnBQ++/TXVVU/iDGi4nIQ=
