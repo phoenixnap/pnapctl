@@ -8,6 +8,7 @@ import (
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
 	"github.com/phoenixnap/go-sdk-bmc/auditapi"
+	"github.com/phoenixnap/go-sdk-bmc/ipapi"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -381,7 +382,7 @@ func TestPrepareSshkeyListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareIpBlockForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	ipBlock := generators.GenerateIpBlockSdk()
+	ipBlock := generators.Generate[ipapi.IpBlock]()
 	prepared := PrepareIpBlockForPrinting(ipBlock, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -391,7 +392,7 @@ func TestPrepareIpBlockForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareIpBlockForPrintingShortTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	ipBlock := generators.GenerateIpBlockSdk()
+	ipBlock := generators.Generate[ipapi.IpBlock]()
 	prepared := PrepareIpBlockForPrinting(ipBlock, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -401,7 +402,7 @@ func TestPrepareIpBlockForPrintingShortTable(test_framework *testing.T) {
 
 func TestPrepareIpBlockForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	ipBlock := generators.GenerateIpBlockSdk()
+	ipBlock := generators.Generate[ipapi.IpBlock]()
 	prepared := PrepareIpBlockForPrinting(ipBlock, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -411,7 +412,7 @@ func TestPrepareIpBlockForPrintingNonTable(test_framework *testing.T) {
 
 func TestPrepareIpBlockListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	ipBlocks := generators.GenerateIpBlockSdkList(1)
+	ipBlocks := testutil.GenN(1, generators.Generate[ipapi.IpBlock])
 	prepared := PrepareIpBlockListForPrinting(ipBlocks, true)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -421,7 +422,7 @@ func TestPrepareIpBlockListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareIpBlockListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	ipBlocks := generators.GenerateIpBlockSdkList(1)
+	ipBlocks := testutil.GenN(1, generators.Generate[ipapi.IpBlock])
 	prepared := PrepareIpBlockListForPrinting(ipBlocks, true)
 
 	outputType := fmt.Sprintf("%T", prepared[0])

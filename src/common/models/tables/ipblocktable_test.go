@@ -3,12 +3,13 @@ package tables
 import (
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/ipapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 func TestToIpBlockTable(test_framework *testing.T) {
-	ipBlock := generators.GenerateIpBlockSdk()
+	ipBlock := generators.Generate[ipapi.IpBlock]()
 	table := ToIpBlockTable(ipBlock)
 
 	assert.Equal(test_framework, ipBlock.Id, table.Id)

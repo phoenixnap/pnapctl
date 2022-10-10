@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/ipapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
-	ipBlockList := generators.GenerateIpBlockSdkList(2)
+	ipBlockList := testutil.GenN(2, generators.Generate[ipapi.IpBlock])
 
 	var IpBlockTables []interface{}
 
@@ -49,7 +50,7 @@ func TestGetAllIpBlocksKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllIpBlocksPrinterFailure(test_framework *testing.T) {
-	ipBlockList := generators.GenerateIpBlockSdkList(2)
+	ipBlockList := testutil.GenN(2, generators.Generate[ipapi.IpBlock])
 
 	var ipBlockTables []interface{}
 

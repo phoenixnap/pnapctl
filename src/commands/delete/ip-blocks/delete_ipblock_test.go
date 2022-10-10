@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
+	"github.com/phoenixnap/go-sdk-bmc/ipapi"
 	"github.com/stretchr/testify/assert"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
@@ -15,7 +16,7 @@ func TestDeleteIpBlockSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdDelete(RESOURCEID).
-		Return(generators.GenerateDeleteIpBlockResultSdk(), WithResponse(200, nil), nil)
+		Return(testutil.AsPointer(generators.Generate[ipapi.DeleteIpBlockResult]()), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteIpBlockCmd.RunE(DeleteIpBlockCmd, []string{RESOURCEID})
