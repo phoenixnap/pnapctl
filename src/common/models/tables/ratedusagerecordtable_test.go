@@ -46,6 +46,15 @@ func TestRatedUsageRecordFromServerSdk(test_framework *testing.T) {
 	assertFullServerRecordsEqual(test_framework, *record.ServerRecord, table)
 }
 
+func TestRatedUsageRecordFromStorageSdk(test_framework *testing.T) {
+	record := billingapi.RatedUsageGet200ResponseInner{
+		StorageRecord: billingmodels.GenerateStorageRecordSdk(),
+	}
+	table := *RatedUsageRecordTableFromSdk(record)
+
+	assertFullStorageRecordsEqual(test_framework, *record.StorageRecord, table)
+}
+
 // Full assertions
 func assertFullBandwidthRecordsEqual(test_framework *testing.T, bandwidthRecord billingapi.BandwidthRecord, cliOneOf RatedUsageRecordTable) {
 	assert.Equal(test_framework, bandwidthRecord.Id, cliOneOf.Id)
@@ -136,4 +145,30 @@ func assertFullServerRecordsEqual(test_framework *testing.T, serverRecord billin
 
 	assert.Equal(test_framework, serverRecord.Metadata.Hostname, cliOneOf.Metadata[HOSTNAME])
 	assert.Equal(test_framework, serverRecord.Metadata.Id, cliOneOf.Metadata[SERVER_ID])
+}
+
+func assertFullStorageRecordsEqual(test_framework *testing.T, storageRecord billingapi.StorageRecord, cliOneOf RatedUsageRecordTable) {
+	assert.Equal(test_framework, storageRecord.Id, cliOneOf.Id)
+	assert.Equal(test_framework, storageRecord.ProductCategory, string(cliOneOf.ProductCategory))
+	assert.Equal(test_framework, storageRecord.ProductCode, cliOneOf.ProductCode)
+	assert.Equal(test_framework, string(storageRecord.Location), cliOneOf.Location)
+	assert.Equal(test_framework, DerefString(storageRecord.YearMonth), cliOneOf.YearMonth)
+	assert.Equal(test_framework, storageRecord.StartDateTime.String(), cliOneOf.StartDateTime)
+	assert.Equal(test_framework, storageRecord.EndDateTime.String(), cliOneOf.EndDateTime)
+	assert.Equal(test_framework, storageRecord.Cost, cliOneOf.Cost)
+	assert.Equal(test_framework, storageRecord.PriceModel, cliOneOf.PriceModel)
+	assert.Equal(test_framework, storageRecord.UnitPrice, cliOneOf.UnitPrice)
+	assert.Equal(test_framework, storageRecord.UnitPriceDescription, cliOneOf.UnitPriceDescription)
+	assert.Equal(test_framework, storageRecord.Quantity, cliOneOf.Quantity)
+	assert.Equal(test_framework, storageRecord.Active, cliOneOf.Active)
+	assert.Equal(test_framework, storageRecord.UsageSessionId, cliOneOf.UsageSessionId)
+	assert.Equal(test_framework, storageRecord.CorrelationId, cliOneOf.CorrelationId)
+	assert.Equal(test_framework, DerefString(storageRecord.ReservationId), cliOneOf.ReservationId)
+
+	assert.Equal(test_framework, storageRecord.Metadata.NetworkStorageId, cliOneOf.Metadata[NETWORK_STORAGE_ID])
+	assert.Equal(test_framework, storageRecord.Metadata.NetworkStorageName, cliOneOf.Metadata[NETWORK_STORAGE_NAME])
+	assert.Equal(test_framework, storageRecord.Metadata.VolumeId, cliOneOf.Metadata[VOLUME_ID])
+	assert.Equal(test_framework, storageRecord.Metadata.VolumeName, cliOneOf.Metadata[VOLUME_NAME])
+	assert.Equal(test_framework, storageRecord.Metadata.CapacityInGb, cliOneOf.Metadata[CAPACITY_IN_GB])
+	assert.Equal(test_framework, storageRecord.Metadata.CreatedOn, cliOneOf.Metadata[CREATED_ON])
 }

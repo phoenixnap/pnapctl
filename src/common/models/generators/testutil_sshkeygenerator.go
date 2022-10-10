@@ -3,7 +3,7 @@ package generators
 import (
 	"time"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 

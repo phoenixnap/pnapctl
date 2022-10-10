@@ -1,7 +1,7 @@
 package generators
 
 import (
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 

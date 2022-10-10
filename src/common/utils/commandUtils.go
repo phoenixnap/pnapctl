@@ -35,3 +35,15 @@ func SetupOutputFlag(cmd *cobra.Command) {
 func SetupFullFlag(cmd *cobra.Command, full *bool, resource string) {
 	cmd.Flags().BoolVar(full, "full", false, fmt.Sprintf("Shows all %s details", resource))
 }
+
+type Action string
+
+const (
+	CREATION Action = "creation"
+	UPDATING Action = "updating"
+)
+
+func SetupFilenameFlag(cmd *cobra.Command, filename *string, action Action) {
+	cmd.Flags().StringVarP(filename, "filename", "f", "", "File containing required information for "+string(action))
+	cmd.MarkFlagRequired("filename")
+}

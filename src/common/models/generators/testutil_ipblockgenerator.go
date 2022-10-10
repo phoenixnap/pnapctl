@@ -1,7 +1,7 @@
 package generators
 
 import (
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
+	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 

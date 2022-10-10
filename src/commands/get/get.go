@@ -17,6 +17,7 @@ import (
 	"phoenixnap.com/pnapctl/commands/get/reservations"
 	"phoenixnap.com/pnapctl/commands/get/servers"
 	"phoenixnap.com/pnapctl/commands/get/sshkeys"
+	storagenetworks "phoenixnap.com/pnapctl/commands/get/storage-networks"
 	"phoenixnap.com/pnapctl/commands/get/tags"
 )
 
@@ -45,4 +46,5 @@ func init() {
 	GetCmd.AddCommand(reservations.GetReservationsCmd)
 	GetCmd.AddCommand(product_availability.GetProductAvailabilitiesCmd)
 	GetCmd.AddCommand(account_billing_configuration.GetAccountBillingConfigurationCmd)
+	GetCmd.AddCommand(storagenetworks.GetStorageNetworksCmd)
 }

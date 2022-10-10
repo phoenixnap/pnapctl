@@ -3,7 +3,7 @@ package generators
 import (
 	"time"
 
-	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"phoenixnap.com/pnapctl/common/models/queryparams/audit"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )

@@ -81,6 +81,27 @@ func MapRef[T, O any](slice []T, mapper Mapper[*T, O]) (sliceOut []O) {
 	return
 }
 
+// Converts the mapper into an *optional* mapper that takes a potential parameter.
+// If the input is `nil`, it returns `nil`. Otherwise, it applies the mapper.
+//
+//	doubler := func(n int) int { return n * 2 }
+//	num1 := 5
+//	num2 := nil
+//
+//	OptionalMapper(doubler)(num1) // &10
+//	OptionalMapper(doubler)(num2) // nil
+func OptionalMapper[T, O any](mapper Mapper[T, O]) Mapper[*T, *O] {
+	return func(optional *T) *O {
+		if optional == nil {
+			return nil
+		}
+
+		out := mapper(*optional)
+
+		return &out
+	}
+}
+
 // Curries the function passed, setting it up with the constant
 //
 //	func Multiply(item int, multiplier int) int {

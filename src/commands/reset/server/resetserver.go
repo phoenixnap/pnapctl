@@ -7,7 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
 )
 

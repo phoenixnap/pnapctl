@@ -11,6 +11,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	auditapi "github.com/phoenixnap/go-sdk-bmc/auditapi"
 	audit "phoenixnap.com/pnapctl/common/models/queryparams/audit"
+	auditapi "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
+	auditmodels "phoenixnap.com/pnapctl/common/models/auditmodels"
 )
 
 // MockAuditSdkClient is a mock of AuditSdkClient interface.

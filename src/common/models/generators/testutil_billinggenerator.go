@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
+	"phoenixnap.com/pnapctl/common/models/billingmodels/productoneof"
+	"phoenixnap.com/pnapctl/common/models/billingmodels/ratedusageoneof"
 	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -168,6 +170,25 @@ func GenerateReservationRequestSdk() billingapi.ReservationRequest {
 	}
 }
 
+func GenerateStorageRecordSdk() *billingapi.StorageRecord {
+	record := billingapi.StorageRecord{
+		ProductCategory: string(ratedusageoneof.STORAGE),
+		Metadata:        GenerateStorageDetails(),
+	}
+	return populateRatedUsageCommon(&record).(*billingapi.StorageRecord)
+}
+
+func GenerateStorageDetails() billingapi.StorageDetails {
+	return billingapi.StorageDetails{
+		NetworkStorageId:   testutil.RandSeq(10),
+		NetworkStorageName: testutil.RandSeq(10),
+		VolumeId:           testutil.RandSeq(10),
+		VolumeName:         testutil.RandSeq(10),
+		CapacityInGb:       rand.Int63(),
+		CreatedOn:          time.Now(),
+	}
+}
+
 // Products
 func GenerateProductsGetQueryParams() billing.ProductsGetQueryParams {
 	return billing.ProductsGetQueryParams{
@@ -230,6 +251,14 @@ func GenerateBandwidthProduct() *billingapi.Product {
 func GenerateOperatingSystemProduct() *billingapi.Product {
 	product := &billingapi.Product{
 		ProductCategory: string(ProductOperatingSystem),
+	}
+
+	return populateProductCommon(product).(*billingapi.Product)
+}
+
+func GenerateStorageProduct() *billingapi.Product {
+	product := &billingapi.Product{
+		ProductCategory: string(productoneof.STORAGE),
 	}
 
 	return populateProductCommon(product).(*billingapi.Product)

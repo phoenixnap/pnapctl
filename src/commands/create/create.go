@@ -14,6 +14,7 @@ import (
 	serverprivatenetwork "phoenixnap.com/pnapctl/commands/create/server/privatenetwork"
 	serverpublicnetwork "phoenixnap.com/pnapctl/commands/create/server/publicnetwork"
 	"phoenixnap.com/pnapctl/commands/create/sshkey"
+	storagenetwork "phoenixnap.com/pnapctl/commands/create/storage-network"
 	"phoenixnap.com/pnapctl/commands/create/tag"
 )
 
@@ -39,4 +40,5 @@ func init() {
 	CreateCmd.AddCommand(publicnetwork.CreatePublicNetworkCmd)
 	CreateCmd.AddCommand(ip_blocks.CreateIpBlockCmd)
 	CreateCmd.AddCommand(reservation.CreateReservationCmd)
+	CreateCmd.AddCommand(storagenetwork.CreateStorageNetworkCmd)
 }

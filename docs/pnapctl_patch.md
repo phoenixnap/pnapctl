@@ -29,5 +29,6 @@ pnapctl patch [flags]
 * [pnapctl patch ip-block](pnapctl_patch_ip-block.md)	 - Updates a specific ip-block.
 * [pnapctl patch public-network](pnapctl_patch_public-network.md)	 - Patch a public network.
 * [pnapctl patch server](pnapctl_patch_server.md)	 - Patch a server.
+* [pnapctl patch storage-network](pnapctl_patch_storage-network.md)	 - Patch a storage network.
 * [pnapctl patch tag](pnapctl_patch_tag.md)	 - Patch/Update a tag.
 

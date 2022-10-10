@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"time"
 
-	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"phoenixnap.com/pnapctl/common/models/queryparams/network"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )

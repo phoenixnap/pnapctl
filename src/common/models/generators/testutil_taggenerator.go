@@ -1,7 +1,7 @@
 package generators
 
 import (
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 

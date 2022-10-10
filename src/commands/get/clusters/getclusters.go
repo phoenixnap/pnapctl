@@ -3,7 +3,7 @@ package clusters
 import (
 	netHttp "net/http"
 
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"phoenixnap.com/pnapctl/common/client/rancher"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
