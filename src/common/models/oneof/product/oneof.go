@@ -9,6 +9,7 @@ var (
 	Bandwidth       = "BANDWIDTH"
 	OperatingSystem = "OPERATING_SYSTEM"
 	Server          = "SERVER"
+	Storage         = "STORAGE"
 )
 
 func BandwidthProductToInner(product billingapi.Product) billingapi.ProductsGet200ResponseInner {
@@ -18,6 +19,11 @@ func BandwidthProductToInner(product billingapi.Product) billingapi.ProductsGet2
 
 func OperatingSystemProductToInner(product billingapi.Product) billingapi.ProductsGet200ResponseInner {
 	product.ProductCategory = OperatingSystem
+	return billingapi.ProductAsProductsGet200ResponseInner(&product)
+}
+
+func StorageProductToInner(product billingapi.Product) billingapi.ProductsGet200ResponseInner {
+	product.ProductCategory = Storage
 	return billingapi.ProductAsProductsGet200ResponseInner(&product)
 }
 

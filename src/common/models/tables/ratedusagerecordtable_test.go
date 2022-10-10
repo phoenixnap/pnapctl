@@ -39,9 +39,7 @@ func TestRatedUsageRecordFromServerSdk(test_framework *testing.T) {
 }
 
 func TestRatedUsageRecordFromStorageSdk(test_framework *testing.T) {
-	record := billingapi.RatedUsageGet200ResponseInner{
-		StorageRecord: generators.GenerateStorageRecordSdk(),
-	}
+	record := generators.GenerateStorageRecordSdk()
 	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullStorageRecordsEqual(test_framework, *record.StorageRecord, table)

@@ -7,14 +7,14 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
-	"github.com/phoenixnap/go-sdk-bmc/auditapi"
-	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"github.com/phoenixnap/go-sdk-bmc/ipapi"
-	"github.com/phoenixnap/go-sdk-bmc/networkapi"
-	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
-	"github.com/phoenixnap/go-sdk-bmc/tagapi"
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
+	"github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -481,9 +481,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testi
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_Storage(test_framework *testing.T) {
 	OutputFormat = "json"
-	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		StorageRecord: generators.GenerateStorageRecordSdk(),
-	}
+	ratedUsage := generators.GenerateStorageRecordSdk()
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -543,9 +541,7 @@ func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework
 
 func TestPrepareProductForPrintingNonTable_StorageProduct(test_framework *testing.T) {
 	OutputFormat = "json"
-	product := billingapi.ProductsGet200ResponseInner{
-		Product: generators.GenerateStorageProduct(),
-	}
+	product := generators.GenerateStorageProduct()
 	prepared := PrepareProductForPrinting(product)
 
 	outputType := fmt.Sprintf("%T", prepared)

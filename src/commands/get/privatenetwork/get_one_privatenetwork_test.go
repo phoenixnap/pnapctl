@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"

@@ -41,7 +41,8 @@ func GenerateRatedUsageRecordSdkList() []billingapi.RatedUsageGet200ResponseInne
 		GenerateBandwidthRecordSdk(),
 		GenerateOperatingSystemRecordSdk(),
 		GeneratePublicSubnetRecordSdk(),
-		GeneratePublicSubnetRecordSdk(),
+		GenerateServerRecordSdk(),
+		GenerateStorageRecordSdk(),
 	}
 }
 
@@ -53,11 +54,14 @@ var GeneratePublicSubnetRecordSdk = OneOfGenerator(ratedusage.PublicSubnetRecord
 
 var GenerateServerRecordSdk = OneOfGenerator(ratedusage.ServerRecordToInner, UpdateLocation[*billingapi.ServerRecord])
 
+var GenerateStorageRecordSdk = OneOfGenerator(ratedusage.StorageRecordToInner, UpdateLocation[*billingapi.StorageRecord])
+
 // Product One Of
 func GenerateProductSdkList() []billingapi.ProductsGet200ResponseInner {
 	return []billingapi.ProductsGet200ResponseInner{
 		GenerateBandwidthProduct(),
 		GenerateOperatingSystemProduct(),
+		GenerateStorageProduct(),
 		GenerateServerProduct(),
 	}
 }
@@ -65,6 +69,8 @@ func GenerateProductSdkList() []billingapi.ProductsGet200ResponseInner {
 var GenerateBandwidthProduct = OneOfGenerator(product.BandwidthProductToInner, UpdatePricingPlans[*billingapi.Product])
 
 var GenerateOperatingSystemProduct = OneOfGenerator(product.OperatingSystemProductToInner, UpdatePricingPlans[*billingapi.Product])
+
+var GenerateStorageProduct = OneOfGenerator(product.StorageProductToInner, UpdatePricingPlans[*billingapi.Product])
 
 var GenerateServerProduct = OneOfGenerator(product.ServerProductToInner, UpdatePricingPlans[*billingapi.ServerProduct])
 

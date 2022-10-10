@@ -7,7 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
-	"github.com/phoenixnap/go-sdk-bmc/ipapi"
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/stretchr/testify/assert"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )

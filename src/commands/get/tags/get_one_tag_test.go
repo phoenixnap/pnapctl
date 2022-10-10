@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"

@@ -133,7 +133,7 @@ func (table *RatedUsageRecordTable) attachUnique(sdk billingapisdk.RatedUsageGet
 			HOSTNAME:  sdk.ServerRecord.Metadata.Hostname,
 		}
 
-	case generators.RatedUsageStorage:
+	case ratedusage.Storage:
 		table.Metadata = map[string]interface{}{
 			NETWORK_STORAGE_ID:   sdk.StorageRecord.Metadata.NetworkStorageId,
 			NETWORK_STORAGE_NAME: sdk.StorageRecord.Metadata.NetworkStorageName,

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/phoenixnap/go-sdk-bmc/auditapi"
+	"github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
