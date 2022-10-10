@@ -490,7 +490,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Storage(test_framework *test
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "*ratedusageoneof.StorageRecord")
+	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_Short(test_framework *testing.T) {
@@ -562,7 +562,7 @@ func TestPrepareProductForPrintingNonTable_StorageProduct(test_framework *testin
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "*productoneof.Product")
+	assert.Equal(test_framework, outputType, "billingapi.ProductsGet200ResponseInner")
 }
 
 func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing.T) {
