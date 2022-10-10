@@ -18,7 +18,15 @@ pnapctl create storage-network [flags]
 # Create a storage network using the contents of storageNetworkCreate.yaml as request body.
 pnapctl create storage-network --filename <FILE_PATH> [--output <OUTPUT_TYPE]
 
-# storageNetworkCreate.yaml...
+# storageNetworkCreate.yaml
+name: "CreatedSN"
+description: "Description"
+location: "PHX"
+volumes:
+  - name: "VolumeName"
+    description: "VDescription"
+    pathSuffix: "/cliyaml"
+    capacityInGb: 1000
 ```
 
 ### Options

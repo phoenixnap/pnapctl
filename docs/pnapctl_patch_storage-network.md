@@ -18,7 +18,9 @@ pnapctl patch storage-network [ID] [flags]
 # Patch a storage network using the contents of storageNetworkPatch.yaml as request body.
 pnapctl patch storage-network <ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE]
 
-# storageNetworkPatch.yaml...
+# storageNetworkPatch.yaml
+name: "UpdatedSN"
+description: "Description"
 ```
 
 ### Options
