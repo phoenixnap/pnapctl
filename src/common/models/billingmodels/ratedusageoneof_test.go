@@ -49,6 +49,16 @@ func TestRatedUsageActualFromSdk_ServerRecord(test_framework *testing.T) {
 	assertEqualAsServerRecord(test_framework, actual, *serverRecord)
 }
 
+func TestRatedUsageActualFromSdk_StorageRecord(test_framework *testing.T) {
+	storageRecord := GenerateStorageRecordSdk()
+	ratedUsageResponse := billingapi.RatedUsageGet200ResponseInner{
+		StorageRecord: storageRecord,
+	}
+
+	actual := RatedUsageActualFromSdk(ratedUsageResponse)
+	assertEqualAsStorageRecord(test_framework, actual, *storageRecord)
+}
+
 // Equality asserts
 
 func assertEqualAsBandwidthRecord(
@@ -164,4 +174,36 @@ func assertEqualAsServerRecord(
 
 	assert.Equal(test_framework, cliServer.Metadata.Id, sdkServer.Metadata.Id)
 	assert.Equal(test_framework, cliServer.Metadata.Hostname, sdkServer.Metadata.Hostname)
+}
+
+func assertEqualAsStorageRecord(
+	test_framework *testing.T,
+	cliOneOf interface{},
+	sdkStorage billingapi.StorageRecord,
+) {
+	cliServer := cliOneOf.(*ratedusageoneof.StorageRecord)
+
+	assert.Equal(test_framework, cliServer.Id, sdkStorage.GetId())
+	assert.Equal(test_framework, string(cliServer.ProductCategory), sdkStorage.GetProductCategory())
+	assert.Equal(test_framework, cliServer.ProductCode, sdkStorage.GetProductCode())
+	assert.Equal(test_framework, billingapi.LocationEnum(cliServer.Location), sdkStorage.GetLocation())
+	assert.Equal(test_framework, cliServer.YearMonth, sdkStorage.GetYearMonth())
+	assert.Equal(test_framework, cliServer.StartDateTime, sdkStorage.GetStartDateTime())
+	assert.Equal(test_framework, cliServer.EndDateTime, sdkStorage.GetEndDateTime())
+	assert.Equal(test_framework, cliServer.Cost, sdkStorage.GetCost())
+	assert.Equal(test_framework, cliServer.PriceModel, sdkStorage.GetPriceModel())
+	assert.Equal(test_framework, cliServer.UnitPrice, sdkStorage.GetUnitPrice())
+	assert.Equal(test_framework, cliServer.UnitPriceDescription, sdkStorage.GetUnitPriceDescription())
+	assert.Equal(test_framework, cliServer.Quantity, sdkStorage.GetQuantity())
+	assert.Equal(test_framework, cliServer.Active, sdkStorage.GetActive())
+	assert.Equal(test_framework, cliServer.UsageSessionId, sdkStorage.GetUsageSessionId())
+	assert.Equal(test_framework, cliServer.CorrelationId, sdkStorage.GetCorrelationId())
+	assert.Equal(test_framework, cliServer.ReservationId, sdkStorage.GetReservationId())
+
+	assert.Equal(test_framework, cliServer.Metadata.NetworkStorageId, sdkStorage.Metadata.NetworkStorageId)
+	assert.Equal(test_framework, cliServer.Metadata.NetworkStorageName, sdkStorage.Metadata.NetworkStorageName)
+	assert.Equal(test_framework, cliServer.Metadata.VolumeId, sdkStorage.Metadata.VolumeId)
+	assert.Equal(test_framework, cliServer.Metadata.VolumeName, sdkStorage.Metadata.VolumeName)
+	assert.Equal(test_framework, cliServer.Metadata.CapacityInGb, sdkStorage.Metadata.CapacityInGb)
+	assert.Equal(test_framework, cliServer.Metadata.CreatedOn, sdkStorage.Metadata.CreatedOn)
 }

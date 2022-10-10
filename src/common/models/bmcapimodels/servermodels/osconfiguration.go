@@ -9,6 +9,7 @@ type OsConfiguration struct {
 	RootPassword               *string                 `yaml:"rootPassword,omitempty" json:"rootPassword,omitempty"`
 	ManagementUiUrl            *string                 `yaml:"managementUiUrl,omitempty" json:"managementUiUrl,omitempty"`
 	ManagementAccessAllowedIps []string                `yaml:"managementAccessAllowedIps,omitempty" json:"managementAccessAllowedIps,omitempty"`
+	InstallOsToRam             *bool                   `yaml:"installOsToRam,omitempty" json:"installOsToRam,omitempty"`
 }
 
 func (osConfiguration *OsConfiguration) toSdk() *bmcapisdk.OsConfiguration {
@@ -21,6 +22,7 @@ func (osConfiguration *OsConfiguration) toSdk() *bmcapisdk.OsConfiguration {
 		RootPassword:               osConfiguration.RootPassword,
 		ManagementUiUrl:            osConfiguration.ManagementUiUrl,
 		ManagementAccessAllowedIps: osConfiguration.ManagementAccessAllowedIps,
+		InstallOsToRam:             osConfiguration.InstallOsToRam,
 	}
 }
 
@@ -34,6 +36,7 @@ func osConfigurationFromSdk(osConfiguration *bmcapisdk.OsConfiguration) *OsConfi
 		RootPassword:               osConfiguration.RootPassword,
 		ManagementUiUrl:            osConfiguration.ManagementUiUrl,
 		ManagementAccessAllowedIps: osConfiguration.ManagementAccessAllowedIps,
+		InstallOsToRam:             osConfiguration.InstallOsToRam,
 	}
 }
 

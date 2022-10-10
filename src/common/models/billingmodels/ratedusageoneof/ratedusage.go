@@ -22,6 +22,9 @@ const (
 
 	// Server Record
 	SERVER Discriminator = "bmc-server"
+
+	// Storage Record
+	STORAGE Discriminator = "storage"
 )
 
 // Matches all elements in the OneOf due to common fields.
@@ -34,6 +37,7 @@ type RatedUsageSdk interface {
 	GetStartDateTime() time.Time
 	GetEndDateTime() time.Time
 	GetCost() int64
+	GetCostDescription() string
 	GetPriceModel() string
 	GetUnitPrice() float32
 	GetUnitPriceDescription() string
@@ -54,6 +58,7 @@ type RatedUsageCommon struct {
 	StartDateTime        time.Time     `json:"startDateTime" yaml:"startDateTime"`
 	EndDateTime          time.Time     `json:"endDateTime" yaml:"endDateTime"`
 	Cost                 int64         `json:"cost" yaml:"cost"`
+	CostDescription      string        `json:"costDescription" yaml:"costDescription"`
 	PriceModel           string        `json:"priceModel" yaml:"priceModel"`
 	UnitPrice            float32       `json:"unitPrice" yaml:"unitPrice"`
 	UnitPriceDescription string        `json:"unitPriceDescription" yaml:"unitPriceDescription"`
@@ -81,6 +86,7 @@ func RatedUsageFromSdkOneOf(sdk *billingapisdk.RatedUsageGet200ResponseInner) *R
 		StartDateTime:        actualInstance.GetStartDateTime(),
 		EndDateTime:          actualInstance.GetEndDateTime(),
 		Cost:                 actualInstance.GetCost(),
+		CostDescription:      actualInstance.GetCostDescription(),
 		PriceModel:           actualInstance.GetPriceModel(),
 		UnitPrice:            actualInstance.GetUnitPrice(),
 		UnitPriceDescription: actualInstance.GetUnitPriceDescription(),

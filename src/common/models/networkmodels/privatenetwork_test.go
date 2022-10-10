@@ -27,6 +27,7 @@ func assertEqualPrivateNetwork(test_framework *testing.T, p1 PrivateNetwork, p2 
 	assert.Equal(test_framework, p1.LocationDefault, p2.LocationDefault)
 	assert.Equal(test_framework, p1.Cidr, p2.Cidr)
 	assert.Equal(test_framework, p1.CreatedOn, p2.CreatedOn)
+	assert.Equal(test_framework, p1.Status, p2.Status)
 
 	testutil.ForEachPair(p1.Servers, p2.Servers).
 		Do(test_framework, assertEqualPrivateNetworkServer)

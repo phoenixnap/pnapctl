@@ -53,7 +53,7 @@ func parseCommonProduct(sdk billingapisdk.ProductsGet200ResponseInner) *ProductT
 
 func (p *ProductTable) attachUnique(sdk billingapisdk.ProductsGet200ResponseInner) {
 	switch p.ProductCategory {
-	case productoneof.BANDWIDTH, productoneof.OPERATING_SYSTEM:
+	case productoneof.BANDWIDTH, productoneof.OPERATING_SYSTEM, productoneof.STORAGE:
 		return
 	case productoneof.SERVER:
 		p.Metadata = map[string]interface{}{

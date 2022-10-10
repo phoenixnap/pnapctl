@@ -18,7 +18,7 @@ func ProductActualFromSdk(productOneOf billingapisdk.ProductsGet200ResponseInner
 	}
 
 	switch {
-	case productCommon.IsActually(BANDWIDTH, OPERATING_SYSTEM):
+	case productCommon.IsActually(BANDWIDTH, OPERATING_SYSTEM, STORAGE):
 		return &productCli
 	case productCommon.IsActually(SERVER):
 		return &ServerProduct{

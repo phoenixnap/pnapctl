@@ -1,6 +1,10 @@
 package ratedusageoneof
 
-import "github.com/phoenixnap/go-sdk-bmc/billingapi"
+import (
+	"time"
+
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
+)
 
 // Record types
 type BandwidthRecord struct {
@@ -21,6 +25,11 @@ type PublicSubnetRecord struct {
 type ServerRecord struct {
 	RatedUsageCommon
 	Metadata ServerDetails `json:"metadata" yaml:"metadata"`
+}
+
+type StorageRecord struct {
+	RatedUsageCommon
+	Metadata StorageDetails `json:"metadata" yaml:"metadata"`
 }
 
 // Metadata
@@ -75,5 +84,25 @@ func ServerDetailsFromSdk(serverDetails *billingapi.ServerDetails) *ServerDetail
 	return &ServerDetails{
 		Id:       serverDetails.Id,
 		Hostname: serverDetails.Hostname,
+	}
+}
+
+type StorageDetails struct {
+	NetworkStorageId   string    `json:"networkStorageId" yaml:"networkStorageId"`
+	NetworkStorageName string    `json:"networkStorageName" yaml:"networkStorageName"`
+	VolumeId           string    `json:"volumeId" yaml:"volumeId"`
+	VolumeName         string    `json:"volumeName" yaml:"volumeName"`
+	CapacityInGb       int64     `json:"capacityInGb" yaml:"capacityInGb"`
+	CreatedOn          time.Time `json:"createdOn" yaml:"createdOn"`
+}
+
+func StorageDetailsFromSdk(storageDetails *billingapi.StorageDetails) *StorageDetails {
+	return &StorageDetails{
+		NetworkStorageId:   storageDetails.NetworkStorageId,
+		NetworkStorageName: storageDetails.NetworkStorageName,
+		VolumeId:           storageDetails.VolumeId,
+		VolumeName:         storageDetails.VolumeName,
+		CapacityInGb:       storageDetails.CapacityInGb,
+		CreatedOn:          storageDetails.CreatedOn,
 	}
 }

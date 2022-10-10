@@ -31,6 +31,16 @@ func TestProductActualFromSdk_OperatingSystemProduct(test_framework *testing.T) 
 	assertEqualAsProduct(test_framework, *operatingSystemProduct, *actual)
 }
 
+func TestProductActualFromSdk_StorageProduct(test_framework *testing.T) {
+	storageProduct := billingmodels.GenerateStorageProduct()
+	ProductsResponse := billingapi.ProductsGet200ResponseInner{
+		Product: storageProduct,
+	}
+
+	actual := ProductTableFromSdk(ProductsResponse)
+	assertEqualAsProduct(test_framework, *storageProduct, *actual)
+}
+
 func TestProductActualFromSdk_ServerProduct(test_framework *testing.T) {
 	serverProduct := billingmodels.GenerateServerProduct()
 	ProductsResponse := billingapi.ProductsGet200ResponseInner{
