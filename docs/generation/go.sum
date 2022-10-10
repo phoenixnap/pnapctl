@@ -62,11 +62,7 @@ github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7
 github.com/frankban/quicktest v1.14.3 h1:FJKSZTDHjyhriyC81FLQ0LY93eSai0ZyR/ZIkd3ZUKE=
 github.com/fsnotify/fsnotify v1.5.4 h1:jRbGcIw6P2Meqdwuo0H1p6JVLbL5DHKAKlYndzMwVZI=
 github.com/fsnotify/fsnotify v1.5.4/go.mod h1:OVB6XrOHzAwXMpEM7uPOzcehqUV2UqJxmVXmkdnm1bU=
-<<<<<<< HEAD
 github.com/go-faker/faker/v4 v4.0.0-beta.3 h1:zjTxJMHn7Po7OCPKY+VjO6mNQ4ZzE7PoBjb2sUNHVPs=
-github.com/go-faker/faker/v4 v4.0.0-beta.3/go.mod h1:uuNc0PSRxF8nMgjGrrrU4Nw5cF30Jc6Kd0/FUTTYbhg=
-=======
->>>>>>> add-yaml-library
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200222043503-6f7a984d4dc4/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
@@ -165,22 +161,6 @@ github.com/pelletier/go-toml v1.9.5 h1:4yBQzkHv+7BHq2PQUZF3Mx0IYxG7LsP222s7Agd3v
 github.com/pelletier/go-toml v1.9.5/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
 github.com/pelletier/go-toml/v2 v2.0.5 h1:ipoSadvV8oGUjnUbMub59IDPPwfxF694nG/jwbMiyQg=
 github.com/pelletier/go-toml/v2 v2.0.5/go.mod h1:OMHamSCAODeSsVrwwvcJOaoN0LIUIaFVNZzmWyNfXas=
-<<<<<<< HEAD
-github.com/phoenixnap/go-sdk-bmc/auditapi v1.0.4 h1:XksjWAO7ZLReuj7ERXVnTS7nf5XinSbjZLTkapPbWzk=
-github.com/phoenixnap/go-sdk-bmc/auditapi v1.0.4/go.mod h1:tz/BbJIV88pp30F2qYFTEXtxaIBXMn8uo9bEiaVX/TA=
-github.com/phoenixnap/go-sdk-bmc/billingapi v1.0.0 h1:faaufmpOvBiKgPUKIFyeWQq8lRufGmUwzhhs2ZNZ7mg=
-github.com/phoenixnap/go-sdk-bmc/billingapi v1.0.0/go.mod h1:1DSv+VDVnySg+8nqpATrGY0XV8iaJJ9AZyYP4sBUWKo=
-github.com/phoenixnap/go-sdk-bmc/bmcapi v1.2.2 h1:U+GIAzjwIQa+xmr9EVUO5HWuawTcNEXkdEHsgLUDRSY=
-github.com/phoenixnap/go-sdk-bmc/bmcapi v1.2.2/go.mod h1:VyiO4HOscCgS731zd1iKfuXW40/FPMEJWbTML/mUX4Y=
-github.com/phoenixnap/go-sdk-bmc/ipapi v1.1.2 h1:2k8RPyvg7aQpoW/TOn+p2XIqYl2qIybu/gG/uWp0sG8=
-github.com/phoenixnap/go-sdk-bmc/ipapi v1.1.2/go.mod h1:TUKmoH9RuyGw1qDa4K0beKqIQCTOPiOv2VEb4DM31Bo=
-github.com/phoenixnap/go-sdk-bmc/networkapi v1.1.3 h1:oRMzz2rPc5uMQfrWs1Art4ZuThSG5+W3z/Riga65Pk8=
-github.com/phoenixnap/go-sdk-bmc/networkapi v1.1.3/go.mod h1:/6ucaWMmv/WcqoDL4ofxdRMELtXX3EaI2aWT0ZxR+so=
-github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v1.1.3 h1:nxJl8YycYTULg+s3yf5l1AmxSktON/i3QKRocF2w4RI=
-github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v1.1.3/go.mod h1:GydXt4Xuj+hQBmOjNIhRBwFeGpjizKQSj/e07EyFST8=
-github.com/phoenixnap/go-sdk-bmc/tagapi v1.1.3 h1:w2/8QdbsjyoMQ1LBBsF671fCyDHc6qBt0pjhcklYpQ4=
-github.com/phoenixnap/go-sdk-bmc/tagapi v1.1.3/go.mod h1:1TG6NrC5GGz2IJzYXyScor+AJjDTkJqoR0y1BuxGuaI=
-=======
 github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.1 h1:iY4qpSSfLQCULtnN7OlSHFZ78e46osvYLOnDdk088q4=
 github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.1/go.mod h1:9oH0AwfDV2y8g+ED4LB+4llQAuelJvWpR2uvxhSXmGs=
 github.com/phoenixnap/go-sdk-bmc/billingapi v1.1.1 h1:yd//iDJ4X9ylfBtwGfMDzeCRmp/4ZCj8JDtNPC7SsDs=
@@ -197,7 +177,6 @@ github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.0 h1:F1vkNcQa95zOpjy
 github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.0/go.mod h1://8OW8iHrlF1kWpwcigZ0fFZpgit4t9I4cemZhonq40=
 github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.0 h1:vV5P55ss1CxBtPDKtenO6/VnBQ++/TXVVU/iDGi4nIQ=
 github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.0/go.mod h1:3NXSdP4c0m7LMFhd+q9pnwBTqkVbGqQ/+usvOqIQkVo=
->>>>>>> add-yaml-library
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/sftp v1.13.1/go.mod h1:3HaPG6Dq1ILlpPZRO0HVMrsydcdLt6HRDccSgb87qRg=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
