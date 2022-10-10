@@ -3,8 +3,6 @@ package generators
 import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
-	"phoenixnap.com/pnapctl/common/utils/iterutils"
-	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 // one-of-types
@@ -33,70 +31,56 @@ var GenerateRatedUsageMonthToDateGetQueryParams = Generator(func(params *billing
 // Rated Usage One Of
 func GenerateRatedUsageRecordSdkList() []billingapi.RatedUsageGet200ResponseInner {
 	return []billingapi.RatedUsageGet200ResponseInner{
-		{
-			BandwidthRecord: testutil.AsPointer(GenerateBandwidthRecordSdk()),
-		},
-		{
-			OperatingSystemRecord: testutil.AsPointer(GenerateOperatingSystemRecordSdk()),
-		},
-		{
-			PublicSubnetRecord: testutil.AsPointer(GeneratePublicSubnetRecordSdk()),
-		},
-		{
-			ServerRecord: testutil.AsPointer(GenerateServerRecordSdk()),
-		},
+		GenerateBandwidthRecordSdk(),
+		GenerateOperatingSystemRecordSdk(),
+		GeneratePublicSubnetRecordSdk(),
+		GeneratePublicSubnetRecordSdk(),
 	}
 }
 
-var GenerateBandwidthRecordSdk = Generator(func(sdk *billingapi.BandwidthRecord) {
-	sdk.Location = "PHX"
-	sdk.ProductCategory = RatedUsageBandwidth
-})
-var GenerateOperatingSystemRecordSdk = Generator(func(sdk *billingapi.OperatingSystemRecord) {
-	sdk.Location = "PHX"
-	sdk.ProductCategory = RatedUsageOperatingSystem
-})
-var GeneratePublicSubnetRecordSdk = Generator(func(sdk *billingapi.PublicSubnetRecord) {
-	sdk.Location = "PHX"
-	sdk.ProductCategory = RatedUsagePublicSubnet
-})
-var GenerateServerRecordSdk = Generator(func(sdk *billingapi.ServerRecord) {
-	sdk.Location = "PHX"
-	sdk.ProductCategory = RatedUsageServer
-})
+var GenerateBandwidthRecordSdk = OneOfGenerator(func(sdk billingapi.BandwidthRecord) billingapi.RatedUsageGet200ResponseInner {
+	sdk.SetProductCategory(RatedUsageBandwidth)
+	return billingapi.BandwidthRecordAsRatedUsageGet200ResponseInner(&sdk)
+}, UpdateLocation[*billingapi.BandwidthRecord])
+
+var GenerateOperatingSystemRecordSdk = OneOfGenerator(func(sdk billingapi.OperatingSystemRecord) billingapi.RatedUsageGet200ResponseInner {
+	sdk.SetProductCategory(RatedUsageOperatingSystem)
+	return billingapi.OperatingSystemRecordAsRatedUsageGet200ResponseInner(&sdk)
+}, UpdateLocation[*billingapi.OperatingSystemRecord])
+
+var GeneratePublicSubnetRecordSdk = OneOfGenerator(func(sdk billingapi.PublicSubnetRecord) billingapi.RatedUsageGet200ResponseInner {
+	sdk.SetProductCategory(RatedUsagePublicSubnet)
+	return billingapi.PublicSubnetRecordAsRatedUsageGet200ResponseInner(&sdk)
+}, UpdateLocation[*billingapi.PublicSubnetRecord])
+
+var GenerateServerRecordSdk = OneOfGenerator(func(sdk billingapi.ServerRecord) billingapi.RatedUsageGet200ResponseInner {
+	sdk.SetProductCategory(RatedUsageServer)
+	return billingapi.ServerRecordAsRatedUsageGet200ResponseInner(&sdk)
+}, UpdateLocation[*billingapi.ServerRecord])
 
 // Product One Of
 func GenerateProductSdkList() []billingapi.ProductsGet200ResponseInner {
 	return []billingapi.ProductsGet200ResponseInner{
-		{
-			Product: testutil.AsPointer(GenerateBandwidthProduct()),
-		},
-		{
-			Product: testutil.AsPointer(GenerateOperatingSystemProduct()),
-		},
-		{
-			ServerProduct: testutil.AsPointer(GenerateServerProduct()),
-		},
+		GenerateBandwidthProduct(),
+		GenerateOperatingSystemProduct(),
+		GenerateServerProduct(),
 	}
 }
 
-func updatePricingPlan(sdk billingapi.PricingPlan) billingapi.PricingPlan {
-	sdk.PriceUnit = billingapi.GB
-	return sdk
-}
-
-var GenerateBandwidthProduct = Generator(func(sdk *billingapi.Product) {
-	sdk.Plans = iterutils.Map(sdk.Plans, updatePricingPlan)
+var GenerateBandwidthProduct = OneOfGenerator(func(sdk billingapi.Product) billingapi.ProductsGet200ResponseInner {
 	sdk.ProductCategory = ProductBandwidth
-})
-var GenerateOperatingSystemProduct = Generator(func(sdk *billingapi.Product) {
-	sdk.Plans = iterutils.Map(sdk.Plans, updatePricingPlan)
+	return billingapi.ProductAsProductsGet200ResponseInner(&sdk)
+}, UpdatePricingPlans[*billingapi.Product])
+
+var GenerateOperatingSystemProduct = OneOfGenerator(func(sdk billingapi.Product) billingapi.ProductsGet200ResponseInner {
 	sdk.ProductCategory = ProductOperatingSystem
-})
-var GenerateServerProduct = Generator(func(sdk *billingapi.ServerProduct) {
-	sdk.Plans = iterutils.Map(sdk.Plans, updatePricingPlan)
+	return billingapi.ProductAsProductsGet200ResponseInner(&sdk)
+}, UpdatePricingPlans[*billingapi.Product])
+
+var GenerateServerProduct = OneOfGenerator(func(sdk billingapi.ServerProduct) billingapi.ProductsGet200ResponseInner {
 	sdk.ProductCategory = ProductServer
-})
+	return billingapi.ServerProductAsProductsGet200ResponseInner(&sdk)
+}, UpdatePricingPlans[*billingapi.ServerProduct])
 
 var GenerateProductAvailabilityGetQueryParams = Generator(func(params *billing.ProductAvailabilityGetQueryParams) {
 	params.ProductCategory = []string{"SERVER"}

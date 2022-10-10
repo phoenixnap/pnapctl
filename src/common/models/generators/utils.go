@@ -19,3 +19,10 @@ func Generator[T any](updates ...func(*T)) func() T {
 		return initial
 	}
 }
+
+func OneOfGenerator[T any, Inner any](wrapper func(T) Inner, updates ...func(*T)) func() Inner {
+	return func() Inner {
+		raw := Generator(updates...)
+		return wrapper(raw())
+	}
+}

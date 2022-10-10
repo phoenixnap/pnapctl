@@ -4,13 +4,14 @@ import (
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
+	"github.com/phoenixnap/go-sdk-bmc/auditapi"
 	auditsdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 func TestToEventTable(test_framework *testing.T) {
-	event := generators.GenerateEventSdk()
+	event := generators.Generate[auditapi.Event]()
 	table := ToEventTable(event)
 
 	assertEventsEqual(test_framework, event, table)

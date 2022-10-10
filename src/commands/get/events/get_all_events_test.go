@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -16,7 +17,7 @@ import (
 )
 
 func TestGetAllEventsSuccess(test_framework *testing.T) {
-	eventList := testutil.GenN(2, generators.GenerateEventSdk)
+	eventList := testutil.GenN(2, generators.Generate[auditapi.Event])
 	queryParams := generators.GenerateQueryParamsSdk()
 	setQueryParams(queryParams)
 
@@ -57,7 +58,7 @@ func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
-	eventList := testutil.GenN(2, generators.GenerateEventSdk)
+	eventList := testutil.GenN(2, generators.Generate[auditapi.Event])
 	queryParams := generators.GenerateQueryParamsSdk()
 	setQueryParams(queryParams)
 

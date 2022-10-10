@@ -8,38 +8,28 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
-	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 // Full version
 func TestProductActualFromSdk_BandwidthProduct(test_framework *testing.T) {
 	bandwidthProduct := generators.GenerateBandwidthProduct()
-	ProductsResponse := billingapi.ProductsGet200ResponseInner{
-		Product: testutil.AsPointer(bandwidthProduct),
-	}
 
-	actual := ProductTableFromSdk(ProductsResponse)
-	assertEqualAsProduct(test_framework, bandwidthProduct, *actual)
+	actual := ProductTableFromSdk(bandwidthProduct)
+	assertEqualAsProduct(test_framework, *bandwidthProduct.Product, *actual)
 }
 
 func TestProductActualFromSdk_OperatingSystemProduct(test_framework *testing.T) {
 	operatingSystemProduct := generators.GenerateOperatingSystemProduct()
-	ProductsResponse := billingapi.ProductsGet200ResponseInner{
-		Product: testutil.AsPointer(operatingSystemProduct),
-	}
 
-	actual := ProductTableFromSdk(ProductsResponse)
-	assertEqualAsProduct(test_framework, operatingSystemProduct, *actual)
+	actual := ProductTableFromSdk(operatingSystemProduct)
+	assertEqualAsProduct(test_framework, *operatingSystemProduct.Product, *actual)
 }
 
 func TestProductActualFromSdk_ServerProduct(test_framework *testing.T) {
 	serverProduct := generators.GenerateServerProduct()
-	ProductsResponse := billingapi.ProductsGet200ResponseInner{
-		ServerProduct: testutil.AsPointer(serverProduct),
-	}
 
-	actual := ProductTableFromSdk(ProductsResponse)
-	assertEqualAsServerProduct(test_framework, serverProduct, *actual)
+	actual := ProductTableFromSdk(serverProduct)
+	assertEqualAsServerProduct(test_framework, *serverProduct.ServerProduct, *actual)
 }
 
 // Assertions

@@ -7,41 +7,32 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 // Full version
 func TestRatedUsageRecordFromBandwidthSdk(test_framework *testing.T) {
-	record := billingapi.RatedUsageGet200ResponseInner{
-		BandwidthRecord: testutil.AsPointer(generators.GenerateBandwidthRecordSdk()),
-	}
+	record := generators.GenerateBandwidthRecordSdk()
 	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullBandwidthRecordsEqual(test_framework, *record.BandwidthRecord, table)
 }
 
 func TestRatedUsageRecordFromOperatingSystemSdk(test_framework *testing.T) {
-	record := billingapi.RatedUsageGet200ResponseInner{
-		OperatingSystemRecord: testutil.AsPointer(generators.GenerateOperatingSystemRecordSdk()),
-	}
+	record := generators.GenerateOperatingSystemRecordSdk()
 	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullOperatingSystemRecordsEqual(test_framework, *record.OperatingSystemRecord, table)
 }
 
 func TestRatedUsageRecordFromPublicSubnetSdk(test_framework *testing.T) {
-	record := billingapi.RatedUsageGet200ResponseInner{
-		PublicSubnetRecord: testutil.AsPointer(generators.GeneratePublicSubnetRecordSdk()),
-	}
+	record := generators.GeneratePublicSubnetRecordSdk()
 	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullPublicSubnetRecordsEqual(test_framework, *record.PublicSubnetRecord, table)
 }
 
 func TestRatedUsageRecordFromServerSdk(test_framework *testing.T) {
-	record := billingapi.RatedUsageGet200ResponseInner{
-		ServerRecord: testutil.AsPointer(generators.GenerateServerRecordSdk()),
-	}
+	record := generators.GenerateServerRecordSdk()
 	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullServerRecordsEqual(test_framework, *record.ServerRecord, table)

@@ -3,12 +3,8 @@ package generators
 import (
 	"time"
 
-	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"phoenixnap.com/pnapctl/common/models/queryparams/audit"
 )
-
-var GenerateEventSdk = Generator[auditapisdk.Event]()
-var GenerateUserInfoSdk = Generator[auditapisdk.UserInfo]()
 
 var GenerateQueryParamsSdk = Generator(func(event *audit.EventsGetQueryParams) {
 	event.Order = "ASC"
