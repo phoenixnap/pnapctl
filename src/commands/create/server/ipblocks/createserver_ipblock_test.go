@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -15,7 +16,7 @@ import (
 )
 
 func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
-	serverIpBlockSdk := generators.GenerateServerIpBlockSdk()
+	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverIpBlockSdk)
@@ -43,7 +44,7 @@ func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
 }
 
 func TestCreateServerIpBlockSuccessJSON(test_framework *testing.T) {
-	serverIpBlockSdk := generators.GenerateServerIpBlockSdk()
+	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)
@@ -141,7 +142,7 @@ func TestCreateServerIpBlockFileReadingFailure(test_framework *testing.T) {
 
 func TestCreateServerIpBlockBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverIpBlockSdk := generators.GenerateServerIpBlockSdk()
+	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)
@@ -172,7 +173,7 @@ func TestCreateServerIpBlockBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
 	// Setup
-	serverIpBlockSdk := generators.GenerateServerIpBlockSdk()
+	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)
@@ -204,7 +205,7 @@ func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
 
 func TestCreateServerIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverIpBlockSdk := generators.GenerateServerIpBlockSdk()
+	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)

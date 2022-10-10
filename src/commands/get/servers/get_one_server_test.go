@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -14,7 +15,7 @@ import (
 
 func TestGetServerShortSuccess(test_framework *testing.T) {
 
-	server := generators.GenerateServerSdk()
+	server := generators.Generate[bmcapisdk.Server]()
 	var shortServer = tables.ToShortServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -33,7 +34,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetServerLongSuccess(test_framework *testing.T) {
-	server := generators.GenerateServerSdk()
+	server := generators.Generate[bmcapisdk.Server]()
 	var longServer = tables.ToLongServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -89,7 +90,7 @@ func TestGetServerKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
-	server := generators.GenerateServerSdk()
+	server := generators.Generate[bmcapisdk.Server]()
 	shortServer := tables.ToShortServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).

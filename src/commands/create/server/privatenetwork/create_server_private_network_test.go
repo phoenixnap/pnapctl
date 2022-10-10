@@ -7,6 +7,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -19,7 +20,7 @@ import (
 
 func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	serverPrivateNetwork := generators.GenerateServerPrivateNetworkSdk()
+	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
 
 	serverPrivateNetworkModel := bmcapi.ServerPrivateNetwork{
 		Id:                serverPrivateNetwork.Id,
@@ -55,7 +56,7 @@ func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestCreateServerPrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	serverPrivateNetwork := generators.GenerateServerPrivateNetworkSdk()
+	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
@@ -154,7 +155,7 @@ func TestCreateServerPrivateNetworkFileReadingFailure(test_framework *testing.T)
 
 func TestCreateServerPrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverPrivateNetwork := generators.GenerateServerPrivateNetworkSdk()
+	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
@@ -185,7 +186,7 @@ func TestCreateServerPrivateNetworkBackendErrorFailure(test_framework *testing.T
 
 func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
 	// Setup
-	serverPrivateNetwork := generators.GenerateServerPrivateNetworkSdk()
+	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
@@ -217,7 +218,7 @@ func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
 
 func TestCreateServerPrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverPrivateNetwork := generators.GenerateServerPrivateNetworkSdk()
+	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)

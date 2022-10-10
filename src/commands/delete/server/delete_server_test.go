@@ -3,6 +3,7 @@ package server
 import (
 	"testing"
 
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -14,7 +15,7 @@ func TestDeleteServerSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDelete(RESOURCEID).
-		Return(testutil.AsPointer(generators.GenerateBmcApiDeleteResultSdk()), WithResponse(200, nil), nil)
+		Return(testutil.AsPointer(generators.Generate[bmcapisdk.DeleteResult]()), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})

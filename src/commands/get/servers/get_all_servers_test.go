@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestGetAllServersShortSuccess(test_framework *testing.T) {
-	serverlist := testutil.GenN(5, generators.GenerateServerSdk)
+	serverlist := testutil.GenN(5, generators.Generate[bmcapisdk.Server])
 
 	var shortServers []interface{}
 
@@ -37,7 +38,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllServersLongSuccess(test_framework *testing.T) {
-	serverlist := testutil.GenN(5, generators.GenerateServerSdk)
+	serverlist := testutil.GenN(5, generators.Generate[bmcapisdk.Server])
 
 	var longServers []interface{}
 
@@ -64,7 +65,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 }
 
 func TestFilteredServersLongSuccess(test_framework *testing.T) {
-	serverlist := testutil.GenN(5, generators.GenerateServerSdk)
+	serverlist := testutil.GenN(5, generators.Generate[bmcapisdk.Server])
 
 	var longServers []interface{}
 
@@ -119,7 +120,7 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
-	serverlist := testutil.GenN(5, generators.GenerateServerSdk)
+	serverlist := testutil.GenN(5, generators.Generate[bmcapisdk.Server])
 
 	var shortServers []interface{}
 
