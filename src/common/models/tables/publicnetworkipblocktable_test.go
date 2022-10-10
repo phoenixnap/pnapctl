@@ -9,7 +9,7 @@ import (
 )
 
 func TestPublicNetworkIpBlockTableFromSdkSuccess(test_framework *testing.T) {
-	sdk := generators.GeneratePublicNetworkIpBlockSdk()
+	sdk := generators.Generate[networkapi.PublicNetworkIpBlock]()
 	tbl := PublicNetworkIpBlockTableFromSdk(sdk)
 
 	assertPublicNetworkIpBlocksEqual(test_framework, sdk, tbl)

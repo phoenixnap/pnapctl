@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -16,7 +17,7 @@ import (
 
 func TestCreatePublicNetworkIpBlockSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	ipBlockCreate := generators.GeneratePublicNetworkIpBlockSdk()
+	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)
@@ -24,7 +25,7 @@ func TestCreatePublicNetworkIpBlockSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdIpBlock := generators.GeneratePublicNetworkIpBlockSdk()
+	createdIpBlock := generators.Generate[networkapi.PublicNetworkIpBlock]()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -48,7 +49,7 @@ func TestCreatePublicNetworkIpBlockSuccessYAML(test_framework *testing.T) {
 
 func TestCreatePublicNetworkIpBlockSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	ipBlockCreate := generators.GeneratePublicNetworkIpBlockSdk()
+	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockCreate)
@@ -56,7 +57,7 @@ func TestCreatePublicNetworkIpBlockSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdIpBlock := generators.GeneratePublicNetworkIpBlockSdk()
+	createdIpBlock := generators.Generate[networkapi.PublicNetworkIpBlock]()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -142,7 +143,7 @@ func TestCreatePublicNetworkIpBlockFileReadingFailure(test_framework *testing.T)
 
 func TestCreatePublicNetworkIpBlockBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	ipBlockCreate := generators.GeneratePublicNetworkIpBlockSdk()
+	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)
@@ -174,7 +175,7 @@ func TestCreatePublicNetworkIpBlockBackendErrorFailure(test_framework *testing.T
 
 func TestCreatePublicNetworkIpBlockClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	ipBlockCreate := generators.GeneratePublicNetworkIpBlockSdk()
+	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)
@@ -206,7 +207,7 @@ func TestCreatePublicNetworkIpBlockClientFailure(test_framework *testing.T) {
 
 func TestCreatePublicNetworkIpBlockKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	ipBlockCreate := generators.GeneratePublicNetworkIpBlockSdk()
+	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)

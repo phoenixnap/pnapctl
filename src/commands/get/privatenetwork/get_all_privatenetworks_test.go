@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestGetAllPrivateNetworksShortSuccess(test_framework *testing.T) {
-	privateNetworks := generators.GeneratePrivateNetworkListSdk(5)
+	privateNetworks := testutil.GenN(5, generators.Generate[networkapi.PrivateNetwork])
 
 	var privateNetworkList []interface{}
 
@@ -64,7 +65,7 @@ func TestGetAllPrivateNetworksKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllPrivateNetworksPrinterFailure(test_framework *testing.T) {
-	privateNetworks := generators.GeneratePrivateNetworkListSdk(5)
+	privateNetworks := testutil.GenN(5, generators.Generate[networkapi.PrivateNetwork])
 
 	var privateNetworkList []interface{}
 

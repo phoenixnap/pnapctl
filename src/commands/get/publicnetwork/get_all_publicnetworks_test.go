@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -15,7 +16,7 @@ import (
 )
 
 func TestGetAllPublicNetworksSuccess(test_framework *testing.T) {
-	publicNetworkList := testutil.GenN(2, generators.GeneratePublicNetworkSdk)
+	publicNetworkList := testutil.GenN(2, generators.Generate[networkapi.PublicNetwork])
 	queryParams := generators.GeneratePublicNetworksGetQueryParams()
 	setQueryParams(queryParams)
 
@@ -82,7 +83,7 @@ func TestGetAllPublicNetworksKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllPublicNetworksPrinterFailure(test_framework *testing.T) {
-	publicNetworkList := testutil.GenN(2, generators.GeneratePublicNetworkSdk)
+	publicNetworkList := testutil.GenN(2, generators.Generate[networkapi.PublicNetwork])
 	queryParams := generators.GeneratePublicNetworksGetQueryParams()
 	setQueryParams(queryParams)
 

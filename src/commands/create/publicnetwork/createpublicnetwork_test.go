@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -16,7 +17,7 @@ import (
 
 func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkCreate := generators.GeneratePublicNetworkCreateSdk()
+	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)
@@ -24,7 +25,7 @@ func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdPublicNetwork := generators.GeneratePublicNetworkSdk()
+	createdPublicNetwork := generators.Generate[networkapi.PublicNetwork]()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -48,7 +49,7 @@ func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestCreatePublicNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkCreate := generators.GeneratePublicNetworkCreateSdk()
+	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(publicNetworkCreate)
@@ -56,7 +57,7 @@ func TestCreatePublicNetworkSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdPublicNetwork := generators.GeneratePublicNetworkSdk()
+	createdPublicNetwork := generators.Generate[networkapi.PublicNetwork]()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -142,7 +143,7 @@ func TestCreatePublicNetworkFileReadingFailure(test_framework *testing.T) {
 
 func TestCreatePublicNetworkBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkCreate := generators.GeneratePublicNetworkCreateSdk()
+	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)
@@ -174,7 +175,7 @@ func TestCreatePublicNetworkBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkCreate := generators.GeneratePublicNetworkCreateSdk()
+	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)
@@ -206,7 +207,7 @@ func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 
 func TestCreatePublicNetworkKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	publicNetworkCreate := generators.GeneratePublicNetworkCreateSdk()
+	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)

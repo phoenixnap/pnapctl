@@ -9,6 +9,7 @@ import (
 	"github.com/landoop/tableprinter"
 	"github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -271,7 +272,7 @@ func TestPrepareTagListForPrinting(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	privateNetwork := generators.GeneratePrivateNetworkSdk()
+	privateNetwork := generators.Generate[networkapi.PrivateNetwork]()
 	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -281,7 +282,7 @@ func TestPreparePrivateNetworkForPrintingTable(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	privateNetwork := generators.GeneratePrivateNetworkSdk()
+	privateNetwork := generators.Generate[networkapi.PrivateNetwork]()
 	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -291,7 +292,7 @@ func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
 
 func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	privateNetworks := generators.GeneratePrivateNetworkListSdk(1)
+	privateNetworks := testutil.GenN(1, generators.Generate[networkapi.PrivateNetwork])
 	prepared := PreparePrivateNetworkListForPrinting(privateNetworks)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -545,7 +546,7 @@ func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
 
 func TestPreparePublicNetworkForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	publicNetwork := generators.GeneratePublicNetworkSdk()
+	publicNetwork := generators.Generate[networkapi.PublicNetwork]()
 	prepared := PreparePublicNetworkForPrinting(publicNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -555,7 +556,7 @@ func TestPreparePublicNetworkForPrintingTable(test_framework *testing.T) {
 
 func TestPreparePublicNetworkForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	publicNetwork := generators.GeneratePublicNetworkSdk()
+	publicNetwork := generators.Generate[networkapi.PublicNetwork]()
 	prepared := PreparePublicNetworkForPrinting(publicNetwork)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -565,7 +566,7 @@ func TestPreparePublicNetworkForPrintingNonTable(test_framework *testing.T) {
 
 func TestPreparePublicNetworkIpBlockForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	ipBlock := generators.GeneratePublicNetworkIpBlockSdk()
+	ipBlock := generators.Generate[networkapi.PublicNetworkIpBlock]()
 	prepared := PreparePublicNetworkIpBlockForPrinting(ipBlock)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -575,7 +576,7 @@ func TestPreparePublicNetworkIpBlockForPrintingTable(test_framework *testing.T) 
 
 func TestPreparePublicNetworkIpBlockForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	ipBlock := generators.GeneratePublicNetworkIpBlockSdk()
+	ipBlock := generators.Generate[networkapi.PublicNetworkIpBlock]()
 	prepared := PreparePublicNetworkIpBlockForPrinting(ipBlock)
 
 	outputType := fmt.Sprintf("%T", prepared)

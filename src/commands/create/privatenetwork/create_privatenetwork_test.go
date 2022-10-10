@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -16,7 +17,7 @@ import (
 
 func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	privateNetworkCreate := generators.GeneratePrivateNetworkCreateSdk()
+	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(privateNetworkCreate)
@@ -24,7 +25,7 @@ func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdPrivateNetwork := generators.GeneratePrivateNetworkSdk()
+	createdPrivateNetwork := generators.Generate[networkapi.PrivateNetwork]()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -48,7 +49,7 @@ func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	privateNetworkCreate := generators.GeneratePrivateNetworkCreateSdk()
+	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(privateNetworkCreate)
@@ -56,7 +57,7 @@ func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdPrivateNetwork := generators.GeneratePrivateNetworkSdk()
+	createdPrivateNetwork := generators.Generate[networkapi.PrivateNetwork]()
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -120,7 +121,7 @@ func TestCreatePrivateNetworkUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	privateNetworkCreate := generators.GeneratePrivateNetworkCreateSdk()
+	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(privateNetworkCreate)
@@ -150,7 +151,7 @@ func TestCreatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	privateNetworkCreate := generators.GeneratePrivateNetworkCreateSdk()
+	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(privateNetworkCreate)
@@ -180,7 +181,7 @@ func TestCreatePrivateNetworkClientFailure(test_framework *testing.T) {
 
 func TestCreatePrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	privateNetworkCreate := generators.GeneratePrivateNetworkCreateSdk()
+	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(privateNetworkCreate)
