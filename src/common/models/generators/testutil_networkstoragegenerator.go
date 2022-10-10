@@ -1,4 +1,4 @@
-package networkstoragemodels
+package generators
 
 import (
 	"math/rand"
@@ -22,6 +22,22 @@ func GenerateStorageNetworkSdk() networkstorageapi.StorageNetwork {
 	}
 }
 
+func GenerateStorageNetworkCreateSdk() networkstorageapi.StorageNetworkCreate {
+	return networkstorageapi.StorageNetworkCreate{
+		Name:        testutil.RandSeq(10),
+		Description: testutil.RandSeqPointer(10),
+		Location:    testutil.RandSeq(10),
+		Volumes:     testutil.GenN(2, GenerateVolumeCreateSdk),
+	}
+}
+
+func GenerateStorageNetworkUpdateSdk() networkstorageapi.StorageNetworkUpdate {
+	return networkstorageapi.StorageNetworkUpdate{
+		Name:        testutil.RandSeqPointer(10),
+		Description: testutil.RandSeqPointer(10),
+	}
+}
+
 func GenerateVolumeSdk() networkstorageapi.Volume {
 	return networkstorageapi.Volume{
 		Id:           testutil.RandSeqPointer(10),
@@ -34,6 +50,15 @@ func GenerateVolumeSdk() networkstorageapi.Volume {
 		Status:       (*networkstorageapi.Status)(testutil.RandSeqPointer(10)),
 		CreatedOn:    testutil.AsPointer(time.Now()),
 		Permissions:  testutil.AsPointer(GeneratePermissionsSdk()),
+	}
+}
+
+func GenerateVolumeCreateSdk() networkstorageapi.VolumeCreate {
+	return networkstorageapi.VolumeCreate{
+		Name:         testutil.RandSeq(10),
+		Description:  testutil.RandSeqPointer(10),
+		PathSuffix:   testutil.RandSeqPointer(10),
+		CapacityInGb: rand.Int31(),
 	}
 }
 
@@ -50,30 +75,5 @@ func GenerateNfsPermissionsSdk() networkstorageapi.NfsPermissions {
 		RootSquash: testutil.RandListStringPointer(10),
 		NoSquash:   testutil.RandListStringPointer(10),
 		AllSquash:  testutil.RandListStringPointer(10),
-	}
-}
-
-func GenerateStorageNetworkCreateCli() StorageNetworkCreate {
-	return StorageNetworkCreate{
-		Name:        testutil.RandSeq(10),
-		Description: testutil.RandSeqPointer(10),
-		Location:    testutil.RandSeq(10),
-		Volumes:     testutil.GenN(2, GenerateVolumeCreateCli),
-	}
-}
-
-func GenerateVolumeCreateCli() VolumeCreate {
-	return VolumeCreate{
-		Name:         testutil.RandSeq(10),
-		Description:  testutil.RandSeqPointer(10),
-		PathSuffix:   testutil.RandSeqPointer(10),
-		CapacityInGb: rand.Int31(),
-	}
-}
-
-func GenerateStorageNetworkUpdateCli() StorageNetworkUpdate {
-	return StorageNetworkUpdate{
-		Name:        testutil.RandSeqPointer(10),
-		Description: testutil.RandSeqPointer(10),
 	}
 }

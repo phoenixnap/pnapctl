@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/networkstoragemodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -17,16 +17,15 @@ import (
 
 func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	networkStoragePatchCli := networkstoragemodels.GenerateStorageNetworkUpdateCli()
-	networkStoragePatchSdk := networkStoragePatchCli.ToSdk()
+	networkStoragePatch := generators.GenerateStorageNetworkUpdateSdk()
 
 	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStoragePatchCli)
+	marshalled, _ := yaml.Marshal(networkStoragePatch)
 
 	Filename = FILENAME
 
 	// What the networkStorageSdk should return.
-	networkStorageSdk := networkstoragemodels.GenerateStorageNetworkSdk()
+	networkStorageSdk := generators.GenerateStorageNetworkSdk()
 	networkStorageTable := tables.StorageNetworkTableFromSdk(networkStorageSdk)
 
 	// Mocking
@@ -35,7 +34,7 @@ func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
 		Return(marshalled, nil)
 
 	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatchSdk)).
+		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
 		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -51,16 +50,15 @@ func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestPatchStorageNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	networkStoragePatchCli := networkstoragemodels.GenerateStorageNetworkUpdateCli()
-	networkStoragePatchSdk := networkStoragePatchCli.ToSdk()
+	networkStoragePatch := generators.GenerateStorageNetworkUpdateSdk()
 
 	// Assumed contents of the file.
-	marshalled, _ := json.Marshal(networkStoragePatchCli)
+	marshalled, _ := json.Marshal(networkStoragePatch)
 
 	Filename = FILENAME
 
 	// What the networkStorageSdk should return.
-	networkStorageSdk := networkstoragemodels.GenerateStorageNetworkSdk()
+	networkStorageSdk := generators.GenerateStorageNetworkSdk()
 	networkStorageTable := tables.StorageNetworkTableFromSdk(networkStorageSdk)
 
 	// Mocking
@@ -69,7 +67,7 @@ func TestPatchStorageNetworkSuccessJSON(test_framework *testing.T) {
 		Return(marshalled, nil)
 
 	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatchSdk)).
+		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
 		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -145,11 +143,10 @@ func TestPatchStorageNetworkFileReadingFailure(test_framework *testing.T) {
 
 func TestPatchStorageNetworkBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	networkStoragePatchCli := networkstoragemodels.GenerateStorageNetworkUpdateCli()
-	networkStoragePatchSdk := networkStoragePatchCli.ToSdk()
+	networkStoragePatch := generators.GenerateStorageNetworkUpdateSdk()
 
 	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStoragePatchCli)
+	marshalled, _ := yaml.Marshal(networkStoragePatch)
 
 	Filename = FILENAME
 
@@ -159,7 +156,7 @@ func TestPatchStorageNetworkBackendErrorFailure(test_framework *testing.T) {
 		Return(marshalled, nil)
 
 	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatchSdk)).
+		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	// Run command
@@ -174,11 +171,10 @@ func TestPatchStorageNetworkBackendErrorFailure(test_framework *testing.T) {
 
 func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	networkStoragePatchCli := networkstoragemodels.GenerateStorageNetworkUpdateCli()
-	networkStoragePatchSdk := networkStoragePatchCli.ToSdk()
+	networkStoragePatch := generators.GenerateStorageNetworkUpdateSdk()
 
 	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStoragePatchCli)
+	marshalled, _ := yaml.Marshal(networkStoragePatch)
 
 	Filename = FILENAME
 
@@ -188,7 +184,7 @@ func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
 		Return(marshalled, nil)
 
 	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatchSdk)).
+		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
 		Return(nil, nil, testutil.TestError)
 
 	// Run command
@@ -203,11 +199,10 @@ func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
 
 func TestPatchStorageNetworkKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	networkStoragePatchCli := networkstoragemodels.GenerateStorageNetworkUpdateCli()
-	networkStoragePatchSdk := networkStoragePatchCli.ToSdk()
+	networkStoragePatch := generators.GenerateStorageNetworkUpdateSdk()
 
 	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStoragePatchCli)
+	marshalled, _ := yaml.Marshal(networkStoragePatch)
 
 	Filename = FILENAME
 
@@ -217,7 +212,7 @@ func TestPatchStorageNetworkKeycloakFailure(test_framework *testing.T) {
 		Return(marshalled, nil)
 
 	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatchSdk)).
+		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
 		Return(nil, nil, testutil.TestKeycloakError)
 
 	// Run command

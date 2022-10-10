@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/networkstoragemodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -15,7 +15,7 @@ import (
 
 func TestGetAllStorageNetworksSuccess(test_framework *testing.T) {
 	// What the server should return.
-	networkStorageSdk := testutil.GenN(2, networkstoragemodels.GenerateStorageNetworkSdk)
+	networkStorageSdk := testutil.GenN(2, generators.GenerateStorageNetworkSdk)
 	networkStorageTables := iterutils.MapInterface(networkStorageSdk, tables.StorageNetworkTableFromSdk)
 
 	// Mocking
@@ -65,7 +65,7 @@ func TestGetAllStorageNetworksKeycloakFailure(test_framework *testing.T) {
 
 func TestGetAllStorageNetworksPrinterFailure(test_framework *testing.T) {
 	// What the server should return.
-	networkStorageSdk := testutil.GenN(2, networkstoragemodels.GenerateStorageNetworkSdk)
+	networkStorageSdk := testutil.GenN(2, generators.GenerateStorageNetworkSdk)
 	networkStorageTables := iterutils.MapInterface(networkStorageSdk, tables.StorageNetworkTableFromSdk)
 
 	// Mocking
