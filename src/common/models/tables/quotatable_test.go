@@ -4,15 +4,14 @@ import (
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
-	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func TestToQuotaTable(test_framework *testing.T) {
-	quota := generators.Generate[bmcapi.Quota]()
+	quota := generators.Generate[bmcapisdk.Quota]()
 	table := ToQuotaTable(quota)
 
 	assertQuotasEqual(test_framework, quota, table)

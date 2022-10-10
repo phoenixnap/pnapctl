@@ -3,7 +3,7 @@ package privatenetwork
 import (
 	netHttp "net/http"
 
-	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/ctlerrors"

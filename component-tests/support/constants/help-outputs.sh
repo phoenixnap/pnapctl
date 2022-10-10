@@ -54,6 +54,7 @@ Available Commands:
   reservation                   Retrieve one or all reservations
   server                        Retrieve one or all servers.
   ssh-key                       Retrieve one or all ssh-keys for your account.
+  storage-network               Retrieve one or all storage networks.
   tag                           Retrieve one or all tags.
 
 Flags:
@@ -82,6 +83,7 @@ Available Commands:
   server-private-network Create a new private network for server.
   server-public-network  Create a new public network for server.
   ssh-key                Create a new ssh-key.
+  storage-network        Create a new storage network.
   tag                    Create a new tag.
 
 Flags:
@@ -108,6 +110,7 @@ Available Commands:
   server-private-network Remove a server from a private network.
   server-public-network  Remove a server from a public network.
   ssh-key                Deletes a specific SSH Key.
+  storage-network        Deletes a specific storage network.
   tag                    Deletes a specific tag.
 
 Flags:
@@ -144,10 +147,11 @@ Usage:
   pnapctl patch [command]
 
 Available Commands:
-  ip-block       Updates a specific ip-block.
-  public-network Patch a public network.
-  server         Patch a server.
-  tag            Patch/Update a tag.
+  ip-block        Updates a specific ip-block.
+  public-network  Patch a public network.
+  server          Patch a server.
+  storage-network Patch a storage network.
+  tag             Patch/Update a tag.
 
 Flags:
   -h, --help   help for patch

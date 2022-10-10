@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/models/queryparams/audit"

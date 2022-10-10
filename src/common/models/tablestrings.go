@@ -2,14 +2,16 @@ package models
 
 import (
 	"fmt"
+	"strings"
 
-	"github.com/phoenixnap/go-sdk-bmc/auditapi"
+	"github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"github.com/phoenixnap/go-sdk-bmc/ipapi"
-	"github.com/phoenixnap/go-sdk-bmc/networkapi"
-	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
-	"github.com/phoenixnap/go-sdk-bmc/tagapi"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 )
 
 // utils
@@ -128,4 +130,27 @@ var ResourceAssignmentToTableString = toTableString(func(sdk tagapi.ResourceAssi
 		value = *sdk.Value
 	}
 	return fmt.Sprintf("%s: %s", sdk.ResourceName, value)
+})
+
+// networkstorageapi
+var VolumeToTableString = toTableString(func(sdk networkstorageapi.Volume) string {
+	return fmt.Sprintf("(%s) %s [%dGb]", sdk.GetId(), sdk.GetName(), sdk.GetCapacityInGb())
+})
+
+var PermissionsToTableString = toTableString(func(sdk networkstorageapi.Permissions) string {
+	var permissions string
+	if sdk.Nfs != nil {
+		permissions = permissions + fmt.Sprintf("NFS: %s", NfsPermissionsToTableString(sdk.Nfs))
+	}
+	return permissions
+})
+
+var NfsPermissionsToTableString = toTableString(func(sdk networkstorageapi.NfsPermissions) string {
+	return strings.Join([]string{
+		fmt.Sprintf("ReadWrite: %v", sdk.ReadWrite),
+		fmt.Sprintf("ReadOnly: %v", sdk.ReadOnly),
+		fmt.Sprintf("RootSquash: %v", sdk.RootSquash),
+		fmt.Sprintf("NoSquash: %v", sdk.NoSquash),
+		fmt.Sprintf("AllSquash: %v", sdk.AllSquash),
+	}, "\n")
 })

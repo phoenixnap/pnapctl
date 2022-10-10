@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi"
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 )
 
 type EventsGetQueryParams struct {

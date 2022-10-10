@@ -1,7 +1,7 @@
 package tables
 
 import (
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
+	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"phoenixnap.com/pnapctl/common/models"
 )
 

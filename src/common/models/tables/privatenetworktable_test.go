@@ -4,14 +4,13 @@ import (
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
-	"github.com/phoenixnap/go-sdk-bmc/networkapi"
-	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 func TestPrivateNetworkFromSdk(test_framework *testing.T) {
-	privateNetwork := generators.Generate[networkapi.PrivateNetwork]()
+	privateNetwork := generators.Generate[networksdk.PrivateNetwork]()
 	table := PrivateNetworkFromSdk(privateNetwork)
 
 	assertPrivateNetworksEqual(test_framework, privateNetwork, table)

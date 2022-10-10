@@ -35,6 +35,14 @@ const (
 	// Server Record
 	SERVER_ID = "Server Id"
 	HOSTNAME  = "Hostname"
+
+	// Storage Record
+	NETWORK_STORAGE_ID   = "Network Storage ID"
+	NETWORK_STORAGE_NAME = "Network Storage Name"
+	VOLUME_ID            = "Volume ID"
+	VOLUME_NAME          = "Volume Name"
+	CAPACITY_IN_GB       = "Capacity (GB)"
+	CREATED_ON           = "Created On"
 )
 
 // Full Table
@@ -123,6 +131,16 @@ func (table *RatedUsageRecordTable) attachUnique(sdk billingapisdk.RatedUsageGet
 		table.Metadata = map[string]interface{}{
 			SERVER_ID: sdk.ServerRecord.Metadata.Id,
 			HOSTNAME:  sdk.ServerRecord.Metadata.Hostname,
+		}
+
+	case generators.RatedUsageStorage:
+		table.Metadata = map[string]interface{}{
+			NETWORK_STORAGE_ID:   sdk.StorageRecord.Metadata.NetworkStorageId,
+			NETWORK_STORAGE_NAME: sdk.StorageRecord.Metadata.NetworkStorageName,
+			VOLUME_ID:            sdk.StorageRecord.Metadata.VolumeId,
+			VOLUME_NAME:          sdk.StorageRecord.Metadata.VolumeName,
+			CAPACITY_IN_GB:       sdk.StorageRecord.Metadata.CapacityInGb,
+			CREATED_ON:           sdk.StorageRecord.Metadata.CreatedOn,
 		}
 	}
 }

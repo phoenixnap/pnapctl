@@ -1,7 +1,7 @@
 package tag
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/tagapi"
+	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/tags"
 	"phoenixnap.com/pnapctl/common/models"

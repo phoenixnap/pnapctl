@@ -5,6 +5,13 @@ import (
 	"time"
 )
 
+func Deref[T any](item *T) string {
+	if item == nil {
+		return ""
+	}
+	return fmt.Sprintf("%v", *item)
+}
+
 type actuallyString interface {
 	~string
 }

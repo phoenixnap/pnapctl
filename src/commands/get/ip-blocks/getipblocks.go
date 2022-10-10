@@ -3,7 +3,7 @@ package ip_blocks
 import (
 	netHttp "net/http"
 
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi"
+	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"phoenixnap.com/pnapctl/common/client/ip"
 
 	"github.com/spf13/cobra"

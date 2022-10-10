@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/models/queryparams/network"

@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	ranchersolutionapi "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+	ranchersolutionapi "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 )
 
 // MockRancherSdkClient is a mock of RancherSdkClient interface.

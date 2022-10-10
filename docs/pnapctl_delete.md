@@ -34,5 +34,6 @@ pnapctl delete [flags]
 * [pnapctl delete server-private-network](pnapctl_delete_server-private-network.md)	 - Remove a server from a private network.
 * [pnapctl delete server-public-network](pnapctl_delete_server-public-network.md)	 - Remove a server from a public network.
 * [pnapctl delete ssh-key](pnapctl_delete_ssh-key.md)	 - Deletes a specific SSH Key.
+* [pnapctl delete storage-network](pnapctl_delete_storage-network.md)	 - Deletes a specific storage network.
 * [pnapctl delete tag](pnapctl_delete_tag.md)	 - Deletes a specific tag.
 

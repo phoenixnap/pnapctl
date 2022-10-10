@@ -26,13 +26,14 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
-	github.com/phoenixnap/go-sdk-bmc/auditapi v1.0.4 // indirect
-	github.com/phoenixnap/go-sdk-bmc/billingapi v1.0.0 // indirect
-	github.com/phoenixnap/go-sdk-bmc/bmcapi v1.2.2 // indirect
-	github.com/phoenixnap/go-sdk-bmc/ipapi v1.1.2 // indirect
-	github.com/phoenixnap/go-sdk-bmc/networkapi v1.1.3 // indirect
-	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi v1.1.3 // indirect
-	github.com/phoenixnap/go-sdk-bmc/tagapi v1.1.3 // indirect
+	github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/billingapi v1.1.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.0.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.0.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.0.2 // indirect
+	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.3.4 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
