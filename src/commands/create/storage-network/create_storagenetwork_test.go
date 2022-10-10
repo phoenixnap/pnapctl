@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -17,7 +18,7 @@ import (
 
 func TestCreateStorageNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	networkStorageCreate := generators.GenerateStorageNetworkCreateSdk()
+	networkStorageCreate := generators.Generate[networkstorageapi.StorageNetworkCreate]()
 
 	// Assumed contents of the file.
 	marshalled, _ := yaml.Marshal(networkStorageCreate)
@@ -25,7 +26,7 @@ func TestCreateStorageNetworkSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the networkStorageSdk should return.
-	networkStorageSdk := generators.GenerateStorageNetworkSdk()
+	networkStorageSdk := generators.Generate[networkstorageapi.StorageNetwork]()
 	networkStorageTable := tables.StorageNetworkTableFromSdk(networkStorageSdk)
 
 	// Mocking
@@ -50,7 +51,7 @@ func TestCreateStorageNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestCreateStorageNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	networkStorageCreate := generators.GenerateStorageNetworkCreateSdk()
+	networkStorageCreate := generators.Generate[networkstorageapi.StorageNetworkCreate]()
 
 	// Assumed contents of the file.
 	marshalled, _ := json.Marshal(networkStorageCreate)
@@ -58,7 +59,7 @@ func TestCreateStorageNetworkSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the networkStorageSdk should return.
-	networkStorageSdk := generators.GenerateStorageNetworkSdk()
+	networkStorageSdk := generators.Generate[networkstorageapi.StorageNetwork]()
 	networkStorageTable := tables.StorageNetworkTableFromSdk(networkStorageSdk)
 
 	// Mocking
@@ -143,7 +144,7 @@ func TestCreateStorageNetworkFileReadingFailure(test_framework *testing.T) {
 
 func TestCreateStorageNetworkBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	networkStorageCreate := generators.GenerateStorageNetworkCreateSdk()
+	networkStorageCreate := generators.Generate[networkstorageapi.StorageNetworkCreate]()
 
 	// Assumed contents of the file.
 	marshalled, _ := yaml.Marshal(networkStorageCreate)
@@ -171,7 +172,7 @@ func TestCreateStorageNetworkBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateStorageNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	networkStorageCreate := generators.GenerateStorageNetworkCreateSdk()
+	networkStorageCreate := generators.Generate[networkstorageapi.StorageNetworkCreate]()
 
 	// Assumed contents of the file.
 	marshalled, _ := yaml.Marshal(networkStorageCreate)
@@ -199,7 +200,7 @@ func TestCreateStorageNetworkClientFailure(test_framework *testing.T) {
 
 func TestCreateStorageNetworkKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	networkStorageCreate := generators.GenerateStorageNetworkCreateSdk()
+	networkStorageCreate := generators.Generate[networkstorageapi.StorageNetworkCreate]()
 
 	// Assumed contents of the file.
 	marshalled, _ := yaml.Marshal(networkStorageCreate)

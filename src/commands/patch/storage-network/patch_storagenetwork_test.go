@@ -6,18 +6,19 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"sigs.k8s.io/yaml"
 )
 
 func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	networkStoragePatch := generators.GenerateStorageNetworkUpdateSdk()
+	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
 
 	// Assumed contents of the file.
 	marshalled, _ := yaml.Marshal(networkStoragePatch)
@@ -25,7 +26,7 @@ func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the networkStorageSdk should return.
-	networkStorageSdk := generators.GenerateStorageNetworkSdk()
+	networkStorageSdk := generators.Generate[networkstorageapi.StorageNetwork]()
 	networkStorageTable := tables.StorageNetworkTableFromSdk(networkStorageSdk)
 
 	// Mocking
@@ -50,7 +51,7 @@ func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestPatchStorageNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	networkStoragePatch := generators.GenerateStorageNetworkUpdateSdk()
+	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
 
 	// Assumed contents of the file.
 	marshalled, _ := json.Marshal(networkStoragePatch)
@@ -58,7 +59,7 @@ func TestPatchStorageNetworkSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the networkStorageSdk should return.
-	networkStorageSdk := generators.GenerateStorageNetworkSdk()
+	networkStorageSdk := generators.Generate[networkstorageapi.StorageNetwork]()
 	networkStorageTable := tables.StorageNetworkTableFromSdk(networkStorageSdk)
 
 	// Mocking
@@ -143,7 +144,7 @@ func TestPatchStorageNetworkFileReadingFailure(test_framework *testing.T) {
 
 func TestPatchStorageNetworkBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	networkStoragePatch := generators.GenerateStorageNetworkUpdateSdk()
+	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
 
 	// Assumed contents of the file.
 	marshalled, _ := yaml.Marshal(networkStoragePatch)
@@ -171,7 +172,7 @@ func TestPatchStorageNetworkBackendErrorFailure(test_framework *testing.T) {
 
 func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	networkStoragePatch := generators.GenerateStorageNetworkUpdateSdk()
+	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
 
 	// Assumed contents of the file.
 	marshalled, _ := yaml.Marshal(networkStoragePatch)
@@ -199,7 +200,7 @@ func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
 
 func TestPatchStorageNetworkKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	networkStoragePatch := generators.GenerateStorageNetworkUpdateSdk()
+	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
 
 	// Assumed contents of the file.
 	marshalled, _ := yaml.Marshal(networkStoragePatch)

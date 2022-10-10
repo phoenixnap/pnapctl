@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -15,7 +16,7 @@ import (
 
 func TestGetAllVolumesSuccess(test_framework *testing.T) {
 	// What the server should return.
-	volumeSdk := testutil.GenN(2, generators.GenerateVolumeSdk)
+	volumeSdk := testutil.GenN(2, generators.Generate[networkstorageapi.Volume])
 	volumeTables := iterutils.MapInterface(volumeSdk, tables.ShortVolumeTableFromSdk)
 
 	// Mocking
@@ -65,7 +66,7 @@ func TestGetAllVolumesKeycloakFailure(test_framework *testing.T) {
 
 func TestGetAllVolumesPrinterFailure(test_framework *testing.T) {
 	// What the server should return.
-	volumeSdk := testutil.GenN(2, generators.GenerateVolumeSdk)
+	volumeSdk := testutil.GenN(2, generators.Generate[networkstorageapi.Volume])
 	volumeTables := iterutils.MapInterface(volumeSdk, tables.ShortVolumeTableFromSdk)
 
 	// Mocking

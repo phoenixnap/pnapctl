@@ -12,6 +12,7 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
@@ -611,7 +612,7 @@ func TestPreparePublicNetworkIpBlockForPrintingNonTable(test_framework *testing.
 
 func TestPrepareStorageNetworkForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	networkStorage := generators.GenerateStorageNetworkSdk()
+	networkStorage := generators.Generate[networkstorageapi.StorageNetwork]()
 	prepared := PrepareNetworkStorageForPrinting(networkStorage)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -621,7 +622,7 @@ func TestPrepareStorageNetworkForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareStorageNetworkForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	networkStorage := generators.GenerateStorageNetworkSdk()
+	networkStorage := generators.Generate[networkstorageapi.StorageNetwork]()
 	prepared := PrepareNetworkStorageForPrinting(networkStorage)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -631,7 +632,7 @@ func TestPrepareStorageNetworkForPrintingNonTable(test_framework *testing.T) {
 
 func TestPrepareVolumeForPrintingTableFull(test_framework *testing.T) {
 	OutputFormat = "table"
-	networkStorage := generators.GenerateVolumeSdk()
+	networkStorage := generators.Generate[networkstorageapi.Volume]()
 	prepared := PrepareVolumeForPrinting(networkStorage, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -641,7 +642,7 @@ func TestPrepareVolumeForPrintingTableFull(test_framework *testing.T) {
 
 func TestPrepareVolumeForPrintingTableShort(test_framework *testing.T) {
 	OutputFormat = "table"
-	networkStorage := generators.GenerateVolumeSdk()
+	networkStorage := generators.Generate[networkstorageapi.Volume]()
 	prepared := PrepareVolumeForPrinting(networkStorage, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -651,7 +652,7 @@ func TestPrepareVolumeForPrintingTableShort(test_framework *testing.T) {
 
 func TestPrepareVolumeForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	networkStorage := generators.GenerateVolumeSdk()
+	networkStorage := generators.Generate[networkstorageapi.Volume]()
 	prepared := PrepareVolumeForPrinting(networkStorage, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
