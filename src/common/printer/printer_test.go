@@ -9,9 +9,12 @@ import (
 	"github.com/landoop/tableprinter"
 	"github.com/phoenixnap/go-sdk-bmc/auditapi"
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi"
 	"github.com/phoenixnap/go-sdk-bmc/networkapi"
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+	"github.com/phoenixnap/go-sdk-bmc/tagapi"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -171,7 +174,7 @@ func TestPrepareServerForPrintingServer(test_framework *testing.T) {
 
 func TestPrepareServerListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	servers := generators.GenerateServerListSdk(1)
+	servers := testutil.GenN(1, generators.GenerateServerSdk)
 	prepared := PrepareServerListForPrinting(servers, false)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -243,8 +246,8 @@ func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	tag := generators.GenerateTagSdk()
-	prepared := PrepareTagForPrinting(*tag)
+	tag := generators.Generate[tagapisdk.Tag]()
+	prepared := PrepareTagForPrinting(tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
 
@@ -253,7 +256,7 @@ func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 	OutputFormat = "json"
-	tag := *generators.GenerateTagSdk()
+	tag := generators.Generate[tagapisdk.Tag]()
 	prepared := PrepareTagForPrinting(tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -263,7 +266,7 @@ func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 
 func TestPrepareTagListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	tags := generators.GenerateTagListSdk(1)
+	tags := testutil.GenN(1, generators.Generate[tagapi.Tag])
 	prepared := PrepareTagListForPrinting(tags)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -335,7 +338,7 @@ func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := generators.GenerateSshKeySdk()
+	sshkey := generators.Generate[bmcapisdk.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -345,7 +348,7 @@ func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := generators.GenerateSshKeySdk()
+	sshkey := generators.Generate[bmcapisdk.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -355,7 +358,7 @@ func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	sshkey := generators.GenerateSshKeySdk()
+	sshkey := generators.Generate[bmcapisdk.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -365,7 +368,7 @@ func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkeys := generators.GenerateSshKeyListSdk(1)
+	sshkeys := testutil.GenN(1, generators.Generate[bmcapi.SshKey])
 	prepared := PrepareSshKeyListForPrinting(sshkeys, true)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -375,7 +378,7 @@ func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkeys := generators.GenerateSshKeyListSdk(1)
+	sshkeys := testutil.GenN(1, generators.Generate[bmcapi.SshKey])
 	prepared := PrepareSshKeyListForPrinting(sshkeys, false)
 
 	outputType := fmt.Sprintf("%T", prepared[0])

@@ -31,7 +31,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate)).
+		ServersPost(gomock.Eq(serverCreate)).
 		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
@@ -63,7 +63,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate)).
+		ServersPost(gomock.Eq(serverCreate)).
 		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
@@ -162,7 +162,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate)).
+		ServersPost(gomock.Eq(serverCreate)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -195,7 +195,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate)).
+		ServersPost(gomock.Eq(serverCreate)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -227,7 +227,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate)).
+		ServersPost(gomock.Eq(serverCreate)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

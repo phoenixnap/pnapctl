@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -16,7 +17,7 @@ import (
 
 func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	sshKeyUpdate := generators.GenerateSshKeyUpdateSdk()
+	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(sshKeyUpdate)
@@ -24,11 +25,11 @@ func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	sshKey := generators.GenerateSshKeySdk()
+	sshKey := generators.Generate[bmcapi.SshKey]()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(*sshKeyUpdate)).
+		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
 		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil).
 		Times(1)
 
@@ -48,7 +49,7 @@ func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
 
 func TestUpdateSshKeySuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	sshKeyUpdate := generators.GenerateSshKeyUpdateSdk()
+	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(sshKeyUpdate)
@@ -56,11 +57,11 @@ func TestUpdateSshKeySuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	sshKey := generators.GenerateSshKeySdk()
+	sshKey := generators.Generate[bmcapi.SshKey]()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(*sshKeyUpdate)).
+		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
 		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil).
 		Times(1)
 
@@ -149,7 +150,7 @@ func TestUpdateSshKeyFileReadingFailure(test_framework *testing.T) {
 
 func TestUpdateSshKeyBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	sshKeyUpdate := generators.GenerateSshKeyUpdateSdk()
+	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(sshKeyUpdate)
@@ -158,7 +159,7 @@ func TestUpdateSshKeyBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(*sshKeyUpdate)).
+		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -181,7 +182,7 @@ func TestUpdateSshKeyBackendErrorFailure(test_framework *testing.T) {
 
 func TestUpdateSshKeyClientFailure(test_framework *testing.T) {
 	// Setup
-	sshKeyUpdate := generators.GenerateSshKeyUpdateSdk()
+	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(sshKeyUpdate)
@@ -190,7 +191,7 @@ func TestUpdateSshKeyClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(*sshKeyUpdate)).
+		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -213,7 +214,7 @@ func TestUpdateSshKeyClientFailure(test_framework *testing.T) {
 
 func TestUpdateSshKeyKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	sshKeyUpdate := generators.GenerateSshKeyUpdateSdk()
+	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(sshKeyUpdate)
@@ -222,7 +223,7 @@ func TestUpdateSshKeyKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(*sshKeyUpdate)).
+		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

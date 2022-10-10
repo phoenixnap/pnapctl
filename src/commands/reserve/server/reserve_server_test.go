@@ -30,7 +30,7 @@ func TestReserveServerSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReserve(RESOURCEID, gomock.Eq(*serverReserve)).
+		ServerReserve(RESOURCEID, gomock.Eq(serverReserve)).
 		Return(&server, WithResponse(200, WithBody(server)), nil).
 		Times(1)
 
@@ -62,7 +62,7 @@ func TestReserveServerSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReserve(RESOURCEID, gomock.Eq(*serverReserve)).
+		ServerReserve(RESOURCEID, gomock.Eq(serverReserve)).
 		Return(&server, WithResponse(200, WithBody(server)), nil).
 		Times(1)
 
@@ -160,7 +160,7 @@ func TestReserveServerBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReserve(RESOURCEID, gomock.Eq(*serverReserve)).
+		ServerReserve(RESOURCEID, gomock.Eq(serverReserve)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -192,7 +192,7 @@ func TestReserveServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReserve(RESOURCEID, gomock.Eq(*serverReserve)).
+		ServerReserve(RESOURCEID, gomock.Eq(serverReserve)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -224,7 +224,7 @@ func TestReserveServerKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReserve(RESOURCEID, gomock.Eq(*serverReserve)).
+		ServerReserve(RESOURCEID, gomock.Eq(serverReserve)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

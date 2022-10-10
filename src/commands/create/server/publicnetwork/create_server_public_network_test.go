@@ -34,8 +34,8 @@ func TestCreateServerPublicNetworkSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(*serverPublicNetwork)).
-		Return(serverPublicNetwork, WithResponse(202, WithBody(serverPublicNetwork)), nil).
+		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
+		Return(&serverPublicNetwork, WithResponse(202, WithBody(serverPublicNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,8 +63,8 @@ func TestCreateServerPublicNetworkSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(*serverPublicNetwork)).
-		Return(serverPublicNetwork, WithResponse(202, WithBody(serverPublicNetwork)), nil).
+		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
+		Return(&serverPublicNetwork, WithResponse(202, WithBody(serverPublicNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -161,7 +161,7 @@ func TestCreateServerPublicNetworkBackendErrorFailure(test_framework *testing.T)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(*serverPublicNetwork)).
+		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -193,7 +193,7 @@ func TestCreateServerPublicNetworkClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(*serverPublicNetwork)).
+		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -225,7 +225,7 @@ func TestCreateServerPublicNetworkKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(*serverPublicNetwork)).
+		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

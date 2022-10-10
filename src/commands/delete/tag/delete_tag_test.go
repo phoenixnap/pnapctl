@@ -3,6 +3,7 @@ package tag
 import (
 	"testing"
 
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -14,7 +15,7 @@ func TestDeleteTagSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagDelete(RESOURCEID).
-		Return(generators.GenerateTagsDeleteResultSdk(), WithResponse(200, nil), nil)
+		Return(testutil.AsPointer(generators.Generate[tagapisdk.DeleteResult]()), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})

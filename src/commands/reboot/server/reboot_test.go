@@ -16,7 +16,7 @@ func TestRebootServerSuccess(test_framework *testing.T) {
 	actionResult := generators.GenerateActionResultSdk()
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(RESOURCEID).
-		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
+		Return(&actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
 	// Run command
 	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})

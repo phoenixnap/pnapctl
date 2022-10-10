@@ -25,7 +25,7 @@ func TestDeleteServerIpBlockSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return(deleteResult, WithResponse(202, nil), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -52,7 +52,7 @@ func TestDeleteServerIpBlockSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return(deleteResult, WithResponse(202, nil), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -79,7 +79,7 @@ func TestDeleteServerIpBlockNotFound(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return("", WithResponse(404, nil), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -108,7 +108,7 @@ func TestDeleteServerIpBlockError(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return("", WithResponse(500, nil), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -137,7 +137,7 @@ func TestDeleteServerIpBlockSdkentFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return("", nil, testutil.TestError)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -167,7 +167,7 @@ func TestDeleteServerIpBlockKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return("", nil, testutil.TestKeycloakError)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

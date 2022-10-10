@@ -15,7 +15,7 @@ func TestShutdownServerSuccess(test_framework *testing.T) {
 	actionResult := generators.GenerateActionResultSdk()
 	PrepareBmcApiMockClient(test_framework).
 		ServerShutdown(RESOURCEID).
-		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
+		Return(&actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
 	// Run command
 	err := ShutdownCmd.RunE(ShutdownCmd, []string{RESOURCEID})

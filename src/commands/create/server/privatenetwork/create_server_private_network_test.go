@@ -35,8 +35,8 @@ func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
-		Return(serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		Return(&serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -64,8 +64,8 @@ func TestCreateServerPrivateNetworkSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
-		Return(serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		Return(&serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -162,7 +162,7 @@ func TestCreateServerPrivateNetworkBackendErrorFailure(test_framework *testing.T
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -194,7 +194,7 @@ func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -226,7 +226,7 @@ func TestCreateServerPrivateNetworkKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(*serverPrivateNetwork)).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

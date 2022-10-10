@@ -26,7 +26,7 @@ func TestDeprovisionServerSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody)).
+		ServerDeprovision(RESOURCEID, gomock.Eq(requestBody)).
 		Return(result, WithResponse(200, WithBody(result)), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -54,7 +54,7 @@ func TestDeprovisionServerSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody)).
+		ServerDeprovision(RESOURCEID, gomock.Eq(requestBody)).
 		Return(result, WithResponse(200, WithBody(result)), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -150,7 +150,7 @@ func TestDeprovisionServerBackendErrorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody)).
+		ServerDeprovision(RESOURCEID, gomock.Eq(requestBody)).
 		Return("", WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -181,7 +181,7 @@ func TestDeprovisionServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody)).
+		ServerDeprovision(RESOURCEID, gomock.Eq(requestBody)).
 		Return("", nil, testutil.TestError)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -212,7 +212,7 @@ func TestDeprovisionServerKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 
 	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody)).
+		ServerDeprovision(RESOURCEID, gomock.Eq(requestBody)).
 		Return("", nil, testutil.TestKeycloakError)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

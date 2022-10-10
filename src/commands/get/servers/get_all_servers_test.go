@@ -13,7 +13,7 @@ import (
 )
 
 func TestGetAllServersShortSuccess(test_framework *testing.T) {
-	serverlist := generators.GenerateServerListSdk(5)
+	serverlist := testutil.GenN(5, generators.GenerateServerSdk)
 
 	var shortServers []interface{}
 
@@ -37,7 +37,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllServersLongSuccess(test_framework *testing.T) {
-	serverlist := generators.GenerateServerListSdk(5)
+	serverlist := testutil.GenN(5, generators.GenerateServerSdk)
 
 	var longServers []interface{}
 
@@ -64,7 +64,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 }
 
 func TestFilteredServersLongSuccess(test_framework *testing.T) {
-	serverlist := generators.GenerateServerListSdk(5)
+	serverlist := testutil.GenN(5, generators.GenerateServerSdk)
 
 	var longServers []interface{}
 
@@ -119,7 +119,7 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
-	serverlist := generators.GenerateServerListSdk(5)
+	serverlist := testutil.GenN(5, generators.GenerateServerSdk)
 
 	var shortServers []interface{}
 

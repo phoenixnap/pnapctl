@@ -28,8 +28,8 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(RESOURCEID, *serverReset).
-		Return(resetResult, WithResponse(200, WithBody(resetResult)), nil).
+		ServerReset(RESOURCEID, serverReset).
+		Return(&resetResult, WithResponse(200, WithBody(resetResult)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -58,8 +58,8 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(RESOURCEID, *serverReset).
-		Return(resetResult, WithResponse(200, WithBody(resetResult)), nil).
+		ServerReset(RESOURCEID, serverReset).
+		Return(&resetResult, WithResponse(200, WithBody(resetResult)), nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -85,7 +85,7 @@ func TestResetServerSuccessNoFile(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(RESOURCEID, bmcapisdk.ServerReset{}).
-		Return(resetResult, WithResponse(200, WithBody(resetResult)), nil).
+		Return(&resetResult, WithResponse(200, WithBody(resetResult)), nil).
 		Times(1)
 
 	// Run command
@@ -150,7 +150,7 @@ func TestResetServerNotFoundFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(RESOURCEID, *serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(nil, WithResponse(404, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -203,7 +203,7 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(RESOURCEID, *serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -235,7 +235,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(RESOURCEID, *serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -267,7 +267,7 @@ func TestResetServerKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerReset(RESOURCEID, *serverReset).
+		ServerReset(RESOURCEID, serverReset).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

@@ -11,10 +11,10 @@ import (
 )
 
 func TestTagFromSdk(test_framework *testing.T) {
-	tag := generators.GenerateTagSdk()
-	table := TagFromSdk(*tag)
+	tag := generators.Generate[tagapisdk.Tag]()
+	table := TagFromSdk(tag)
 
-	assertTagsEqual(test_framework, *tag, table)
+	assertTagsEqual(test_framework, tag, table)
 }
 
 func assertTagsEqual(test_framework *testing.T, tag tagapisdk.Tag, table TagTable) {

@@ -30,7 +30,7 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(&server, WithResponse(200, WithBody(server)), nil).
 		Times(1)
 
@@ -62,7 +62,7 @@ func TestPatchServerSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(&server, WithResponse(200, WithBody(server)), nil).
 		Times(1)
 
@@ -162,7 +162,7 @@ func TestPatchServerBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -194,7 +194,7 @@ func TestPatchServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -226,7 +226,7 @@ func TestPatchServerKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

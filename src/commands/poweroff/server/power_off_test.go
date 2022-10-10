@@ -18,7 +18,7 @@ func TestPowerOffServerSuccess(test_framework *testing.T) {
 	actionResult := generators.GenerateActionResultSdk()
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOff(RESOURCEID).
-		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
+		Return(&actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
 	// Run command
 	err := PowerOffServerCmd.RunE(PowerOffServerCmd, []string{RESOURCEID})

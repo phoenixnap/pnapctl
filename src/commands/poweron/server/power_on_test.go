@@ -13,10 +13,9 @@ import (
 
 func TestPowerOnServerSuccess(test_framework *testing.T) {
 	actionResult := generators.GenerateActionResultSdk()
-
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOn(RESOURCEID).
-		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
+		Return(&actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
 	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{RESOURCEID})
 

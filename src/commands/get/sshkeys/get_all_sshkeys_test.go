@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestGetAllSshKeysSuccess(test_framework *testing.T) {
-	sshKeyList := generators.GenerateSshKeyListSdk(2)
+	sshKeyList := testutil.GenN(2, generators.Generate[bmcapi.SshKey])
 
 	var sshKeyTables []interface{}
 
@@ -49,7 +50,7 @@ func TestGetAllSshKeysKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllSshKeysPrinterFailure(test_framework *testing.T) {
-	sshKeyList := generators.GenerateSshKeyListSdk(2)
+	sshKeyList := testutil.GenN(2, generators.Generate[bmcapi.SshKey])
 
 	var sshKeyTables []interface{}
 
