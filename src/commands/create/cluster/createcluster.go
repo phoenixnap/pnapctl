@@ -1,7 +1,7 @@
 package cluster
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/rancher"
 	"phoenixnap.com/pnapctl/common/models"

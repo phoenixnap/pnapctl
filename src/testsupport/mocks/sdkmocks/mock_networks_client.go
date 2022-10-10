@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	networkapi "github.com/phoenixnap/go-sdk-bmc/networkapi"
+	networkapi "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	network "phoenixnap.com/pnapctl/common/models/queryparams/network"
 	networkapi "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	networkmodels "phoenixnap.com/pnapctl/common/models/networkmodels"

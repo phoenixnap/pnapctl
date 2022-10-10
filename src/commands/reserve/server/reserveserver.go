@@ -1,7 +1,7 @@
 package server
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"

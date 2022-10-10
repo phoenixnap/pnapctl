@@ -5,6 +5,7 @@ import (
 
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/models/billingmodels/ratedusageoneof"
 	"phoenixnap.com/pnapctl/common/models/generators"
 )
 

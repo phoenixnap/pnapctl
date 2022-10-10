@@ -3,13 +3,13 @@ package models
 import (
 	"fmt"
 
-	"github.com/phoenixnap/go-sdk-bmc/auditapi"
+	"github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
-	"github.com/phoenixnap/go-sdk-bmc/ipapi"
-	"github.com/phoenixnap/go-sdk-bmc/networkapi"
-	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
-	"github.com/phoenixnap/go-sdk-bmc/tagapi"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 )
 
 // utils
