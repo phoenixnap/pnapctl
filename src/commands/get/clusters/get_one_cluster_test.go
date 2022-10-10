@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -14,7 +15,7 @@ import (
 
 func TestGetServerShortSuccess(test_framework *testing.T) {
 
-	cluster := generators.GenerateClusterSdk()
+	cluster := generators.Generate[ranchersolutionapi.Cluster]()
 	var clusterTable = tables.ClusterFromSdk(cluster)
 
 	PrepareRancherMockClient(test_framework).
@@ -69,7 +70,7 @@ func TestGetServerKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
-	cluster := generators.GenerateClusterSdk()
+	cluster := generators.Generate[ranchersolutionapi.Cluster]()
 	clusterTable := tables.ClusterFromSdk(cluster)
 
 	PrepareRancherMockClient(test_framework).

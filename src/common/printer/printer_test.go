@@ -8,8 +8,10 @@ import (
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
 	"github.com/phoenixnap/go-sdk-bmc/auditapi"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi"
 	"github.com/phoenixnap/go-sdk-bmc/networkapi"
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -210,7 +212,7 @@ func TestPrepareEventListForPrinting(test_framework *testing.T) {
 
 func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	cluster := generators.GenerateClusterSdk()
+	cluster := generators.Generate[ranchersolutionapi.Cluster]()
 	prepared := PrepareClusterForPrinting(cluster)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -220,7 +222,7 @@ func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
 	OutputFormat = "json"
-	cluster := generators.GenerateClusterSdk()
+	cluster := generators.Generate[ranchersolutionapi.Cluster]()
 	prepared := PrepareClusterForPrinting(cluster)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -230,7 +232,7 @@ func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
 
 func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	clusters := generators.GenerateClusterListSdk(1)
+	clusters := testutil.GenN(1, generators.Generate[ranchersolutionapi.Cluster])
 	prepared := PrepareClusterListForPrinting(clusters)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -303,7 +305,7 @@ func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
 
 func TestPrepareQuotaForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	quota := generators.GenerateQuotaSdk()
+	quota := generators.Generate[bmcapi.Quota]()
 	prepared := PrepareQuotaForPrinting(quota)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -313,7 +315,7 @@ func TestPrepareQuotaForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareQuotaForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	quota := generators.GenerateQuotaSdk()
+	quota := generators.Generate[bmcapi.Quota]()
 	prepared := PrepareQuotaForPrinting(quota)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -323,7 +325,7 @@ func TestPrepareQuotaForPrintingNonTable(test_framework *testing.T) {
 
 func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	quotas := generators.GenerateQuotaSdkList(1)
+	quotas := testutil.GenN(1, generators.Generate[bmcapi.Quota])
 	prepared := PrepareQuotaListForPrinting(quotas)
 
 	outputType := fmt.Sprintf("%T", prepared[0])

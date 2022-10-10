@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestGetQuotaSuccess(test_framework *testing.T) {
-	quota := generators.GenerateQuotaSdk()
+	quota := generators.Generate[bmcapi.Quota]()
 	tableQuota := tables.ToQuotaTable(quota)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -68,7 +69,7 @@ func TestGetQuotaKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetQuotaPrinterFailure(test_framework *testing.T) {
-	quota := generators.GenerateQuotaSdk()
+	quota := generators.Generate[bmcapi.Quota]()
 	tableQuota := tables.ToQuotaTable(quota)
 
 	PrepareBmcApiMockClient(test_framework).

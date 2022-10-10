@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestClusterFromSdk(test_framework *testing.T) {
-	cluster := generators.GenerateClusterSdk()
+	cluster := generators.Generate[ranchersolutionapi.Cluster]()
 	table := ClusterFromSdk(cluster)
 
 	assertClustersEqual(test_framework, cluster, table)
