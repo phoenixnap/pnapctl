@@ -5,7 +5,6 @@ import (
 
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"phoenixnap.com/pnapctl/common/models"
-	"phoenixnap.com/pnapctl/common/models/billingmodels/ratedusageoneof"
 	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
@@ -134,7 +133,7 @@ func (table *RatedUsageRecordTable) attachUnique(sdk billingapisdk.RatedUsageGet
 			HOSTNAME:  sdk.ServerRecord.Metadata.Hostname,
 		}
 
-	case ratedusageoneof.STORAGE:
+	case generators.RatedUsageStorage:
 		table.Metadata = map[string]interface{}{
 			NETWORK_STORAGE_ID:   sdk.StorageRecord.Metadata.NetworkStorageId,
 			NETWORK_STORAGE_NAME: sdk.StorageRecord.Metadata.NetworkStorageName,

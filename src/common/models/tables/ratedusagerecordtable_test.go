@@ -48,7 +48,7 @@ func TestRatedUsageRecordFromServerSdk(test_framework *testing.T) {
 
 func TestRatedUsageRecordFromStorageSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
-		StorageRecord: billingmodels.GenerateStorageRecordSdk(),
+		StorageRecord: generators.GenerateStorageRecordSdk(),
 	}
 	table := *RatedUsageRecordTableFromSdk(record)
 

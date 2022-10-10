@@ -5,8 +5,6 @@ import (
 	"time"
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"phoenixnap.com/pnapctl/common/models/billingmodels/productoneof"
-	"phoenixnap.com/pnapctl/common/models/billingmodels/ratedusageoneof"
 	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -17,9 +15,11 @@ var (
 	RatedUsageOperatingSystem = "operating-system"
 	RatedUsagePublicSubnet    = "public-ip"
 	RatedUsageServer          = "bmc-server"
+	RatedUsageStorage         = "storage"
 
 	ProductBandwidth       = "BANDWIDTH"
 	ProductOperatingSystem = "OPERATING_SYSTEM"
+	ProductStorage         = "STORAGE"
 	ProductServer          = "SERVER"
 )
 
@@ -172,7 +172,7 @@ func GenerateReservationRequestSdk() billingapi.ReservationRequest {
 
 func GenerateStorageRecordSdk() *billingapi.StorageRecord {
 	record := billingapi.StorageRecord{
-		ProductCategory: string(ratedusageoneof.STORAGE),
+		ProductCategory: string(RatedUsageStorage),
 		Metadata:        GenerateStorageDetails(),
 	}
 	return populateRatedUsageCommon(&record).(*billingapi.StorageRecord)
@@ -258,7 +258,7 @@ func GenerateOperatingSystemProduct() *billingapi.Product {
 
 func GenerateStorageProduct() *billingapi.Product {
 	product := &billingapi.Product{
-		ProductCategory: string(productoneof.STORAGE),
+		ProductCategory: string(ProductStorage),
 	}
 
 	return populateProductCommon(product).(*billingapi.Product)

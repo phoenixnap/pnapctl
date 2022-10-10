@@ -32,7 +32,7 @@ func TestProductActualFromSdk_OperatingSystemProduct(test_framework *testing.T) 
 }
 
 func TestProductActualFromSdk_StorageProduct(test_framework *testing.T) {
-	storageProduct := billingmodels.GenerateStorageProduct()
+	storageProduct := generators.GenerateStorageProduct()
 	ProductsResponse := billingapi.ProductsGet200ResponseInner{
 		Product: storageProduct,
 	}

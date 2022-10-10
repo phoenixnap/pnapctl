@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"testing"
 
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
 	"phoenixnap.com/pnapctl/common/models/networkstoragemodels"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
@@ -485,7 +484,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testi
 func TestPrepareRatedUsageRecordForPrintingNonTable_Storage(test_framework *testing.T) {
 	OutputFormat = "json"
 	ratedUsage := billingapi.RatedUsageGet200ResponseInner{
-		StorageRecord: billingmodels.GenerateStorageRecordSdk(),
+		StorageRecord: generators.GenerateStorageRecordSdk(),
 	}
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
@@ -557,7 +556,7 @@ func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework
 func TestPrepareProductForPrintingNonTable_StorageProduct(test_framework *testing.T) {
 	OutputFormat = "json"
 	product := billingapi.ProductsGet200ResponseInner{
-		Product: billingmodels.GenerateStorageProduct(),
+		Product: generators.GenerateStorageProduct(),
 	}
 	prepared := PrepareProductForPrinting(product)
 
