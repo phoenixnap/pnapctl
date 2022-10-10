@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -15,7 +16,7 @@ import (
 )
 
 func TestGetAllProductAvailabilitiesSuccess(test_framework *testing.T) {
-	productAvailabilities := testutil.GenN(5, generators.GenerateProductAvailability)
+	productAvailabilities := testutil.GenN(5, generators.Generate[billingapi.ProductAvailability])
 	queryParams := generators.GenerateProductAvailabilityGetQueryParams()
 	setQueryParams(queryParams)
 
@@ -73,7 +74,7 @@ func TestGetAllProductAvailabilitiesKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllProductAvailabilitiesPrinterFailure(test_framework *testing.T) {
-	productAvailabilities := testutil.GenN(5, generators.GenerateProductAvailability)
+	productAvailabilities := testutil.GenN(5, generators.Generate[billingapi.ProductAvailability])
 	queryParams := generators.GenerateProductAvailabilityGetQueryParams()
 	setQueryParams(queryParams)
 

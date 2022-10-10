@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestGetAccountBillingConfigurationSuccess(test_framework *testing.T) {
-	configurationDetail := generators.GenerateConfigurationDetails()
+	configurationDetail := generators.Generate[billingapi.ConfigurationDetails]()
 
 	configurationDetailTable := tables.ConfigurationDetailsTableFromSdk(configurationDetail)
 
@@ -60,7 +61,7 @@ func TestGetAccountBillingConfigurationKeycloakFailure(test_framework *testing.T
 }
 
 func TestGetAccountBillingConfigurationPrinterFailure(test_framework *testing.T) {
-	configurationDetail := generators.GenerateConfigurationDetails()
+	configurationDetail := generators.Generate[billingapi.ConfigurationDetails]()
 
 	configurationDetailTable := tables.ConfigurationDetailsTableFromSdk(configurationDetail)
 

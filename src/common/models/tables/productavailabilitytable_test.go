@@ -11,7 +11,7 @@ import (
 )
 
 func TestProductAvailabilityTableFromSdk_NotNil(t *testing.T) {
-	sdk := generators.GenerateProductAvailability()
+	sdk := generators.Generate[billingapi.ProductAvailability]()
 	tbl := ProductAvailabilityTableFromSdk(sdk)
 
 	assertProductAvailabilityTablesEqual(t, sdk, tbl)

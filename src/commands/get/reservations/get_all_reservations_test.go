@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -15,7 +16,7 @@ import (
 )
 
 func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
-	reservationList := testutil.GenN(5, generators.GenerateReservation)
+	reservationList := testutil.GenN(5, generators.Generate[billingapi.Reservation])
 	queryParams := generators.GenerateReservationGetQueryParams()
 	setQueryParams(queryParams)
 
@@ -40,7 +41,7 @@ func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
-	reservationList := testutil.GenN(5, generators.GenerateReservation)
+	reservationList := testutil.GenN(5, generators.Generate[billingapi.Reservation])
 	queryParams := generators.GenerateReservationGetQueryParams()
 	setQueryParams(queryParams)
 
@@ -101,7 +102,7 @@ func TestGetAllReservationsKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
-	reservationList := testutil.GenN(5, generators.GenerateReservation)
+	reservationList := testutil.GenN(5, generators.Generate[billingapi.Reservation])
 	queryParams := generators.GenerateReservationGetQueryParams()
 	setQueryParams(queryParams)
 
