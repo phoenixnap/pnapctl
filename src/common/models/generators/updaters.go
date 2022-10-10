@@ -5,7 +5,9 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
-func UpdateLocation[T interface{ SetLocation(billingapi.LocationEnum) }](item T) {
+func UpdateLocation[T interface {
+	SetLocation(billingapi.LocationEnum)
+}](item T) {
 	item.SetLocation(billingapi.PHX)
 }
 

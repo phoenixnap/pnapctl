@@ -16,14 +16,16 @@ func GetFromAllOf[Inner any, AllOf any](allOf AllOf) *Inner {
 
 	if err != nil {
 		// TODO replace with log
-		panic(fmt.Sprintf("Error when extracting JSON from (%s): %v\n", typename[AllOf](), err))
+		// fmt.Printf("Error when extracting JSON from (%s): %v\n", typename[AllOf](), err)
+		return nil
 	}
 
 	err = json.Unmarshal(bin, &inner)
 
 	if err != nil {
 		// TODO replace with log
-		panic(fmt.Sprintf("Error when parsing (%s) from (%s): %v\n", typename[Inner](), typename[AllOf](), err))
+		// fmt.Printf("Error when parsing (%s) from (%s): %v\n", typename[Inner](), typename[AllOf](), err)
+		return nil
 	}
 
 	return &inner

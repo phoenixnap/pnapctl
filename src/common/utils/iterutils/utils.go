@@ -151,7 +151,7 @@ func FindElementThat[T any](slice []T, predicate Predicate[T]) *T {
 // For a list of interface{} - use DerefInterface.
 //
 //	num := 5
-//	ptrs := []int{}{&num, &num} // [&5, &5]
+//	ptrs := []*int{}{&num, &num} // [&5, &5]
 //	vals := Deref(ptrs) // [5, 5]
 func Deref[T any](slice []*T) []T {
 	deref := func(item *T) T {

@@ -3,7 +3,7 @@ package tables
 import (
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"phoenixnap.com/pnapctl/common/models"
-	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/models/oneof/product"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
@@ -53,9 +53,9 @@ func parseCommonProduct(sdk billingapisdk.ProductsGet200ResponseInner) *ProductT
 
 func (p *ProductTable) attachUnique(sdk billingapisdk.ProductsGet200ResponseInner) {
 	switch p.ProductCategory {
-	case generators.ProductBandwidth, generators.ProductOperatingSystem:
+	case product.Bandwidth, product.OperatingSystem:
 		return
-	case generators.ProductServer:
+	case product.Server:
 		p.Metadata = map[string]interface{}{
 			RAM_IN_GB:     sdk.ServerProduct.Metadata.RamInGb,
 			CPU:           sdk.ServerProduct.Metadata.Cpu,
