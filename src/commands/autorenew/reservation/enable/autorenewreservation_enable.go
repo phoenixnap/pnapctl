@@ -9,6 +9,15 @@ import (
 
 var commandName = "auto-renew reservation enable"
 
+var (
+	Full bool
+)
+
+func init() {
+	utils.SetupFullFlag(AutoRenewEnableReservationCmd, &Full, "reservation")
+	utils.SetupOutputFlag(AutoRenewEnableReservationCmd)
+}
+
 var AutoRenewEnableReservationCmd = &cobra.Command{
 	Use:          "enable [RESERVATION_ID]",
 	Short:        "Enable auto-renew for a reservation",
@@ -18,23 +27,18 @@ var AutoRenewEnableReservationCmd = &cobra.Command{
 	Example: `
 # Enable auto-renew for a specific reservation
 pnapctl auto-renew reservation enable <RESERVATION_ID>`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		response, httpResponse, err := billing.Client.ReservationEnableAutoRenew(args[0])
-		generatedError := utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintReservationResponse(response, Full, commandName)
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return enableAutoRenewForReservation(args[0])
 	},
 }
 
-var (
-	Full bool
-)
+func enableAutoRenewForReservation(id string) error {
+	response, httpResponse, err := billing.Client.ReservationEnableAutoRenew(id)
+	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
 
-func init() {
-	utils.SetupFullFlag(AutoRenewEnableReservationCmd, &Full, "reservation")
-	utils.SetupOutputFlag(AutoRenewEnableReservationCmd)
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintReservationResponse(response, Full, commandName)
+	}
 }

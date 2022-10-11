@@ -18,18 +18,19 @@ var PowerOnServerCmd = &cobra.Command{
 	Args:         cobra.ExactArgs(1),
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		result, httpResponse, err := bmcapi.Client.ServerPowerOn(args[0])
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println(result.Result)
-			return nil
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return powerOnServer(args[0])
 	},
 }
 
-func init() {
+func powerOnServer(id string) error {
+	result, httpResponse, err := bmcapi.Client.ServerPowerOn(id)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		fmt.Println(result.Result)
+		return nil
+	}
 }

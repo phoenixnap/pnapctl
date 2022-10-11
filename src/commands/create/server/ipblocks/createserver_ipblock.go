@@ -3,6 +3,7 @@ package ipblocks
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -13,6 +14,12 @@ import (
 var Filename string
 
 var commandName = "create server-ip-block"
+
+func init() {
+	CreateServerIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	CreateServerIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	CreateServerIpBlockCmd.MarkFlagRequired("filename")
+}
 
 // CreateServerIpBlockCmd is the command for creating a server.
 var CreateServerIpBlockCmd = &cobra.Command{
@@ -30,27 +37,25 @@ pnapctl create server-ip-block <SERVER_ID> --filename <FILE_PATH> [--output <OUT
 id: 5ff5cc9bc1acf144d9106233
 vlanId: 11`,
 	RunE: func(_ *cobra.Command, args []string) error {
-		serverIpBlock, err := models.CreateRequestFromFile[bmcapisdk.ServerIpBlock](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// Create the server ip block
-		response, httpResponse, err := bmcapi.Client.ServerIpBlockPost(args[0], *serverIpBlock)
-
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintServerIpBlock(response, commandName)
-		}
+		return createIpBlockForServer(args[0])
 	},
 }
 
-func init() {
-	CreateServerIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateServerIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateServerIpBlockCmd.MarkFlagRequired("filename")
+func createIpBlockForServer(id string) error {
+	serverIpBlock, err := models.CreateRequestFromFile[bmcapisdk.ServerIpBlock](Filename, commandName)
+
+	if err != nil {
+		return err
+	}
+
+	// Create the server ip block
+	response, httpResponse, err := bmcapi.Client.ServerIpBlockPost(id, *serverIpBlock)
+
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintServerIpBlock(response, commandName)
+	}
 }

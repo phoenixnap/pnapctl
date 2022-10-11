@@ -12,6 +12,19 @@ import (
 
 var commandName = "create public-network"
 
+var (
+	Filename string
+)
+
+func init() {
+	utils.SetupOutputFlag(CreatePublicNetworkCmd)
+
+	CreatePublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation.")
+	CreatePublicNetworkCmd.MarkFlagRequired("filename")
+
+	CreatePublicNetworkCmd.AddCommand(ipblock.CreatePublicNetworkIpBlockCmd)
+}
+
 var CreatePublicNetworkCmd = &cobra.Command{
 	Use:          "public-network",
 	Short:        "Create a new public network.",
@@ -27,33 +40,24 @@ pnapctl create public-network --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 hostname: patched-server
 description: My custom server edit`,
 	RunE: func(_ *cobra.Command, _ []string) error {
-		publicNetworkCreate, err := models.CreateRequestFromFile[networkapi.PublicNetworkCreate](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		response, httpResponse, err := networks.Client.PublicNetworksPost(*publicNetworkCreate)
-
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintPublicNetworkResponse(response, commandName)
-		}
+		return createPublicNetwork()
 	},
 }
 
-var (
-	Filename string
-)
+func createPublicNetwork() error {
+	publicNetworkCreate, err := models.CreateRequestFromFile[networkapi.PublicNetworkCreate](Filename, commandName)
 
-func init() {
-	utils.SetupOutputFlag(CreatePublicNetworkCmd)
+	if err != nil {
+		return err
+	}
 
-	CreatePublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation.")
-	CreatePublicNetworkCmd.MarkFlagRequired("filename")
+	response, httpResponse, err := networks.Client.PublicNetworksPost(*publicNetworkCreate)
 
-	CreatePublicNetworkCmd.AddCommand(ipblock.CreatePublicNetworkIpBlockCmd)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintPublicNetworkResponse(response, commandName)
+	}
 }

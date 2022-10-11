@@ -11,7 +11,7 @@ var UpdateIpBlockCmd = &cobra.Command{
 	Use:   "ip-block",
 	Short: "Update an ip-block.",
 	Long:  `Update an ip-block.`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, _ []string) {
 		cmd.Help()
 		os.Exit(0)
 	},

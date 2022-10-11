@@ -18,6 +18,13 @@ const commandName string = "tag server"
 
 var Full bool
 
+func init() {
+	TagServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	TagServerCmd.MarkFlagRequired("filename")
+	TagServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
+	TagServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+}
+
 // TagServerCmd is the command for tagging a server.
 var TagServerCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
@@ -36,35 +43,33 @@ pnapctl tag server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
   value: tagValue
 - name: tagName2
 `,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		tagRequests, err := models.CreateRequestFromFile[[]bmcapisdk.TagAssignmentRequest](Filename, commandName)
-		if err != nil {
-			return err
-		}
-
-		serverResponse, httpResponse, err := performTagRequest(args[0], *tagRequests)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintServerResponse(serverResponse, Full, commandName)
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return tagServer(args[0])
 	},
 }
 
-func init() {
-	TagServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	TagServerCmd.MarkFlagRequired("filename")
-	TagServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
-	TagServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-}
-
+// TODO Look into this weird part.
 func performTagRequest(serverId string, tagRequests []bmcapisdk.TagAssignmentRequest) (*bmcapisdk.Server, *http.Response, error) {
 	// An empty array must be used as a request body if file is empty
 	if len(tagRequests) < 1 {
 		return bmcapi.Client.ServerTag(serverId, []bmcapisdk.TagAssignmentRequest{})
 	} else {
 		return bmcapi.Client.ServerTag(serverId, tagRequests)
+	}
+}
+
+func tagServer(id string) error {
+	tagRequests, err := models.CreateRequestFromFile[[]bmcapisdk.TagAssignmentRequest](Filename, commandName)
+	if err != nil {
+		return err
+	}
+
+	serverResponse, httpResponse, err := performTagRequest(id, *tagRequests)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintServerResponse(serverResponse, Full, commandName)
 	}
 }

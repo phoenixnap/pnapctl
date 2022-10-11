@@ -16,6 +16,11 @@ var Filename string
 
 var commandName = "reset server"
 
+func init() {
+	// filename is optional
+	ResetServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for reset")
+}
+
 // ResetServerCmd is the command for resetting a server.
 var ResetServerCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
@@ -36,34 +41,29 @@ sshKeys:
 	- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyVGaw1PuEl98f4/7Kq3O9ZIvDw2OFOSXAFVqilSFNkHlefm1iMtPeqsIBp2t9cbGUf55xNDULz/bD/4BCV43yZ5lh0cUYuXALg9NI29ui7PEGReXjSpNwUD6ceN/78YOK41KAcecq+SS0bJ4b4amKZIJG3JWmDKljtv1dmSBCrTmEAQaOorxqGGBYmZS7NQumRe4lav5r6wOs8OACMANE1ejkeZsGFzJFNqvr5DuHdDL5FAudW23me3BDmrM9ifUzzjl1Jwku3bnRaCcjaxH8oTumt1a00mWci/1qUlaVFft085yvVq7KZbF2OPPbl+erDW91+EZ2FgEi+v1/CSJ5 test2@test
 sshKeyIds: 
 	- 5fa54d1e91867c03a0a7b4a4`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		resetRequest, err := createResetRequest()
-
-		if err != nil {
-			return err
-		}
-
-		result, httpResponse, err := bmcapi.Client.ServerReset(args[0], *resetRequest)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println(result.Result)
-			return err
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return resetServer(args[0])
 	},
 }
 
-func init() {
-	//filename is optional
-	ResetServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for reset")
-}
+func resetServer(id string) error {
+	var request *bmcapisdk.ServerReset = &bmcapisdk.ServerReset{}
+	var err error
 
-func createResetRequest() (*bmcapisdk.ServerReset, error) {
-	if len(Filename) < 1 {
-		return &bmcapisdk.ServerReset{}, nil
+	if Filename != "" {
+		request, err = models.CreateRequestFromFile[bmcapisdk.ServerReset](Filename, commandName)
+		if err != nil {
+			return err
+		}
+	}
+
+	result, httpResponse, err := bmcapi.Client.ServerReset(id, *request)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
 	} else {
-		return models.CreateRequestFromFile[bmcapisdk.ServerReset](Filename, commandName)
+		fmt.Println(result.Result)
+		return err
 	}
 }

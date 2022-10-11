@@ -15,6 +15,11 @@ var Filename string
 
 var commandName = "delete server-ip-block"
 
+func init() {
+	DeleteServerIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for ip block removal from server")
+	DeleteServerIpBlockCmd.MarkFlagRequired("filename")
+}
+
 // DeleteServerIpBlockCmd is the command for deleting a server ip block.
 var DeleteServerIpBlockCmd = &cobra.Command{
 	Use:          "server-ip-block SERVER_ID IP_BLOCK_ID",
@@ -30,20 +35,24 @@ pnapctl delete server-ip-block <SERVER_ID> <IP_BLOCK_ID> --filename <FILE_PATH>
 # serveripblockdelete.yaml
 deleteIpBlocks: false`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename, commandName)
-		result, httpResponse, err := bmcapi.Client.ServerIpBlockDelete(args[0], args[1], *relinquishIpBlockRequest)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println(result)
-			return nil
-		}
+		return deleteIpBlockFromServer(args[0], args[1])
 	},
 }
 
-func init() {
-	DeleteServerIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for ip block removal from server")
-	DeleteServerIpBlockCmd.MarkFlagRequired("filename")
+func deleteIpBlockFromServer(serverId, ipBlockId string) error {
+	relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename, commandName)
+
+	if err != nil {
+		return err
+	}
+
+	result, httpResponse, err := bmcapi.Client.ServerIpBlockDelete(serverId, ipBlockId, *relinquishIpBlockRequest)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		fmt.Println(result)
+		return nil
+	}
 }

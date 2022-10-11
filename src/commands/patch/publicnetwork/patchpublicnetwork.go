@@ -11,6 +11,17 @@ import (
 
 var commandName = "patch public-network"
 
+var (
+	Filename string
+)
+
+func init() {
+	utils.SetupOutputFlag(PatchPublicNetworkCmd)
+
+	PatchPublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for updating.")
+	PatchPublicNetworkCmd.MarkFlagRequired("filename")
+}
+
 var PatchPublicNetworkCmd = &cobra.Command{
 	Use:          "public-network [ID]",
 	Short:        "Patch a public network.",
@@ -26,29 +37,22 @@ pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTP
 hostname: patched-server
 description: My custom server edit`,
 	RunE: func(_ *cobra.Command, args []string) error {
-		publicNetworkPatch, err := models.CreateRequestFromFile[networkapi.PublicNetworkModify](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		response, httpResponse, err := networks.Client.PublicNetworkPatch(args[0], *publicNetworkPatch)
-
-		if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintPublicNetworkResponse(response, commandName)
-		}
+		return patchPublicNetwork(args[0])
 	},
 }
 
-var (
-	Filename string
-)
+func patchPublicNetwork(id string) error {
+	publicNetworkPatch, err := models.CreateRequestFromFile[networkapi.PublicNetworkModify](Filename, commandName)
 
-func init() {
-	utils.SetupOutputFlag(PatchPublicNetworkCmd)
+	if err != nil {
+		return err
+	}
 
-	PatchPublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for updating.")
-	PatchPublicNetworkCmd.MarkFlagRequired("filename")
+	response, httpResponse, err := networks.Client.PublicNetworkPatch(id, *publicNetworkPatch)
+
+	if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintPublicNetworkResponse(response, commandName)
+	}
 }

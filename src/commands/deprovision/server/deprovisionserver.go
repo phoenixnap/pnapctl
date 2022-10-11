@@ -15,6 +15,11 @@ var Filename string
 
 var commandName = "deprovision server"
 
+func init() {
+	DeprovisionServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for deprovision")
+	DeprovisionServerCmd.MarkFlagRequired("filename")
+}
+
 // DeprovisionServerCmd
 var DeprovisionServerCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
@@ -29,25 +34,24 @@ pnapctl deprovision server <SERVER_ID> --filename <FILE_PATH>
 
 # serverdeprovision.yaml
 deleteIpBlocks: false`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename, commandName)
-		if err != nil {
-			return err
-		}
-
-		result, httpResponse, err := bmcapi.Client.ServerDeprovision(args[0], *relinquishIpBlockRequest)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println(result)
-			return nil
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return deprovisionServer(args[0])
 	},
 }
 
-func init() {
-	DeprovisionServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for deprovision")
-	DeprovisionServerCmd.MarkFlagRequired("filename")
+func deprovisionServer(id string) error {
+	relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename, commandName)
+	if err != nil {
+		return err
+	}
+
+	result, httpResponse, err := bmcapi.Client.ServerDeprovision(id, *relinquishIpBlockRequest)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		fmt.Println(result)
+		return nil
+	}
 }

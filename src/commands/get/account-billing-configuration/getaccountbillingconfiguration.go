@@ -9,6 +9,10 @@ import (
 
 var commandName = "get account-billing-configuration"
 
+func init() {
+	utils.SetupOutputFlag(GetAccountBillingConfigurationCmd)
+}
+
 var GetAccountBillingConfigurationCmd = &cobra.Command{
 	Use:          "account-billing-configuration",
 	Short:        "Retrieve your account billing configuration",
@@ -18,7 +22,7 @@ var GetAccountBillingConfigurationCmd = &cobra.Command{
 	Example: `
 # Retrieve your account billing configuration
 pnapctl get account-billing-configuration [--output=<OUTPUT_TYPE>]`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, _ []string) error {
 		return getAccountBillingConfiguration()
 	},
 }
@@ -33,8 +37,4 @@ func getAccountBillingConfiguration() error {
 	} else {
 		return printer.PrintConfigurationDetailsResponse(configurationDetails, commandName)
 	}
-}
-
-func init() {
-	utils.SetupOutputFlag(GetAccountBillingConfigurationCmd)
 }

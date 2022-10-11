@@ -1,9 +1,6 @@
 package ip_blocks
 
 import (
-	netHttp "net/http"
-
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"phoenixnap.com/pnapctl/common/client/ip"
 
 	"github.com/spf13/cobra"
@@ -13,9 +10,14 @@ import (
 
 const commandName string = "get ip-blocks"
 
-var ID string
 var tags []string
 var Full bool
+
+func init() {
+	GetIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	GetIpBlockCmd.PersistentFlags().StringArrayVar(&tags, "tag", nil, "Filter by tag")
+	GetIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
+}
 
 var GetIpBlockCmd = &cobra.Command{
 	Use:          "ip-block [IP_BLOCK_ID]",
@@ -35,42 +37,34 @@ pnapctl get ip-blocks [--output <OUTPUT_TYPE>]
 
 # List a specific ip-block.
 pnapctl get ip-block <IP_BLOCK_ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		if len(args) >= 1 {
-			ID = args[0]
-			return getIpBlocks(ID)
+			return getIpBlockById(args[0])
 		}
-		return getIpBlocks("")
+		return getIpBlocks()
 	},
 }
 
-func getIpBlocks(ipBlockId string) error {
-	var httpResponse *netHttp.Response
-	var err error
-	var ipBlock *ipapisdk.IpBlock
-	var ipBlocks []ipapisdk.IpBlock
-
-	if ipBlockId == "" {
-		ipBlocks, httpResponse, err = ip.Client.IpBlocksGet(tags)
-	} else {
-		ipBlock, httpResponse, err = ip.Client.IpBlocksGetById(ipBlockId)
-	}
+func getIpBlocks() error {
+	ipBlocks, httpResponse, err := ip.Client.IpBlocksGet(tags)
 
 	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		if ipBlockId == "" {
-			return printer.PrintIpBlockListResponse(ipBlocks, Full, commandName)
-		} else {
-			return printer.PrintIpBlockResponse(ipBlock, Full, commandName)
-		}
+		return printer.PrintIpBlockListResponse(ipBlocks, Full, commandName)
 	}
 }
 
-func init() {
-	GetIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	GetIpBlockCmd.PersistentFlags().StringArrayVar(&tags, "tag", nil, "Filter by tag")
-	GetIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
+func getIpBlockById(ipBlockId string) error {
+	ipBlock, httpResponse, err := ip.Client.IpBlocksGetById(ipBlockId)
+
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintIpBlockResponse(ipBlock, Full, commandName)
+	}
 }

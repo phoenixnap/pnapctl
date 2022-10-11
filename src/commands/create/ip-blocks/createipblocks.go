@@ -16,6 +16,13 @@ var Full bool
 
 var commandName = "create ip-block"
 
+func init() {
+	CreateIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	CreateIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	CreateIpBlockCmd.MarkFlagRequired("filename")
+	CreateIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
+}
+
 // CreateIpBlockCmd is the command for creating an ip block.
 var CreateIpBlockCmd = &cobra.Command{
 	Use:          "ip-block",
@@ -31,28 +38,25 @@ pnapctl create ip-block --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 # ipblockcreate.yaml
 cidrBlockSize: /28
 location: PHX`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		ipBlockCreate, err := models.CreateRequestFromFile[ipapi.IpBlockCreate](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// Create the ssh key
-		response, httpResponse, err := ip.Client.IpBlockPost(*ipBlockCreate)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintIpBlockResponse(response, Full, commandName)
-		}
+	RunE: func(_ *cobra.Command, _ []string) error {
+		return createIpBlock()
 	},
 }
 
-func init() {
-	CreateIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateIpBlockCmd.MarkFlagRequired("filename")
-	CreateIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
+func createIpBlock() error {
+	ipBlockCreate, err := models.CreateRequestFromFile[ipapi.IpBlockCreate](Filename, commandName)
+
+	if err != nil {
+		return err
+	}
+
+	// Create the ssh key
+	response, httpResponse, err := ip.Client.IpBlockPost(*ipBlockCreate)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintIpBlockResponse(response, Full, commandName)
+	}
 }

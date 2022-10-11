@@ -83,7 +83,7 @@ func TestDeprovisionServerFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{})
+	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
 
 	// Expected command
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
@@ -107,7 +107,7 @@ func TestDeprovisionServerUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{})
+	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "deprovision server", err)
@@ -131,7 +131,7 @@ func TestDeprovisionServerFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{})
+	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "deprovision server", err)

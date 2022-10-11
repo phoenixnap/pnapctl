@@ -14,6 +14,12 @@ var Filename string
 
 var commandName = "create private-network"
 
+func init() {
+	CreatePrivateNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	CreatePrivateNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	CreatePrivateNetworkCmd.MarkFlagRequired("filename")
+}
+
 // CreatePrivateNetworkCmd is the command for creating a private-network.
 var CreatePrivateNetworkCmd = &cobra.Command{
 	Use:          "private-network",
@@ -33,27 +39,25 @@ locationDefault: false,
 description: Example CLI Network,
 cidr: 10.0.0.0/24`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		privateNetworkCreate, err := models.CreateRequestFromFile[networkapi.PrivateNetworkCreate](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// Create the private network
-		response, httpResponse, err := networks.Client.PrivateNetworksPost(*privateNetworkCreate)
-
-		if httpResponse != nil && httpResponse.StatusCode != 201 {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
-		} else if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else {
-			return printer.PrintPrivateNetworkResponse(response, commandName)
-		}
+		return createPrivateNetwork()
 	},
 }
 
-func init() {
-	CreatePrivateNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreatePrivateNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreatePrivateNetworkCmd.MarkFlagRequired("filename")
+func createPrivateNetwork() error {
+	privateNetworkCreate, err := models.CreateRequestFromFile[networkapi.PrivateNetworkCreate](Filename, commandName)
+
+	if err != nil {
+		return err
+	}
+
+	// Create the private network
+	response, httpResponse, err := networks.Client.PrivateNetworksPost(*privateNetworkCreate)
+
+	if httpResponse != nil && httpResponse.StatusCode != 201 {
+		return ctlerrors.HandleBMCError(httpResponse, commandName)
+	} else if err != nil {
+		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+	} else {
+		return printer.PrintPrivateNetworkResponse(response, commandName)
+	}
 }

@@ -10,6 +10,22 @@ import (
 
 const commandName string = "get products"
 
+var (
+	ProductCode     string
+	ProductCategory string
+	SkuCode         string
+	Location        string
+)
+
+func init() {
+	utils.SetupOutputFlag(GetProductsCmd)
+
+	GetProductsCmd.PersistentFlags().StringVar(&ProductCode, "product-code", "", "Product code to filter products by.")
+	GetProductsCmd.PersistentFlags().StringVar(&ProductCategory, "category", "", "Product category to filter products by.")
+	GetProductsCmd.PersistentFlags().StringVar(&SkuCode, "sku-code", "", "Sku code to filter products by.")
+	GetProductsCmd.PersistentFlags().StringVar(&Location, "location", "", "Location to filter products by.")
+}
+
 var GetProductsCmd = &cobra.Command{
 	Use:          "product",
 	Short:        "Retrieves all products.",
@@ -20,7 +36,7 @@ var GetProductsCmd = &cobra.Command{
 Prints all information about products.
 By default, the data is printed in table format.`,
 	Example: ``,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, _ []string) error {
 		return getProducts()
 	},
 }
@@ -37,20 +53,4 @@ func getProducts() error {
 	} else {
 		return printer.PrintProductListResponse(products, commandName)
 	}
-}
-
-var (
-	ProductCode     string
-	ProductCategory string
-	SkuCode         string
-	Location        string
-)
-
-func init() {
-	utils.SetupOutputFlag(GetProductsCmd)
-
-	GetProductsCmd.PersistentFlags().StringVar(&ProductCode, "product-code", "", "Product code to filter products by.")
-	GetProductsCmd.PersistentFlags().StringVar(&ProductCategory, "category", "", "Product category to filter products by.")
-	GetProductsCmd.PersistentFlags().StringVar(&SkuCode, "sku-code", "", "Sku code to filter products by.")
-	GetProductsCmd.PersistentFlags().StringVar(&Location, "location", "", "Location to filter products by.")
 }

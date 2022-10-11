@@ -17,14 +17,18 @@ var DeletePrivateNetworkCmd = &cobra.Command{
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		httpResponse, err := networks.Client.PrivateNetworkDelete(args[0])
-
-		if httpResponse != nil && httpResponse.StatusCode != 204 {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
-		} else if err != nil {
-			return err
-		}
-
-		return nil
+		return deletePrivateNetwork(args[0])
 	},
+}
+
+func deletePrivateNetwork(id string) error {
+	httpResponse, err := networks.Client.PrivateNetworkDelete(id)
+
+	if httpResponse != nil && httpResponse.StatusCode != 204 {
+		return ctlerrors.HandleBMCError(httpResponse, commandName)
+	} else if err != nil {
+		return err
+	}
+
+	return nil
 }

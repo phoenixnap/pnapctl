@@ -10,6 +10,18 @@ import (
 
 const commandName string = "get rated-usage month-to-date"
 
+var (
+	Full            bool
+	ProductCategory string
+)
+
+func init() {
+	utils.SetupOutputFlag(GetRatedUsageMonthToDateCmd)
+	utils.SetupFullFlag(GetRatedUsageMonthToDateCmd, &Full, "rated-usage")
+
+	GetRatedUsageMonthToDateCmd.PersistentFlags().StringVar(&ProductCategory, "category", "", "The product category to filter by.")
+}
+
 var GetRatedUsageMonthToDateCmd = &cobra.Command{
 	Use:          "month-to-date",
 	Short:        "Retrieve all rated-usages for the current calendar month.",
@@ -23,7 +35,7 @@ Every record corresponds to a charge. All dates & times are in UTC.`,
 	Example: `
 # List all rated-usages	
 `,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, _ []string) error {
 		return getRatedUsageMonthToDate()
 	},
 }
@@ -43,16 +55,4 @@ func getRatedUsageMonthToDate() error {
 	} else {
 		return printer.PrintRatedUsageListResponse(ratedUsageRecords, Full, commandName)
 	}
-}
-
-var (
-	Full            bool
-	ProductCategory string
-)
-
-func init() {
-	utils.SetupOutputFlag(GetRatedUsageMonthToDateCmd)
-	utils.SetupFullFlag(GetRatedUsageMonthToDateCmd, &Full, "rated-usage")
-
-	GetRatedUsageMonthToDateCmd.PersistentFlags().StringVar(&ProductCategory, "category", "", "The product category to filter by.")
 }

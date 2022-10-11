@@ -11,6 +11,10 @@ import (
 
 var commandName = "delete public-network"
 
+func init() {
+	DeletePublicNetworkCmd.AddCommand(ipblock.DeletePublicNetworkIpBlockCmd)
+}
+
 var DeletePublicNetworkCmd = &cobra.Command{
 	Use:          "public-network [ID]",
 	Short:        "Deletes a public network.",
@@ -20,20 +24,20 @@ var DeletePublicNetworkCmd = &cobra.Command{
 	Example: `# Delete a public network
 pnapctl delete public-network <ID>`,
 	RunE: func(_ *cobra.Command, args []string) error {
-		response, err := networks.Client.PublicNetworkDelete(args[0])
-
-		generatedErr := utils.CheckForErrors(response, err, commandName)
-
-		if *generatedErr != nil {
-			return *generatedErr
-		} else {
-			fmt.Println("Successfully deleted.")
-		}
-
-		return nil
+		return deletePublicNetwork(args[0])
 	},
 }
 
-func init() {
-	DeletePublicNetworkCmd.AddCommand(ipblock.DeletePublicNetworkIpBlockCmd)
+func deletePublicNetwork(id string) error {
+	response, err := networks.Client.PublicNetworkDelete(id)
+
+	generatedErr := utils.CheckForErrors(response, err, commandName)
+
+	if *generatedErr != nil {
+		return *generatedErr
+	} else {
+		fmt.Println("Successfully deleted.")
+	}
+
+	return nil
 }

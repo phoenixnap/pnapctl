@@ -16,6 +16,13 @@ var commandName = "update ssh-key"
 
 var Full bool
 
+func init() {
+	UpdateSshKeyCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ssh key details")
+	UpdateSshKeyCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	UpdateSshKeyCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	UpdateSshKeyCmd.MarkFlagRequired("filename")
+}
+
 // UpdateSshKeyCmd is the command for creating a server.
 var UpdateSshKeyCmd = &cobra.Command{
 	Use:          "ssh-key SSH_KEY_ID",
@@ -31,28 +38,25 @@ pnapctl update ssh-key <SSH_KEY_ID> --filename <FILE_PATH> [--full] [--output <O
 # sshKeyUpdate.yaml
 default: true
 name: default ssh key`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		sshKeyUpdate, err := models.CreateRequestFromFile[bmcapisdk.SshKeyUpdate](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// update the ssh key
-		response, httpResponse, err := bmcapi.Client.SshKeyPut(args[0], *sshKeyUpdate)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintSshKeyResponse(response, Full, commandName)
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return updateSshKey(args[0])
 	},
 }
 
-func init() {
-	UpdateSshKeyCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ssh key details")
-	UpdateSshKeyCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	UpdateSshKeyCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	UpdateSshKeyCmd.MarkFlagRequired("filename")
+func updateSshKey(id string) error {
+	sshKeyUpdate, err := models.CreateRequestFromFile[bmcapisdk.SshKeyUpdate](Filename, commandName)
+
+	if err != nil {
+		return err
+	}
+
+	// update the ssh key
+	response, httpResponse, err := bmcapi.Client.SshKeyPut(id, *sshKeyUpdate)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintSshKeyResponse(response, Full, commandName)
+	}
 }

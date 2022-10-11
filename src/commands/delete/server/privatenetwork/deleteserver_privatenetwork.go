@@ -25,15 +25,19 @@ Requires two IDs passed as arguments. First one being the server id and second b
 	Example: `# remove a server from a private network 
 pnapctl delete server-private-network <SERVER_ID> <PRIVATE_NETWORK_ID>
 `,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		result, httpResponse, err := bmcapi.Client.ServerPrivateNetworkDelete(args[0], args[1])
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println(result)
-			return nil
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return deletePrivateNetworkFromServer(args[0], args[1])
 	},
+}
+
+func deletePrivateNetworkFromServer(serverId, privateNetworkId string) error {
+	result, httpResponse, err := bmcapi.Client.ServerPrivateNetworkDelete(serverId, privateNetworkId)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		fmt.Println(result)
+		return nil
+	}
 }

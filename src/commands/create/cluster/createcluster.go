@@ -13,6 +13,12 @@ var Filename string
 
 var commandName = "create cluster"
 
+func init() {
+	CreateClusterCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	CreateClusterCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	CreateClusterCmd.MarkFlagRequired("filename")
+}
+
 var CreateClusterCmd = &cobra.Command{
 	Use:          "cluster",
 	Short:        "Create a new cluster.",
@@ -30,26 +36,24 @@ name: rancher-cluster-test
 nodePools:
   - serverType: s1.c1.medium
 `,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		cluster, err := models.CreateRequestFromFile[ranchersolutionapi.Cluster](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		response, httpResponse, err := rancher.Client.ClusterPost(*cluster)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintClusterResponse(response, commandName)
-		}
+	RunE: func(_ *cobra.Command, _ []string) error {
+		return createCluster()
 	},
 }
 
-func init() {
-	CreateClusterCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateClusterCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateClusterCmd.MarkFlagRequired("filename")
+func createCluster() error {
+	cluster, err := models.CreateRequestFromFile[ranchersolutionapi.Cluster](Filename, commandName)
+
+	if err != nil {
+		return err
+	}
+
+	response, httpResponse, err := rancher.Client.ClusterPost(*cluster)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintClusterResponse(response, commandName)
+	}
 }

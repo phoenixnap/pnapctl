@@ -1,9 +1,6 @@
 package privatenetwork
 
 import (
-	netHttp "net/http"
-
-	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
@@ -12,8 +9,12 @@ import (
 
 const commandName string = "get private-network"
 
-var ID string
 var location string
+
+func init() {
+	GetPrivateNetworksCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	GetPrivateNetworksCmd.PersistentFlags().StringVar(&location, "location", "", "Filter by location")
+}
 
 var GetPrivateNetworksCmd = &cobra.Command{
 	Use:          "private-network [PRIVATE_NETWORK_ID]",
@@ -33,41 +34,34 @@ pnapctl get private-networks [--location <LOCATION>] [--output <OUTPUT_TYPE>]
 
 # List all details of a specific private network.
 pnapctl get private-networks <PRIVATE_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		if len(args) >= 1 {
-			ID = args[0]
-			return getPrivateNetworks(ID)
+			return getPrivateNetworkById(args[0])
 		}
-		return getPrivateNetworks("")
+		return getPrivateNetworks()
 	},
 }
 
-func getPrivateNetworks(privateNetworkID string) error {
-	var httpResponse *netHttp.Response
-	var err error
-	var privateNetwork *networkapisdk.PrivateNetwork
-	var privateNetworks []networkapisdk.PrivateNetwork
-
-	if privateNetworkID == "" {
-		privateNetworks, httpResponse, err = networks.Client.PrivateNetworksGet(location)
-	} else {
-		privateNetwork, httpResponse, err = networks.Client.PrivateNetworkGetById(privateNetworkID)
-	}
+func getPrivateNetworks() error {
+	privateNetworks, httpResponse, err := networks.Client.PrivateNetworksGet(location)
 
 	if httpResponse != nil && httpResponse.StatusCode != 200 {
 		return ctlerrors.HandleBMCError(httpResponse, commandName)
 	} else if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
 	} else {
-		if privateNetworkID == "" {
-			return printer.PrintPrivateNetworkListResponse(privateNetworks, commandName)
-		} else {
-			return printer.PrintPrivateNetworkResponse(privateNetwork, commandName)
-		}
+		return printer.PrintPrivateNetworkListResponse(privateNetworks, commandName)
 	}
 }
 
-func init() {
-	GetPrivateNetworksCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	GetPrivateNetworksCmd.PersistentFlags().StringVar(&location, "location", "", "Filter by location")
+func getPrivateNetworkById(privateNetworkID string) error {
+	privateNetwork, httpResponse, err := networks.Client.PrivateNetworkGetById(privateNetworkID)
+
+	if httpResponse != nil && httpResponse.StatusCode != 200 {
+		return ctlerrors.HandleBMCError(httpResponse, commandName)
+	} else if err != nil {
+		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+	} else {
+		return printer.PrintPrivateNetworkResponse(privateNetwork, commandName)
+	}
 }

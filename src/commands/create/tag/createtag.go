@@ -14,6 +14,12 @@ var Filename string
 
 var commandName = "create tag"
 
+func init() {
+	CreateTagCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	CreateTagCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	CreateTagCmd.MarkFlagRequired("filename")
+}
+
 // CreateTagCmd is the command for creating a tag.
 var CreateTagCmd = &cobra.Command{
 	Use:          "tag",
@@ -31,27 +37,25 @@ name: TagName
 description: The description of the tag.
 isBillingTag: false
 `,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		tagCreate, err := models.CreateRequestFromFile[tagapi.TagCreate](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// Create the tag
-		response, httpResponse, err := tags.Client.TagPost(*tagCreate)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintTagResponse(response, commandName)
-		}
+	RunE: func(_ *cobra.Command, _ []string) error {
+		return createTag()
 	},
 }
 
-func init() {
-	CreateTagCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateTagCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateTagCmd.MarkFlagRequired("filename")
+func createTag() error {
+	tagCreate, err := models.CreateRequestFromFile[tagapi.TagCreate](Filename, commandName)
+
+	if err != nil {
+		return err
+	}
+
+	// Create the tag
+	response, httpResponse, err := tags.Client.TagPost(*tagCreate)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintTagResponse(response, commandName)
+	}
 }

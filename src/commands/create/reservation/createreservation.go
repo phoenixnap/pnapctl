@@ -11,6 +11,19 @@ import (
 
 var commandName = "create reservation"
 
+var (
+	Full     bool
+	Filename string
+)
+
+func init() {
+	utils.SetupFullFlag(CreateReservationCmd, &Full, "reservation")
+	utils.SetupOutputFlag(CreateReservationCmd)
+
+	CreateReservationCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	CreateReservationCmd.MarkFlagRequired("filename")
+}
+
 var CreateReservationCmd = &cobra.Command{
 	Use:          "reservation [RESERVATION_ID]",
 	Short:        "Create a new reservation.",
@@ -26,33 +39,24 @@ pnapctl create reservation <RESERVATION_ID> --filename=<FILENAME>
 # reservationCreate.yaml
 sku: "skuCode"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		reservationCreate, err := models.CreateRequestFromFile[billingapi.ReservationRequest](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// Create the server
-		response, httpResponse, err := billing.Client.ReservationsPost(*reservationCreate)
-		generatedError := utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintReservationResponse(response, Full, commandName)
-		}
+		return createReservation()
 	},
 }
 
-var (
-	Full     bool
-	Filename string
-)
+func createReservation() error {
+	reservationCreate, err := models.CreateRequestFromFile[billingapi.ReservationRequest](Filename, commandName)
 
-func init() {
-	utils.SetupFullFlag(CreateReservationCmd, &Full, "reservation")
-	utils.SetupOutputFlag(CreateReservationCmd)
+	if err != nil {
+		return err
+	}
 
-	CreateReservationCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateReservationCmd.MarkFlagRequired("filename")
+	// Create the server
+	response, httpResponse, err := billing.Client.ReservationsPost(*reservationCreate)
+	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintReservationResponse(response, Full, commandName)
+	}
 }

@@ -15,6 +15,13 @@ var Full bool
 
 const commandName = "patch ip-block"
 
+func init() {
+	PatchIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	PatchIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for patch")
+	PatchIpBlockCmd.MarkFlagRequired("filename")
+	PatchIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
+}
+
 var PatchIpBlockCmd = &cobra.Command{
 	Use:          "ip-block IP_BLOCK_ID",
 	Short:        "Updates a specific ip-block.",
@@ -29,29 +36,25 @@ Requires a file (yaml or json) containing the information needed to update the i
 	# ipblockpatch.yaml
 	description: ip block description`,
 
-	RunE: func(cmd *cobra.Command, args []string) error {
-
-		ipBlockPatch, err := models.CreateRequestFromFile[ipapi.IpBlockPatch](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		response, httpResponse, err := ip.Client.IpBlocksIpBlockIdPatch(args[0], *ipBlockPatch)
-
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintIpBlockResponse(response, Full, commandName)
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return patchIpBlock(args[0])
 	},
 }
 
-func init() {
-	PatchIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	PatchIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for patch")
-	PatchIpBlockCmd.MarkFlagRequired("filename")
-	PatchIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
+func patchIpBlock(id string) error {
+	ipBlockPatch, err := models.CreateRequestFromFile[ipapi.IpBlockPatch](Filename, commandName)
+
+	if err != nil {
+		return err
+	}
+
+	response, httpResponse, err := ip.Client.IpBlocksIpBlockIdPatch(id, *ipBlockPatch)
+
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintIpBlockResponse(response, Full, commandName)
+	}
 }

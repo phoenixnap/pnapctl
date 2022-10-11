@@ -16,6 +16,13 @@ const commandName string = "patch server"
 
 var Full bool
 
+func init() {
+	PatchServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	PatchServerCmd.MarkFlagRequired("filename")
+	PatchServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
+	PatchServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+}
+
 // PatchServerCmd is the command for patching a server.
 var PatchServerCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
@@ -32,26 +39,23 @@ pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTP
 # serverPatch.yaml
 hostname: patched-server
 description: My custom server edit`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		patchRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerPatch](Filename, commandName)
-		if err != nil {
-			return err
-		}
-
-		serverResponse, httpResponse, err := bmcapi.Client.ServerPatch(args[0], *patchRequest)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintServerResponse(serverResponse, Full, commandName)
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return patchServer(args[0])
 	},
 }
 
-func init() {
-	PatchServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	PatchServerCmd.MarkFlagRequired("filename")
-	PatchServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
-	PatchServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+func patchServer(id string) error {
+	patchRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerPatch](Filename, commandName)
+	if err != nil {
+		return err
+	}
+
+	serverResponse, httpResponse, err := bmcapi.Client.ServerPatch(id, *patchRequest)
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintServerResponse(serverResponse, Full, commandName)
+	}
 }

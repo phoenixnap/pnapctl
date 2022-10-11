@@ -11,6 +11,19 @@ import (
 
 var commandName = "convert reservation"
 
+var (
+	Full     bool
+	Filename string
+)
+
+func init() {
+	utils.SetupFullFlag(ConvertReservationCmd, &Full, "reservation")
+	utils.SetupOutputFlag(ConvertReservationCmd)
+
+	ConvertReservationCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	ConvertReservationCmd.MarkFlagRequired("filename")
+}
+
 var ConvertReservationCmd = &cobra.Command{
 	Use:          "reservation [RESERVATION_ID]",
 	Short:        "Convert a reservation",
@@ -25,32 +38,23 @@ pnapctl convert reservation <RESERVATION_ID> --filename=[FILENAME]
 
 # convertReservation.yaml
 sku: "SKU_CODE"`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		request, err := models.CreateRequestFromFile[billingapi.ReservationRequest](Filename, commandName)
-		if err != nil {
-			return err
-		}
-
-		response, httpResponse, err := billing.Client.ReservationConvert(args[0], *request)
-		generatedError := utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintReservationResponse(response, Full, commandName)
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return convertReservation(args[0])
 	},
 }
 
-var (
-	Full     bool
-	Filename string
-)
+func convertReservation(id string) error {
+	request, err := models.CreateRequestFromFile[billingapi.ReservationRequest](Filename, commandName)
+	if err != nil {
+		return err
+	}
 
-func init() {
-	utils.SetupFullFlag(ConvertReservationCmd, &Full, "reservation")
-	utils.SetupOutputFlag(ConvertReservationCmd)
+	response, httpResponse, err := billing.Client.ReservationConvert(id, *request)
+	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
 
-	ConvertReservationCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	ConvertReservationCmd.MarkFlagRequired("filename")
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintReservationResponse(response, Full, commandName)
+	}
 }

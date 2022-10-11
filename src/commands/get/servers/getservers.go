@@ -1,9 +1,6 @@
 package servers
 
 import (
-	netHttp "net/http"
-
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -13,8 +10,13 @@ import (
 const commandName string = "get servers"
 
 var Full bool
-var ID string
 var tags []string
+
+func init() {
+	GetServersCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
+	GetServersCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	GetServersCmd.PersistentFlags().StringArrayVar(&tags, "tag", nil, "Filter by tag")
+}
 
 var GetServersCmd = &cobra.Command{
 	Use:          "server [SERVER_ID]",
@@ -34,42 +36,34 @@ pnapctl get servers [--tag <TagName>.<TagValue>] [--tag <TagName>] [--full] [--o
 
 # List all specific server.
 pnapctl get servers <SERVER_ID> [--full] [--output <OUTPUT_TYPE>]`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		if len(args) >= 1 {
-			ID = args[0]
-			return getServers(ID)
+			return getServersById(args[0])
 		}
-		return getServers("")
+		return getServers()
 	},
 }
 
-func getServers(serverID string) error {
-	var httpResponse *netHttp.Response
-	var err error
-	var server *bmcapisdk.Server
-	var servers []bmcapisdk.Server
-
-	if serverID == "" {
-		servers, httpResponse, err = bmcapi.Client.ServersGet(tags)
-	} else {
-		server, httpResponse, err = bmcapi.Client.ServerGetById(serverID)
-	}
+func getServers() error {
+	servers, httpResponse, err := bmcapi.Client.ServersGet(tags)
 
 	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		if serverID == "" {
-			return printer.PrintServerListResponse(servers, Full, commandName)
-		} else {
-			return printer.PrintServerResponse(server, Full, commandName)
-		}
+		return printer.PrintServerListResponse(servers, Full, commandName)
 	}
 }
 
-func init() {
-	GetServersCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
-	GetServersCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	GetServersCmd.PersistentFlags().StringArrayVar(&tags, "tag", nil, "Filter by tag")
+func getServersById(serverID string) error {
+	server, httpResponse, err := bmcapi.Client.ServerGetById(serverID)
+
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintServerResponse(server, Full, commandName)
+	}
 }

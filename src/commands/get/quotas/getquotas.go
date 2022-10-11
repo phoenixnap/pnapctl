@@ -1,9 +1,6 @@
 package quotas
 
 import (
-	netHttp "net/http"
-
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -12,7 +9,9 @@ import (
 
 const commandName string = "get quotas"
 
-var ID string
+func init() {
+	GetQuotasCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+}
 
 var GetQuotasCmd = &cobra.Command{
 	Use:          "quota [QUOTA_ID]",
@@ -32,40 +31,34 @@ pnapctl get quotas [--output <OUTPUT_TYPE>]
 
 # List a specific quota.
 pnapctl get quota <QUOTA_ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, args []string) error {
 		if len(args) >= 1 {
-			ID = args[0]
-			return getQuotas(ID)
+			return getQuotaById(args[0])
 		}
-		return getQuotas("")
+		return getQuotas()
 	},
 }
 
-func getQuotas(quotaId string) error {
-	var httpResponse *netHttp.Response
-	var err error
-	var quota *bmcapisdk.Quota
-	var quotas []bmcapisdk.Quota
-
-	if quotaId == "" {
-		quotas, httpResponse, err = bmcapi.Client.QuotasGet()
-	} else {
-		quota, httpResponse, err = bmcapi.Client.QuotaGetById(quotaId)
-	}
+func getQuotas() error {
+	quotas, httpResponse, err := bmcapi.Client.QuotasGet()
 
 	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		if quotaId == "" {
-			return printer.PrintQuotaListResponse(quotas, commandName)
-		} else {
-			return printer.PrintQuotaResponse(quota, commandName)
-		}
+		return printer.PrintQuotaListResponse(quotas, commandName)
 	}
 }
 
-func init() {
-	GetQuotasCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+func getQuotaById(quotaId string) error {
+	quota, httpResponse, err := bmcapi.Client.QuotaGetById(quotaId)
+
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintQuotaResponse(quota, commandName)
+	}
 }

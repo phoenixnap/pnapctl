@@ -14,6 +14,12 @@ var Filename string
 
 var commandName = "create server-private-network"
 
+func init() {
+	CreateServerPrivateNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	CreateServerPrivateNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	CreateServerPrivateNetworkCmd.MarkFlagRequired("filename")
+}
+
 // CreateServerPrivateNetworkCmd is the command for creating a server.
 var CreateServerPrivateNetworkCmd = &cobra.Command{
 	Use:          "server-private-network SERVER_ID",
@@ -35,28 +41,26 @@ dhcp: false
 statusDescription: in-progress
 `,
 
-	RunE: func(cmd *cobra.Command, args []string) error {
-		serverPrivateNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPrivateNetwork](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// Create the server private network
-		response, httpResponse, err := bmcapi.Client.ServerPrivateNetworkPost(args[0], *serverPrivateNetwork)
-
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintServerPrivateNetwork(response, commandName)
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return createPrivateNetworkForServer(args[0])
 	},
 }
 
-func init() {
-	CreateServerPrivateNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateServerPrivateNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateServerPrivateNetworkCmd.MarkFlagRequired("filename")
+func createPrivateNetworkForServer(id string) error {
+	serverPrivateNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPrivateNetwork](Filename, commandName)
+
+	if err != nil {
+		return err
+	}
+
+	// Create the server private network
+	response, httpResponse, err := bmcapi.Client.ServerPrivateNetworkPost(id, *serverPrivateNetwork)
+
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintServerPrivateNetwork(response, commandName)
+	}
 }

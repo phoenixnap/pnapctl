@@ -14,6 +14,12 @@ var Filename string
 
 var commandName = "create server-public-network"
 
+func init() {
+	CreateServerPublicNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	CreateServerPublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
+	CreateServerPublicNetworkCmd.MarkFlagRequired("filename")
+}
+
 var CreateServerPublicNetworkCmd = &cobra.Command{
 	Use:          "server-public-network SERVER_ID",
 	Short:        "Create a new public network for server.",
@@ -33,28 +39,26 @@ ips:
 statusDescription: in-progress
 `,
 
-	RunE: func(cmd *cobra.Command, args []string) error {
-		serverPublicNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPublicNetwork](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// Create the server private network
-		response, httpResponse, err := bmcapi.Client.ServerPublicNetworkPost(args[0], *serverPublicNetwork)
-
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintServerPublicNetwork(response, commandName)
-		}
+	RunE: func(_ *cobra.Command, args []string) error {
+		return createPublicNetworkForServer(args[0])
 	},
 }
 
-func init() {
-	CreateServerPublicNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateServerPublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateServerPublicNetworkCmd.MarkFlagRequired("filename")
+func createPublicNetworkForServer(id string) error {
+	serverPublicNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPublicNetwork](Filename, commandName)
+
+	if err != nil {
+		return err
+	}
+
+	// Create the server private network
+	response, httpResponse, err := bmcapi.Client.ServerPublicNetworkPost(id, *serverPublicNetwork)
+
+	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+
+	if *generatedError != nil {
+		return *generatedError
+	} else {
+		return printer.PrintServerPublicNetwork(response, commandName)
+	}
 }
