@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 var Filename string
@@ -38,13 +39,14 @@ pnapctl update ip-block tag <IP_BLOCK_ID> --filename <FILE_PATH> [--output <OUTP
 ---
 - name: ip block tag name
   value: ip block tag value`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return updateTagsOnIpBlock(args[0])
 	},
 }
 
 func updateTagsOnIpBlock(id string) error {
-	ipBlockPutTag, err := models.CreateRequestFromFile[[]ipapi.TagAssignmentRequest](Filename, commandName)
+	ipBlockPutTag, err := models.CreateRequestFromFile[[]ipapi.TagAssignmentRequest](Filename)
 
 	if err != nil {
 		return err
@@ -52,11 +54,11 @@ func updateTagsOnIpBlock(id string) error {
 
 	response, httpResponse, err := ip.Client.IpBlocksIpBlockIdTagsPut(id, *ipBlockPutTag)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintIpBlockResponse(response, Full, commandName)
+		return printer.PrintIpBlockResponse(response, Full)
 	}
 }

@@ -6,14 +6,13 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "reserve server"
 
 var Full bool
 
@@ -38,24 +37,25 @@ pnapctl reserve server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OU
 
 # serverReserve.yaml
 pricingModel: ONE_MONTH_RESERVATION`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return reserveServer(args[0])
 	},
 }
 
 func reserveServer(id string) error {
-	reserveRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerReserve](Filename, commandName)
+	reserveRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerReserve](Filename)
 
 	if err != nil {
 		return err
 	}
 
 	serverResponse, httpResponse, err := bmcapi.Client.ServerReserve(id, *reserveRequest)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintServerResponse(serverResponse, Full, commandName)
+		return printer.PrintServerResponse(serverResponse, Full)
 	}
 }

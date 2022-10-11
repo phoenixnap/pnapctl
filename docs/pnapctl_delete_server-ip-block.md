@@ -25,7 +25,7 @@ deleteIpBlocks: false
 ### Options
 
 ```
-  -f, --filename string   File containing required information for creation
+  -f, --filename string   File containing required information for deletion
   -h, --help              help for server-ip-block
 ```
 

@@ -6,6 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -35,7 +36,7 @@ func TestDeleteServerPublicNetworkNotFound(test_framework *testing.T) {
 	err := DeleteServerPublicNetworkCmd.RunE(DeleteServerPublicNetworkCmd, []string{RESOURCEID, RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'delete server-public-network' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 
 }
@@ -49,7 +50,7 @@ func TestDeleteServerPublicNetworkError(test_framework *testing.T) {
 	// Run command
 	err := DeleteServerPublicNetworkCmd.RunE(DeleteServerPublicNetworkCmd, []string{RESOURCEID, RESOURCEID})
 
-	expectedMessage := "Command 'delete server-public-network' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 
 	// Assertions
 	assert.Equal(test_framework, expectedMessage, err.Error())
@@ -65,7 +66,7 @@ func TestDeleteServerPublicNetworkClientFailure(test_framework *testing.T) {
 	err := DeleteServerPublicNetworkCmd.RunE(DeleteServerPublicNetworkCmd, []string{RESOURCEID, RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "delete server-public-network", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())

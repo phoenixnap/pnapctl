@@ -7,9 +7,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-var commandName = "create reservation"
 
 var (
 	Full     bool
@@ -37,12 +36,13 @@ pnapctl create reservation <RESERVATION_ID> --filename=<FILENAME>
 # reservationCreate.yaml
 sku: "skuCode"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return createReservation()
 	},
 }
 
 func createReservation() error {
-	reservationCreate, err := models.CreateRequestFromFile[billingapi.ReservationRequest](Filename, commandName)
+	reservationCreate, err := models.CreateRequestFromFile[billingapi.ReservationRequest](Filename)
 
 	if err != nil {
 		return err
@@ -50,11 +50,11 @@ func createReservation() error {
 
 	// Create the server
 	response, httpResponse, err := billing.Client.ReservationsPost(*reservationCreate)
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintReservationResponse(response, Full, commandName)
+		return printer.PrintReservationResponse(response, Full)
 	}
 }

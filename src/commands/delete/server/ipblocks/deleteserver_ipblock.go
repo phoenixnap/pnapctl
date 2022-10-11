@@ -8,12 +8,11 @@ import (
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "delete server-ip-block"
 
 func init() {
 	utils.SetupFilenameFlag(DeleteServerIpBlockCmd, &Filename, utils.DELETION)
@@ -34,19 +33,20 @@ pnapctl delete server-ip-block <SERVER_ID> <IP_BLOCK_ID> --filename <FILE_PATH>
 # serveripblockdelete.yaml
 deleteIpBlocks: false`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return deleteIpBlockFromServer(args[0], args[1])
 	},
 }
 
 func deleteIpBlockFromServer(serverId, ipBlockId string) error {
-	relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename, commandName)
+	relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename)
 
 	if err != nil {
 		return err
 	}
 
 	result, httpResponse, err := bmcapi.Client.ServerIpBlockDelete(serverId, ipBlockId, *relinquishIpBlockRequest)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError

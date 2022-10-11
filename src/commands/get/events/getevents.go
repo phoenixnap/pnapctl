@@ -6,6 +6,7 @@ import (
 	qp "phoenixnap.com/pnapctl/common/models/queryparams/audit"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 const commandName string = "get events"
@@ -42,7 +43,8 @@ By default, the data is printed in table format.`,
 	Example: `
 # List all events.
 pnapctl get events [--from <FROM>] [--to <TO>] [--limit <LIMIT>] [--order <ORDER>] [--username <USERNAME>] [--verb <VERB>] [--uri <URI>] [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, _ []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
 		return getEvents()
 	},
 }
@@ -54,11 +56,11 @@ func getEvents() error {
 	}
 
 	events, httpResponse, err := audit.Client.EventsGet(*params)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintEventListResponse(events, commandName)
+		return printer.PrintEventListResponse(events)
 	}
 }

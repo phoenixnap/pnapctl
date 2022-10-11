@@ -6,6 +6,7 @@ import (
 	qp "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 const commandName string = "get rated-usage month-to-date"
@@ -35,7 +36,8 @@ Every record corresponds to a charge. All dates & times are in UTC.`,
 	Example: `
 # List all rated-usages	
 `,
-	RunE: func(_ *cobra.Command, _ []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
 		return getRatedUsageMonthToDate()
 	},
 }
@@ -48,11 +50,11 @@ func getRatedUsageMonthToDate() error {
 
 	ratedUsageRecords, httpResponse, err := billing.Client.RatedUsageMonthToDateGet(*queryParams)
 
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintRatedUsageListResponse(ratedUsageRecords, Full, commandName)
+		return printer.PrintRatedUsageListResponse(ratedUsageRecords, Full)
 	}
 }

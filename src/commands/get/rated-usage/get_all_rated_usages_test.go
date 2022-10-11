@@ -10,6 +10,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -34,7 +35,7 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(recordTables, "get rated-usage").
+		PrintOutput(recordTables).
 		Return(nil)
 
 	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
@@ -62,7 +63,7 @@ func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(recordTables, "get rated-usage").
+		PrintOutput(recordTables).
 		Return(nil)
 
 	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
@@ -103,7 +104,7 @@ func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(recordTables, "get rated-usage").
+		PrintOutput(recordTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
@@ -124,7 +125,7 @@ func TestGetAllRatedUsages_ServerError(test_framework *testing.T) {
 	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
 
 	// Assertions
-	expectedMessage := "Command 'get rated-usage' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 

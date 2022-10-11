@@ -5,6 +5,7 @@ import (
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 const commandName string = "get private-network"
@@ -34,7 +35,8 @@ pnapctl get private-networks [--location <LOCATION>] [--output <OUTPUT_TYPE>]
 
 # List all details of a specific private network.
 pnapctl get private-networks <PRIVATE_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
 			return getPrivateNetworkById(args[0])
 		}
@@ -46,11 +48,11 @@ func getPrivateNetworks() error {
 	privateNetworks, httpResponse, err := networks.Client.PrivateNetworksGet(location)
 
 	if httpResponse != nil && httpResponse.StatusCode != 200 {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
+		return ctlerrors.HandleBMCError(httpResponse)
 	} else if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		return ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 	} else {
-		return printer.PrintPrivateNetworkListResponse(privateNetworks, commandName)
+		return printer.PrintPrivateNetworkListResponse(privateNetworks)
 	}
 }
 
@@ -58,10 +60,10 @@ func getPrivateNetworkById(privateNetworkID string) error {
 	privateNetwork, httpResponse, err := networks.Client.PrivateNetworkGetById(privateNetworkID)
 
 	if httpResponse != nil && httpResponse.StatusCode != 200 {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
+		return ctlerrors.HandleBMCError(httpResponse)
 	} else if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		return ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 	} else {
-		return printer.PrintPrivateNetworkResponse(privateNetwork, commandName)
+		return printer.PrintPrivateNetworkResponse(privateNetwork)
 	}
 }

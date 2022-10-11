@@ -7,12 +7,11 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "create server-public-network"
 
 func init() {
 	utils.SetupOutputFlag(CreateServerPublicNetworkCmd)
@@ -38,13 +37,14 @@ ips:
 statusDescription: in-progress
 `,
 
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return createPublicNetworkForServer(args[0])
 	},
 }
 
 func createPublicNetworkForServer(id string) error {
-	serverPublicNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPublicNetwork](Filename, commandName)
+	serverPublicNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPublicNetwork](Filename)
 
 	if err != nil {
 		return err
@@ -53,11 +53,11 @@ func createPublicNetworkForServer(id string) error {
 	// Create the server private network
 	response, httpResponse, err := bmcapi.Client.ServerPublicNetworkPost(id, *serverPublicNetwork)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintServerPublicNetwork(response, commandName)
+		return printer.PrintServerPublicNetwork(response)
 	}
 }

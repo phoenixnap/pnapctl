@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
@@ -13,8 +14,6 @@ import (
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "reset server"
 
 func init() {
 	// filename is optional
@@ -41,7 +40,8 @@ sshKeys:
 	- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyVGaw1PuEl98f4/7Kq3O9ZIvDw2OFOSXAFVqilSFNkHlefm1iMtPeqsIBp2t9cbGUf55xNDULz/bD/4BCV43yZ5lh0cUYuXALg9NI29ui7PEGReXjSpNwUD6ceN/78YOK41KAcecq+SS0bJ4b4amKZIJG3JWmDKljtv1dmSBCrTmEAQaOorxqGGBYmZS7NQumRe4lav5r6wOs8OACMANE1ejkeZsGFzJFNqvr5DuHdDL5FAudW23me3BDmrM9ifUzzjl1Jwku3bnRaCcjaxH8oTumt1a00mWci/1qUlaVFft085yvVq7KZbF2OPPbl+erDW91+EZ2FgEi+v1/CSJ5 test2@test
 sshKeyIds: 
 	- 5fa54d1e91867c03a0a7b4a4`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return resetServer(args[0])
 	},
 }
@@ -51,14 +51,14 @@ func resetServer(id string) error {
 	var err error
 
 	if Filename != "" {
-		request, err = models.CreateRequestFromFile[bmcapisdk.ServerReset](Filename, commandName)
+		request, err = models.CreateRequestFromFile[bmcapisdk.ServerReset](Filename)
 		if err != nil {
 			return err
 		}
 	}
 
 	result, httpResponse, err := bmcapi.Client.ServerReset(id, *request)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError

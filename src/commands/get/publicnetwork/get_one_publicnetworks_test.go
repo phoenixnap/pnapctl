@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -22,7 +23,7 @@ func TestGetPublicNetworkSuccess(test_framework *testing.T) {
 		Return(&publicNetworkSdk, WithResponse(200, WithBody(publicNetworkSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(publicNetworkTable, "get public-network").
+		PrintOutput(publicNetworkTable).
 		Return(nil)
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})
@@ -42,7 +43,7 @@ func TestGetPublicNetworkNotFound(test_framework *testing.T) {
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'get public-network' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.EqualError(test_framework, err, expectedMessage)
 }
 
@@ -54,7 +55,7 @@ func TestGetPublicNetworkClientFailure(test_framework *testing.T) {
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get public-network", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -80,7 +81,7 @@ func TestGetPublicNetworkPrinterFailure(test_framework *testing.T) {
 		Return(&publicNetworkSdk, WithResponse(200, WithBody(publicNetworkSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(publicNetworkTable, "get public-network").
+		PrintOutput(publicNetworkTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})

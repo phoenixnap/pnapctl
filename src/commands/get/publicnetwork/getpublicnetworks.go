@@ -6,9 +6,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models/queryparams/network"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-var commandName = "get public-network"
 
 var (
 	location string
@@ -38,7 +37,8 @@ pnapctl get public-networks [--location <LOCATION>] [--output <OUTPUT_TYPE>]
 
 # List all details of a specific public network.
 pnapctl get public-networks <PUBLIC_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) > 0 {
 			return getPublicNetworkById(&args[0])
 		}
@@ -55,19 +55,19 @@ func getPublicNetworks() error {
 
 	publicNetworks, httpResponse, err := networks.Client.PublicNetworksGet(*queryParams)
 
-	if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
+	if generatedError := utils.CheckForErrors(httpResponse, err); *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintPublicNetworkListResponse(publicNetworks, commandName)
+		return printer.PrintPublicNetworkListResponse(publicNetworks)
 	}
 }
 
 func getPublicNetworkById(id *string) error {
 	publicNetwork, httpResponse, err := networks.Client.PublicNetworkGetById(*id)
 
-	if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
+	if generatedError := utils.CheckForErrors(httpResponse, err); *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintPublicNetworkResponse(publicNetwork, commandName)
+		return printer.PrintPublicNetworkResponse(publicNetwork)
 	}
 }

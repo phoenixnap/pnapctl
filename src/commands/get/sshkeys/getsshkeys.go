@@ -5,6 +5,7 @@ import (
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 const commandName string = "get ssh-keys"
@@ -34,7 +35,8 @@ pnapctl get ssh-keys [--full] [--output <OUTPUT_TYPE>]
 
 # List a specific ssh-key.
 pnapctl get ssh-key <SSH_KEY_ID> [--full] [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
 			return getSshKeyById(args[0])
 		}
@@ -45,23 +47,23 @@ pnapctl get ssh-key <SSH_KEY_ID> [--full] [--output <OUTPUT_TYPE>]`,
 func getSshKeys() error {
 	sshKeys, httpResponse, err := bmcapi.Client.SshKeysGet()
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintSshKeyListResponse(sshKeys, Full, commandName)
+		return printer.PrintSshKeyListResponse(sshKeys, Full)
 	}
 }
 
 func getSshKeyById(sshKeyId string) error {
 	sshKey, httpResponse, err := bmcapi.Client.SshKeyGetById(sshKeyId)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintSshKeyResponse(sshKey, Full, commandName)
+		return printer.PrintSshKeyResponse(sshKey, Full)
 	}
 }

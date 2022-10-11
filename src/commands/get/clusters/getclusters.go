@@ -4,6 +4,7 @@ import (
 	"phoenixnap.com/pnapctl/common/client/rancher"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
 )
@@ -28,7 +29,8 @@ pnapctl get clusters [--output <OUTPUT_TYPE>]
 
 # List a specific cluster.
 pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
 			return getClusterById(args[0])
 		}
@@ -39,24 +41,24 @@ pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
 func getClusters() error {
 	clusters, httpResponse, err := rancher.Client.ClustersGet()
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintClusterListResponse(clusters, commandName)
+		return printer.PrintClusterListResponse(clusters)
 	}
 }
 
 func getClusterById(clusterID string) error {
 	cluster, httpResponse, err := rancher.Client.ClusterGetById(clusterID)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintClusterResponse(cluster, commandName)
+		return printer.PrintClusterResponse(cluster)
 	}
 }
 

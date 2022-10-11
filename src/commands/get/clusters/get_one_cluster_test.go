@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -23,7 +24,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 		Return(&cluster, WithResponse(200, WithBody(cluster)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterTable, "get clusters").
+		PrintOutput(clusterTable).
 		Return(nil)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
@@ -40,7 +41,7 @@ func TestGetServerNotFound(test_framework *testing.T) {
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'get clusters' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
@@ -52,7 +53,7 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get clusters", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -78,7 +79,7 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 		Return(&cluster, WithResponse(200, WithBody(cluster)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterTable, "get clusters").
+		PrintOutput(clusterTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})

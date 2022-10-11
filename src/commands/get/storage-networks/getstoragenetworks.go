@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 const commandName = "get storage-networks"
@@ -33,7 +34,8 @@ pnapctl get storage-networks [--output <OUTPUT_TYPE>]
 
 # List a specific storage network.
 pnapctl get storage-network <ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
 			return getStorageNetworksById(args[0])
 		}
@@ -44,19 +46,19 @@ pnapctl get storage-network <ID> [--output <OUTPUT_TYPE>]`,
 func getStorageNetworks() error {
 	storagenetworks, httpResponse, err := networkstorage.Client.NetworkStorageGet()
 
-	if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
+	if generatedError := utils.CheckForErrors(httpResponse, err); *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintStorageNetworkListResponse(storagenetworks, commandName)
+		return printer.PrintStorageNetworkListResponse(storagenetworks)
 	}
 }
 
 func getStorageNetworksById(id string) error {
 	storagenetwork, httpResponse, err := networkstorage.Client.NetworkStorageGetById(id)
 
-	if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
+	if generatedError := utils.CheckForErrors(httpResponse, err); *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintStorageNetworkResponse(storagenetwork, commandName)
+		return printer.PrintStorageNetworkResponse(storagenetwork)
 	}
 }

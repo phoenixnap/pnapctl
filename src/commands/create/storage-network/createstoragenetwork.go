@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 const commandName = "create storage-network"
@@ -39,13 +40,14 @@ volumes:
     description: "VDescription"
     pathSuffix: "/cliyaml"
     capacityInGb: 1000`,
-	RunE: func(_ *cobra.Command, _ []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
 		return createStorageNetwork()
 	},
 }
 
 func createStorageNetwork() error {
-	request, err := models.CreateRequestFromFile[networkstorageapi.StorageNetworkCreate](Filename, commandName)
+	request, err := models.CreateRequestFromFile[networkstorageapi.StorageNetworkCreate](Filename)
 
 	if err != nil {
 		return err
@@ -53,9 +55,9 @@ func createStorageNetwork() error {
 
 	sdkResponse, httpResponse, err := networkstorage.Client.NetworkStoragePost(*request)
 
-	if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
+	if generatedError := utils.CheckForErrors(httpResponse, err); *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintStorageNetworkResponse(sdkResponse, commandName)
+		return printer.PrintStorageNetworkResponse(sdkResponse)
 	}
 }

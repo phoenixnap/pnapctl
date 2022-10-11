@@ -20,7 +20,7 @@ var MainPrinter = NewBodyPrinter()
 var OutputFormat string
 
 type Printer interface {
-	PrintOutput(construct interface{}, commandName string) error
+	PrintOutput(construct interface{}) error
 }
 
 type BodyPrinter struct {
@@ -35,21 +35,21 @@ func NewBodyPrinter() Printer {
 
 // PrintOutput prints the construct passed according to the format.
 // The output parameter specifies whether any errors were encountered during printing
-func (m BodyPrinter) PrintOutput(construct interface{}, commandName string) error {
+func (m BodyPrinter) PrintOutput(construct interface{}) error {
 	if OutputFormat == "json" {
-		return printJSON(construct, commandName)
+		return printJSON(construct)
 	} else if OutputFormat == "yaml" {
-		return printYAML(construct, commandName)
+		return printYAML(construct)
 	} else {
-		return printTable(construct, m.Tableprinter, commandName)
+		return printTable(construct, m.Tableprinter)
 	}
 }
 
 // printJSON attempts to print in JSON via marshalling.
-func printJSON(body interface{}, commandName string) error {
+func printJSON(body interface{}) error {
 	b, err := json.MarshalIndent(body, "", "    ")
 	if err != nil {
-		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, commandName, err)
+		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, err)
 	}
 
 	fmt.Println(string(b))
@@ -57,10 +57,10 @@ func printJSON(body interface{}, commandName string) error {
 }
 
 // printYAML attempts to print in YAML via marshalling.
-func printYAML(body interface{}, commandName string) error {
+func printYAML(body interface{}) error {
 	b, err := yaml.Marshal(body)
 	if err != nil {
-		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, commandName, err)
+		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, err)
 	}
 
 	fmt.Println(string(b))
@@ -68,7 +68,7 @@ func printYAML(body interface{}, commandName string) error {
 }
 
 // Attempts to print the struct as a table.
-func printTable(body interface{}, tblprinter *tableprinter.Printer, commandName string) error {
+func printTable(body interface{}, tblprinter *tableprinter.Printer) error {
 	tblprinter.RowCharLimit = 23
 	rows := tblprinter.Print(body)
 
@@ -86,7 +86,7 @@ func printTable(body interface{}, tblprinter *tableprinter.Printer, commandName 
 		fmt.Println("No data found.")
 		return nil
 	} else if rows == -1 {
-		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, commandName, nil)
+		return ctlerrors.CreateCLIError(ctlerrors.MarshallingInPrinter, nil)
 	}
 
 	return nil

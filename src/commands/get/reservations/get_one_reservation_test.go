@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -22,7 +23,7 @@ func TestGetReservationShortSuccess(test_framework *testing.T) {
 		Return(&reservation, WithResponse(200, WithBody(reservation)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortReservation, "get reservations").
+		PrintOutput(shortReservation).
 		Return(nil)
 
 	Full = false
@@ -41,7 +42,7 @@ func TestGetReservationFullSuccess(test_framework *testing.T) {
 		Return(&reservation, WithResponse(200, WithBody(reservation)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(reservationTable, "get reservations").
+		PrintOutput(reservationTable).
 		Return(nil)
 
 	Full = true
@@ -59,7 +60,7 @@ func TestGetReservationNotFound(test_framework *testing.T) {
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedMessage := "Command 'get reservations' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 
 	// Assertions
 	assert.Equal(test_framework, expectedMessage, err.Error())
@@ -73,7 +74,7 @@ func TestGetReservationClientFailure(test_framework *testing.T) {
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get reservations", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -99,7 +100,7 @@ func TestGetReservationPrinterFailure(test_framework *testing.T) {
 		Return(&reservation, WithResponse(200, WithBody(reservation)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortReservation, "get reservations").
+		PrintOutput(shortReservation).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	Full = false

@@ -28,7 +28,7 @@ func TestGetAllQuotasSuccess(test_framework *testing.T) {
 		Return(quotaList, WithResponse(200, WithBody(quotaList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(quotaTables, "get quotas").
+		PrintOutput(quotaTables).
 		Return(nil)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
@@ -64,7 +64,7 @@ func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
 		Return(quotaList, WithResponse(200, WithBody(quotaList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(quotaTables, "get quotas").
+		PrintOutput(quotaTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})

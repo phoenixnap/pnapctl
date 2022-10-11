@@ -5,14 +5,14 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintTagResponse(tag *tagapisdk.Tag, commandName string) error {
+func PrintTagResponse(tag *tagapisdk.Tag) error {
 	tagToPrint := PrepareTagForPrinting(*tag)
-	return MainPrinter.PrintOutput(tagToPrint, commandName)
+	return MainPrinter.PrintOutput(tagToPrint)
 }
 
-func PrintTagListResponse(tags []tagapisdk.Tag, commandName string) error {
+func PrintTagListResponse(tags []tagapisdk.Tag) error {
 	tagListToPrint := PrepareTagListForPrinting(tags)
-	return MainPrinter.PrintOutput(tagListToPrint, commandName)
+	return MainPrinter.PrintOutput(tagListToPrint)
 }
 
 func PrepareTagForPrinting(tag tagapisdk.Tag) interface{} {

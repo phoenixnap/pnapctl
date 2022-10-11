@@ -2,6 +2,7 @@ package ip_blocks
 
 import (
 	"phoenixnap.com/pnapctl/common/client/ip"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -37,7 +38,8 @@ pnapctl get ip-blocks [--output <OUTPUT_TYPE>]
 
 # List a specific ip-block.
 pnapctl get ip-block <IP_BLOCK_ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
 			return getIpBlockById(args[0])
 		}
@@ -48,23 +50,23 @@ pnapctl get ip-block <IP_BLOCK_ID> [--output <OUTPUT_TYPE>]`,
 func getIpBlocks() error {
 	ipBlocks, httpResponse, err := ip.Client.IpBlocksGet(tags)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintIpBlockListResponse(ipBlocks, Full, commandName)
+		return printer.PrintIpBlockListResponse(ipBlocks, Full)
 	}
 }
 
 func getIpBlockById(ipBlockId string) error {
 	ipBlock, httpResponse, err := ip.Client.IpBlocksGetById(ipBlockId)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintIpBlockResponse(ipBlock, Full, commandName)
+		return printer.PrintIpBlockResponse(ipBlock, Full)
 	}
 }

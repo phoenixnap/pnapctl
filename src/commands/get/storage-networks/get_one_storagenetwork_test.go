@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -24,7 +25,7 @@ func TestGetStorageNetworkByIdSuccess(test_framework *testing.T) {
 		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable, "get storage-networks").
+		PrintOutput(networkStorageTable).
 		Return(nil)
 
 	// Run command
@@ -44,7 +45,7 @@ func TestGetStorageNetworkByIdNotFound(test_framework *testing.T) {
 	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'get storage-networks' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
@@ -58,7 +59,7 @@ func TestGetStorageNetworkByIdClientFailure(test_framework *testing.T) {
 	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "get storage-networks", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -88,7 +89,7 @@ func TestGetStorageNetworkByIdPrinterFailure(test_framework *testing.T) {
 		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable, "get storage-networks").
+		PrintOutput(networkStorageTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	// Run command

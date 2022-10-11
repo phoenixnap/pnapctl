@@ -8,12 +8,11 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "create server-ip-block"
 
 func init() {
 	utils.SetupOutputFlag(CreateServerIpBlockCmd)
@@ -35,13 +34,14 @@ pnapctl create server-ip-block <SERVER_ID> --filename <FILE_PATH> [--output <OUT
 # servercreateipblock.yaml
 id: 5ff5cc9bc1acf144d9106233
 vlanId: 11`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return createIpBlockForServer(args[0])
 	},
 }
 
 func createIpBlockForServer(id string) error {
-	serverIpBlock, err := models.CreateRequestFromFile[bmcapisdk.ServerIpBlock](Filename, commandName)
+	serverIpBlock, err := models.CreateRequestFromFile[bmcapisdk.ServerIpBlock](Filename)
 
 	if err != nil {
 		return err
@@ -50,11 +50,11 @@ func createIpBlockForServer(id string) error {
 	// Create the server ip block
 	response, httpResponse, err := bmcapi.Client.ServerIpBlockPost(id, *serverIpBlock)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintServerIpBlock(response, commandName)
+		return printer.PrintServerIpBlock(response)
 	}
 }

@@ -7,12 +7,11 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "update ssh-key"
 
 var Full bool
 
@@ -37,13 +36,14 @@ pnapctl update ssh-key <SSH_KEY_ID> --filename <FILE_PATH> [--full] [--output <O
 # sshKeyUpdate.yaml
 default: true
 name: default ssh key`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return updateSshKey(args[0])
 	},
 }
 
 func updateSshKey(id string) error {
-	sshKeyUpdate, err := models.CreateRequestFromFile[bmcapisdk.SshKeyUpdate](Filename, commandName)
+	sshKeyUpdate, err := models.CreateRequestFromFile[bmcapisdk.SshKeyUpdate](Filename)
 
 	if err != nil {
 		return err
@@ -51,11 +51,11 @@ func updateSshKey(id string) error {
 
 	// update the ssh key
 	response, httpResponse, err := bmcapi.Client.SshKeyPut(id, *sshKeyUpdate)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintSshKeyResponse(response, Full, commandName)
+		return printer.PrintSshKeyResponse(response, Full)
 	}
 }

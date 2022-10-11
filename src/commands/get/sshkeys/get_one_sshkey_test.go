@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -23,7 +24,7 @@ func TestGetSshKeyByIdFullSuccess(test_framework *testing.T) {
 		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTable, "get ssh-keys").
+		PrintOutput(sshKeyTable).
 		Return(nil)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
@@ -42,7 +43,7 @@ func TestGetSshKeyByIdSuccess(test_framework *testing.T) {
 		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTable, "get ssh-keys").
+		PrintOutput(sshKeyTable).
 		Return(nil)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
@@ -59,7 +60,7 @@ func TestGetSshKeyByIdNotFound(test_framework *testing.T) {
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'get ssh-keys' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
@@ -71,7 +72,7 @@ func TestGetSshKeyByIdClientFailure(test_framework *testing.T) {
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get ssh-keys", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -98,7 +99,7 @@ func TestGetSshKeyByIdPrinterFailure(test_framework *testing.T) {
 		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTable, "get ssh-keys").
+		PrintOutput(sshKeyTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})

@@ -25,7 +25,7 @@ func TestGetAllStorageNetworksSuccess(test_framework *testing.T) {
 		Return(networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTables, "get storage-networks").
+		PrintOutput(networkStorageTables).
 		Return(nil)
 
 	// Run command
@@ -45,7 +45,7 @@ func TestGetAllStorageNetworksClientFailure(test_framework *testing.T) {
 	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "get storage-networks", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -75,7 +75,7 @@ func TestGetAllStorageNetworksPrinterFailure(test_framework *testing.T) {
 		Return(networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTables, "get storage-networks").
+		PrintOutput(networkStorageTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	// Run command

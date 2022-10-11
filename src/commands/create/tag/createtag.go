@@ -7,12 +7,11 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "create tag"
 
 func init() {
 	utils.SetupOutputFlag(CreateTagCmd)
@@ -36,13 +35,14 @@ name: TagName
 description: The description of the tag.
 isBillingTag: false
 `,
-	RunE: func(_ *cobra.Command, _ []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
 		return createTag()
 	},
 }
 
 func createTag() error {
-	tagCreate, err := models.CreateRequestFromFile[tagapi.TagCreate](Filename, commandName)
+	tagCreate, err := models.CreateRequestFromFile[tagapi.TagCreate](Filename)
 
 	if err != nil {
 		return err
@@ -50,11 +50,11 @@ func createTag() error {
 
 	// Create the tag
 	response, httpResponse, err := tags.Client.TagPost(*tagCreate)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintTagResponse(response, commandName)
+		return printer.PrintTagResponse(response)
 	}
 }

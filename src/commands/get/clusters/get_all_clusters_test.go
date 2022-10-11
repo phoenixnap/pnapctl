@@ -28,7 +28,7 @@ func TestGetAllClustersShortSuccess(test_framework *testing.T) {
 		Return(clusters, WithResponse(200, WithBody(clusters)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterlist, "get clusters").
+		PrintOutput(clusterlist).
 		Return(nil)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
@@ -46,7 +46,7 @@ func TestGetAllClustersClientFailure(test_framework *testing.T) {
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get Clusters", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -78,7 +78,7 @@ func TestGetAllClustersPrinterFailure(test_framework *testing.T) {
 		Return(clusters, WithResponse(200, WithBody(clusters)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterlist, "get clusters").
+		PrintOutput(clusterlist).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})

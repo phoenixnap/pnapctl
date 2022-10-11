@@ -4,6 +4,7 @@ import (
 	tagclient "phoenixnap.com/pnapctl/common/client/tags"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
 )
@@ -35,7 +36,8 @@ pnapctl get tags [--output <OUTPUT_TYPE>]
 
 # List a specific tag.
 pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
 			return getTagById(args[0])
 		}
@@ -46,23 +48,23 @@ pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
 func getTags() error {
 	tags, httpResponse, err := tagclient.Client.TagsGet(Name)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintTagListResponse(tags, commandName)
+		return printer.PrintTagListResponse(tags)
 	}
 }
 
 func getTagById(tagID string) error {
 	tag, httpResponse, err := tagclient.Client.TagGetById(tagID)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintTagResponse(tag, commandName)
+		return printer.PrintTagResponse(tag)
 	}
 }

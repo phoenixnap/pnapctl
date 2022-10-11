@@ -6,12 +6,11 @@ import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "delete server-private-network"
 
 // DeleteServerPrivateNetworkCmd is the command for creating a server.
 var DeleteServerPrivateNetworkCmd = &cobra.Command{
@@ -25,14 +24,15 @@ Requires two IDs passed as arguments. First one being the server id and second b
 	Example: `# remove a server from a private network 
 pnapctl delete server-private-network <SERVER_ID> <PRIVATE_NETWORK_ID>
 `,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return deletePrivateNetworkFromServer(args[0], args[1])
 	},
 }
 
 func deletePrivateNetworkFromServer(serverId, privateNetworkId string) error {
 	result, httpResponse, err := bmcapi.Client.ServerPrivateNetworkDelete(serverId, privateNetworkId)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError

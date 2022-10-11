@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -22,7 +23,7 @@ func TestGetIpBlocksSuccess(test_framework *testing.T) {
 		Return(&ipBlock, WithResponse(200, WithBody(ipBlock)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tableIpBlock, "get ip-blocks").
+		PrintOutput(tableIpBlock).
 		Return(nil)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
@@ -39,7 +40,7 @@ func TestGetIpBlocksNotFound(test_framework *testing.T) {
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'get ip-blocks' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
@@ -51,7 +52,7 @@ func TestGetIpBlocksClientFailure(test_framework *testing.T) {
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get ip-blocks", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -77,7 +78,7 @@ func TestGetIpBlocksPrinterFailure(test_framework *testing.T) {
 		Return(&ipBlock, WithResponse(200, WithBody(tableIpBlock)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tableIpBlock, "get ip-blocks").
+		PrintOutput(tableIpBlock).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})

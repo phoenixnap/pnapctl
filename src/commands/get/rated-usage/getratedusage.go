@@ -6,6 +6,7 @@ import (
 	qp "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
 )
@@ -49,7 +50,8 @@ Note: "from" and "to" are required and need to be in a valid YYYY/MM format.`,
 # List all rated usages.
 pnapctl get rated-usages --from=2020/10 --to=2021/11 [--category <CATEGORY>] [--output <OUTPUT_TYPE>]
 `,
-	RunE: func(_ *cobra.Command, _ []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
 		return getRatedUsage()
 	},
 }
@@ -62,11 +64,11 @@ func getRatedUsage() error {
 
 	ratedUsageRecords, httpResponse, err := billing.Client.RatedUsageGet(*queryParams)
 
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintRatedUsageListResponse(ratedUsageRecords, Full, commandName)
+		return printer.PrintRatedUsageListResponse(ratedUsageRecords, Full)
 	}
 }

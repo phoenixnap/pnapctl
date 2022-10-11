@@ -6,9 +6,8 @@ import (
 	qp "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-var commandName = "get reservations"
 
 var (
 	Full            bool
@@ -35,7 +34,8 @@ pnapctl get reservations [--category=<CATEGORY>] [--full] [--output=<OUTPUT_TYPE
 
 # Retrieve a specific reservation
 pnapctl get reservation <RESERVATION_ID> [--full] [--output=<OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
 			return getReservationById(args[0])
 		}
@@ -52,23 +52,23 @@ func getReservations() error {
 
 	reservations, httpResponse, err := billing.Client.ReservationsGet(*queryParams)
 
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintReservationListResponse(reservations, Full, commandName)
+		return printer.PrintReservationListResponse(reservations, Full)
 	}
 }
 
 func getReservationById(reservationId string) error {
 	reservation, httpResponse, err := billing.Client.ReservationGetById(reservationId)
 
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintReservationResponse(reservation, Full, commandName)
+		return printer.PrintReservationResponse(reservation, Full)
 	}
 }

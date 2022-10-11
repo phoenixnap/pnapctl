@@ -7,12 +7,11 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "create server-private-network"
 
 func init() {
 	utils.SetupOutputFlag(CreateServerPrivateNetworkCmd)
@@ -40,13 +39,14 @@ dhcp: false
 statusDescription: in-progress
 `,
 
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return createPrivateNetworkForServer(args[0])
 	},
 }
 
 func createPrivateNetworkForServer(id string) error {
-	serverPrivateNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPrivateNetwork](Filename, commandName)
+	serverPrivateNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPrivateNetwork](Filename)
 
 	if err != nil {
 		return err
@@ -55,11 +55,11 @@ func createPrivateNetworkForServer(id string) error {
 	// Create the server private network
 	response, httpResponse, err := bmcapi.Client.ServerPrivateNetworkPost(id, *serverPrivateNetwork)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintServerPrivateNetwork(response, commandName)
+		return printer.PrintServerPrivateNetwork(response)
 	}
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/rancher"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 const commandName = "delete cluster"
@@ -17,14 +18,15 @@ var DeleteClusterCmd = &cobra.Command{
 	Example:      `pnapctl delete cluster <CLUSTER_ID>`,
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return deleteCluster(args[0])
 	},
 }
 
 func deleteCluster(id string) error {
 	result, httpResponse, err := rancher.Client.ClusterDelete(id)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError

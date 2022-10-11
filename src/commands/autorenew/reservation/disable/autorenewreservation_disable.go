@@ -7,9 +7,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-var commandName = "auto-renew reservation disable"
 
 var (
 	Full     bool
@@ -36,23 +35,24 @@ pnapctl auto-renew reservation disable <RESERVATION_ID> --filename=<FILENAME>
 
 # reservationAutoRenewDisable.yaml
 autoRenewDisableReasons: "disable reason"`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return disableAutoRenewForReservation(args[0])
 	},
 }
 
 func disableAutoRenewForReservation(id string) error {
-	request, err := models.CreateRequestFromFile[billingapi.ReservationAutoRenewDisableRequest](Filename, commandName)
+	request, err := models.CreateRequestFromFile[billingapi.ReservationAutoRenewDisableRequest](Filename)
 	if err != nil {
 		return err
 	}
 
 	response, httpResponse, err := billing.Client.ReservationDisableAutoRenew(id, *request)
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintReservationResponse(response, Full, commandName)
+		return printer.PrintReservationResponse(response, Full)
 	}
 }

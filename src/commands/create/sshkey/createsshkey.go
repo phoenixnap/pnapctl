@@ -8,12 +8,11 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "create ssh-key"
 
 var Full bool
 
@@ -39,13 +38,14 @@ pnapctl create ssh-key --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 default: true
 name: default ssh key
 key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyVGaw1PuEl98f4/7Kq3O9ZIvDw2OFOSXAFVqilSFNkHlefm1iMtPeqsIBp2t9cbGUf55xNDULz/bD/4BCV43yZ5lh0cUYuXALg9NI29ui7PEGReXjSpNwUD6ceN/78YOK41KAcecq+SS0bJ4b4amKZIJG3JWmDKljtv1dmSBCrTmEAQaOorxqGGBYmZS7NQumRe4lav5r6wOs8OACMANE1ejkeZsGFzJFNqvr5DuHdDL5FAudW23me3BDmrM9ifUzzjl1Jwku3bnRaCcjaxH8oTumt1a00mWci/1qUlaVFft085yvVq7KZbF2OPPbl+erDW91+EZ2FgEi+v1/CSJ5 test2@test`,
-	RunE: func(_ *cobra.Command, _ []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
 		return createSshKey()
 	},
 }
 
 func createSshKey() error {
-	sshKeyCreate, err := models.CreateRequestFromFile[bmcapisdk.SshKeyCreate](Filename, commandName)
+	sshKeyCreate, err := models.CreateRequestFromFile[bmcapisdk.SshKeyCreate](Filename)
 
 	if err != nil {
 		return err
@@ -53,11 +53,11 @@ func createSshKey() error {
 
 	// Create the ssh key
 	response, httpResponse, err := bmcapi.Client.SshKeyPost(*sshKeyCreate)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintSshKeyResponse(response, Full, commandName)
+		return printer.PrintSshKeyResponse(response, Full)
 	}
 }

@@ -28,7 +28,7 @@ func TestGetAllPrivateNetworksShortSuccess(test_framework *testing.T) {
 		Return(privateNetworks, WithResponse(200, WithBody(privateNetworks)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkList, "get private-network").
+		PrintOutput(privateNetworkList).
 		Return(nil)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
@@ -46,7 +46,7 @@ func TestGetAllPrivateNetworksClientFailure(test_framework *testing.T) {
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get servers", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -78,7 +78,7 @@ func TestGetAllPrivateNetworksPrinterFailure(test_framework *testing.T) {
 		Return(privateNetworks, WithResponse(200, WithBody(privateNetworks)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkList, "get private-network").
+		PrintOutput(privateNetworkList).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})

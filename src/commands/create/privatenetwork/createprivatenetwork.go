@@ -8,12 +8,11 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "create private-network"
 
 func init() {
 	utils.SetupOutputFlag(CreatePrivateNetworkCmd)
@@ -39,12 +38,13 @@ locationDefault: false,
 description: Example CLI Network,
 cidr: 10.0.0.0/24`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return createPrivateNetwork()
 	},
 }
 
 func createPrivateNetwork() error {
-	privateNetworkCreate, err := models.CreateRequestFromFile[networkapi.PrivateNetworkCreate](Filename, commandName)
+	privateNetworkCreate, err := models.CreateRequestFromFile[networkapi.PrivateNetworkCreate](Filename)
 
 	if err != nil {
 		return err
@@ -54,10 +54,10 @@ func createPrivateNetwork() error {
 	response, httpResponse, err := networks.Client.PrivateNetworksPost(*privateNetworkCreate)
 
 	if httpResponse != nil && httpResponse.StatusCode != 201 {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
+		return ctlerrors.HandleBMCError(httpResponse)
 	} else if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		return ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 	} else {
-		return printer.PrintPrivateNetworkResponse(response, commandName)
+		return printer.PrintPrivateNetworkResponse(response)
 	}
 }

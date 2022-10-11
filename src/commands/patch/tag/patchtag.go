@@ -7,12 +7,11 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "patch tag"
 
 func init() {
 	utils.SetupOutputFlag(PatchTagCmd)
@@ -35,23 +34,24 @@ pnapctl patch tag <TAG_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 name: Tag Name
 description: The description of the tag.
 isBillingTag: false`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return patchTag(args[0])
 	},
 }
 
 func patchTag(id string) error {
-	tagEdit, err := models.CreateRequestFromFile[tagapi.TagUpdate](Filename, commandName)
+	tagEdit, err := models.CreateRequestFromFile[tagapi.TagUpdate](Filename)
 	if err != nil {
 		return err
 	}
 
 	tag, httpResponse, err := tags.Client.TagPatch(id, *tagEdit)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintTagResponse(tag, commandName)
+		return printer.PrintTagResponse(tag)
 	}
 }

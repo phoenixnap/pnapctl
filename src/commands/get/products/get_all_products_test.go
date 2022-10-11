@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -31,7 +32,7 @@ func TestGetAllProducts_FullTable(test_framework *testing.T) {
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(products, "get products").
+		PrintOutput(products).
 		Return(nil)
 
 	err := GetProductsCmd.RunE(GetProductsCmd, []string{})
@@ -72,7 +73,7 @@ func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(products, "get products").
+		PrintOutput(products).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetProductsCmd.RunE(GetProductsCmd, []string{})
@@ -93,7 +94,7 @@ func TestGetAllProducts_ServerError(test_framework *testing.T) {
 	err := GetProductsCmd.RunE(GetProductsCmd, []string{})
 
 	// Assertions
-	expectedMessage := "Command 'get products' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 

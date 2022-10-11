@@ -6,6 +6,7 @@ import (
 	qp "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 const commandName string = "get products"
@@ -36,7 +37,8 @@ var GetProductsCmd = &cobra.Command{
 Prints all information about products.
 By default, the data is printed in table format.`,
 	Example: ``,
-	RunE: func(_ *cobra.Command, _ []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
 		return getProducts()
 	},
 }
@@ -46,11 +48,11 @@ func getProducts() error {
 
 	products, httpResponse, err := billing.Client.ProductsGet(queryParams)
 
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintProductListResponse(products, commandName)
+		return printer.PrintProductListResponse(products)
 	}
 }

@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 var Filename string
@@ -35,13 +36,14 @@ Requires a file (yaml or json) containing the information needed to update the i
 	# ipblockpatch.yaml
 	description: ip block description`,
 
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return patchIpBlock(args[0])
 	},
 }
 
 func patchIpBlock(id string) error {
-	ipBlockPatch, err := models.CreateRequestFromFile[ipapi.IpBlockPatch](Filename, commandName)
+	ipBlockPatch, err := models.CreateRequestFromFile[ipapi.IpBlockPatch](Filename)
 
 	if err != nil {
 		return err
@@ -49,11 +51,11 @@ func patchIpBlock(id string) error {
 
 	response, httpResponse, err := ip.Client.IpBlocksIpBlockIdPatch(id, *ipBlockPatch)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintIpBlockResponse(response, Full, commandName)
+		return printer.PrintIpBlockResponse(response, Full)
 	}
 }

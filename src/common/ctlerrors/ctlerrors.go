@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 /*
@@ -65,22 +67,22 @@ func FileNotExistError(filename string) error {
 }
 
 // A generic error used for generic cases in commands.
-func CreateCLIError(errorCode string, command string, cause error) CLIError {
+func CreateCLIError(errorCode string, cause error) CLIError {
 	return CLIError{
-		Message: "Command '" + command + "' has been performed, but something went wrong. Error code: " + errorCode,
+		Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: " + errorCode,
 		Cause:   cause,
 	}
 }
 
 // GenericFailedRequestError is used when an error occurs before the request has been executed.
 // Requires the error that caused this issue, the command name being executed and a potential error code
-func GenericFailedRequestError(err error, commandName string, errorCode string) error {
+func GenericFailedRequestError(err error, errorCode string) error {
 	if e, isCtlError := err.(PnapctlError); isCtlError {
 		return e
 	}
 
 	return CLIError{
-		Message: "Command '" + commandName + "' could not be performed. Error code: " + errorCode,
+		Message: "Command '" + cmdname.CommandName + "' could not be performed. Error code: " + errorCode,
 		Cause:   err,
 	}
 }
@@ -140,27 +142,27 @@ func (e CLIValidationError) Error() string {
 // (i) There is no response body (command executed but no body returned)
 // (ii) The response body can't be read (probably GO error)
 // (iii) we can't deserialize the response (probably a server error)
-func HandleBMCError(response *http.Response, commandName string) error {
+func HandleBMCError(response *http.Response) error {
 	if response != nil && response.StatusCode == 200 {
 		// Technically we should never enter here. If we do, something went wrong previously.
 		return nil
 	}
 
 	if response.Body == nil {
-		return CreateCLIError(ExpectedBodyInErrorResponse, commandName, nil)
+		return CreateCLIError(ExpectedBodyInErrorResponse, nil)
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 
 	if err != nil {
-		return CreateCLIError(ResponseBodyReadFailure, commandName, err)
+		return CreateCLIError(ResponseBodyReadFailure, err)
 	}
 
 	bmcErr := BMCError{}
 	err = json.Unmarshal(body, &bmcErr)
 
 	if err != nil || len(bmcErr.Error()) == 0 {
-		return CreateCLIError(UnmarshallingErrorBody, commandName, err)
+		return CreateCLIError(UnmarshallingErrorBody, err)
 	}
 
 	return bmcErr

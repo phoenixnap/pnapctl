@@ -6,9 +6,8 @@ import (
 	qp "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-var commandName = "get product-availability"
 
 var (
 	productCategory              []string
@@ -46,7 +45,8 @@ pnapctl get product-availabilities
 	[--location=<LOCATION>] 
 	[--solution=<SOLUTION>] 
 	[--minQuantity=<MIN_QUANTITY>]`,
-	RunE: func(_ *cobra.Command, _ []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
 		return getProductAvailabilities()
 	},
 }
@@ -60,11 +60,11 @@ func getProductAvailabilities() error {
 
 	products, httpResponse, err := billing.Client.ProductAvailabilityGet(*queryParams)
 
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintProductAvailabilityListResponse(products, commandName)
+		return printer.PrintProductAvailabilityListResponse(products)
 	}
 }

@@ -4,7 +4,7 @@ expectedOutputNonexistentJsonFile="Error: The file '$jsonFile' does not exist."
 
 expectedOutputNonexistentYamlFile="Error: The file '$yamlFile' does not exist."
 
-expectedOutputWrongFile="Error: Command 'create server' has been performed, but something went wrong. Error code: 0303"
+expectedOutputWrongFile="Error: Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0303"
 
 expectedOutputInvalidFilenameCommand="Error: accepts 0 arg(s), received 2"
 

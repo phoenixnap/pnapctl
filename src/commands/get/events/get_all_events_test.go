@@ -11,6 +11,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/queryparams/audit"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -33,7 +34,7 @@ func TestGetAllEventsSuccess(test_framework *testing.T) {
 		Return(eventList, WithResponse(200, WithBody(eventList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(eventTables, "get events").
+		PrintOutput(eventTables).
 		Return(nil)
 
 	err := GetEventsCmd.RunE(GetEventsCmd, []string{})
@@ -73,7 +74,7 @@ func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
 		Return(eventList, WithResponse(200, WithBody(eventList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(eventTables, "get events").
+		PrintOutput(eventTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetEventsCmd.RunE(GetEventsCmd, []string{})
@@ -93,7 +94,7 @@ func TestGetEventsServerError(test_framework *testing.T) {
 	err := GetEventsCmd.RunE(GetEventsCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'get events' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 

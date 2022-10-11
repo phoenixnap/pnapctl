@@ -31,7 +31,7 @@ func TestGetAllProductAvailabilitiesSuccess(test_framework *testing.T) {
 		Return(productAvailabilities, WithResponse(200, WithBody(productAvailabilities)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(productAvailabilitiesTable, "get product-availability").
+		PrintOutput(productAvailabilitiesTable).
 		Return(nil)
 
 	err := GetProductAvailabilitiesCmd.RunE(GetProductAvailabilitiesCmd, []string{})
@@ -52,7 +52,7 @@ func TestGetAllProductAvailabilitiesClientFailure(test_framework *testing.T) {
 	err := GetProductAvailabilitiesCmd.RunE(GetProductAvailabilitiesCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get product-availabilities", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -89,7 +89,7 @@ func TestGetAllProductAvailabilitiesPrinterFailure(test_framework *testing.T) {
 		Return(productAvailabilities, WithResponse(200, WithBody(productAvailabilities)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(productAvailabilitiesTable, "get product-availability").
+		PrintOutput(productAvailabilitiesTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetProductAvailabilitiesCmd.RunE(GetProductAvailabilitiesCmd, []string{})

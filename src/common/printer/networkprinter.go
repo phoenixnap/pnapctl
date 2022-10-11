@@ -6,14 +6,14 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
-func PrintPrivateNetworkResponse(network *networksdk.PrivateNetwork, commandName string) error {
+func PrintPrivateNetworkResponse(network *networksdk.PrivateNetwork) error {
 	networkToPrint := PreparePrivateNetworkForPrinting(*network)
-	return MainPrinter.PrintOutput(networkToPrint, commandName)
+	return MainPrinter.PrintOutput(networkToPrint)
 }
 
-func PrintPrivateNetworkListResponse(networks []networksdk.PrivateNetwork, commandName string) error {
+func PrintPrivateNetworkListResponse(networks []networksdk.PrivateNetwork) error {
 	networkListToPrint := PreparePrivateNetworkListForPrinting(networks)
-	return MainPrinter.PrintOutput(networkListToPrint, commandName)
+	return MainPrinter.PrintOutput(networkListToPrint)
 }
 
 func PreparePrivateNetworkForPrinting(network networksdk.PrivateNetwork) interface{} {
@@ -37,14 +37,14 @@ func PreparePrivateNetworkListForPrinting(networks []networksdk.PrivateNetwork) 
 	return networkList
 }
 
-func PrintPublicNetworkResponse(network *networksdk.PublicNetwork, commandName string) error {
+func PrintPublicNetworkResponse(network *networksdk.PublicNetwork) error {
 	networkToPrint := PreparePublicNetworkForPrinting(*network)
-	return MainPrinter.PrintOutput(networkToPrint, commandName)
+	return MainPrinter.PrintOutput(networkToPrint)
 }
 
-func PrintPublicNetworkListResponse(network []networksdk.PublicNetwork, commandName string) error {
+func PrintPublicNetworkListResponse(network []networksdk.PublicNetwork) error {
 	networksToPrint := iterutils.Map(network, PreparePublicNetworkForPrinting)
-	return MainPrinter.PrintOutput(networksToPrint, commandName)
+	return MainPrinter.PrintOutput(networksToPrint)
 }
 
 func PreparePublicNetworkForPrinting(network networksdk.PublicNetwork) interface{} {
@@ -58,14 +58,14 @@ func PreparePublicNetworkForPrinting(network networksdk.PublicNetwork) interface
 	}
 }
 
-func PrintPublicNetworkIpBlockResponse(ipBlock *networksdk.PublicNetworkIpBlock, commandName string) error {
+func PrintPublicNetworkIpBlockResponse(ipBlock *networksdk.PublicNetworkIpBlock) error {
 	networkToPrint := PreparePublicNetworkIpBlockForPrinting(*ipBlock)
-	return MainPrinter.PrintOutput(networkToPrint, commandName)
+	return MainPrinter.PrintOutput(networkToPrint)
 }
 
-func PrintPublicNetworkIpBlockListResponse(ipBlocks []networksdk.PublicNetworkIpBlock, commandName string) error {
+func PrintPublicNetworkIpBlockListResponse(ipBlocks []networksdk.PublicNetworkIpBlock) error {
 	ipBlocksToPrint := iterutils.Map(ipBlocks, PreparePublicNetworkIpBlockForPrinting)
-	return MainPrinter.PrintOutput(ipBlocksToPrint, commandName)
+	return MainPrinter.PrintOutput(ipBlocksToPrint)
 }
 
 func PreparePublicNetworkIpBlockForPrinting(ipBlock networksdk.PublicNetworkIpBlock) interface{} {

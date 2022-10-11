@@ -8,12 +8,11 @@ import (
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "request-edit quota"
 
 func init() {
 	utils.SetupFilenameFlag(RequestEditQuotaCmd, &Filename, utils.SUBMISSION)
@@ -34,19 +33,20 @@ pnapctl request-edit quota <QUOTA_ID> --filename <FILE_PATH>
 # requestEditQuota.yaml
 limit: 75
 reason: My current limit is not enough.`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return requestToEditQuota(args[0])
 	},
 }
 
 func requestToEditQuota(id string) error {
-	quotaEditRequest, err := models.CreateRequestFromFile[bmcapisdk.QuotaEditLimitRequest](Filename, commandName)
+	quotaEditRequest, err := models.CreateRequestFromFile[bmcapisdk.QuotaEditLimitRequest](Filename)
 	if err != nil {
 		return err
 	}
 
 	httpResponse, err := bmcapi.Client.QuotaEditById(id, *quotaEditRequest)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError

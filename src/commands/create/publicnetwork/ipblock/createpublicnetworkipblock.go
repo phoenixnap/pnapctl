@@ -7,9 +7,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-var commandName = "create public-network ip-block"
 
 var (
 	Filename string
@@ -34,13 +33,14 @@ pnapctl create public-network ip-block <NETWORK_ID> --filename <FILE_PATH> [--ou
 # publicNetworkIpBlockCreate.yaml
 hostname: patched-server
 description: My custom server edit`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return createPublicNetworkIpBlock(args[0])
 	},
 }
 
 func createPublicNetworkIpBlock(id string) error {
-	ipBlock, err := models.CreateRequestFromFile[networkapi.PublicNetworkIpBlock](Filename, commandName)
+	ipBlock, err := models.CreateRequestFromFile[networkapi.PublicNetworkIpBlock](Filename)
 
 	if err != nil {
 		return err
@@ -48,11 +48,11 @@ func createPublicNetworkIpBlock(id string) error {
 
 	response, httpResponse, err := networks.Client.PublicNetworkIpBlockPost(id, *ipBlock)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintPublicNetworkIpBlockResponse(response, commandName)
+		return printer.PrintPublicNetworkIpBlockResponse(response)
 	}
 }

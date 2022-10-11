@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -23,7 +24,7 @@ func TestGetPrivateNetworkSuccess(test_framework *testing.T) {
 		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkTable, "get private-network").
+		PrintOutput(privateNetworkTable).
 		Return(nil)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
@@ -40,7 +41,7 @@ func TestGetPrivateNetworkNotFound(test_framework *testing.T) {
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'get private-network' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
@@ -52,7 +53,7 @@ func TestGetPrivateNetworkClientFailure(test_framework *testing.T) {
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get private-network", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -78,7 +79,7 @@ func TestGetPrivateNetworkPrinterFailure(test_framework *testing.T) {
 		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkTable, "get private-network").
+		PrintOutput(privateNetworkTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})

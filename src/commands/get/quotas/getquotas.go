@@ -5,6 +5,7 @@ import (
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 const commandName string = "get quotas"
@@ -31,7 +32,8 @@ pnapctl get quotas [--output <OUTPUT_TYPE>]
 
 # List a specific quota.
 pnapctl get quota <QUOTA_ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
 			return getQuotaById(args[0])
 		}
@@ -42,23 +44,23 @@ pnapctl get quota <QUOTA_ID> [--output <OUTPUT_TYPE>]`,
 func getQuotas() error {
 	quotas, httpResponse, err := bmcapi.Client.QuotasGet()
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintQuotaListResponse(quotas, commandName)
+		return printer.PrintQuotaListResponse(quotas)
 	}
 }
 
 func getQuotaById(quotaId string) error {
 	quota, httpResponse, err := bmcapi.Client.QuotaGetById(quotaId)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintQuotaResponse(quota, commandName)
+		return printer.PrintQuotaResponse(quota)
 	}
 }

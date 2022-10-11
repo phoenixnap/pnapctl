@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -23,7 +24,7 @@ func TestGetTagSuccess(test_framework *testing.T) {
 		Return(&tag, WithResponse(200, WithBody(tag)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tagTable, "get tags").
+		PrintOutput(tagTable).
 		Return(nil)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
@@ -40,7 +41,7 @@ func TestGetTagNotFound(test_framework *testing.T) {
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'get tags' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
@@ -52,7 +53,7 @@ func TestGetTagClientFailure(test_framework *testing.T) {
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get tags", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -78,7 +79,7 @@ func TestGetTagPrinterFailure(test_framework *testing.T) {
 		Return(&tag, WithResponse(200, WithBody(tag)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tagTable, "get tags").
+		PrintOutput(tagTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})

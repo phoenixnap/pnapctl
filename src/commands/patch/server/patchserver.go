@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
@@ -38,23 +39,24 @@ pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTP
 # serverPatch.yaml
 hostname: patched-server
 description: My custom server edit`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return patchServer(args[0])
 	},
 }
 
 func patchServer(id string) error {
-	patchRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerPatch](Filename, commandName)
+	patchRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerPatch](Filename)
 	if err != nil {
 		return err
 	}
 
 	serverResponse, httpResponse, err := bmcapi.Client.ServerPatch(id, *patchRequest)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintServerResponse(serverResponse, Full, commandName)
+		return printer.PrintServerResponse(serverResponse, Full)
 	}
 }

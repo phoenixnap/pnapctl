@@ -5,9 +5,8 @@ import (
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-var commandName = "auto-renew reservation enable"
 
 var (
 	Full bool
@@ -27,18 +26,19 @@ var AutoRenewEnableReservationCmd = &cobra.Command{
 	Example: `
 # Enable auto-renew for a specific reservation
 pnapctl auto-renew reservation enable <RESERVATION_ID>`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return enableAutoRenewForReservation(args[0])
 	},
 }
 
 func enableAutoRenewForReservation(id string) error {
 	response, httpResponse, err := billing.Client.ReservationEnableAutoRenew(id)
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintReservationResponse(response, Full, commandName)
+		return printer.PrintReservationResponse(response, Full)
 	}
 }

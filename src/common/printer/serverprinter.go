@@ -5,43 +5,43 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintServerResponse(server *bmcapisdk.Server, full bool, commandName string) error {
+func PrintServerResponse(server *bmcapisdk.Server, full bool) error {
 	serverToPrint := PrepareServerForPrinting(*server, full)
-	return MainPrinter.PrintOutput(serverToPrint, commandName)
+	return MainPrinter.PrintOutput(serverToPrint)
 }
 
-func PrintServerListResponse(servers []bmcapisdk.Server, full bool, commandName string) error {
+func PrintServerListResponse(servers []bmcapisdk.Server, full bool) error {
 	serverListToPrint := PrepareServerListForPrinting(servers, full)
-	return MainPrinter.PrintOutput(serverListToPrint, commandName)
+	return MainPrinter.PrintOutput(serverListToPrint)
 }
 
-func PrintServerPrivateNetwork(serverPrivateNetwork *bmcapisdk.ServerPrivateNetwork, commandName string) error {
+func PrintServerPrivateNetwork(serverPrivateNetwork *bmcapisdk.ServerPrivateNetwork) error {
 	table := OutputIsTable()
 
 	if table {
-		return MainPrinter.PrintOutput(tables.ToServerPrivateNetworkTable(*serverPrivateNetwork), commandName)
+		return MainPrinter.PrintOutput(tables.ToServerPrivateNetworkTable(*serverPrivateNetwork))
 	} else {
-		return MainPrinter.PrintOutput(serverPrivateNetwork, commandName)
+		return MainPrinter.PrintOutput(serverPrivateNetwork)
 	}
 }
 
-func PrintServerPublicNetwork(serverPublicNetwork *bmcapisdk.ServerPublicNetwork, commandName string) error {
+func PrintServerPublicNetwork(serverPublicNetwork *bmcapisdk.ServerPublicNetwork) error {
 	table := OutputIsTable()
 
 	if table {
-		return MainPrinter.PrintOutput(tables.ToServerPublicNetworkTable(*serverPublicNetwork), commandName)
+		return MainPrinter.PrintOutput(tables.ToServerPublicNetworkTable(*serverPublicNetwork))
 	} else {
-		return MainPrinter.PrintOutput(serverPublicNetwork, commandName)
+		return MainPrinter.PrintOutput(serverPublicNetwork)
 	}
 }
 
-func PrintServerIpBlock(serverIpBlock *bmcapisdk.ServerIpBlock, commandName string) error {
+func PrintServerIpBlock(serverIpBlock *bmcapisdk.ServerIpBlock) error {
 	table := OutputIsTable()
 
 	if table {
-		return MainPrinter.PrintOutput(tables.ToServerIpBlockTable(*serverIpBlock), commandName)
+		return MainPrinter.PrintOutput(tables.ToServerIpBlockTable(*serverIpBlock))
 	} else {
-		return MainPrinter.PrintOutput(serverIpBlock, commandName)
+		return MainPrinter.PrintOutput(serverIpBlock)
 	}
 }
 

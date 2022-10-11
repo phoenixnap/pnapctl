@@ -8,12 +8,11 @@ import (
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "deprovision server"
 
 func init() {
 	utils.SetupFilenameFlag(DeprovisionServerCmd, &Filename, utils.DEPROVISION)
@@ -33,19 +32,20 @@ pnapctl deprovision server <SERVER_ID> --filename <FILE_PATH>
 
 # serverdeprovision.yaml
 deleteIpBlocks: false`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return deprovisionServer(args[0])
 	},
 }
 
 func deprovisionServer(id string) error {
-	relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename, commandName)
+	relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename)
 	if err != nil {
 		return err
 	}
 
 	result, httpResponse, err := bmcapi.Client.ServerDeprovision(id, *relinquishIpBlockRequest)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError

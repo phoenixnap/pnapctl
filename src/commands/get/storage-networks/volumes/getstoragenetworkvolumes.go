@@ -5,6 +5,7 @@ import (
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 const commandName = "get storage-network volumes"
@@ -36,7 +37,8 @@ pnapctl get volumes [--full] [--output <OUTPUT_TYPE>]
 
 # List a specific volume.
 pnapctl get volume <ID> [--full] [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 2 {
 			return getVolumeById(args[0], args[1])
 		}
@@ -47,23 +49,23 @@ pnapctl get volume <ID> [--full] [--output <OUTPUT_TYPE>]`,
 func getVolumes(storageId string) error {
 	volumes, httpResponse, err := networkstorage.Client.NetworkStorageGetVolumes(storageId)
 
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintVolumeListResponse(volumes, Full, commandName)
+		return printer.PrintVolumeListResponse(volumes, Full)
 	}
 }
 
 func getVolumeById(storageId, volumeId string) error {
 	volume, httpResponse, err := networkstorage.Client.NetworkStorageGetVolumeById(storageId, volumeId)
 
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+	generatedError := utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintVolumeResponse(volume, Full, commandName)
+		return printer.PrintVolumeResponse(volume, Full)
 	}
 }

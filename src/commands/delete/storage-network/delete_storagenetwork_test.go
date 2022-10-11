@@ -5,6 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -32,7 +33,7 @@ func TestDeleteStorageNetworkNotFound(test_framework *testing.T) {
 	err := DeleteStorageNetworkCmd.RunE(DeleteStorageNetworkCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'delete storage-network' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
@@ -46,7 +47,7 @@ func TestDeleteStorageNetworkError(test_framework *testing.T) {
 	err := DeleteStorageNetworkCmd.RunE(DeleteStorageNetworkCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'delete storage-network' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
@@ -60,7 +61,7 @@ func TestDeleteStorageNetworkClientFailure(test_framework *testing.T) {
 	err := DeleteStorageNetworkCmd.RunE(DeleteStorageNetworkCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "delete storage-network", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())

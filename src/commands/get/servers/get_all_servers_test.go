@@ -28,7 +28,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServers, "get servers").
+		PrintOutput(shortServers).
 		Return(nil)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
@@ -52,7 +52,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(longServers, "get servers").
+		PrintOutput(longServers).
 		Return(nil)
 
 	// to display full output
@@ -83,7 +83,7 @@ func TestFilteredServersLongSuccess(test_framework *testing.T) {
 		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(longServers, "get servers").
+		PrintOutput(longServers).
 		Return(nil)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
@@ -101,7 +101,7 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get servers", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -133,7 +133,7 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServers, "get servers").
+		PrintOutput(shortServers).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	Full = false

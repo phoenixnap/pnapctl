@@ -7,9 +7,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-var commandName = "patch public-network"
 
 var (
 	Filename string
@@ -34,13 +33,14 @@ pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTP
 # serverPatch.yaml
 hostname: patched-server
 description: My custom server edit`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return patchPublicNetwork(args[0])
 	},
 }
 
 func patchPublicNetwork(id string) error {
-	publicNetworkPatch, err := models.CreateRequestFromFile[networkapi.PublicNetworkModify](Filename, commandName)
+	publicNetworkPatch, err := models.CreateRequestFromFile[networkapi.PublicNetworkModify](Filename)
 
 	if err != nil {
 		return err
@@ -48,9 +48,9 @@ func patchPublicNetwork(id string) error {
 
 	response, httpResponse, err := networks.Client.PublicNetworkPatch(id, *publicNetworkPatch)
 
-	if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
+	if generatedError := utils.CheckForErrors(httpResponse, err); *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintPublicNetworkResponse(response, commandName)
+		return printer.PrintPublicNetworkResponse(response)
 	}
 }

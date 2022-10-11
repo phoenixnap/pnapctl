@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
@@ -42,7 +43,8 @@ pnapctl tag server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
   value: tagValue
 - name: tagName2
 `,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return tagServer(args[0])
 	},
 }
@@ -58,17 +60,17 @@ func performTagRequest(serverId string, tagRequests []bmcapisdk.TagAssignmentReq
 }
 
 func tagServer(id string) error {
-	tagRequests, err := models.CreateRequestFromFile[[]bmcapisdk.TagAssignmentRequest](Filename, commandName)
+	tagRequests, err := models.CreateRequestFromFile[[]bmcapisdk.TagAssignmentRequest](Filename)
 	if err != nil {
 		return err
 	}
 
 	serverResponse, httpResponse, err := performTagRequest(id, *tagRequests)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintServerResponse(serverResponse, Full, commandName)
+		return printer.PrintServerResponse(serverResponse, Full)
 	}
 }

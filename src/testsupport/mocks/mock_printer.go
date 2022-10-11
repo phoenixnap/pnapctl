@@ -34,15 +34,15 @@ func (m *MockPrinter) EXPECT() *MockPrinterMockRecorder {
 }
 
 // PrintOutput mocks base method.
-func (m *MockPrinter) PrintOutput(construct interface{}, commandName string) error {
+func (m *MockPrinter) PrintOutput(construct interface{}) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PrintOutput", construct, commandName)
+	ret := m.ctrl.Call(m, "PrintOutput", construct)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // PrintOutput indicates an expected call of PrintOutput.
-func (mr *MockPrinterMockRecorder) PrintOutput(construct, commandName interface{}) *gomock.Call {
+func (mr *MockPrinterMockRecorder) PrintOutput(construct interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PrintOutput", reflect.TypeOf((*MockPrinter)(nil).PrintOutput), construct, commandName)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PrintOutput", reflect.TypeOf((*MockPrinter)(nil).PrintOutput), construct)
 }

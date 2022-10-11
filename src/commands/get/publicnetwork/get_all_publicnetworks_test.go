@@ -28,7 +28,7 @@ func TestGetAllPublicNetworksSuccess(test_framework *testing.T) {
 		Return(publicNetworkList, WithResponse(200, WithBody(publicNetworkList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(publicNetworkTables, "get public-network").
+		PrintOutput(publicNetworkTables).
 		Return(nil)
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{})
@@ -61,7 +61,7 @@ func TestGetAllPublicNetworksClientFailure(test_framework *testing.T) {
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get public-network", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -95,7 +95,7 @@ func TestGetAllPublicNetworksPrinterFailure(test_framework *testing.T) {
 		Return(publicNetworkList, WithResponse(200, WithBody(publicNetworkList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(publicNetworkTables, "get public-network").
+		PrintOutput(publicNetworkTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{})

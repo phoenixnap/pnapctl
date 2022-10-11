@@ -28,7 +28,7 @@ func TestGetAllTagsSuccess(test_framework *testing.T) {
 		Return(tags, WithResponse(200, WithBody(tags)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(taglist, "get tags").
+		PrintOutput(taglist).
 		Return(nil)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
@@ -46,7 +46,7 @@ func TestGetAllTagsClientFailure(test_framework *testing.T) {
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get servers", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -78,7 +78,7 @@ func TestGetAllTagsPrinterFailure(test_framework *testing.T) {
 		Return(tags, WithResponse(200, WithBody(tags)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(taglist, "get tags").
+		PrintOutput(taglist).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})

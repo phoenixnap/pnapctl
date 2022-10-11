@@ -7,11 +7,10 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 var Filename string
-
-var commandName = "create cluster"
 
 func init() {
 	utils.SetupOutputFlag(CreateClusterCmd)
@@ -35,24 +34,25 @@ name: rancher-cluster-test
 nodePools:
   - serverType: s1.c1.medium
 `,
-	RunE: func(_ *cobra.Command, _ []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
 		return createCluster()
 	},
 }
 
 func createCluster() error {
-	cluster, err := models.CreateRequestFromFile[ranchersolutionapi.Cluster](Filename, commandName)
+	cluster, err := models.CreateRequestFromFile[ranchersolutionapi.Cluster](Filename)
 
 	if err != nil {
 		return err
 	}
 
 	response, httpResponse, err := rancher.Client.ClusterPost(*cluster)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintClusterResponse(response, commandName)
+		return printer.PrintClusterResponse(response)
 	}
 }

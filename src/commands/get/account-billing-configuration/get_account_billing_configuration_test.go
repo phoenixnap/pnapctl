@@ -24,7 +24,7 @@ func TestGetAccountBillingConfigurationSuccess(test_framework *testing.T) {
 		Return(&configurationDetail, WithResponse(200, WithBody(configurationDetail)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(configurationDetailTable, "get account-billing-configuration").
+		PrintOutput(configurationDetailTable).
 		Return(nil)
 
 	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})
@@ -42,7 +42,7 @@ func TestGetAccountBillingConfigurationClientFailure(test_framework *testing.T) 
 	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get account-billing-configuration", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -71,7 +71,7 @@ func TestGetAccountBillingConfigurationPrinterFailure(test_framework *testing.T)
 		Return(&configurationDetail, WithResponse(200, WithBody(configurationDetail)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(configurationDetailTable, "get account-billing-configuration").
+		PrintOutput(configurationDetailTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})

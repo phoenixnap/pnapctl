@@ -31,7 +31,7 @@ func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
 		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortReservations, "get reservations").
+		PrintOutput(shortReservations).
 		Return(nil)
 
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
@@ -56,7 +56,7 @@ func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
 		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(reservationTables, "get reservations").
+		PrintOutput(reservationTables).
 		Return(nil)
 
 	// to display full output
@@ -80,7 +80,7 @@ func TestGetAllReservationsClientFailure(test_framework *testing.T) {
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get reservations", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -117,7 +117,7 @@ func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
 		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortReservations, "get reservations").
+		PrintOutput(shortReservations).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	Full = false

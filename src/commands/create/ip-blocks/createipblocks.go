@@ -7,14 +7,13 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
 var Full bool
-
-var commandName = "create ip-block"
 
 func init() {
 	utils.SetupOutputFlag(CreateIpBlockCmd)
@@ -37,13 +36,14 @@ pnapctl create ip-block --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 # ipblockcreate.yaml
 cidrBlockSize: /28
 location: PHX`,
-	RunE: func(_ *cobra.Command, _ []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
 		return createIpBlock()
 	},
 }
 
 func createIpBlock() error {
-	ipBlockCreate, err := models.CreateRequestFromFile[ipapi.IpBlockCreate](Filename, commandName)
+	ipBlockCreate, err := models.CreateRequestFromFile[ipapi.IpBlockCreate](Filename)
 
 	if err != nil {
 		return err
@@ -51,11 +51,11 @@ func createIpBlock() error {
 
 	// Create the ssh key
 	response, httpResponse, err := ip.Client.IpBlockPost(*ipBlockCreate)
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintIpBlockResponse(response, Full, commandName)
+		return printer.PrintIpBlockResponse(response, Full)
 	}
 }

@@ -8,12 +8,11 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
-
-var commandName = "update private-network"
 
 func init() {
 	utils.SetupOutputFlag(UpdatePrivateNetworkCmd)
@@ -36,13 +35,14 @@ pnapctl update private-network <PRIVATE_NETWORK_ID> --filename <FILENAME> [--out
 name: Example CLI Network Updated,
 description: Example CLI Network (Updated Description),
 locationDefault: true`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		return updatePrivateNetwork(args[0])
 	},
 }
 
 func updatePrivateNetwork(id string) error {
-	privateNetworkUpdate, err := models.CreateRequestFromFile[networkapi.PrivateNetworkModify](Filename, commandName)
+	privateNetworkUpdate, err := models.CreateRequestFromFile[networkapi.PrivateNetworkModify](Filename)
 
 	if err != nil {
 		return err
@@ -52,10 +52,10 @@ func updatePrivateNetwork(id string) error {
 	response, httpResponse, err := networks.Client.PrivateNetworkPut(id, *privateNetworkUpdate)
 
 	if httpResponse != nil && httpResponse.StatusCode != 200 {
-		return ctlerrors.HandleBMCError(httpResponse, commandName)
+		return ctlerrors.HandleBMCError(httpResponse)
 	} else if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		return ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 	} else {
-		return printer.PrintPrivateNetworkResponse(response, commandName)
+		return printer.PrintPrivateNetworkResponse(response)
 	}
 }

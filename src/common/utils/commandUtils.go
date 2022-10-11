@@ -17,12 +17,12 @@ func is2xxSuccessful(statusCode int) bool {
 	}
 }
 
-func CheckForErrors(httpResponse *http.Response, err error, commandName string) *error {
+func CheckForErrors(httpResponse *http.Response, err error) *error {
 	var generatedError error = nil
 	if httpResponse != nil && !is2xxSuccessful(httpResponse.StatusCode) {
-		generatedError = ctlerrors.HandleBMCError(httpResponse, commandName)
+		generatedError = ctlerrors.HandleBMCError(httpResponse)
 	} else if err != nil {
-		generatedError = ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
+		generatedError = ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 	}
 
 	return &generatedError

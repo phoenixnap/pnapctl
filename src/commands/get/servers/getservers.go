@@ -5,6 +5,7 @@ import (
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 const commandName string = "get servers"
@@ -37,7 +38,8 @@ pnapctl get servers [--tag <TagName>.<TagValue>] [--tag <TagName>] [--full] [--o
 
 # List all specific server.
 pnapctl get servers <SERVER_ID> [--full] [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
 			return getServersById(args[0])
 		}
@@ -48,23 +50,23 @@ pnapctl get servers <SERVER_ID> [--full] [--output <OUTPUT_TYPE>]`,
 func getServers() error {
 	servers, httpResponse, err := bmcapi.Client.ServersGet(tags)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintServerListResponse(servers, Full, commandName)
+		return printer.PrintServerListResponse(servers, Full)
 	}
 }
 
 func getServersById(serverID string) error {
 	server, httpResponse, err := bmcapi.Client.ServerGetById(serverID)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
+	var generatedError = utils.CheckForErrors(httpResponse, err)
 
 	if *generatedError != nil {
 		return *generatedError
 	} else {
-		return printer.PrintServerResponse(server, Full, commandName)
+		return printer.PrintServerResponse(server, Full)
 	}
 }

@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -22,7 +23,7 @@ func TestGetQuotaSuccess(test_framework *testing.T) {
 		Return(&quota, WithResponse(200, WithBody(quota)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tableQuota, "get quotas").
+		PrintOutput(tableQuota).
 		Return(nil)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
@@ -39,7 +40,7 @@ func TestGetQuotaNotFound(test_framework *testing.T) {
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
 
 	// Assertions
-	expectedMessage := "Command 'get quotas' has been performed, but something went wrong. Error code: 0201"
+	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
@@ -51,7 +52,7 @@ func TestGetQuotaClientFailure(test_framework *testing.T) {
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get quotas", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -77,7 +78,7 @@ func TestGetQuotaPrinterFailure(test_framework *testing.T) {
 		Return(&quota, WithResponse(200, WithBody(tableQuota)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tableQuota, "get quotas").
+		PrintOutput(tableQuota).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})

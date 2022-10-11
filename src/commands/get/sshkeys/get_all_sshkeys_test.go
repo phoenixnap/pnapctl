@@ -28,7 +28,7 @@ func TestGetAllSshKeysSuccess(test_framework *testing.T) {
 		Return(sshKeyList, WithResponse(200, WithBody(sshKeyList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTables, "get ssh-keys").
+		PrintOutput(sshKeyTables).
 		Return(nil)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
@@ -63,7 +63,7 @@ func TestGetAllSshKeysPrinterFailure(test_framework *testing.T) {
 		Return(sshKeyList, WithResponse(200, WithBody(sshKeyList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTables, "get ssh-keys").
+		PrintOutput(sshKeyTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})

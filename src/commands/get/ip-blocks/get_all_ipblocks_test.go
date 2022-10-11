@@ -28,7 +28,7 @@ func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
 		Return(ipBlockList, WithResponse(200, WithBody(ipBlockList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(IpBlockTables, "get ip-blocks").
+		PrintOutput(IpBlockTables).
 		Return(nil)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{})
@@ -63,7 +63,7 @@ func TestGetAllIpBlocksPrinterFailure(test_framework *testing.T) {
 		Return(ipBlockList, WithResponse(200, WithBody(ipBlockList)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(ipBlockTables, "get ip-blocks").
+		PrintOutput(ipBlockTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{})

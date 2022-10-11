@@ -25,7 +25,7 @@ func TestGetAllVolumesSuccess(test_framework *testing.T) {
 		Return(volumeSdk, WithResponse(200, WithBody(volumeSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(volumeTables, "get storage-network volumes").
+		PrintOutput(volumeTables).
 		Return(nil)
 
 	// Run command
@@ -45,7 +45,7 @@ func TestGetAllVolumesClientFailure(test_framework *testing.T) {
 	err := GetStorageNetworkVolumesCmd.RunE(GetStorageNetworkVolumesCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "get storage-network volumes", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -75,7 +75,7 @@ func TestGetAllVolumesPrinterFailure(test_framework *testing.T) {
 		Return(volumeSdk, WithResponse(200, WithBody(volumeSdk)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(volumeTables, "get storage-network volumes").
+		PrintOutput(volumeTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	// Run command
