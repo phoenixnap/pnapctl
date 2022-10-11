@@ -16,8 +16,7 @@ var Filename string
 var commandName = "request-edit quota"
 
 func init() {
-	RequestEditQuotaCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	RequestEditQuotaCmd.MarkFlagRequired("filename")
+	utils.SetupFilenameFlag(RequestEditQuotaCmd, &Filename, utils.SUBMISSION)
 }
 
 // RequestEditQuotaCmd is the command for requesting a quota modification.

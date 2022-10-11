@@ -27,7 +27,7 @@ isBillingTag: false
 ### Options
 
 ```
-  -f, --filename string   File containing required information for modification
+  -f, --filename string   File containing required information for updating
   -h, --help              help for tag
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
 ```

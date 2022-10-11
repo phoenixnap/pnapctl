@@ -121,7 +121,7 @@ func TestIpBlockPutTagFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{})
+	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{RESOURCEID})
 
 	// Expected command
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
@@ -146,7 +146,7 @@ func TestIpBlockPutTagUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{})
+	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "update ip-block tag", err)
@@ -170,7 +170,7 @@ func TestIpBlockPutTagFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{})
+	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "update ip-block tag", err)

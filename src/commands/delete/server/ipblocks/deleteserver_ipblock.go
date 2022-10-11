@@ -16,8 +16,7 @@ var Filename string
 var commandName = "delete server-ip-block"
 
 func init() {
-	DeleteServerIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for ip block removal from server")
-	DeleteServerIpBlockCmd.MarkFlagRequired("filename")
+	utils.SetupFilenameFlag(DeleteServerIpBlockCmd, &Filename, utils.DELETION)
 }
 
 // DeleteServerIpBlockCmd is the command for deleting a server ip block.

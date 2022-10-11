@@ -17,10 +17,9 @@ var Full bool
 var commandName = "create ip-block"
 
 func init() {
-	CreateIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateIpBlockCmd.MarkFlagRequired("filename")
-	CreateIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
+	utils.SetupOutputFlag(CreateIpBlockCmd)
+	utils.SetupFullFlag(CreateIpBlockCmd, &Full, "ip-block")
+	utils.SetupFilenameFlag(CreateIpBlockCmd, &Filename, utils.CREATION)
 }
 
 // CreateIpBlockCmd is the command for creating an ip block.

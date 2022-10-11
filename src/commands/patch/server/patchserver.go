@@ -17,10 +17,9 @@ const commandName string = "patch server"
 var Full bool
 
 func init() {
-	PatchServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	PatchServerCmd.MarkFlagRequired("filename")
-	PatchServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
-	PatchServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	utils.SetupOutputFlag(PatchServerCmd)
+	utils.SetupFullFlag(PatchServerCmd, &Full, "server")
+	utils.SetupFilenameFlag(PatchServerCmd, &Filename, utils.UPDATING)
 }
 
 // PatchServerCmd is the command for patching a server.

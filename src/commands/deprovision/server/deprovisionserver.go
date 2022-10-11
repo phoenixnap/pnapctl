@@ -16,8 +16,7 @@ var Filename string
 var commandName = "deprovision server"
 
 func init() {
-	DeprovisionServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for deprovision")
-	DeprovisionServerCmd.MarkFlagRequired("filename")
+	utils.SetupFilenameFlag(DeprovisionServerCmd, &Filename, utils.DEPROVISION)
 }
 
 // DeprovisionServerCmd

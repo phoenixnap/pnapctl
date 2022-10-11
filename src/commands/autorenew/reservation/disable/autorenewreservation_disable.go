@@ -19,9 +19,7 @@ var (
 func init() {
 	utils.SetupFullFlag(AutoRenewDisableReservationCmd, &Full, "reservation")
 	utils.SetupOutputFlag(AutoRenewDisableReservationCmd)
-
-	AutoRenewDisableReservationCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	AutoRenewDisableReservationCmd.MarkFlagRequired("filename")
+	utils.SetupFilenameFlag(AutoRenewDisableReservationCmd, &Filename, utils.CREATION)
 }
 
 var AutoRenewDisableReservationCmd = &cobra.Command{

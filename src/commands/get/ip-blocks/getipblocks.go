@@ -14,9 +14,9 @@ var tags []string
 var Full bool
 
 func init() {
-	GetIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	utils.SetupOutputFlag(GetIpBlockCmd)
+	utils.SetupFullFlag(GetIpBlockCmd, &Full, "ip-block")
 	GetIpBlockCmd.PersistentFlags().StringArrayVar(&tags, "tag", nil, "Filter by tag")
-	GetIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
 }
 
 var GetIpBlockCmd = &cobra.Command{

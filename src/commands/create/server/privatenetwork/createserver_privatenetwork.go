@@ -15,9 +15,8 @@ var Filename string
 var commandName = "create server-private-network"
 
 func init() {
-	CreateServerPrivateNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateServerPrivateNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateServerPrivateNetworkCmd.MarkFlagRequired("filename")
+	utils.SetupOutputFlag(CreateServerPrivateNetworkCmd)
+	utils.SetupFilenameFlag(CreateServerPrivateNetworkCmd, &Filename, utils.CREATION)
 }
 
 // CreateServerPrivateNetworkCmd is the command for creating a server.

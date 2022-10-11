@@ -121,7 +121,7 @@ func TestPatchIpBlockFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := PatchIpBlockCmd.RunE(PatchIpBlockCmd, []string{})
+	err := PatchIpBlockCmd.RunE(PatchIpBlockCmd, []string{RESOURCEID})
 
 	// Expected command
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
@@ -146,7 +146,7 @@ func TestPatchIpBlockUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := PatchIpBlockCmd.RunE(PatchIpBlockCmd, []string{})
+	err := PatchIpBlockCmd.RunE(PatchIpBlockCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "patch ip-block", err)
@@ -170,7 +170,7 @@ func TestPatchIpBlockFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// Run command
-	err := PatchIpBlockCmd.RunE(PatchIpBlockCmd, []string{})
+	err := PatchIpBlockCmd.RunE(PatchIpBlockCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "patch ip-block", err)

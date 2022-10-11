@@ -16,9 +16,8 @@ var Filename string
 var commandName = "create server-ip-block"
 
 func init() {
-	CreateServerIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateServerIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateServerIpBlockCmd.MarkFlagRequired("filename")
+	utils.SetupOutputFlag(CreateServerIpBlockCmd)
+	utils.SetupFilenameFlag(CreateServerIpBlockCmd, &Filename, utils.CREATION)
 }
 
 // CreateServerIpBlockCmd is the command for creating a server.

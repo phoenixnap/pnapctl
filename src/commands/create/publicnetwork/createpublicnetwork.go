@@ -18,9 +18,7 @@ var (
 
 func init() {
 	utils.SetupOutputFlag(CreatePublicNetworkCmd)
-
-	CreatePublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation.")
-	CreatePublicNetworkCmd.MarkFlagRequired("filename")
+	utils.SetupFilenameFlag(CreatePublicNetworkCmd, &Filename, utils.CREATION)
 
 	CreatePublicNetworkCmd.AddCommand(ipblock.CreatePublicNetworkIpBlockCmd)
 }

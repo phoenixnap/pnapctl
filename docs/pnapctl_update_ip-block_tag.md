@@ -5,8 +5,8 @@ Updates an ip block's tags.
 ### Synopsis
 
 Update an existing ip-block's tag.
-	
-	Requires a file (yaml or json) containing the information needed to update the ip-block's tags.
+
+Requires a file (yaml or json) containing the information needed to update the ip-block's tags.
 	
 
 ```
@@ -17,19 +17,18 @@ pnapctl update ip-block tag IP_BLOCK_ID [flags]
 
 ```
 # Update a tag on an existing ip-block with request body as described in ipblockputtag.yaml
-	pnapctl update ip-block tag <IP_BLOCK_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
-	
-	# ipblockputtag.yaml
-	---
-		- name: ip block tag name
-  		  value: ip block tag value
-	
+pnapctl update ip-block tag <IP_BLOCK_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
+
+# ipblockputtag.yaml
+---
+- name: ip block tag name
+  value: ip block tag value
 ```
 
 ### Options
 
 ```
-  -f, --filename string   File containing required information for creation
+  -f, --filename string   File containing required information for updating
       --full              Shows all ip-block details
   -h, --help              help for tag
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")

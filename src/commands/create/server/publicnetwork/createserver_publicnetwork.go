@@ -15,9 +15,8 @@ var Filename string
 var commandName = "create server-public-network"
 
 func init() {
-	CreateServerPublicNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateServerPublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateServerPublicNetworkCmd.MarkFlagRequired("filename")
+	utils.SetupOutputFlag(CreateServerPublicNetworkCmd)
+	utils.SetupFilenameFlag(CreateServerPublicNetworkCmd, &Filename, utils.CREATION)
 }
 
 var CreateServerPublicNetworkCmd = &cobra.Command{

@@ -12,8 +12,8 @@ const commandName string = "get ssh-keys"
 var Full bool
 
 func init() {
-	GetSshKeysCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ssh key details")
-	GetSshKeysCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	utils.SetupOutputFlag(GetSshKeysCmd)
+	utils.SetupFullFlag(GetSshKeysCmd, &Full, "ssh key")
 }
 
 var GetSshKeysCmd = &cobra.Command{

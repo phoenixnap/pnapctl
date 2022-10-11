@@ -17,8 +17,7 @@ var (
 
 func init() {
 	utils.SetupOutputFlag(CreatePublicNetworkIpBlockCmd)
-
-	CreatePublicNetworkIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creating.")
+	utils.SetupFilenameFlag(CreatePublicNetworkIpBlockCmd, &Filename, utils.CREATION)
 }
 
 var CreatePublicNetworkIpBlockCmd = &cobra.Command{

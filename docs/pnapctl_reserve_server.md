@@ -25,7 +25,7 @@ pricingModel: ONE_MONTH_RESERVATION
 ### Options
 
 ```
-  -f, --filename string   File containing required information for creation
+  -f, --filename string   File containing required information for reservation
       --full              Shows all server details
   -h, --help              help for server
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")

@@ -15,9 +15,8 @@ var Filename string
 var commandName = "patch tag"
 
 func init() {
-	PatchTagCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	PatchTagCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for modification")
-	PatchTagCmd.MarkFlagRequired("filename")
+	utils.SetupOutputFlag(PatchTagCmd)
+	utils.SetupFilenameFlag(PatchTagCmd, &Filename, utils.UPDATING)
 }
 
 // PatchTagCmd is the command for creating a server.

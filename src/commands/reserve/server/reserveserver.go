@@ -18,10 +18,9 @@ var commandName = "reserve server"
 var Full bool
 
 func init() {
-	ReserveServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	ReserveServerCmd.MarkFlagRequired("filename")
-	ReserveServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
-	ReserveServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	utils.SetupOutputFlag(ReserveServerCmd)
+	utils.SetupFullFlag(ReserveServerCmd, &Full, "server")
+	utils.SetupFilenameFlag(ReserveServerCmd, &Filename, utils.RESERVATION)
 }
 
 // ResetServerCmd is the command for resetting a server.

@@ -79,7 +79,7 @@ func TestSubmitTagEditFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// execute
-	err := PatchTagCmd.RunE(PatchTagCmd, []string{})
+	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
 
@@ -102,7 +102,7 @@ func TestSubmitTagEditUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// execute
-	err := PatchTagCmd.RunE(PatchTagCmd, []string{})
+	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "patch tag", err)
 
@@ -123,7 +123,7 @@ func TestSubmitTagEditYAMLUnmarshallingFailure(test_framework *testing.T) {
 		Return(yamlmarshal, nil).
 		Times(1)
 
-	err := PatchTagCmd.RunE(PatchTagCmd, []string{})
+	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "patch tag", err)
 
@@ -146,7 +146,7 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// execute
-	err := PatchTagCmd.RunE(PatchTagCmd, []string{})
+	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "patch tag", err)
 

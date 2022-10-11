@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 )
 
 // Filename is the filename from which to retrieve the request body
@@ -15,9 +16,8 @@ var Filename string
 var commandName = "update private-network"
 
 func init() {
-	UpdatePrivateNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	UpdatePrivateNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	UpdatePrivateNetworkCmd.MarkFlagRequired("filename")
+	utils.SetupOutputFlag(UpdatePrivateNetworkCmd)
+	utils.SetupFilenameFlag(UpdatePrivateNetworkCmd, &Filename, utils.UPDATING)
 }
 
 // UpdatePrivateNetworkCmd is the command for creating a private network.

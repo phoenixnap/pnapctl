@@ -16,10 +16,9 @@ var Full bool
 const commandName = "patch ip-block"
 
 func init() {
-	PatchIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	PatchIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for patch")
-	PatchIpBlockCmd.MarkFlagRequired("filename")
-	PatchIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
+	utils.SetupOutputFlag(PatchIpBlockCmd)
+	utils.SetupFullFlag(PatchIpBlockCmd, &Full, "ip-block")
+	utils.SetupFilenameFlag(PatchIpBlockCmd, &Filename, utils.UPDATING)
 }
 
 var PatchIpBlockCmd = &cobra.Command{

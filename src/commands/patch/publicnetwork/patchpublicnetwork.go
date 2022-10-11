@@ -17,9 +17,7 @@ var (
 
 func init() {
 	utils.SetupOutputFlag(PatchPublicNetworkCmd)
-
-	PatchPublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for updating.")
-	PatchPublicNetworkCmd.MarkFlagRequired("filename")
+	utils.SetupFilenameFlag(PatchPublicNetworkCmd, &Filename, utils.UPDATING)
 }
 
 var PatchPublicNetworkCmd = &cobra.Command{

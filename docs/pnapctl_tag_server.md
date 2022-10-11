@@ -28,7 +28,7 @@ pnapctl tag server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 ### Options
 
 ```
-  -f, --filename string   File containing required information for creation
+  -f, --filename string   File containing required information for tagging
       --full              Shows all server details
   -h, --help              help for server
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")

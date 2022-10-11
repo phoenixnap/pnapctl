@@ -19,9 +19,7 @@ var (
 func init() {
 	utils.SetupFullFlag(ConvertReservationCmd, &Full, "reservation")
 	utils.SetupOutputFlag(ConvertReservationCmd)
-
-	ConvertReservationCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	ConvertReservationCmd.MarkFlagRequired("filename")
+	utils.SetupFilenameFlag(ConvertReservationCmd, &Filename, utils.CONVERSION)
 }
 
 var ConvertReservationCmd = &cobra.Command{

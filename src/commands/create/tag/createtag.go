@@ -15,9 +15,8 @@ var Filename string
 var commandName = "create tag"
 
 func init() {
-	CreateTagCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateTagCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateTagCmd.MarkFlagRequired("filename")
+	utils.SetupOutputFlag(CreateTagCmd)
+	utils.SetupFilenameFlag(CreateTagCmd, &Filename, utils.CREATION)
 }
 
 // CreateTagCmd is the command for creating a tag.

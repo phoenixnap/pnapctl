@@ -14,9 +14,8 @@ var Filename string
 var commandName = "create cluster"
 
 func init() {
-	CreateClusterCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateClusterCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateClusterCmd.MarkFlagRequired("filename")
+	utils.SetupOutputFlag(CreateClusterCmd)
+	utils.SetupFilenameFlag(CreateClusterCmd, &Filename, utils.CREATION)
 }
 
 var CreateClusterCmd = &cobra.Command{

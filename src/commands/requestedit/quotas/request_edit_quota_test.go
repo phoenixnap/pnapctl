@@ -77,7 +77,7 @@ func TestSubmitQuotaEditRequestFileNotFoundFailure(test_framework *testing.T) {
 		Times(1)
 
 	// execute
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{})
+	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
 
@@ -100,7 +100,7 @@ func TestSubmitQuotaEditRequestUnmarshallingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// execute
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{})
+	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "request-edit quota", err)
 
@@ -121,7 +121,7 @@ func TestSubmitQuotaEditRequestYAMLUnmarshallingFailure(test_framework *testing.
 		Return(yamlmarshal, nil).
 		Times(1)
 
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{})
+	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "request-edit quota", err)
 
@@ -144,7 +144,7 @@ func TestSubmitQuotaEditFileReadingFailure(test_framework *testing.T) {
 		Times(1)
 
 	// execute
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{})
+	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "request-edit quota", err)
 

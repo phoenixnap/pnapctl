@@ -19,9 +19,7 @@ var (
 func init() {
 	utils.SetupFullFlag(CreateReservationCmd, &Full, "reservation")
 	utils.SetupOutputFlag(CreateReservationCmd)
-
-	CreateReservationCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateReservationCmd.MarkFlagRequired("filename")
+	utils.SetupFilenameFlag(CreateReservationCmd, &Filename, utils.CREATION)
 }
 
 var CreateReservationCmd = &cobra.Command{

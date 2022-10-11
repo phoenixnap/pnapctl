@@ -19,10 +19,9 @@ const commandName string = "tag server"
 var Full bool
 
 func init() {
-	TagServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	TagServerCmd.MarkFlagRequired("filename")
-	TagServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
-	TagServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	utils.SetupOutputFlag(TagServerCmd)
+	utils.SetupFullFlag(TagServerCmd, &Full, "server")
+	utils.SetupFilenameFlag(TagServerCmd, &Filename, utils.TAGGING)
 }
 
 // TagServerCmd is the command for tagging a server.

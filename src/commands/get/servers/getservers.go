@@ -13,8 +13,9 @@ var Full bool
 var tags []string
 
 func init() {
-	GetServersCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
-	GetServersCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	utils.SetupOutputFlag(GetServersCmd)
+	utils.SetupFullFlag(GetServersCmd, &Full, "server")
+
 	GetServersCmd.PersistentFlags().StringArrayVar(&tags, "tag", nil, "Filter by tag")
 }
 

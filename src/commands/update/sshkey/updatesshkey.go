@@ -17,10 +17,9 @@ var commandName = "update ssh-key"
 var Full bool
 
 func init() {
-	UpdateSshKeyCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ssh key details")
-	UpdateSshKeyCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	UpdateSshKeyCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	UpdateSshKeyCmd.MarkFlagRequired("filename")
+	utils.SetupOutputFlag(UpdateSshKeyCmd)
+	utils.SetupFullFlag(UpdateSshKeyCmd, &Full, "ssh key")
+	utils.SetupFilenameFlag(UpdateSshKeyCmd, &Filename, utils.UPDATING)
 }
 
 // UpdateSshKeyCmd is the command for creating a server.

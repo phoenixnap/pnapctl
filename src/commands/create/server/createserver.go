@@ -17,10 +17,9 @@ var commandName = "create server"
 var Full bool
 
 func init() {
-	CreateServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
-	CreateServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateServerCmd.MarkFlagRequired("filename")
+	utils.SetupOutputFlag(CreateServerCmd)
+	utils.SetupFullFlag(CreateServerCmd, &Full, "server")
+	utils.SetupFilenameFlag(CreateServerCmd, &Filename, utils.CREATION)
 }
 
 // CreateServerCmd is the command for creating a server.
