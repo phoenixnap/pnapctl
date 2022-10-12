@@ -4,7 +4,6 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
@@ -17,17 +16,17 @@ var Client BillingSdkClient
 
 type BillingSdkClient interface {
 	// Rated Usages
-	RatedUsageGet(string, string, string) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
-	RatedUsageMonthToDateGet(string) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
-	ProductsGet(string, string, string, string) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error)
-	ReservationsGet(string) ([]billingapisdk.Reservation, *http.Response, error)
+	RatedUsageGet(fromYearMonth, toYearMonth, productCategory string) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
+	RatedUsageMonthToDateGet(productCategory string) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
+	ProductsGet(productCode, productCategory, skuCode, location string) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error)
+	ReservationsGet(productCategory string) ([]billingapisdk.Reservation, *http.Response, error)
 	ReservationsPost(request billingapisdk.ReservationRequest) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationGetById(id string) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationDisableAutoRenew(id string, request billingapisdk.ReservationAutoRenewDisableRequest) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationEnableAutoRenew(id string) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationConvert(id string, request billingapisdk.ReservationRequest) (*billingapisdk.Reservation, *http.Response, error)
 	AccountBillingConfigurationGet() (*billingapisdk.ConfigurationDetails, *http.Response, error)
-	ProductAvailabilityGet([]string, []string, bool, []string, []string, float32) ([]billingapisdk.ProductAvailability, *http.Response, error)
+	ProductAvailabilityGet(productCategory []string, productCode []string, showOnlyMinQuantityAvailable bool, location []string, solution []string, minQuantity float32) ([]billingapisdk.ProductAvailability, *http.Response, error)
 }
 
 type MainClient struct {
@@ -168,8 +167,8 @@ func (m MainClient) ProductAvailabilityGet(productCategory []string, productCode
 		request.MinQuantity(minQuantity)
 	}
 
-	locations := iterutils.Deref(iterutils.Map(location, func(str string) *billingapi.LocationEnum {
-		enum, _ := billingapi.NewLocationEnumFromValue(str)
+	locations := iterutils.Deref(iterutils.Map(location, func(str string) *billingapisdk.LocationEnum {
+		enum, _ := billingapisdk.NewLocationEnumFromValue(str)
 		return enum
 	}))
 

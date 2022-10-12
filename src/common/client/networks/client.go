@@ -21,7 +21,7 @@ type NetworkSdkClient interface {
 	PrivateNetworkPut(networkId string, privateNetworkUpdate networkapisdk.PrivateNetworkModify) (*networkapisdk.PrivateNetwork, *http.Response, error)
 	PrivateNetworkDelete(networkId string) (*http.Response, error)
 
-	PublicNetworksGet(string) ([]networkapisdk.PublicNetwork, *http.Response, error)
+	PublicNetworksGet(location string) ([]networkapisdk.PublicNetwork, *http.Response, error)
 	PublicNetworkGetById(networkId string) (*networkapisdk.PublicNetwork, *http.Response, error)
 	PublicNetworksPost(publicNetworkCreate networkapisdk.PublicNetworkCreate) (*networkapisdk.PublicNetwork, *http.Response, error)
 	PublicNetworkDelete(networkId string) (*http.Response, error)
