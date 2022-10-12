@@ -28,8 +28,8 @@ func deleteCluster(id string) error {
 	result, httpResponse, err := rancher.Client.ClusterDelete(id)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		fmt.Println(result.Result, result.ClusterId)
 		return nil

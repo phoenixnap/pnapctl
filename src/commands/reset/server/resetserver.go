@@ -60,8 +60,8 @@ func resetServer(id string) error {
 	result, httpResponse, err := bmcapi.Client.ServerReset(id, *request)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		fmt.Println(result.Result)
 		return err

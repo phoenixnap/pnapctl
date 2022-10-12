@@ -52,8 +52,8 @@ func getIpBlocks() error {
 
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintIpBlockListResponse(ipBlocks, Full)
 	}
@@ -64,8 +64,8 @@ func getIpBlockById(ipBlockId string) error {
 
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintIpBlockResponse(ipBlock, Full)
 	}

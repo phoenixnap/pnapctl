@@ -43,8 +43,8 @@ func getClusters() error {
 
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintClusterListResponse(clusters)
 	}
@@ -55,8 +55,8 @@ func getClusterById(clusterID string) error {
 
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintClusterResponse(cluster)
 	}

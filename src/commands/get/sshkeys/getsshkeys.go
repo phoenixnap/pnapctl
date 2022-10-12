@@ -49,8 +49,8 @@ func getSshKeys() error {
 
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintSshKeyListResponse(sshKeys, Full)
 	}
@@ -61,8 +61,8 @@ func getSshKeyById(sshKeyId string) error {
 
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintSshKeyResponse(sshKey, Full)
 	}

@@ -54,8 +54,8 @@ func getReservations() error {
 
 	generatedError := utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintReservationListResponse(reservations, Full)
 	}
@@ -66,8 +66,8 @@ func getReservationById(reservationId string) error {
 
 	generatedError := utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintReservationResponse(reservation, Full)
 	}

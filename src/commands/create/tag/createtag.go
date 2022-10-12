@@ -52,8 +52,8 @@ func createTag() error {
 	response, httpResponse, err := tags.Client.TagPost(*tagCreate)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintTagResponse(response)
 	}

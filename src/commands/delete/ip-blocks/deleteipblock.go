@@ -28,8 +28,8 @@ func deleteIpBlock(id string) error {
 	result, httpResponse, err := ip.Client.IpBlocksIpBlockIdDelete(id)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		fmt.Println(result.Result, result.IpBlockId)
 		return nil

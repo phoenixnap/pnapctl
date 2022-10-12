@@ -28,8 +28,8 @@ func deleteTag(id string) error {
 	result, httpResponse, err := tags.Client.TagDelete(id)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		fmt.Println(result.Result, result.TagId)
 		return nil

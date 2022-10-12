@@ -52,8 +52,8 @@ func getServers() error {
 
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintServerListResponse(servers, Full)
 	}
@@ -64,8 +64,8 @@ func getServersById(serverID string) error {
 
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintServerResponse(server, Full)
 	}

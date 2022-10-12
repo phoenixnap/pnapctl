@@ -50,8 +50,8 @@ func createPublicNetworkIpBlock(id string) error {
 
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintPublicNetworkIpBlockResponse(response)
 	}

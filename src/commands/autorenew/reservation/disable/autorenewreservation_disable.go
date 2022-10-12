@@ -50,8 +50,8 @@ func disableAutoRenewForReservation(id string) error {
 	response, httpResponse, err := billing.Client.ReservationDisableAutoRenew(id, *request)
 	generatedError := utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintReservationResponse(response, Full)
 	}

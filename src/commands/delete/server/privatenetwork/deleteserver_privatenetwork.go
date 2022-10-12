@@ -34,8 +34,8 @@ func deletePrivateNetworkFromServer(serverId, privateNetworkId string) error {
 	result, httpResponse, err := bmcapi.Client.ServerPrivateNetworkDelete(serverId, privateNetworkId)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		fmt.Println(result)
 		return nil

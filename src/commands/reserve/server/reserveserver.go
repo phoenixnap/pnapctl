@@ -53,8 +53,8 @@ func reserveServer(id string) error {
 	serverResponse, httpResponse, err := bmcapi.Client.ServerReserve(id, *reserveRequest)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintServerResponse(serverResponse, Full)
 	}

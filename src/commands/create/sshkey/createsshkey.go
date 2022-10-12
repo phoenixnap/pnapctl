@@ -55,8 +55,8 @@ func createSshKey() error {
 	response, httpResponse, err := bmcapi.Client.SshKeyPost(*sshKeyCreate)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintSshKeyResponse(response, Full)
 	}

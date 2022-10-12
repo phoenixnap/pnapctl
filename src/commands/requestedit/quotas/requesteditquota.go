@@ -48,8 +48,8 @@ func requestToEditQuota(id string) error {
 	httpResponse, err := bmcapi.Client.QuotaEditById(id, *quotaEditRequest)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		fmt.Println("Quota Edit Limit Request Accepted.")
 		return nil

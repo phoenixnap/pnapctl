@@ -31,10 +31,10 @@ pnapctl delete public-network <ID>`,
 func deletePublicNetwork(id string) error {
 	response, err := networks.Client.PublicNetworkDelete(id)
 
-	generatedErr := utils.CheckForErrors(response, err)
+	generatedError := utils.CheckForErrors(response, err)
 
-	if *generatedErr != nil {
-		return *generatedErr
+	if generatedError != nil {
+		return generatedError
 	} else {
 		fmt.Println("Successfully deleted.")
 	}

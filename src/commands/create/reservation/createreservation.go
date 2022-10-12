@@ -52,8 +52,8 @@ func createReservation() error {
 	response, httpResponse, err := billing.Client.ReservationsPost(*reservationCreate)
 	generatedError := utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintReservationResponse(response, Full)
 	}

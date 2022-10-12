@@ -46,8 +46,8 @@ func getQuotas() error {
 
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintQuotaListResponse(quotas)
 	}
@@ -58,8 +58,8 @@ func getQuotaById(quotaId string) error {
 
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintQuotaResponse(quota)
 	}

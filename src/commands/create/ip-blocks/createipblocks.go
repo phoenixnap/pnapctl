@@ -53,8 +53,8 @@ func createIpBlock() error {
 	response, httpResponse, err := ip.Client.IpBlockPost(*ipBlockCreate)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintIpBlockResponse(response, Full)
 	}

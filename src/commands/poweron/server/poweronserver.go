@@ -29,8 +29,8 @@ func powerOnServer(id string) error {
 	result, httpResponse, err := bmcapi.Client.ServerPowerOn(id)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		fmt.Println(result.Result)
 		return nil

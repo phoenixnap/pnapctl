@@ -26,8 +26,8 @@ pnapctl delete public-network ip-block <NETWORK_ID> <IP_BLOCK_ID> [--output <OUT
 func deleteIpBlockFromPublicNetwork(networkId, ipBlockId string) error {
 	message, response, err := networks.Client.PublicNetworkIpBlockDelete(networkId, ipBlockId)
 
-	if err := utils.CheckForErrors(response, err); *err != nil {
-		return *err
+	if err := utils.CheckForErrors(response, err); err != nil {
+		return err
 	} else {
 		fmt.Println(message)
 	}

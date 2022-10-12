@@ -58,8 +58,8 @@ func getEvents() error {
 	events, httpResponse, err := audit.Client.EventsGet(*params)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintEventListResponse(events)
 	}

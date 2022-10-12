@@ -68,8 +68,8 @@ func tagServer(id string) error {
 	serverResponse, httpResponse, err := performTagRequest(id, *tagRequests)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintServerResponse(serverResponse, Full)
 	}

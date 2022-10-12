@@ -51,8 +51,8 @@ func getVolumes(storageId string) error {
 
 	generatedError := utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintVolumeListResponse(volumes, Full)
 	}
@@ -63,8 +63,8 @@ func getVolumeById(storageId, volumeId string) error {
 
 	generatedError := utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintVolumeResponse(volume, Full)
 	}

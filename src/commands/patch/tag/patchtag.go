@@ -49,8 +49,8 @@ func patchTag(id string) error {
 	tag, httpResponse, err := tags.Client.TagPatch(id, *tagEdit)
 	var generatedError = utils.CheckForErrors(httpResponse, err)
 
-	if *generatedError != nil {
-		return *generatedError
+	if generatedError != nil {
+		return generatedError
 	} else {
 		return printer.PrintTagResponse(tag)
 	}
