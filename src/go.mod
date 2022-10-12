@@ -3,6 +3,7 @@ module phoenixnap.com/pnapctl
 go 1.19
 
 require (
+	github.com/go-faker/faker/v4 v4.0.0-beta.3
 	github.com/golang/mock v1.6.0
 	github.com/influxdata/influxdb v1.9.4
 	github.com/landoop/tableprinter v0.0.0-20201125135848-89e81fc956e7
@@ -27,7 +28,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
-	github.com/go-faker/faker/v4 v4.0.0-beta.3 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
