@@ -45,24 +45,20 @@ pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getTags() error {
-	tags, httpResponse, err := tagclient.Client.TagsGet(Name)
+	tags, err := tagclient.Client.TagsGet(Name)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintTagListResponse(tags)
 	}
 }
 
 func getTagById(tagID string) error {
-	tag, httpResponse, err := tagclient.Client.TagGetById(tagID)
+	tag, err := tagclient.Client.TagGetById(tagID)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintTagResponse(tag)
 	}

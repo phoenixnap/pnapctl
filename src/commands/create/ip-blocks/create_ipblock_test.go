@@ -2,7 +2,6 @@ package ip_blocks
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -30,7 +29,7 @@ func TestCreateIpBlockSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(ipBlockCreate)).
-		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
+		Return(&ipBlock, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -61,7 +60,7 @@ func TestCreateIpBlockSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(ipBlockCreateCli)).
-		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
+		Return(&ipBlock, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -147,38 +146,6 @@ func TestCreateIpBlockFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateIpBlockBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	ipBlockCreate := generators.Generate[ipapi.IpBlockCreate]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(ipBlockCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareIPMockClient(test_framework).
-		IpBlockPost(gomock.Eq(ipBlockCreate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestCreateIpBlockClientFailure(test_framework *testing.T) {
 	// Setup
 	ipBlockCreate := generators.Generate[ipapi.IpBlockCreate]()
@@ -191,7 +158,7 @@ func TestCreateIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(ipBlockCreate)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -223,7 +190,7 @@ func TestCreateIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(ipBlockCreate)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

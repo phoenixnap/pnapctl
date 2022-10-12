@@ -2,7 +2,6 @@ package cluster
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -30,7 +29,7 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(&createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
+		Return(&createdCluster, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -62,7 +61,7 @@ func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(&createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
+		Return(&createdCluster, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -119,36 +118,6 @@ func TestCreateClusterUnmarshallingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
-	// What the client should receive.
-	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(clusterCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestCreateClusterClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
@@ -161,7 +130,7 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -191,7 +160,7 @@ func TestCreateClusterKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).

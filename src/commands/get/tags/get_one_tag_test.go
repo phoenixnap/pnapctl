@@ -9,7 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -21,7 +20,7 @@ func TestGetTagSuccess(test_framework *testing.T) {
 
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(&tag, WithResponse(200, WithBody(tag)), nil)
+		Return(&tag, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tagTable).
@@ -33,22 +32,10 @@ func TestGetTagSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetTagNotFound(test_framework *testing.T) {
-	PrepareTagMockClient(test_framework).
-		TagGetById(RESOURCEID).
-		Return(nil, WithResponse(400, nil), nil)
-
-	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetTagClientFailure(test_framework *testing.T) {
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
 
@@ -62,7 +49,7 @@ func TestGetTagClientFailure(test_framework *testing.T) {
 func TestGetTagKeycloakFailure(test_framework *testing.T) {
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
 
@@ -76,7 +63,7 @@ func TestGetTagPrinterFailure(test_framework *testing.T) {
 
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(&tag, WithResponse(200, WithBody(tag)), nil)
+		Return(&tag, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tagTable).

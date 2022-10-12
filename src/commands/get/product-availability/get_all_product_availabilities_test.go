@@ -29,7 +29,7 @@ func TestGetAllProductAvailabilitiesSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ProductAvailabilityGet(getQueryParams()).
-		Return(productAvailabilities, WithResponse(200, WithBody(productAvailabilities)), nil)
+		Return(productAvailabilities, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(productAvailabilitiesTable).
@@ -45,7 +45,7 @@ func TestGetAllProductAvailabilitiesClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ProductAvailabilityGet(getQueryParams()).
-		Return(nil, WithResponse(400, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetProductAvailabilitiesCmd.RunE(GetProductAvailabilitiesCmd, []string{})
 
@@ -60,7 +60,7 @@ func TestGetAllProductAvailabilitiesKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ProductAvailabilityGet(getQueryParams()).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetProductAvailabilitiesCmd.RunE(GetProductAvailabilitiesCmd, []string{})
 
@@ -79,7 +79,7 @@ func TestGetAllProductAvailabilitiesPrinterFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ProductAvailabilityGet(getQueryParams()).
-		Return(productAvailabilities, WithResponse(200, WithBody(productAvailabilities)), nil)
+		Return(productAvailabilities, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(productAvailabilitiesTable).

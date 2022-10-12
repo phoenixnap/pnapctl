@@ -25,7 +25,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersGet(tags).
-		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
+		Return(serverlist, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(shortServers).
@@ -49,7 +49,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersGet(tags).
-		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
+		Return(serverlist, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(longServers).
@@ -80,7 +80,7 @@ func TestFilteredServersLongSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersGet(tags).
-		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
+		Return(serverlist, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(longServers).
@@ -96,7 +96,7 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersGet(tags).
-		Return(nil, WithResponse(200, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
@@ -111,7 +111,7 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersGet(tags).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
@@ -130,7 +130,7 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		ServersGet(tags).
-		Return(serverlist, WithResponse(200, WithBody(serverlist)), nil)
+		Return(serverlist, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(shortServers).

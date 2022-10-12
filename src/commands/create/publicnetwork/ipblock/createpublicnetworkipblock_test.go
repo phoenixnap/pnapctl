@@ -2,7 +2,6 @@ package ipblock
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -31,7 +30,7 @@ func TestCreatePublicNetworkIpBlockSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(&createdIpBlock, WithResponse(200, WithBody(createdIpBlock)), nil).
+		Return(&createdIpBlock, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,7 +62,7 @@ func TestCreatePublicNetworkIpBlockSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(&createdIpBlock, WithResponse(200, WithBody(createdIpBlock)), nil).
+		Return(&createdIpBlock, nil).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -142,38 +141,6 @@ func TestCreatePublicNetworkIpBlockFileReadingFailure(test_framework *testing.T)
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreatePublicNetworkIpBlockBackendErrorFailure(test_framework *testing.T) {
-	// What the client should receive.
-	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreatePublicNetworkIpBlockCmd.RunE(CreatePublicNetworkIpBlockCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestCreatePublicNetworkIpBlockClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
@@ -186,7 +153,7 @@ func TestCreatePublicNetworkIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -218,7 +185,7 @@ func TestCreatePublicNetworkIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

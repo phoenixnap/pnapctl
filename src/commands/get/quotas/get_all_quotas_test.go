@@ -25,7 +25,7 @@ func TestGetAllQuotasSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		QuotasGet().
-		Return(quotaList, WithResponse(200, WithBody(quotaList)), nil)
+		Return(quotaList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(quotaTables).
@@ -42,7 +42,7 @@ func TestGetAllQuotasKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		QuotasGet().
-		Return(quota, nil, testutil.TestKeycloakError)
+		Return(quota, testutil.TestKeycloakError)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
 
@@ -61,7 +61,7 @@ func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		QuotasGet().
-		Return(quotaList, WithResponse(200, WithBody(quotaList)), nil)
+		Return(quotaList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(quotaTables).

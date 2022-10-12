@@ -47,8 +47,8 @@ func convertReservation(id string) error {
 		return err
 	}
 
-	response, httpResponse, err := billing.Client.ReservationConvert(id, *request)
-	if err := utils.CheckErrs(httpResponse, err); err != nil {
+	response, err := billing.Client.ReservationConvert(id, *request)
+	if err != nil {
 		return err
 	} else {
 		return printer.PrintReservationResponse(response, Full)

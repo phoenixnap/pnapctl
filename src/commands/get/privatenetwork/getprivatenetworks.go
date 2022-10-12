@@ -3,7 +3,6 @@ package privatenetwork
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
@@ -44,24 +43,20 @@ pnapctl get private-networks <PRIVATE_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getPrivateNetworks() error {
-	privateNetworks, httpResponse, err := networks.Client.PrivateNetworksGet(location)
+	privateNetworks, err := networks.Client.PrivateNetworksGet(location)
 
-	if httpResponse != nil && httpResponse.StatusCode != 200 {
-		return ctlerrors.HandleBMCError(httpResponse)
-	} else if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintPrivateNetworkListResponse(privateNetworks)
 	}
 }
 
 func getPrivateNetworkById(privateNetworkID string) error {
-	privateNetwork, httpResponse, err := networks.Client.PrivateNetworkGetById(privateNetworkID)
+	privateNetwork, err := networks.Client.PrivateNetworkGetById(privateNetworkID)
 
-	if httpResponse != nil && httpResponse.StatusCode != 200 {
-		return ctlerrors.HandleBMCError(httpResponse)
-	} else if err != nil {
-		return ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintPrivateNetworkResponse(privateNetwork)
 	}

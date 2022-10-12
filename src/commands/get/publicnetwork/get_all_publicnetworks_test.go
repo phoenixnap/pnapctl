@@ -26,7 +26,7 @@ func TestGetAllPublicNetworksSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksGet(getQueryParams()).
-		Return(publicNetworkList, WithResponse(200, WithBody(publicNetworkList)), nil)
+		Return(publicNetworkList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(publicNetworkTables).
@@ -42,7 +42,7 @@ func TestGetAllPublicNetworksClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksGet(getQueryParams()).
-		Return(nil, WithResponse(200, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{})
 
@@ -57,7 +57,7 @@ func TestGetAllPublicNetworksKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksGet(getQueryParams()).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{})
 
@@ -72,7 +72,7 @@ func TestGetAllPublicNetworksPrinterFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksGet(getQueryParams()).
-		Return(publicNetworkList, WithResponse(200, WithBody(publicNetworkList)), nil)
+		Return(publicNetworkList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(publicNetworkTables).

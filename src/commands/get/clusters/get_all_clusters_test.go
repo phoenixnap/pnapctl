@@ -25,7 +25,7 @@ func TestGetAllClustersShortSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
-		Return(clusters, WithResponse(200, WithBody(clusters)), nil)
+		Return(clusters, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(clusterlist).
@@ -41,7 +41,7 @@ func TestGetAllClustersClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
-		Return(nil, WithResponse(200, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
 
@@ -56,7 +56,7 @@ func TestGetAllClustersKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
 
@@ -75,7 +75,7 @@ func TestGetAllClustersPrinterFailure(test_framework *testing.T) {
 
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
-		Return(clusters, WithResponse(200, WithBody(clusters)), nil)
+		Return(clusters, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(clusterlist).

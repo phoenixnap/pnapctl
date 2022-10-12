@@ -46,20 +46,20 @@ pnapctl get public-networks <PUBLIC_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getPublicNetworks() error {
-	publicNetworks, httpResponse, err := networks.Client.PublicNetworksGet(location)
+	publicNetworks, err := networks.Client.PublicNetworksGet(location)
 
-	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintPublicNetworkListResponse(publicNetworks)
 	}
 }
 
 func getPublicNetworkById(id *string) error {
-	publicNetwork, httpResponse, err := networks.Client.PublicNetworkGetById(*id)
+	publicNetwork, err := networks.Client.PublicNetworkGetById(*id)
 
-	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintPublicNetworkResponse(publicNetwork)
 	}

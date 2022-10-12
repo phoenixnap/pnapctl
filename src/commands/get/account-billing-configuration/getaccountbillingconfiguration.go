@@ -28,9 +28,9 @@ pnapctl get account-billing-configuration [--output=<OUTPUT_TYPE>]`,
 }
 
 func getAccountBillingConfiguration() error {
-	configurationDetails, httpResponse, err := billing.Client.AccountBillingConfigurationGet()
+	configurationDetails, err := billing.Client.AccountBillingConfigurationGet()
 
-	if err := utils.CheckErrs(httpResponse, err); err != nil {
+	if err != nil {
 		return err
 	} else {
 		return printer.PrintConfigurationDetailsResponse(configurationDetails)

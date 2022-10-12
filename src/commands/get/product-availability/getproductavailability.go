@@ -51,9 +51,9 @@ pnapctl get product-availabilities
 }
 
 func getProductAvailabilities() error {
-	products, httpResponse, err := billing.Client.ProductAvailabilityGet(productCategory, productCode, showOnlyMinQuantityAvailable, location, solution, minQuantity)
+	products, err := billing.Client.ProductAvailabilityGet(productCategory, productCode, showOnlyMinQuantityAvailable, location, solution, minQuantity)
 
-	if err := utils.CheckErrs(httpResponse, err); err != nil {
+	if err != nil {
 		return err
 	} else {
 		return printer.PrintProductAvailabilityListResponse(products)

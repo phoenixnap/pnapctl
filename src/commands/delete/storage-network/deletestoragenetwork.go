@@ -3,7 +3,6 @@ package storagenetwork
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
@@ -26,11 +25,5 @@ var DeleteStorageNetworkCmd = &cobra.Command{
 }
 
 func deleteStorageNetwork() error {
-	httpResponse, err := networkstorage.Client.NetworkStorageDelete(ID)
-
-	if httpResponse != nil && httpResponse.StatusCode != 204 {
-		return ctlerrors.HandleBMCError(httpResponse)
-	}
-
-	return err
+	return networkstorage.Client.NetworkStorageDelete(ID)
 }

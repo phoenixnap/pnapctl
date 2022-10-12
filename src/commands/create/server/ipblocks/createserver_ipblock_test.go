@@ -2,7 +2,6 @@ package ipblocks
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -27,7 +26,7 @@ func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(&serverIpBlockSdk, WithResponse(202, WithBody(serverIpBlockSdk)), nil).
+		Return(&serverIpBlockSdk, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -55,7 +54,7 @@ func TestCreateServerIpBlockSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(&serverIpBlockSdk, WithResponse(202, WithBody(serverIpBlockSdk)), nil).
+		Return(&serverIpBlockSdk, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -141,37 +140,6 @@ func TestCreateServerIpBlockFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateServerIpBlockBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateServerIpBlockCmd.RunE(CreateServerIpBlockCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
 	// Setup
 	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
@@ -184,7 +152,7 @@ func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -216,7 +184,7 @@ func TestCreateServerIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

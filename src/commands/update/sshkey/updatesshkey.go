@@ -50,11 +50,9 @@ func updateSshKey(id string) error {
 	}
 
 	// update the ssh key
-	response, httpResponse, err := bmcapi.Client.SshKeyPut(id, *sshKeyUpdate)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	response, err := bmcapi.Client.SshKeyPut(id, *sshKeyUpdate)
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintSshKeyResponse(response, Full)
 	}

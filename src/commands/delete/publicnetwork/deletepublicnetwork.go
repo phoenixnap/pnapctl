@@ -1,12 +1,9 @@
 package publicnetwork
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	ipblock "phoenixnap.com/pnapctl/commands/delete/publicnetwork/ip-block"
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
@@ -29,13 +26,5 @@ pnapctl delete public-network <ID>`,
 }
 
 func deletePublicNetwork(id string) error {
-	response, err := networks.Client.PublicNetworkDelete(id)
-
-	if err := utils.CheckErrs(response, err); err != nil {
-		return err
-	} else {
-		fmt.Println("Successfully deleted.")
-	}
-
-	return nil
+	return networks.Client.PublicNetworkDelete(id)
 }

@@ -1,8 +1,6 @@
 package quotas
 
 import (
-	"fmt"
-
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
@@ -45,13 +43,5 @@ func requestToEditQuota(id string) error {
 		return err
 	}
 
-	httpResponse, err := bmcapi.Client.QuotaEditById(id, *quotaEditRequest)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
-	} else {
-		fmt.Println("Quota Edit Limit Request Accepted.")
-		return nil
-	}
+	return bmcapi.Client.QuotaEditById(id, *quotaEditRequest)
 }

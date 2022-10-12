@@ -47,11 +47,9 @@ func createCluster() error {
 		return err
 	}
 
-	response, httpResponse, err := rancher.Client.ClusterPost(*cluster)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	response, err := rancher.Client.ClusterPost(*cluster)
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintClusterResponse(response)
 	}

@@ -2,7 +2,6 @@ package privatenetwork
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -31,7 +30,7 @@ func TestUpdatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(privateNetworkUpdate)).
-		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil).
+		Return(&privateNetwork, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,7 +62,7 @@ func TestUpdatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(privateNetworkUpdate)).
-		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil).
+		Return(&privateNetwork, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -149,38 +148,6 @@ func TestUpdatePrivateNetworkFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestUpdatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	privateNetworkUpdate := generators.Generate[networkapi.PrivateNetworkModify]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(privateNetworkUpdate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PrivateNetworkPut(RESOURCEID, gomock.Eq(privateNetworkUpdate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := UpdatePrivateNetworkCmd.RunE(UpdatePrivateNetworkCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestUpdatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// Setup
 	privateNetworkUpdate := generators.Generate[networkapi.PrivateNetworkModify]()
@@ -193,7 +160,7 @@ func TestUpdatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(privateNetworkUpdate)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -225,7 +192,7 @@ func TestUpdatePrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkPut(RESOURCEID, gomock.Eq(privateNetworkUpdate)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

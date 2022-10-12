@@ -2,7 +2,6 @@ package sshkey
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -31,7 +30,7 @@ func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
-		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil).
+		Return(&sshKey, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,7 +62,7 @@ func TestUpdateSshKeySuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
-		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil).
+		Return(&sshKey, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -149,38 +148,6 @@ func TestUpdateSshKeyFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestUpdateSshKeyBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(sshKeyUpdate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := UpdateSshKeyCmd.RunE(UpdateSshKeyCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestUpdateSshKeyClientFailure(test_framework *testing.T) {
 	// Setup
 	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
@@ -193,7 +160,7 @@ func TestUpdateSshKeyClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -225,7 +192,7 @@ func TestUpdateSshKeyKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

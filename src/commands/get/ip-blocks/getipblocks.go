@@ -46,24 +46,20 @@ pnapctl get ip-block <IP_BLOCK_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getIpBlocks() error {
-	ipBlocks, httpResponse, err := ip.Client.IpBlocksGet(tags)
+	ipBlocks, err := ip.Client.IpBlocksGet(tags)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintIpBlockListResponse(ipBlocks, Full)
 	}
 }
 
 func getIpBlockById(ipBlockId string) error {
-	ipBlock, httpResponse, err := ip.Client.IpBlocksGetById(ipBlockId)
+	ipBlock, err := ip.Client.IpBlocksGetById(ipBlockId)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintIpBlockResponse(ipBlock, Full)
 	}

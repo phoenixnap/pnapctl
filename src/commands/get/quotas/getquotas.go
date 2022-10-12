@@ -40,24 +40,20 @@ pnapctl get quota <QUOTA_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getQuotas() error {
-	quotas, httpResponse, err := bmcapi.Client.QuotasGet()
+	quotas, err := bmcapi.Client.QuotasGet()
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintQuotaListResponse(quotas)
 	}
 }
 
 func getQuotaById(quotaId string) error {
-	quota, httpResponse, err := bmcapi.Client.QuotaGetById(quotaId)
+	quota, err := bmcapi.Client.QuotaGetById(quotaId)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintQuotaResponse(quota)
 	}

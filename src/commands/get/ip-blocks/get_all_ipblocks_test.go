@@ -25,7 +25,7 @@ func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksGet(tags).
-		Return(ipBlockList, WithResponse(200, WithBody(ipBlockList)), nil)
+		Return(ipBlockList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(IpBlockTables).
@@ -41,7 +41,7 @@ func TestGetAllIpBlocksKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksGet(tags).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{})
 
@@ -60,7 +60,7 @@ func TestGetAllIpBlocksPrinterFailure(test_framework *testing.T) {
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGet(tags).
-		Return(ipBlockList, WithResponse(200, WithBody(ipBlockList)), nil)
+		Return(ipBlockList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(ipBlockTables).

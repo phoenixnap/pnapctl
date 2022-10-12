@@ -5,7 +5,6 @@
 package sdkmocks
 
 import (
-	http "net/http"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -36,13 +35,12 @@ func (m *MockTagSdkClient) EXPECT() *MockTagSdkClientMockRecorder {
 }
 
 // TagDelete mocks base method.
-func (m *MockTagSdkClient) TagDelete(tagId string) (*tagapi.DeleteResult, *http.Response, error) {
+func (m *MockTagSdkClient) TagDelete(tagId string) (*tagapi.DeleteResult, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "TagDelete", tagId)
 	ret0, _ := ret[0].(*tagapi.DeleteResult)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // TagDelete indicates an expected call of TagDelete.
@@ -52,13 +50,12 @@ func (mr *MockTagSdkClientMockRecorder) TagDelete(tagId interface{}) *gomock.Cal
 }
 
 // TagGetById mocks base method.
-func (m *MockTagSdkClient) TagGetById(tagId string) (*tagapi.Tag, *http.Response, error) {
+func (m *MockTagSdkClient) TagGetById(tagId string) (*tagapi.Tag, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "TagGetById", tagId)
 	ret0, _ := ret[0].(*tagapi.Tag)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // TagGetById indicates an expected call of TagGetById.
@@ -68,13 +65,12 @@ func (mr *MockTagSdkClientMockRecorder) TagGetById(tagId interface{}) *gomock.Ca
 }
 
 // TagPatch mocks base method.
-func (m *MockTagSdkClient) TagPatch(tagId string, tagUpdate tagapi.TagUpdate) (*tagapi.Tag, *http.Response, error) {
+func (m *MockTagSdkClient) TagPatch(tagId string, tagUpdate tagapi.TagUpdate) (*tagapi.Tag, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "TagPatch", tagId, tagUpdate)
 	ret0, _ := ret[0].(*tagapi.Tag)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // TagPatch indicates an expected call of TagPatch.
@@ -84,13 +80,12 @@ func (mr *MockTagSdkClientMockRecorder) TagPatch(tagId, tagUpdate interface{}) *
 }
 
 // TagPost mocks base method.
-func (m *MockTagSdkClient) TagPost(tagCreate tagapi.TagCreate) (*tagapi.Tag, *http.Response, error) {
+func (m *MockTagSdkClient) TagPost(tagCreate tagapi.TagCreate) (*tagapi.Tag, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "TagPost", tagCreate)
 	ret0, _ := ret[0].(*tagapi.Tag)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // TagPost indicates an expected call of TagPost.
@@ -100,13 +95,12 @@ func (mr *MockTagSdkClientMockRecorder) TagPost(tagCreate interface{}) *gomock.C
 }
 
 // TagsGet mocks base method.
-func (m *MockTagSdkClient) TagsGet(name string) ([]tagapi.Tag, *http.Response, error) {
+func (m *MockTagSdkClient) TagsGet(name string) ([]tagapi.Tag, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "TagsGet", name)
 	ret0, _ := ret[0].([]tagapi.Tag)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // TagsGet indicates an expected call of TagsGet.

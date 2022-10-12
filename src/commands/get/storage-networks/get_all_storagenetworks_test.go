@@ -22,7 +22,7 @@ func TestGetAllStorageNetworksSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGet().
-		Return(networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(networkStorageTables).
@@ -39,7 +39,7 @@ func TestGetAllStorageNetworksClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGet().
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{})
@@ -55,7 +55,7 @@ func TestGetAllStorageNetworksKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGet().
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{})
@@ -72,7 +72,7 @@ func TestGetAllStorageNetworksPrinterFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGet().
-		Return(networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(networkStorageTables).

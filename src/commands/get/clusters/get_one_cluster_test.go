@@ -9,7 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -21,7 +20,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 
 	PrepareRancherMockClient(test_framework).
 		ClusterGetById(RESOURCEID).
-		Return(&cluster, WithResponse(200, WithBody(cluster)), nil)
+		Return(&cluster, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(clusterTable).
@@ -33,22 +32,10 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetServerNotFound(test_framework *testing.T) {
-	PrepareRancherMockClient(test_framework).
-		ClusterGetById(RESOURCEID).
-		Return(nil, WithResponse(400, nil), nil)
-
-	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetServerClientFailure(test_framework *testing.T) {
 	PrepareRancherMockClient(test_framework).
 		ClusterGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
 
@@ -62,7 +49,7 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 func TestGetServerKeycloakFailure(test_framework *testing.T) {
 	PrepareRancherMockClient(test_framework).
 		ClusterGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
 
@@ -76,7 +63,7 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 
 	PrepareRancherMockClient(test_framework).
 		ClusterGetById(RESOURCEID).
-		Return(&cluster, WithResponse(200, WithBody(cluster)), nil)
+		Return(&cluster, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(clusterTable).

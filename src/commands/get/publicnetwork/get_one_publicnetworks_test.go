@@ -9,7 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -20,7 +19,7 @@ func TestGetPublicNetworkSuccess(test_framework *testing.T) {
 
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkGetById(RESOURCEID).
-		Return(&publicNetworkSdk, WithResponse(200, WithBody(publicNetworkSdk)), nil)
+		Return(&publicNetworkSdk, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(publicNetworkTable).
@@ -32,25 +31,10 @@ func TestGetPublicNetworkSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-// GetPublicNetworksCmd.SetArgs()
-// GetPublicNetworksCmd.Execute()
-
-func TestGetPublicNetworkNotFound(test_framework *testing.T) {
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworkGetById(RESOURCEID).
-		Return(nil, WithResponse(404, nil), nil)
-
-	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.EqualError(test_framework, err, expectedMessage)
-}
-
 func TestGetPublicNetworkClientFailure(test_framework *testing.T) {
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})
 
@@ -64,7 +48,7 @@ func TestGetPublicNetworkClientFailure(test_framework *testing.T) {
 func TestGetPublicNetworkKeycloakFailure(test_framework *testing.T) {
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})
 
@@ -78,7 +62,7 @@ func TestGetPublicNetworkPrinterFailure(test_framework *testing.T) {
 
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkGetById(RESOURCEID).
-		Return(&publicNetworkSdk, WithResponse(200, WithBody(publicNetworkSdk)), nil)
+		Return(&publicNetworkSdk, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(publicNetworkTable).

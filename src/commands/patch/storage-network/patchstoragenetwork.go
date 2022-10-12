@@ -47,10 +47,10 @@ func patchStorageNetwork() error {
 		return err
 	}
 
-	sdkResponse, httpResponse, err := networkstorage.Client.NetworkStoragePatch(ID, *request)
+	sdkResponse, err := networkstorage.Client.NetworkStoragePatch(ID, *request)
 
-	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintStorageNetworkResponse(sdkResponse)
 	}

@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/ip"
-	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
@@ -23,11 +22,9 @@ var DeleteIpBlockCmd = &cobra.Command{
 }
 
 func deleteIpBlock(id string) error {
-	result, httpResponse, err := ip.Client.IpBlocksIpBlockIdDelete(id)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	result, err := ip.Client.IpBlocksIpBlockIdDelete(id)
+	if err != nil {
+		return err
 	} else {
 		fmt.Println(result.Result, result.IpBlockId)
 		return nil

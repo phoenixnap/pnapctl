@@ -46,24 +46,20 @@ pnapctl get servers <SERVER_ID> [--full] [--output <OUTPUT_TYPE>]`,
 }
 
 func getServers() error {
-	servers, httpResponse, err := bmcapi.Client.ServersGet(tags)
+	servers, err := bmcapi.Client.ServersGet(tags)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintServerListResponse(servers, Full)
 	}
 }
 
 func getServersById(serverID string) error {
-	server, httpResponse, err := bmcapi.Client.ServerGetById(serverID)
+	server, err := bmcapi.Client.ServerGetById(serverID)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintServerResponse(server, Full)
 	}

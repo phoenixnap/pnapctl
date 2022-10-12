@@ -45,9 +45,9 @@ pnapctl get volume <ID> [--full] [--output <OUTPUT_TYPE>]`,
 }
 
 func getVolumes(storageId string) error {
-	volumes, httpResponse, err := networkstorage.Client.NetworkStorageGetVolumes(storageId)
+	volumes, err := networkstorage.Client.NetworkStorageGetVolumes(storageId)
 
-	if err := utils.CheckErrs(httpResponse, err); err != nil {
+	if err != nil {
 		return err
 	} else {
 		return printer.PrintVolumeListResponse(volumes, Full)
@@ -55,9 +55,9 @@ func getVolumes(storageId string) error {
 }
 
 func getVolumeById(storageId, volumeId string) error {
-	volume, httpResponse, err := networkstorage.Client.NetworkStorageGetVolumeById(storageId, volumeId)
+	volume, err := networkstorage.Client.NetworkStorageGetVolumeById(storageId, volumeId)
 
-	if err := utils.CheckErrs(httpResponse, err); err != nil {
+	if err != nil {
 		return err
 	} else {
 		return printer.PrintVolumeResponse(volume, Full)

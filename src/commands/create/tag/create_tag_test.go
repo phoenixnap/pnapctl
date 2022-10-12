@@ -2,7 +2,6 @@ package tag
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -30,7 +29,7 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
-		Return(&createdTag, WithResponse(201, WithBody(createdTag)), nil).
+		Return(&createdTag, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -62,7 +61,7 @@ func TestCreateTagSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
-		Return(&createdTag, WithResponse(201, WithBody(createdTag)), nil).
+		Return(&createdTag, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -119,36 +118,6 @@ func TestCreateTagUnmarshallingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateTagBackendErrorFailure(test_framework *testing.T) {
-	// What the client should receive.
-	tagCreate := generators.Generate[tagapisdk.TagCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(tagCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(tagCreate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestCreateTagClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	tagCreate := generators.Generate[tagapisdk.TagCreate]()
@@ -161,7 +130,7 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -191,7 +160,7 @@ func TestCreateTagKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).

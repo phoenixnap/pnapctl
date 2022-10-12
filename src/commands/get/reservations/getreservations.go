@@ -43,9 +43,9 @@ pnapctl get reservation <RESERVATION_ID> [--full] [--output=<OUTPUT_TYPE>]`,
 }
 
 func getReservations() error {
-	reservations, httpResponse, err := billing.Client.ReservationsGet(productCategory)
+	reservations, err := billing.Client.ReservationsGet(productCategory)
 
-	if err := utils.CheckErrs(httpResponse, err); err != nil {
+	if err != nil {
 		return err
 	} else {
 		return printer.PrintReservationListResponse(reservations, Full)
@@ -53,9 +53,9 @@ func getReservations() error {
 }
 
 func getReservationById(reservationId string) error {
-	reservation, httpResponse, err := billing.Client.ReservationGetById(reservationId)
+	reservation, err := billing.Client.ReservationGetById(reservationId)
 
-	if err := utils.CheckErrs(httpResponse, err); err != nil {
+	if err != nil {
 		return err
 	} else {
 		return printer.PrintReservationResponse(reservation, Full)

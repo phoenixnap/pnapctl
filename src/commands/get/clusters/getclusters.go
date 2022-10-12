@@ -41,24 +41,20 @@ pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getClusters() error {
-	clusters, httpResponse, err := rancher.Client.ClustersGet()
+	clusters, err := rancher.Client.ClustersGet()
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintClusterListResponse(clusters)
 	}
 }
 
 func getClusterById(clusterID string) error {
-	cluster, httpResponse, err := rancher.Client.ClusterGetById(clusterID)
+	cluster, err := rancher.Client.ClusterGetById(clusterID)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintClusterResponse(cluster)
 	}

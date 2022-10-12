@@ -21,7 +21,7 @@ func TestGetAccountBillingConfigurationSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		AccountBillingConfigurationGet().
-		Return(&configurationDetail, WithResponse(200, WithBody(configurationDetail)), nil)
+		Return(&configurationDetail, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(configurationDetailTable).
@@ -37,7 +37,7 @@ func TestGetAccountBillingConfigurationClientFailure(test_framework *testing.T) 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		AccountBillingConfigurationGet().
-		Return(nil, WithResponse(400, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})
 
@@ -52,7 +52,7 @@ func TestGetAccountBillingConfigurationKeycloakFailure(test_framework *testing.T
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		AccountBillingConfigurationGet().
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})
 
@@ -68,7 +68,7 @@ func TestGetAccountBillingConfigurationPrinterFailure(test_framework *testing.T)
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		AccountBillingConfigurationGet().
-		Return(&configurationDetail, WithResponse(200, WithBody(configurationDetail)), nil)
+		Return(&configurationDetail, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(configurationDetailTable).

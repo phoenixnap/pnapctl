@@ -48,12 +48,10 @@ func createIpBlockForServer(id string) error {
 	}
 
 	// Create the server ip block
-	response, httpResponse, err := bmcapi.Client.ServerIpBlockPost(id, *serverIpBlock)
+	response, err := bmcapi.Client.ServerIpBlockPost(id, *serverIpBlock)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintServerIpBlock(response)
 	}

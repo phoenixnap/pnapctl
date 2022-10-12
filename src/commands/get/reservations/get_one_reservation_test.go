@@ -9,7 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -20,7 +19,7 @@ func TestGetReservationShortSuccess(test_framework *testing.T) {
 
 	PrepareBillingMockClient(test_framework).
 		ReservationGetById(RESOURCEID).
-		Return(&reservation, WithResponse(200, WithBody(reservation)), nil)
+		Return(&reservation, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(shortReservation).
@@ -39,7 +38,7 @@ func TestGetReservationFullSuccess(test_framework *testing.T) {
 
 	PrepareBillingMockClient(test_framework).
 		ReservationGetById(RESOURCEID).
-		Return(&reservation, WithResponse(200, WithBody(reservation)), nil)
+		Return(&reservation, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(reservationTable).
@@ -52,24 +51,10 @@ func TestGetReservationFullSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetReservationNotFound(test_framework *testing.T) {
-	PrepareBillingMockClient(test_framework).
-		ReservationGetById(RESOURCEID).
-		Return(nil, WithResponse(400, nil), nil)
-
-	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-
-	// Assertions
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetReservationClientFailure(test_framework *testing.T) {
 	PrepareBillingMockClient(test_framework).
 		ReservationGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{RESOURCEID})
 
@@ -83,7 +68,7 @@ func TestGetReservationClientFailure(test_framework *testing.T) {
 func TestGetReservationKeycloakFailure(test_framework *testing.T) {
 	PrepareBillingMockClient(test_framework).
 		ReservationGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{RESOURCEID})
 
@@ -97,7 +82,7 @@ func TestGetReservationPrinterFailure(test_framework *testing.T) {
 
 	PrepareBillingMockClient(test_framework).
 		ReservationGetById(RESOURCEID).
-		Return(&reservation, WithResponse(200, WithBody(reservation)), nil)
+		Return(&reservation, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(shortReservation).

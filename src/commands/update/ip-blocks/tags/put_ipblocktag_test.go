@@ -2,7 +2,6 @@ package ip_blocks
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
@@ -32,7 +31,7 @@ func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
-		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
+		Return(&ipBlock, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,7 +62,7 @@ func TestPutIpBlockTagSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
-		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
+		Return(&ipBlock, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -78,37 +77,6 @@ func TestPutIpBlockTagSuccessJSON(test_framework *testing.T) {
 
 	// Assertions
 	assert.NoError(test_framework, err)
-}
-
-func TestIpBlockPutTagIdNotFound(test_framework *testing.T) {
-
-	// Setup
-	ipBlockPutTagCli := testutil.GenN(3, generators.Generate[ipapi.TagAssignmentRequest])
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
-		Return(nil, WithResponse(404, nil), nil)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-
 }
 
 func TestIpBlockPutTagFileNotFoundFailure(test_framework *testing.T) {
@@ -180,38 +148,6 @@ func TestIpBlockPutTagFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestIpBlockPutTagBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	ipBlockPutTagCli := testutil.GenN(3, generators.Generate[ipapi.TagAssignmentRequest])
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestIpBlockPutTagClientFailure(test_framework *testing.T) {
 	// Setup
 	ipBlockPutTagCli := testutil.GenN(3, generators.Generate[ipapi.TagAssignmentRequest])
@@ -224,7 +160,7 @@ func TestIpBlockPutTagClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -256,7 +192,7 @@ func TestIpBlockPutTagKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

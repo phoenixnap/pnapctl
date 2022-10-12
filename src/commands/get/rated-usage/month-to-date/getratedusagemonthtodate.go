@@ -40,9 +40,9 @@ Every record corresponds to a charge. All dates & times are in UTC.`,
 }
 
 func getRatedUsageMonthToDate() error {
-	ratedUsageRecords, httpResponse, err := billing.Client.RatedUsageMonthToDateGet(ProductCategory)
+	ratedUsageRecords, err := billing.Client.RatedUsageMonthToDateGet(ProductCategory)
 
-	if err := utils.CheckErrs(httpResponse, err); err != nil {
+	if err != nil {
 		return err
 	} else {
 		return printer.PrintRatedUsageListResponse(ratedUsageRecords, Full)

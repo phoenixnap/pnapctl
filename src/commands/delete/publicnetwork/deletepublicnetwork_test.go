@@ -5,7 +5,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -14,7 +13,7 @@ func TestDeletePublicNetworkIpBlockSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkDelete(RESOURCEID).
-		Return(WithResponse(204, WithBody("response")), nil)
+		Return(nil)
 
 	// Run command
 	err := DeletePublicNetworkCmd.RunE(DeletePublicNetworkCmd, []string{RESOURCEID})
@@ -23,40 +22,11 @@ func TestDeletePublicNetworkIpBlockSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestDeletePublicNetworkIpBlockNotFound(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworkDelete(RESOURCEID).
-		Return(WithResponse(404, nil), nil)
-
-	// Run command
-	err := DeletePublicNetworkCmd.RunE(DeletePublicNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
-func TestDeletePublicNetworkIpBlockError(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworkDelete(RESOURCEID).
-		Return(WithResponse(500, nil), nil)
-
-	// Run command
-	err := DeletePublicNetworkCmd.RunE(DeletePublicNetworkCmd, []string{RESOURCEID})
-
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-
-	// Assertions
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestDeletePublicNetworkIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkDelete(RESOURCEID).
-		Return(nil, testutil.TestError)
+		Return(testutil.TestError)
 
 	// Run command
 	err := DeletePublicNetworkCmd.RunE(DeletePublicNetworkCmd, []string{RESOURCEID})
@@ -72,7 +42,7 @@ func TestDeletePublicNetworkIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkDelete(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
+		Return(testutil.TestKeycloakError)
 
 	// Run command
 	err := DeletePublicNetworkCmd.RunE(DeletePublicNetworkCmd, []string{RESOURCEID})

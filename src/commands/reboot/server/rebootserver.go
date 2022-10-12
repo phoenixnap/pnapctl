@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
@@ -24,11 +23,9 @@ var RebootCmd = &cobra.Command{
 }
 
 func rebootServer(id string) error {
-	result, httpResponse, err := bmcapi.Client.ServerReboot(id)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	result, err := bmcapi.Client.ServerReboot(id)
+	if err != nil {
+		return err
 	} else {
 		fmt.Println(result.Result)
 		return nil

@@ -51,10 +51,10 @@ func createStorageNetwork() error {
 		return err
 	}
 
-	sdkResponse, httpResponse, err := networkstorage.Client.NetworkStoragePost(*request)
+	sdkResponse, err := networkstorage.Client.NetworkStoragePost(*request)
 
-	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintStorageNetworkResponse(sdkResponse)
 	}

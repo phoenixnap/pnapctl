@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
@@ -31,11 +30,9 @@ pnapctl delete server-public-network <SERVER_ID> <PUBLIC_NETWORK_ID>
 }
 
 func deletePublicNetworkFromServer(serverId, publicNetworkId string) error {
-	result, httpResponse, err := bmcapi.Client.ServerPublicNetworkDelete(serverId, publicNetworkId)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	result, err := bmcapi.Client.ServerPublicNetworkDelete(serverId, publicNetworkId)
+	if err != nil {
+		return err
 	} else {
 		fmt.Println(result)
 		return nil

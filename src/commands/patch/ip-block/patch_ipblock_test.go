@@ -2,7 +2,6 @@ package ipblock
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
@@ -32,7 +31,7 @@ func TestPatchIpBlockSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
-		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
+		Return(&ipBlock, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,7 +62,7 @@ func TestPatchIpBlockSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
-		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
+		Return(&ipBlock, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -78,37 +77,6 @@ func TestPatchIpBlockSuccessJSON(test_framework *testing.T) {
 
 	// Assertions
 	assert.NoError(test_framework, err)
-}
-
-func TestPatchIpBlockIdNotFound(test_framework *testing.T) {
-
-	// Setup
-	ipBlockPatchCli := generators.Generate[ipapi.IpBlockPatch]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(ipBlockPatchCli)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
-		Return(nil, WithResponse(404, nil), nil)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := PatchIpBlockCmd.RunE(PatchIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-
 }
 
 func TestPatchIpBlockFileNotFoundFailure(test_framework *testing.T) {
@@ -180,38 +148,6 @@ func TestPatchIpBlockFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestPatchIpBlockBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	ipBlockPatchCli := generators.Generate[ipapi.IpBlockPatch]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(ipBlockPatchCli)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := PatchIpBlockCmd.RunE(PatchIpBlockCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestPatchIpBlockClientFailure(test_framework *testing.T) {
 	// Setup
 	ipBlockPatchCli := generators.Generate[ipapi.IpBlockPatch]()
@@ -224,7 +160,7 @@ func TestPatchIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -256,7 +192,7 @@ func TestPatchIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

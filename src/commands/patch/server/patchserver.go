@@ -49,11 +49,9 @@ func patchServer(id string) error {
 		return err
 	}
 
-	serverResponse, httpResponse, err := bmcapi.Client.ServerPatch(id, *patchRequest)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	serverResponse, err := bmcapi.Client.ServerPatch(id, *patchRequest)
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintServerResponse(serverResponse, Full)
 	}

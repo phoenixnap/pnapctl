@@ -41,9 +41,9 @@ By default, the data is printed in table format.`,
 }
 
 func getProducts() error {
-	products, httpResponse, err := billing.Client.ProductsGet(ProductCode, ProductCategory, SkuCode, Location)
+	products, err := billing.Client.ProductsGet(ProductCode, ProductCategory, SkuCode, Location)
 
-	if err := utils.CheckErrs(httpResponse, err); err != nil {
+	if err != nil {
 		return err
 	} else {
 		return printer.PrintProductListResponse(products)

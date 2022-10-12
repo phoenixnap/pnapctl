@@ -47,11 +47,10 @@ pnapctl get events [--from <FROM>] [--to <TO>] [--limit <LIMIT>] [--order <ORDER
 }
 
 func getEvents() error {
-	events, httpResponse, err := audit.Client.EventsGet(From, To, Limit, Order, Username, Verb, Uri)
-	var generatedError = utils.CheckErrs(httpResponse, err)
+	events, err := audit.Client.EventsGet(From, To, Limit, Order, Username, Verb, Uri)
 
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintEventListResponse(events)
 	}

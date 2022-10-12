@@ -25,7 +25,7 @@ func TestGetAllPrivateNetworksShortSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").
-		Return(privateNetworks, WithResponse(200, WithBody(privateNetworks)), nil)
+		Return(privateNetworks, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(privateNetworkList).
@@ -41,7 +41,7 @@ func TestGetAllPrivateNetworksClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").
-		Return(nil, WithResponse(200, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
 
@@ -56,7 +56,7 @@ func TestGetAllPrivateNetworksKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
 
@@ -75,7 +75,7 @@ func TestGetAllPrivateNetworksPrinterFailure(test_framework *testing.T) {
 
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").
-		Return(privateNetworks, WithResponse(200, WithBody(privateNetworks)), nil)
+		Return(privateNetworks, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(privateNetworkList).

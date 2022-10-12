@@ -9,7 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -20,7 +19,7 @@ func TestGetIpBlocksSuccess(test_framework *testing.T) {
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(&ipBlock, WithResponse(200, WithBody(ipBlock)), nil)
+		Return(&ipBlock, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tableIpBlock).
@@ -32,22 +31,10 @@ func TestGetIpBlocksSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetIpBlocksNotFound(test_framework *testing.T) {
-	PrepareIPMockClient(test_framework).
-		IpBlocksGetById(RESOURCEID).
-		Return(nil, WithResponse(400, nil), nil)
-
-	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetIpBlocksClientFailure(test_framework *testing.T) {
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
 
@@ -61,7 +48,7 @@ func TestGetIpBlocksClientFailure(test_framework *testing.T) {
 func TestGetIpBlocksKeycloakFailure(test_framework *testing.T) {
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
 
@@ -75,7 +62,7 @@ func TestGetIpBlocksPrinterFailure(test_framework *testing.T) {
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(&ipBlock, WithResponse(200, WithBody(tableIpBlock)), nil)
+		Return(&ipBlock, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tableIpBlock).

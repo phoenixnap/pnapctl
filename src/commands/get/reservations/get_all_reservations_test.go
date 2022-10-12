@@ -29,7 +29,7 @@ func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationsGet(getQueryParams()).
-		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
+		Return(reservationList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(shortReservations).
@@ -52,7 +52,7 @@ func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationsGet(getQueryParams()).
-		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
+		Return(reservationList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(reservationTables).
@@ -71,7 +71,7 @@ func TestGetAllReservationsClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationsGet(getQueryParams()).
-		Return(nil, WithResponse(400, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
 
@@ -85,7 +85,7 @@ func TestGetAllReservationsClientFailure(test_framework *testing.T) {
 func TestGetAllReservationsKeycloakFailure(test_framework *testing.T) { // Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationsGet(getQueryParams()).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
 
@@ -104,7 +104,7 @@ func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationsGet(getQueryParams()).
-		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
+		Return(reservationList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(shortReservations).

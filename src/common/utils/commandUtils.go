@@ -2,31 +2,10 @@ package utils
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/printer"
 )
-
-func is2xxSuccessful(statusCode int) bool {
-	if statusCode >= 200 && statusCode < 300 {
-		return true
-	} else {
-		return false
-	}
-}
-
-func CheckErrs(httpResponse *http.Response, err error) error {
-	var generatedError error = nil
-	if httpResponse != nil && !is2xxSuccessful(httpResponse.StatusCode) {
-		generatedError = ctlerrors.HandleBMCError(httpResponse)
-	} else if err != nil {
-		generatedError = ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
-	}
-
-	return generatedError
-}
 
 func SetupOutputFlag(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")

@@ -46,12 +46,10 @@ func createPublicNetworkIpBlock(id string) error {
 		return err
 	}
 
-	response, httpResponse, err := networks.Client.PublicNetworkIpBlockPost(id, *ipBlock)
+	response, err := networks.Client.PublicNetworkIpBlockPost(id, *ipBlock)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintPublicNetworkIpBlockResponse(response)
 	}

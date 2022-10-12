@@ -2,7 +2,6 @@ package reservation
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -30,7 +29,7 @@ func TestConvertReservationSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
-		Return(&createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
+		Return(&createdReservation, nil)
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
@@ -59,7 +58,7 @@ func TestConvertReservationSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
-		Return(&createdReservation, WithResponse(201, WithBody(createdReservation)), nil)
+		Return(&createdReservation, nil)
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
@@ -112,36 +111,6 @@ func TestConvertReservationUnmarshallingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestConvertReservationBackendErrorFailure(test_framework *testing.T) {
-	// What the client should receive.
-	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(reservationConvert)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestConvertReservationClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
@@ -154,7 +123,7 @@ func TestConvertReservationClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -184,7 +153,7 @@ func TestConvertReservationKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).

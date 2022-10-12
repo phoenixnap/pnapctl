@@ -25,7 +25,7 @@ func TestGetAllTagsSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagsGet("").
-		Return(tags, WithResponse(200, WithBody(tags)), nil)
+		Return(tags, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(taglist).
@@ -41,7 +41,7 @@ func TestGetAllTagsClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagsGet("").
-		Return(nil, WithResponse(200, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
 
@@ -56,7 +56,7 @@ func TestGetAllTagsKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagsGet("").
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
 
@@ -75,7 +75,7 @@ func TestGetAllTagsPrinterFailure(test_framework *testing.T) {
 
 	PrepareTagMockClient(test_framework).
 		TagsGet("").
-		Return(tags, WithResponse(200, WithBody(tags)), nil)
+		Return(tags, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(taglist).

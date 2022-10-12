@@ -8,7 +8,6 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -31,7 +30,7 @@ func TestGetAllRatedUsagesMonthToDate_FullTable(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		RatedUsageMonthToDateGet(getQueryParams()).
-		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
+		Return(responseList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(recordTables).
@@ -57,7 +56,7 @@ func TestGetAllRatedUsagesMonthToDate_ShortTable(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		RatedUsageMonthToDateGet(getQueryParams()).
-		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
+		Return(responseList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(recordTables).
@@ -73,7 +72,7 @@ func TestGetAllRatedUsagesMonthToDate_KeycloakFailure(test_framework *testing.T)
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		RatedUsageMonthToDateGet(getQueryParams()).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetRatedUsageMonthToDateCmd.RunE(GetRatedUsageMonthToDateCmd, []string{})
 
@@ -92,7 +91,7 @@ func TestGetAllRatedUsagesMonthToDate_PrinterFailure(test_framework *testing.T) 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		RatedUsageMonthToDateGet(getQueryParams()).
-		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
+		Return(responseList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(recordTables).
@@ -102,17 +101,4 @@ func TestGetAllRatedUsagesMonthToDate_PrinterFailure(test_framework *testing.T) 
 
 	// AssertionsqueryParams
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
-}
-
-func TestGetAllRatedUsagesMonthToDate_ServerError(test_framework *testing.T) {
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		RatedUsageMonthToDateGet(getQueryParams()).
-		Return(nil, WithResponse(500, nil), nil)
-
-	err := GetRatedUsageMonthToDateCmd.RunE(GetRatedUsageMonthToDateCmd, []string{})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
 }

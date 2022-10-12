@@ -2,7 +2,6 @@ package storagenetwork
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -37,7 +36,7 @@ func TestCreateStorageNetworkSuccessYAML(test_framework *testing.T) {
 
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStoragePost(gomock.Eq(networkStorageCreate)).
-		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(&networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(networkStorageTable).
@@ -70,7 +69,7 @@ func TestCreateStorageNetworkSuccessJSON(test_framework *testing.T) {
 
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStoragePost(gomock.Eq(networkStorageCreate)).
-		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(&networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(networkStorageTable).
@@ -143,34 +142,6 @@ func TestCreateStorageNetworkFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateStorageNetworkBackendErrorFailure(test_framework *testing.T) {
-	// What the client should receive.
-	networkStorageCreate := generators.Generate[networkstorageapi.StorageNetworkCreate]()
-
-	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStorageCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(marshalled, nil)
-
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePost(gomock.Eq(networkStorageCreate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
-
-	// Run command
-	err := CreateStorageNetworkCmd.RunE(CreateStorageNetworkCmd, []string{})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestCreateStorageNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	networkStorageCreate := generators.Generate[networkstorageapi.StorageNetworkCreate]()
@@ -187,7 +158,7 @@ func TestCreateStorageNetworkClientFailure(test_framework *testing.T) {
 
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStoragePost(gomock.Eq(networkStorageCreate)).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := CreateStorageNetworkCmd.RunE(CreateStorageNetworkCmd, []string{})
@@ -215,7 +186,7 @@ func TestCreateStorageNetworkKeycloakFailure(test_framework *testing.T) {
 
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStoragePost(gomock.Eq(networkStorageCreate)).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := CreateStorageNetworkCmd.RunE(CreateStorageNetworkCmd, []string{})

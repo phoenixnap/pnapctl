@@ -50,11 +50,9 @@ func createIpBlock() error {
 	}
 
 	// Create the ssh key
-	response, httpResponse, err := ip.Client.IpBlockPost(*ipBlockCreate)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	response, err := ip.Client.IpBlockPost(*ipBlockCreate)
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintIpBlockResponse(response, Full)
 	}

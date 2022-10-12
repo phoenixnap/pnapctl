@@ -45,11 +45,9 @@ func deleteIpBlockFromServer(serverId, ipBlockId string) error {
 		return err
 	}
 
-	result, httpResponse, err := bmcapi.Client.ServerIpBlockDelete(serverId, ipBlockId, *relinquishIpBlockRequest)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	result, err := bmcapi.Client.ServerIpBlockDelete(serverId, ipBlockId, *relinquishIpBlockRequest)
+	if err != nil {
+		return err
 	} else {
 		fmt.Println(result)
 		return nil

@@ -47,12 +47,10 @@ func patchIpBlock(id string) error {
 		return err
 	}
 
-	response, httpResponse, err := ip.Client.IpBlocksIpBlockIdPatch(id, *ipBlockPatch)
+	response, err := ip.Client.IpBlocksIpBlockIdPatch(id, *ipBlockPatch)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintIpBlockResponse(response, Full)
 	}

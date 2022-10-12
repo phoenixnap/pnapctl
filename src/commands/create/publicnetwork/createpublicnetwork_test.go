@@ -2,7 +2,6 @@ package publicnetwork
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -31,7 +30,7 @@ func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(&createdPublicNetwork, WithResponse(200, WithBody(createdPublicNetwork)), nil).
+		Return(&createdPublicNetwork, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -63,7 +62,7 @@ func TestCreatePublicNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(&createdPublicNetwork, WithResponse(200, WithBody(createdPublicNetwork)), nil).
+		Return(&createdPublicNetwork, nil).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -142,38 +141,6 @@ func TestCreatePublicNetworkFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreatePublicNetworkBackendErrorFailure(test_framework *testing.T) {
-	// What the client should receive.
-	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
@@ -186,7 +153,7 @@ func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -218,7 +185,7 @@ func TestCreatePublicNetworkKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

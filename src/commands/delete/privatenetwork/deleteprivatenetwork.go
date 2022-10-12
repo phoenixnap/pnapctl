@@ -4,7 +4,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
@@ -22,13 +21,5 @@ var DeletePrivateNetworkCmd = &cobra.Command{
 }
 
 func deletePrivateNetwork(id string) error {
-	httpResponse, err := networks.Client.PrivateNetworkDelete(id)
-
-	if httpResponse != nil && httpResponse.StatusCode != 204 {
-		return ctlerrors.HandleBMCError(httpResponse)
-	} else if err != nil {
-		return err
-	}
-
-	return nil
+	return networks.Client.PrivateNetworkDelete(id)
 }

@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
@@ -24,11 +23,9 @@ var ShutdownCmd = &cobra.Command{
 }
 
 func shutdownServer(id string) error {
-	result, httpResponse, err := bmcapi.Client.ServerShutdown(id)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	result, err := bmcapi.Client.ServerShutdown(id)
+	if err != nil {
+		return err
 	} else {
 		fmt.Println(result.Result)
 		return err

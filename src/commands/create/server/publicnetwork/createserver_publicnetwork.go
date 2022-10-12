@@ -51,12 +51,10 @@ func createPublicNetworkForServer(id string) error {
 	}
 
 	// Create the server private network
-	response, httpResponse, err := bmcapi.Client.ServerPublicNetworkPost(id, *serverPublicNetwork)
+	response, err := bmcapi.Client.ServerPublicNetworkPost(id, *serverPublicNetwork)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintServerPublicNetwork(response)
 	}

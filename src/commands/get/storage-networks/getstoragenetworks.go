@@ -42,20 +42,20 @@ pnapctl get storage-network <ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getStorageNetworks() error {
-	storagenetworks, httpResponse, err := networkstorage.Client.NetworkStorageGet()
+	storagenetworks, err := networkstorage.Client.NetworkStorageGet()
 
-	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintStorageNetworkListResponse(storagenetworks)
 	}
 }
 
 func getStorageNetworksById(id string) error {
-	storagenetwork, httpResponse, err := networkstorage.Client.NetworkStorageGetById(id)
+	storagenetwork, err := networkstorage.Client.NetworkStorageGetById(id)
 
-	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintStorageNetworkResponse(storagenetwork)
 	}

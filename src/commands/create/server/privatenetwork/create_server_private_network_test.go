@@ -2,7 +2,6 @@ package privatenetwork
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -37,7 +36,7 @@ func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(&serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
+		Return(&serverPrivateNetwork, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -66,7 +65,7 @@ func TestCreateServerPrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(&serverPrivateNetwork, WithResponse(202, WithBody(serverPrivateNetwork)), nil).
+		Return(&serverPrivateNetwork, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -153,37 +152,6 @@ func TestCreateServerPrivateNetworkFileReadingFailure(test_framework *testing.T)
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateServerPrivateNetworkBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
 	// Setup
 	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
@@ -196,7 +164,7 @@ func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -228,7 +196,7 @@ func TestCreateServerPrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

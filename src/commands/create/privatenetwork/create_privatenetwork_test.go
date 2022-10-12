@@ -2,7 +2,6 @@ package privatenetwork
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -30,7 +29,7 @@ func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
-		Return(&createdPrivateNetwork, WithResponse(201, WithBody(createdPrivateNetwork)), nil).
+		Return(&createdPrivateNetwork, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -62,7 +61,7 @@ func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
-		Return(&createdPrivateNetwork, WithResponse(201, WithBody(createdPrivateNetwork)), nil).
+		Return(&createdPrivateNetwork, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -119,36 +118,6 @@ func TestCreatePrivateNetworkUnmarshallingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreatePrivateNetworkBackendErrorFailure(test_framework *testing.T) {
-	// What the client should receive.
-	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(privateNetworkCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreatePrivateNetworkCmd.RunE(CreatePrivateNetworkCmd, []string{})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestCreatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
@@ -161,7 +130,7 @@ func TestCreatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
@@ -191,7 +160,7 @@ func TestCreatePrivateNetworkKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).

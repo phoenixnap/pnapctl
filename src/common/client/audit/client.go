@@ -2,7 +2,6 @@ package audit
 
 import (
 	"context"
-	"net/http"
 
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"golang.org/x/oauth2/clientcredentials"
@@ -15,7 +14,7 @@ var Client AuditSdkClient
 
 type AuditSdkClient interface {
 	// Events
-	EventsGet(from string, to string, limit int, order string, username string, verb string, uri string) ([]auditapisdk.Event, *http.Response, error)
+	EventsGet(from string, to string, limit int, order string, username string, verb string, uri string) ([]auditapisdk.Event, error)
 }
 
 type MainClient struct {
@@ -56,7 +55,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 }
 
 // Events APIs
-func (m MainClient) EventsGet(from string, to string, limit int, order string, username string, verb string, uri string) ([]auditapisdk.Event, *http.Response, error) {
+func (m MainClient) EventsGet(from string, to string, limit int, order string, username string, verb string, uri string) ([]auditapisdk.Event, error) {
 	request := m.EventsApiClient.EventsGet(context.Background())
 
 	if date := client.ParseDate(from); date != nil {
@@ -81,5 +80,5 @@ func (m MainClient) EventsGet(from string, to string, limit int, order string, u
 		request = request.Uri(uri)
 	}
 
-	return request.Execute()
+	return client.HandleResponse(request.Execute())
 }

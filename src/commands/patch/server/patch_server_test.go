@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -33,7 +32,7 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
-		Return(&server, WithResponse(200, WithBody(server)), nil).
+		Return(&server, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -65,7 +64,7 @@ func TestPatchServerSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
-		Return(&server, WithResponse(200, WithBody(server)), nil).
+		Return(&server, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -153,38 +152,6 @@ func TestPatchServerFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestPatchServerBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	serverPatch := generators.Generate[bmcapisdk.ServerPatch]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverPatch)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := PatchServerCmd.RunE(PatchServerCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestPatchServerClientFailure(test_framework *testing.T) {
 	// Setup
 	serverPatch := generators.Generate[bmcapisdk.ServerPatch]()
@@ -197,7 +164,7 @@ func TestPatchServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -229,7 +196,7 @@ func TestPatchServerKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

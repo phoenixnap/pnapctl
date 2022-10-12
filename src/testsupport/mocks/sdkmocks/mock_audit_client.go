@@ -5,7 +5,6 @@
 package sdkmocks
 
 import (
-	http "net/http"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -36,13 +35,12 @@ func (m *MockAuditSdkClient) EXPECT() *MockAuditSdkClientMockRecorder {
 }
 
 // EventsGet mocks base method.
-func (m *MockAuditSdkClient) EventsGet(from, to string, limit int, order, username, verb, uri string) ([]auditapi.Event, *http.Response, error) {
+func (m *MockAuditSdkClient) EventsGet(from, to string, limit int, order, username, verb, uri string) ([]auditapi.Event, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "EventsGet", from, to, limit, order, username, verb, uri)
 	ret0, _ := ret[0].([]auditapi.Event)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // EventsGet indicates an expected call of EventsGet.

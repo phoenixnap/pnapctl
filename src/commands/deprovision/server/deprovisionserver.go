@@ -44,11 +44,9 @@ func deprovisionServer(id string) error {
 		return err
 	}
 
-	result, httpResponse, err := bmcapi.Client.ServerDeprovision(id, *relinquishIpBlockRequest)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	result, err := bmcapi.Client.ServerDeprovision(id, *relinquishIpBlockRequest)
+	if err != nil {
+		return err
 	} else {
 		fmt.Println(result)
 		return nil

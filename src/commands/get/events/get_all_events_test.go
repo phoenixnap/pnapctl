@@ -9,7 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -31,7 +30,7 @@ func TestGetAllEventsSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareAuditMockClient(test_framework).
 		EventsGet(getRequestParams()).
-		Return(eventList, WithResponse(200, WithBody(eventList)), nil)
+		Return(eventList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(eventTables).
@@ -47,7 +46,7 @@ func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareAuditMockClient(test_framework).
 		EventsGet(getRequestParams()).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetEventsCmd.RunE(GetEventsCmd, []string{})
 
@@ -66,7 +65,7 @@ func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
 
 	PrepareAuditMockClient(test_framework).
 		EventsGet(getRequestParams()).
-		Return(eventList, WithResponse(200, WithBody(eventList)), nil)
+		Return(eventList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(eventTables).
@@ -76,16 +75,4 @@ func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
 
 	// Assertions
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
-}
-
-func TestGetEventsServerError(test_framework *testing.T) {
-	PrepareAuditMockClient(test_framework).
-		EventsGet(getRequestParams()).
-		Return(nil, WithResponse(500, nil), nil)
-
-	err := GetEventsCmd.RunE(GetEventsCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
 }

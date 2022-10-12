@@ -43,24 +43,20 @@ pnapctl get ssh-key <SSH_KEY_ID> [--full] [--output <OUTPUT_TYPE>]`,
 }
 
 func getSshKeys() error {
-	sshKeys, httpResponse, err := bmcapi.Client.SshKeysGet()
+	sshKeys, err := bmcapi.Client.SshKeysGet()
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintSshKeyListResponse(sshKeys, Full)
 	}
 }
 
 func getSshKeyById(sshKeyId string) error {
-	sshKey, httpResponse, err := bmcapi.Client.SshKeyGetById(sshKeyId)
+	sshKey, err := bmcapi.Client.SshKeyGetById(sshKeyId)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintSshKeyResponse(sshKey, Full)
 	}

@@ -54,9 +54,9 @@ pnapctl get rated-usages --from=2020/10 --to=2021/11 [--category <CATEGORY>] [--
 }
 
 func getRatedUsage() error {
-	ratedUsageRecords, httpResponse, err := billing.Client.RatedUsageGet(FromYearMonth, ToYearMonth, ProductCategory)
+	ratedUsageRecords, err := billing.Client.RatedUsageGet(FromYearMonth, ToYearMonth, ProductCategory)
 
-	if err := utils.CheckErrs(httpResponse, err); err != nil {
+	if err != nil {
 		return err
 	} else {
 		return printer.PrintRatedUsageListResponse(ratedUsageRecords, Full)

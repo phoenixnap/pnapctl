@@ -49,12 +49,10 @@ func createPublicNetwork() error {
 		return err
 	}
 
-	response, httpResponse, err := networks.Client.PublicNetworksPost(*publicNetworkCreate)
+	response, err := networks.Client.PublicNetworksPost(*publicNetworkCreate)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintPublicNetworkResponse(response)
 	}

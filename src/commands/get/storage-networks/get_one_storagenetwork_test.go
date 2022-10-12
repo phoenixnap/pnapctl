@@ -9,7 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -22,7 +21,7 @@ func TestGetStorageNetworkByIdSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetById(RESOURCEID).
-		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(&networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(networkStorageTable).
@@ -35,25 +34,11 @@ func TestGetStorageNetworkByIdSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetStorageNetworkByIdNotFound(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageGetById(RESOURCEID).
-		Return(nil, WithResponse(404, nil), nil)
-
-	// Run command
-	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetStorageNetworkByIdClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{RESOURCEID})
@@ -69,7 +54,7 @@ func TestGetStorageNetworkByIdKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{RESOURCEID})
@@ -86,7 +71,7 @@ func TestGetStorageNetworkByIdPrinterFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetById(RESOURCEID).
-		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(&networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(networkStorageTable).

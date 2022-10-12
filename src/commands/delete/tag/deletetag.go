@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/tags"
-	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
@@ -23,11 +22,9 @@ var DeleteTagCmd = &cobra.Command{
 }
 
 func deleteTag(id string) error {
-	result, httpResponse, err := tags.Client.TagDelete(id)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	result, err := tags.Client.TagDelete(id)
+	if err != nil {
+		return err
 	} else {
 		fmt.Println(result.Result, result.TagId)
 		return nil

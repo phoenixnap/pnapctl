@@ -2,7 +2,6 @@ package quotas
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -26,7 +25,7 @@ func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 	//prepare mocks
 	PrepareBmcApiMockClient(test_framework).
 		QuotaEditById(RESOURCEID, gomock.Eq(quotaEditLimitRequest)).
-		Return(WithResponse(202, WithBody(nil)), nil).
+		Return(nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -51,7 +50,7 @@ func TestSubmitQuotaEditRequestSuccessJSON(test_framework *testing.T) {
 	//prepare mocks
 	PrepareBmcApiMockClient(test_framework).
 		QuotaEditById(RESOURCEID, gomock.Eq(quotaEditLimitRequest)).
-		Return(WithResponse(202, WithBody(nil)), nil).
+		Return(nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -153,34 +152,6 @@ func TestSubmitQuotaEditFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestSubmitQuotaEditBackendErrorFailure(test_framework *testing.T) {
-	// setup
-	quotaEditLimitRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
-	yamlmarshal, _ := yaml.Marshal(quotaEditLimitRequest)
-	Filename = FILENAME
-
-	// prepare mocks
-	PrepareBmcApiMockClient(test_framework).
-		QuotaEditById(RESOURCEID, gomock.Eq(quotaEditLimitRequest)).
-		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// execute
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
-
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 	// setup
 	editQuotaRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
@@ -190,7 +161,7 @@ func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareBmcApiMockClient(test_framework).
 		QuotaEditById(RESOURCEID, gomock.Eq(editQuotaRequest)).
-		Return(nil, testutil.TestError).
+		Return(testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -218,7 +189,7 @@ func TestSubmitQuotaEditKeycloakFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareBmcApiMockClient(test_framework).
 		QuotaEditById(RESOURCEID, gomock.Eq(editQuotaRequest)).
-		Return(nil, testutil.TestKeycloakError).
+		Return(testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

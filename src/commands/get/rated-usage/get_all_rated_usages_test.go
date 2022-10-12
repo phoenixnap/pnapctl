@@ -8,7 +8,6 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -31,7 +30,7 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		RatedUsageGet(getQueryParams()).
-		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
+		Return(responseList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(recordTables).
@@ -56,7 +55,7 @@ func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		RatedUsageGet(getQueryParams()).
-		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
+		Return(responseList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(recordTables).
@@ -72,7 +71,7 @@ func TestGetAllRatedUsages_KeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		RatedUsageGet(getQueryParams()).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
 
@@ -91,7 +90,7 @@ func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		RatedUsageGet(getQueryParams()).
-		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
+		Return(responseList, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(recordTables).
@@ -101,17 +100,4 @@ func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 
 	// Assertions
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
-}
-
-func TestGetAllRatedUsages_ServerError(test_framework *testing.T) {
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		RatedUsageGet(getQueryParams()).
-		Return(nil, WithResponse(500, nil), nil)
-
-	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
 }

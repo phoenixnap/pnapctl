@@ -5,7 +5,6 @@ import (
 
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
-	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
@@ -57,11 +56,9 @@ func resetServer(id string) error {
 		}
 	}
 
-	result, httpResponse, err := bmcapi.Client.ServerReset(id, *request)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	result, err := bmcapi.Client.ServerReset(id, *request)
+	if err != nil {
+		return err
 	} else {
 		fmt.Println(result.Result)
 		return err

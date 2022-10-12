@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -34,7 +33,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
-		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
+		Return(&createdServer, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -66,7 +65,7 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
-		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
+		Return(&createdServer, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -153,38 +152,6 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(serverCreate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestCreateServerClientFailure(test_framework *testing.T) {
 
 	// Setup
@@ -198,7 +165,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -230,7 +197,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

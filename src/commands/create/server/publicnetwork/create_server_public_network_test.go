@@ -2,7 +2,6 @@ package publicnetwork
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -36,7 +35,7 @@ func TestCreateServerPublicNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
-		Return(&serverPublicNetwork, WithResponse(202, WithBody(serverPublicNetwork)), nil).
+		Return(&serverPublicNetwork, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -65,7 +64,7 @@ func TestCreateServerPublicNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
-		Return(&serverPublicNetwork, WithResponse(202, WithBody(serverPublicNetwork)), nil).
+		Return(&serverPublicNetwork, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -152,37 +151,6 @@ func TestCreateServerPublicNetworkFileReadingFailure(test_framework *testing.T) 
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestCreateServerPublicNetworkBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	serverPublicNetwork := generators.Generate[bmcapisdk.ServerPublicNetwork]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverPublicNetwork)
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestCreateServerPublicNetworkClientFailure(test_framework *testing.T) {
 	// Setup
 	serverPublicNetwork := generators.Generate[bmcapisdk.ServerPublicNetwork]()
@@ -195,7 +163,7 @@ func TestCreateServerPublicNetworkClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -227,7 +195,7 @@ func TestCreateServerPublicNetworkKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

@@ -22,7 +22,7 @@ func TestGetAllVolumesSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetVolumes(RESOURCEID).
-		Return(volumeSdk, WithResponse(200, WithBody(volumeSdk)), nil)
+		Return(volumeSdk, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(volumeTables).
@@ -39,7 +39,7 @@ func TestGetAllVolumesClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetVolumes(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := GetStorageNetworkVolumesCmd.RunE(GetStorageNetworkVolumesCmd, []string{RESOURCEID})
@@ -55,7 +55,7 @@ func TestGetAllVolumesKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetVolumes(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	// Run command
 	err := GetStorageNetworkVolumesCmd.RunE(GetStorageNetworkVolumesCmd, []string{RESOURCEID})
@@ -72,7 +72,7 @@ func TestGetAllVolumesPrinterFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetVolumes(RESOURCEID).
-		Return(volumeSdk, WithResponse(200, WithBody(volumeSdk)), nil)
+		Return(volumeSdk, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(volumeTables).

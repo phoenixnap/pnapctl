@@ -53,12 +53,10 @@ func createPrivateNetworkForServer(id string) error {
 	}
 
 	// Create the server private network
-	response, httpResponse, err := bmcapi.Client.ServerPrivateNetworkPost(id, *serverPrivateNetwork)
+	response, err := bmcapi.Client.ServerPrivateNetworkPost(id, *serverPrivateNetwork)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintServerPrivateNetwork(response)
 	}

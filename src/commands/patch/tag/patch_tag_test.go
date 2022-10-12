@@ -2,7 +2,6 @@ package tag
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -27,7 +26,7 @@ func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
-		Return(&tag, WithResponse(200, WithBody(nil)), nil).
+		Return(&tag, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -53,7 +52,7 @@ func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
-		Return(&tag, WithResponse(200, WithBody(nil)), nil).
+		Return(&tag, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -155,34 +154,6 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
-	// setup
-	tagEdit := generators.Generate[tagapi.TagUpdate]()
-	yamlmarshal, _ := yaml.Marshal(&tagEdit)
-	Filename = FILENAME
-
-	// prepare mocks
-	PrepareTagMockClient(test_framework).
-		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// execute
-	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
-
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
 func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// setup
 	tagEdit := generators.Generate[tagapi.TagUpdate]()
@@ -192,7 +163,7 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -220,7 +191,7 @@ func TestSubmitTagEditKeycloakFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
-		Return(nil, nil, testutil.TestKeycloakError).
+		Return(nil, testutil.TestKeycloakError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

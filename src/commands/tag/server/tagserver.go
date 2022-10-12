@@ -1,8 +1,6 @@
 package server
 
 import (
-	"net/http"
-
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
@@ -48,7 +46,7 @@ pnapctl tag server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 }
 
 // TODO Look into this weird part.
-func performTagRequest(serverId string, tagRequests []bmcapisdk.TagAssignmentRequest) (*bmcapisdk.Server, *http.Response, error) {
+func performTagRequest(serverId string, tagRequests []bmcapisdk.TagAssignmentRequest) (*bmcapisdk.Server, error) {
 	// An empty array must be used as a request body if file is empty
 	if len(tagRequests) < 1 {
 		return bmcapi.Client.ServerTag(serverId, []bmcapisdk.TagAssignmentRequest{})
@@ -63,11 +61,9 @@ func tagServer(id string) error {
 		return err
 	}
 
-	serverResponse, httpResponse, err := performTagRequest(id, *tagRequests)
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	serverResponse, err := performTagRequest(id, *tagRequests)
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintServerResponse(serverResponse, Full)
 	}

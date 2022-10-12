@@ -9,7 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -21,7 +20,7 @@ func TestGetSshKeyByIdFullSuccess(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyGetById(RESOURCEID).
-		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil)
+		Return(&sshKey, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(sshKeyTable).
@@ -40,7 +39,7 @@ func TestGetSshKeyByIdSuccess(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyGetById(RESOURCEID).
-		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil)
+		Return(&sshKey, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(sshKeyTable).
@@ -52,22 +51,10 @@ func TestGetSshKeyByIdSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetSshKeyByIdNotFound(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		SshKeyGetById(RESOURCEID).
-		Return(nil, WithResponse(400, nil), nil)
-
-	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetSshKeyByIdClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
 
@@ -81,7 +68,7 @@ func TestGetSshKeyByIdClientFailure(test_framework *testing.T) {
 func TestGetSshKeyByIdKeycloakFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestKeycloakError)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
 
@@ -96,7 +83,7 @@ func TestGetSshKeyByIdPrinterFailure(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyGetById(RESOURCEID).
-		Return(&sshKey, WithResponse(200, WithBody(sshKey)), nil)
+		Return(&sshKey, nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(sshKeyTable).

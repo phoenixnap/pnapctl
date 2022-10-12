@@ -50,12 +50,10 @@ func updateTagsOnIpBlock(id string) error {
 		return err
 	}
 
-	response, httpResponse, err := ip.Client.IpBlocksIpBlockIdTagsPut(id, *ipBlockPutTag)
+	response, err := ip.Client.IpBlocksIpBlockIdTagsPut(id, *ipBlockPutTag)
 
-	var generatedError = utils.CheckErrs(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintIpBlockResponse(response, Full)
 	}

@@ -46,10 +46,10 @@ func patchPublicNetwork(id string) error {
 		return err
 	}
 
-	response, httpResponse, err := networks.Client.PublicNetworkPatch(id, *publicNetworkPatch)
+	response, err := networks.Client.PublicNetworkPatch(id, *publicNetworkPatch)
 
-	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
-		return generatedError
+	if err != nil {
+		return err
 	} else {
 		return printer.PrintPublicNetworkResponse(response)
 	}
