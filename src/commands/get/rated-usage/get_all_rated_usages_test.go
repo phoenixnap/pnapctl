@@ -2,13 +2,11 @@ package rated_usage
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
@@ -16,11 +14,12 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
+func getQueryParams() (string, string, string) {
+	return FromYearMonth, ToYearMonth, ProductCategory
+}
+
 func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
-	queryParams := generators.GenerateRatedUsageGetQueryParams()
-	setQueryParams(queryParams)
-
 	Full = true
 
 	var recordTables []interface{}
@@ -31,7 +30,7 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		RatedUsageGet(queryParams).
+		RatedUsageGet(getQueryParams()).
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -46,9 +45,6 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 
 func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
-	queryParams := generators.GenerateRatedUsageGetQueryParams()
-	setQueryParams(queryParams)
-
 	Full = false
 
 	var recordTables []interface{}
@@ -59,7 +55,7 @@ func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		RatedUsageGet(queryParams).
+		RatedUsageGet(getQueryParams()).
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -73,12 +69,9 @@ func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsages_KeycloakFailure(test_framework *testing.T) {
-	queryParams := generators.GenerateRatedUsageGetQueryParams()
-	setQueryParams(queryParams)
-
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		RatedUsageGet(queryParams).
+		RatedUsageGet(getQueryParams()).
 		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
@@ -89,9 +82,6 @@ func TestGetAllRatedUsages_KeycloakFailure(test_framework *testing.T) {
 
 func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
-	queryParams := generators.GenerateRatedUsageGetQueryParams()
-	setQueryParams(queryParams)
-
 	var recordTables []interface{}
 
 	for _, record := range responseList {
@@ -100,7 +90,7 @@ func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		RatedUsageGet(queryParams).
+		RatedUsageGet(getQueryParams()).
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -114,12 +104,9 @@ func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsages_ServerError(test_framework *testing.T) {
-	queryParams := generators.GenerateRatedUsageGetQueryParams()
-	setQueryParams(queryParams)
-
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		RatedUsageGet(queryParams).
+		RatedUsageGet(getQueryParams()).
 		Return(nil, WithResponse(500, nil), nil)
 
 	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
@@ -127,21 +114,4 @@ func TestGetAllRatedUsages_ServerError(test_framework *testing.T) {
 	// Assertions
 	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
-func TestGetAllRatedUsages_InvalidParams(test_framework *testing.T) {
-	queryParams := generators.GenerateRatedUsageGetQueryParams()
-	queryParams.FromYearMonth = "0000/00"
-	setQueryParams(queryParams)
-
-	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, fmt.Sprintf("'FromYearMonth' (%s) is not in the valid format (YYYY-MM)", FromYearMonth), err.Error())
-}
-
-func setQueryParams(queryparams billing.RatedUsageGetQueryParams) {
-	FromYearMonth = queryparams.FromYearMonth
-	ToYearMonth = queryparams.ToYearMonth
-	ProductCategory = string(*queryparams.ProductCategory)
 }

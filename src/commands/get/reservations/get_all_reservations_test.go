@@ -8,17 +8,18 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
+func getQueryParams() string {
+	return productCategory
+}
+
 func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
 	reservationList := testutil.GenN(5, generators.Generate[billingapi.Reservation])
-	queryParams := generators.GenerateReservationGetQueryParams()
-	setQueryParams(queryParams)
 
 	shortReservations := iterutils.MapInterface(
 		reservationList,
@@ -27,7 +28,7 @@ func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationsGet(queryParams).
+		ReservationsGet(getQueryParams()).
 		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -42,8 +43,6 @@ func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
 
 func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
 	reservationList := testutil.GenN(5, generators.Generate[billingapi.Reservation])
-	queryParams := generators.GenerateReservationGetQueryParams()
-	setQueryParams(queryParams)
 
 	reservationTables := iterutils.MapInterface(
 		reservationList,
@@ -52,7 +51,7 @@ func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationsGet(queryParams).
+		ReservationsGet(getQueryParams()).
 		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -69,12 +68,9 @@ func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllReservationsClientFailure(test_framework *testing.T) {
-	queryParams := generators.GenerateReservationGetQueryParams()
-	setQueryParams(queryParams)
-
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationsGet(queryParams).
+		ReservationsGet(getQueryParams()).
 		Return(nil, WithResponse(400, nil), testutil.TestError)
 
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
@@ -86,13 +82,9 @@ func TestGetAllReservationsClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAllReservationsKeycloakFailure(test_framework *testing.T) {
-	queryParams := generators.GenerateReservationGetQueryParams()
-	setQueryParams(queryParams)
-
-	// Mocking
+func TestGetAllReservationsKeycloakFailure(test_framework *testing.T) { // Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationsGet(queryParams).
+		ReservationsGet(getQueryParams()).
 		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
@@ -103,8 +95,6 @@ func TestGetAllReservationsKeycloakFailure(test_framework *testing.T) {
 
 func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
 	reservationList := testutil.GenN(5, generators.Generate[billingapi.Reservation])
-	queryParams := generators.GenerateReservationGetQueryParams()
-	setQueryParams(queryParams)
 
 	shortReservations := iterutils.MapInterface(
 		reservationList,
@@ -113,7 +103,7 @@ func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationsGet(queryParams).
+		ReservationsGet(getQueryParams()).
 		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -126,8 +116,4 @@ func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
 
 	// Assertions
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
-}
-
-func setQueryParams(queryparams billing.ReservationsGetQueryParams) {
-	productCategory = string(*queryparams.ProductCategory)
 }

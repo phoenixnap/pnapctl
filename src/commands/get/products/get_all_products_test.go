@@ -7,7 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
@@ -15,10 +14,12 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
+func getQueryParams() (string, string, string, string) {
+	return ProductCode, ProductCategory, SkuCode, Location
+}
+
 func TestGetAllProducts_FullTable(test_framework *testing.T) {
 	responseList := generators.GenerateProductSdkList()
-	queryParams := generators.Generate[billing.ProductsGetQueryParams]()
-	setQueryParams(queryParams)
 
 	var products []interface{}
 
@@ -28,7 +29,7 @@ func TestGetAllProducts_FullTable(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ProductsGet(queryParams).
+		ProductsGet(getQueryParams()).
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -42,12 +43,9 @@ func TestGetAllProducts_FullTable(test_framework *testing.T) {
 }
 
 func TestGetAllProducts_KeycloakFailure(test_framework *testing.T) {
-	queryParams := generators.Generate[billing.ProductsGetQueryParams]()
-	setQueryParams(queryParams)
-
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ProductsGet(queryParams).
+		ProductsGet(getQueryParams()).
 		Return(nil, nil, testutil.TestKeycloakError)
 
 	err := GetProductsCmd.RunE(GetProductsCmd, []string{})
@@ -58,8 +56,6 @@ func TestGetAllProducts_KeycloakFailure(test_framework *testing.T) {
 
 func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
 	responseList := generators.GenerateProductSdkList()
-	queryParams := generators.Generate[billing.ProductsGetQueryParams]()
-	setQueryParams(queryParams)
 
 	var products []interface{}
 
@@ -69,7 +65,7 @@ func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ProductsGet(queryParams).
+		ProductsGet(getQueryParams()).
 		Return(responseList, WithResponse(200, WithBody(responseList)), nil)
 
 	PrepareMockPrinter(test_framework).
@@ -83,12 +79,9 @@ func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
 }
 
 func TestGetAllProducts_ServerError(test_framework *testing.T) {
-	queryParams := generators.Generate[billing.ProductsGetQueryParams]()
-	setQueryParams(queryParams)
-
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ProductsGet(queryParams).
+		ProductsGet(getQueryParams()).
 		Return(nil, WithResponse(500, nil), nil)
 
 	err := GetProductsCmd.RunE(GetProductsCmd, []string{})
@@ -96,11 +89,4 @@ func TestGetAllProducts_ServerError(test_framework *testing.T) {
 	// Assertions
 	expectedMessage := "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0201"
 	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
-func setQueryParams(queryparams billing.ProductsGetQueryParams) {
-	ProductCategory = *queryparams.ProductCategory
-	ProductCode = *queryparams.ProductCode
-	SkuCode = *queryparams.SkuCode
-	Location = *queryparams.Location
 }

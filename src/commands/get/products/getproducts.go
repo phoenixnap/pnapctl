@@ -3,7 +3,6 @@ package products
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/billing"
-	qp "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
@@ -42,9 +41,7 @@ By default, the data is printed in table format.`,
 }
 
 func getProducts() error {
-	queryParams := qp.NewProductsGetQueryParams(ProductCode, ProductCategory, SkuCode, Location)
-
-	products, httpResponse, err := billing.Client.ProductsGet(queryParams)
+	products, httpResponse, err := billing.Client.ProductsGet(ProductCode, ProductCategory, SkuCode, Location)
 
 	if err := utils.CheckErrs(httpResponse, err); err != nil {
 		return err

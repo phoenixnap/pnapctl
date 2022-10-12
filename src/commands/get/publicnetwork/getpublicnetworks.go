@@ -3,7 +3,6 @@ package publicnetwork
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/models/queryparams/network"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
@@ -47,13 +46,7 @@ pnapctl get public-networks <PUBLIC_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getPublicNetworks() error {
-	queryParams, err := network.NewPublicNetworksGetQueryParams(location)
-
-	if err != nil {
-		return err
-	}
-
-	publicNetworks, httpResponse, err := networks.Client.PublicNetworksGet(*queryParams)
+	publicNetworks, httpResponse, err := networks.Client.PublicNetworksGet(location)
 
 	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
 		return generatedError

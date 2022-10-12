@@ -3,7 +3,6 @@ package month_to_date
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/billing"
-	qp "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
@@ -41,12 +40,7 @@ Every record corresponds to a charge. All dates & times are in UTC.`,
 }
 
 func getRatedUsageMonthToDate() error {
-	queryParams, err := qp.NewRatedUsageGetMonthToDateQueryParams(ProductCategory)
-	if err != nil {
-		return err
-	}
-
-	ratedUsageRecords, httpResponse, err := billing.Client.RatedUsageMonthToDateGet(*queryParams)
+	ratedUsageRecords, httpResponse, err := billing.Client.RatedUsageMonthToDateGet(ProductCategory)
 
 	if err := utils.CheckErrs(httpResponse, err); err != nil {
 		return err

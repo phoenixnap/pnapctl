@@ -10,7 +10,6 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	networkapi "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
-	network "phoenixnap.com/pnapctl/common/models/queryparams/network"
 )
 
 // MockNetworkSdkClient is a mock of NetworkSdkClient interface.
@@ -195,9 +194,9 @@ func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkPatch(networkId, public
 }
 
 // PublicNetworksGet mocks base method.
-func (m *MockNetworkSdkClient) PublicNetworksGet(location network.PublicNetworksGetQueryParams) ([]networkapi.PublicNetwork, *http.Response, error) {
+func (m *MockNetworkSdkClient) PublicNetworksGet(arg0 string) ([]networkapi.PublicNetwork, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PublicNetworksGet", location)
+	ret := m.ctrl.Call(m, "PublicNetworksGet", arg0)
 	ret0, _ := ret[0].([]networkapi.PublicNetwork)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -205,9 +204,9 @@ func (m *MockNetworkSdkClient) PublicNetworksGet(location network.PublicNetworks
 }
 
 // PublicNetworksGet indicates an expected call of PublicNetworksGet.
-func (mr *MockNetworkSdkClientMockRecorder) PublicNetworksGet(location interface{}) *gomock.Call {
+func (mr *MockNetworkSdkClientMockRecorder) PublicNetworksGet(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PublicNetworksGet", reflect.TypeOf((*MockNetworkSdkClient)(nil).PublicNetworksGet), location)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PublicNetworksGet", reflect.TypeOf((*MockNetworkSdkClient)(nil).PublicNetworksGet), arg0)
 }
 
 // PublicNetworksPost mocks base method.

@@ -3,7 +3,6 @@ package events
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/audit"
-	qp "phoenixnap.com/pnapctl/common/models/queryparams/audit"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
@@ -48,12 +47,7 @@ pnapctl get events [--from <FROM>] [--to <TO>] [--limit <LIMIT>] [--order <ORDER
 }
 
 func getEvents() error {
-	params, err := qp.NewEventsGetQueryParams(From, To, Limit, Order, Username, Verb, Uri)
-	if err != nil {
-		return err
-	}
-
-	events, httpResponse, err := audit.Client.EventsGet(*params)
+	events, httpResponse, err := audit.Client.EventsGet(From, To, Limit, Order, Username, Verb, Uri)
 	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {

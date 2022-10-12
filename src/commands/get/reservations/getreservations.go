@@ -3,7 +3,6 @@ package reservations
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/billing"
-	qp "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
@@ -44,13 +43,7 @@ pnapctl get reservation <RESERVATION_ID> [--full] [--output=<OUTPUT_TYPE>]`,
 }
 
 func getReservations() error {
-	queryParams, err := qp.NewReservationsGetQueryParams(productCategory)
-
-	if err != nil {
-		return err
-	}
-
-	reservations, httpResponse, err := billing.Client.ReservationsGet(*queryParams)
+	reservations, httpResponse, err := billing.Client.ReservationsGet(productCategory)
 
 	if err := utils.CheckErrs(httpResponse, err); err != nil {
 		return err

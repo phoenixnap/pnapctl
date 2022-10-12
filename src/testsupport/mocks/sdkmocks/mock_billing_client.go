@@ -10,7 +10,6 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	billingapi "github.com/phoenixnap/go-sdk-bmc/billingapi"
-	billing "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 )
 
 // MockBillingSdkClient is a mock of BillingSdkClient interface.
@@ -53,9 +52,9 @@ func (mr *MockBillingSdkClientMockRecorder) AccountBillingConfigurationGet() *go
 }
 
 // ProductAvailabilityGet mocks base method.
-func (m *MockBillingSdkClient) ProductAvailabilityGet(queryParams billing.ProductAvailabilityGetQueryParams) ([]billingapi.ProductAvailability, *http.Response, error) {
+func (m *MockBillingSdkClient) ProductAvailabilityGet(arg0, arg1 []string, arg2 bool, arg3, arg4 []string, arg5 float32) ([]billingapi.ProductAvailability, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ProductAvailabilityGet", queryParams)
+	ret := m.ctrl.Call(m, "ProductAvailabilityGet", arg0, arg1, arg2, arg3, arg4, arg5)
 	ret0, _ := ret[0].([]billingapi.ProductAvailability)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -63,15 +62,15 @@ func (m *MockBillingSdkClient) ProductAvailabilityGet(queryParams billing.Produc
 }
 
 // ProductAvailabilityGet indicates an expected call of ProductAvailabilityGet.
-func (mr *MockBillingSdkClientMockRecorder) ProductAvailabilityGet(queryParams interface{}) *gomock.Call {
+func (mr *MockBillingSdkClientMockRecorder) ProductAvailabilityGet(arg0, arg1, arg2, arg3, arg4, arg5 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProductAvailabilityGet", reflect.TypeOf((*MockBillingSdkClient)(nil).ProductAvailabilityGet), queryParams)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProductAvailabilityGet", reflect.TypeOf((*MockBillingSdkClient)(nil).ProductAvailabilityGet), arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
 // ProductsGet mocks base method.
-func (m *MockBillingSdkClient) ProductsGet(queryParams billing.ProductsGetQueryParams) ([]billingapi.ProductsGet200ResponseInner, *http.Response, error) {
+func (m *MockBillingSdkClient) ProductsGet(arg0, arg1, arg2, arg3 string) ([]billingapi.ProductsGet200ResponseInner, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ProductsGet", queryParams)
+	ret := m.ctrl.Call(m, "ProductsGet", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].([]billingapi.ProductsGet200ResponseInner)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -79,15 +78,15 @@ func (m *MockBillingSdkClient) ProductsGet(queryParams billing.ProductsGetQueryP
 }
 
 // ProductsGet indicates an expected call of ProductsGet.
-func (mr *MockBillingSdkClientMockRecorder) ProductsGet(queryParams interface{}) *gomock.Call {
+func (mr *MockBillingSdkClientMockRecorder) ProductsGet(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProductsGet", reflect.TypeOf((*MockBillingSdkClient)(nil).ProductsGet), queryParams)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProductsGet", reflect.TypeOf((*MockBillingSdkClient)(nil).ProductsGet), arg0, arg1, arg2, arg3)
 }
 
 // RatedUsageGet mocks base method.
-func (m *MockBillingSdkClient) RatedUsageGet(queryParams billing.RatedUsageGetQueryParams) ([]billingapi.RatedUsageGet200ResponseInner, *http.Response, error) {
+func (m *MockBillingSdkClient) RatedUsageGet(arg0, arg1, arg2 string) ([]billingapi.RatedUsageGet200ResponseInner, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RatedUsageGet", queryParams)
+	ret := m.ctrl.Call(m, "RatedUsageGet", arg0, arg1, arg2)
 	ret0, _ := ret[0].([]billingapi.RatedUsageGet200ResponseInner)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -95,15 +94,15 @@ func (m *MockBillingSdkClient) RatedUsageGet(queryParams billing.RatedUsageGetQu
 }
 
 // RatedUsageGet indicates an expected call of RatedUsageGet.
-func (mr *MockBillingSdkClientMockRecorder) RatedUsageGet(queryParams interface{}) *gomock.Call {
+func (mr *MockBillingSdkClientMockRecorder) RatedUsageGet(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RatedUsageGet", reflect.TypeOf((*MockBillingSdkClient)(nil).RatedUsageGet), queryParams)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RatedUsageGet", reflect.TypeOf((*MockBillingSdkClient)(nil).RatedUsageGet), arg0, arg1, arg2)
 }
 
 // RatedUsageMonthToDateGet mocks base method.
-func (m *MockBillingSdkClient) RatedUsageMonthToDateGet(queryParams billing.RatedUsageMonthToDateGetQueryParams) ([]billingapi.RatedUsageGet200ResponseInner, *http.Response, error) {
+func (m *MockBillingSdkClient) RatedUsageMonthToDateGet(arg0 string) ([]billingapi.RatedUsageGet200ResponseInner, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RatedUsageMonthToDateGet", queryParams)
+	ret := m.ctrl.Call(m, "RatedUsageMonthToDateGet", arg0)
 	ret0, _ := ret[0].([]billingapi.RatedUsageGet200ResponseInner)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -111,9 +110,9 @@ func (m *MockBillingSdkClient) RatedUsageMonthToDateGet(queryParams billing.Rate
 }
 
 // RatedUsageMonthToDateGet indicates an expected call of RatedUsageMonthToDateGet.
-func (mr *MockBillingSdkClientMockRecorder) RatedUsageMonthToDateGet(queryParams interface{}) *gomock.Call {
+func (mr *MockBillingSdkClientMockRecorder) RatedUsageMonthToDateGet(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RatedUsageMonthToDateGet", reflect.TypeOf((*MockBillingSdkClient)(nil).RatedUsageMonthToDateGet), queryParams)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RatedUsageMonthToDateGet", reflect.TypeOf((*MockBillingSdkClient)(nil).RatedUsageMonthToDateGet), arg0)
 }
 
 // ReservationConvert mocks base method.
@@ -181,9 +180,9 @@ func (mr *MockBillingSdkClientMockRecorder) ReservationGetById(id interface{}) *
 }
 
 // ReservationsGet mocks base method.
-func (m *MockBillingSdkClient) ReservationsGet(queryParams billing.ReservationsGetQueryParams) ([]billingapi.Reservation, *http.Response, error) {
+func (m *MockBillingSdkClient) ReservationsGet(arg0 string) ([]billingapi.Reservation, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReservationsGet", queryParams)
+	ret := m.ctrl.Call(m, "ReservationsGet", arg0)
 	ret0, _ := ret[0].([]billingapi.Reservation)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -191,9 +190,9 @@ func (m *MockBillingSdkClient) ReservationsGet(queryParams billing.ReservationsG
 }
 
 // ReservationsGet indicates an expected call of ReservationsGet.
-func (mr *MockBillingSdkClientMockRecorder) ReservationsGet(queryParams interface{}) *gomock.Call {
+func (mr *MockBillingSdkClientMockRecorder) ReservationsGet(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReservationsGet", reflect.TypeOf((*MockBillingSdkClient)(nil).ReservationsGet), queryParams)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReservationsGet", reflect.TypeOf((*MockBillingSdkClient)(nil).ReservationsGet), arg0)
 }
 
 // ReservationsPost mocks base method.

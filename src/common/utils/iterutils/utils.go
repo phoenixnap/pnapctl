@@ -166,8 +166,8 @@ func FindElementThat[T any](slice []T, predicate Predicate[T]) *T {
 
 /* SPECIFIC MAPPERS */
 
-// Dereferences each element in a list if they are a pointer.
-// Otherwise it keeps them as is.
+// Dereferences each element in a list of pointers.
+// If an element is nil - it is filtered out.
 //
 // For a list of interface{} - use DerefInterface.
 //
@@ -179,7 +179,9 @@ func Deref[T any](slice []*T) []T {
 		return *item
 	}
 
-	return Map(slice, deref)
+	noNils := Filter(slice, func(item *T) bool { return item != nil })
+
+	return Map(noNils, deref)
 }
 
 // Dereferences each element in a list if they are a pointer.

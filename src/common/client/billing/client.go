@@ -4,10 +4,12 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
-	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
+	"phoenixnap.com/pnapctl/common/client"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	configuration "phoenixnap.com/pnapctl/configs"
 )
 
@@ -15,17 +17,17 @@ var Client BillingSdkClient
 
 type BillingSdkClient interface {
 	// Rated Usages
-	RatedUsageGet(queryParams billing.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
-	RatedUsageMonthToDateGet(queryParams billing.RatedUsageMonthToDateGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
-	ProductsGet(queryParams billing.ProductsGetQueryParams) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error)
-	ReservationsGet(queryParams billing.ReservationsGetQueryParams) ([]billingapisdk.Reservation, *http.Response, error)
+	RatedUsageGet(string, string, string) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
+	RatedUsageMonthToDateGet(string) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
+	ProductsGet(string, string, string, string) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error)
+	ReservationsGet(string) ([]billingapisdk.Reservation, *http.Response, error)
 	ReservationsPost(request billingapisdk.ReservationRequest) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationGetById(id string) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationDisableAutoRenew(id string, request billingapisdk.ReservationAutoRenewDisableRequest) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationEnableAutoRenew(id string) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationConvert(id string, request billingapisdk.ReservationRequest) (*billingapisdk.Reservation, *http.Response, error)
 	AccountBillingConfigurationGet() (*billingapisdk.ConfigurationDetails, *http.Response, error)
-	ProductAvailabilityGet(queryParams billing.ProductAvailabilityGetQueryParams) ([]billingapisdk.ProductAvailability, *http.Response, error)
+	ProductAvailabilityGet([]string, []string, bool, []string, []string, float32) ([]billingapisdk.ProductAvailability, *http.Response, error)
 }
 
 type MainClient struct {
@@ -71,30 +73,57 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	}
 }
 
-func (m MainClient) RatedUsageGet(queryParams billing.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
+func (m MainClient) RatedUsageGet(fromYearMonth, toYearMonth, productCategory string) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
 	request := m.RatedUsageApiClient.RatedUsageGet(context.Background())
-	request = queryParams.AttachToRequest(request)
+
+	if !client.IsZero(fromYearMonth) {
+		request.FromYearMonth(fromYearMonth)
+	}
+	if !client.IsZero(toYearMonth) {
+		request.ToYearMonth(toYearMonth)
+	}
+	if enum, err := billingapisdk.NewProductCategoryEnumFromValue(productCategory); err == nil && enum != nil {
+		request.ProductCategory(*enum)
+	}
 
 	return request.Execute()
 }
 
-func (m MainClient) RatedUsageMonthToDateGet(queryParams billing.RatedUsageMonthToDateGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
+func (m MainClient) RatedUsageMonthToDateGet(productCategory string) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
 	request := m.RatedUsageApiClient.RatedUsageMonthToDateGet(context.Background())
-	request = queryParams.AttachToRequest(request)
+
+	if enum, err := billingapisdk.NewProductCategoryEnumFromValue(productCategory); err == nil && enum != nil {
+		request.ProductCategory(*enum)
+	}
 
 	return request.Execute()
 }
 
-func (m MainClient) ProductsGet(queryParams billing.ProductsGetQueryParams) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error) {
+func (m MainClient) ProductsGet(productCode, productCategory, skuCode, location string) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error) {
 	request := m.ProductsApiClient.ProductsGet(context.Background())
-	request = queryParams.AttachToRequest(request)
+
+	if !client.IsZero(productCode) {
+		request.ProductCode(productCode)
+	}
+	if !client.IsZero(productCategory) {
+		request.ProductCategory(productCategory)
+	}
+	if !client.IsZero(skuCode) {
+		request.SkuCode(skuCode)
+	}
+	if !client.IsZero(location) {
+		request.Location(location)
+	}
 
 	return request.Execute()
 }
 
-func (m MainClient) ReservationsGet(queryParams billing.ReservationsGetQueryParams) ([]billingapisdk.Reservation, *http.Response, error) {
+func (m MainClient) ReservationsGet(productCategory string) ([]billingapisdk.Reservation, *http.Response, error) {
 	request := m.ReservationApiClient.ReservationsGet(context.Background())
-	request = queryParams.AttachToRequest(request)
+
+	if enum, err := billingapisdk.NewProductCategoryEnumFromValue(productCategory); err == nil && enum != nil {
+		request.ProductCategory(*enum)
+	}
 
 	return request.Execute()
 }
@@ -123,9 +152,31 @@ func (m MainClient) AccountBillingConfigurationGet() (*billingapisdk.Configurati
 	return m.BillingConfigurationsApiClient.AccountBillingConfigurationMeGet(context.Background()).Execute()
 }
 
-func (m MainClient) ProductAvailabilityGet(queryParams billing.ProductAvailabilityGetQueryParams) ([]billingapisdk.ProductAvailability, *http.Response, error) {
+func (m MainClient) ProductAvailabilityGet(productCategory []string, productCode []string, showOnlyMinQuantityAvailable bool, location []string, solution []string, minQuantity float32) ([]billingapisdk.ProductAvailability, *http.Response, error) {
 	request := m.ProductsApiClient.ProductAvailabilityGet(context.Background())
-	request = queryParams.AttachToRequest(request)
+
+	if len(productCategory) != 0 {
+		request.ProductCategory(productCategory)
+	}
+	if len(productCode) != 0 {
+		request.ProductCategory(productCategory)
+	}
+	if len(solution) != 0 {
+		request.Solution(solution)
+	}
+	if !client.IsZero(minQuantity) {
+		request.MinQuantity(minQuantity)
+	}
+
+	locations := iterutils.Deref(iterutils.Map(location, func(str string) *billingapi.LocationEnum {
+		enum, _ := billingapi.NewLocationEnumFromValue(str)
+		return enum
+	}))
+
+	if len(locations) != 0 {
+		request.Location(locations)
+	}
+	request.ShowOnlyMinQuantityAvailable(showOnlyMinQuantityAvailable)
 
 	return request.Execute()
 }

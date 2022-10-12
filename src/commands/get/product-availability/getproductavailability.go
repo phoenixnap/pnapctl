@@ -3,7 +3,6 @@ package productavailability
 import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/billing"
-	qp "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
@@ -52,13 +51,7 @@ pnapctl get product-availabilities
 }
 
 func getProductAvailabilities() error {
-	queryParams, err := qp.NewProductAvailabilityGetQueryParams(productCategory, productCode, showOnlyMinQuantityAvailable, location, solution, minQuantity)
-
-	if err != nil {
-		return err
-	}
-
-	products, httpResponse, err := billing.Client.ProductAvailabilityGet(*queryParams)
+	products, httpResponse, err := billing.Client.ProductAvailabilityGet(productCategory, productCode, showOnlyMinQuantityAvailable, location, solution, minQuantity)
 
 	if err := utils.CheckErrs(httpResponse, err); err != nil {
 		return err
