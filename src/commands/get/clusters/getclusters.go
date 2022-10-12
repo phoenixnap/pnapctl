@@ -9,6 +9,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func init() {
+	utils.SetupOutputFlag(GetClustersCmd)
+}
+
 var GetClustersCmd = &cobra.Command{
 	Use:          "cluster [CLUSTER_ID]",
 	Short:        "Retrieve one or all clusters.",
@@ -58,8 +62,4 @@ func getClusterById(clusterID string) error {
 	} else {
 		return printer.PrintClusterResponse(cluster)
 	}
-}
-
-func init() {
-	GetClustersCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 }

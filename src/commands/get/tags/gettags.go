@@ -12,8 +12,9 @@ import (
 var Name string
 
 func init() {
+	utils.SetupOutputFlag(GetTagsCmd)
+
 	GetTagsCmd.Flags().StringVar(&Name, "name", "", "Name of the tag")
-	GetTagsCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 }
 
 var GetTagsCmd = &cobra.Command{

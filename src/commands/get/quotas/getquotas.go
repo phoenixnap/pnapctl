@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	GetQuotasCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	utils.SetupOutputFlag(GetQuotasCmd)
 }
 
 var GetQuotasCmd = &cobra.Command{

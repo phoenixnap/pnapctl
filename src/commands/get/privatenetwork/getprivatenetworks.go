@@ -5,13 +5,14 @@ import (
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 var location string
 
 func init() {
-	GetPrivateNetworksCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+	utils.SetupOutputFlag(GetPrivateNetworksCmd)
 	GetPrivateNetworksCmd.PersistentFlags().StringVar(&location, "location", "", "Filter by location")
 }
 
