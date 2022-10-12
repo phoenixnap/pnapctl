@@ -15,8 +15,6 @@ import (
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-const commandName string = "tag server"
-
 var Full bool
 
 func init() {
@@ -66,7 +64,7 @@ func tagServer(id string) error {
 	}
 
 	serverResponse, httpResponse, err := performTagRequest(id, *tagRequests)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

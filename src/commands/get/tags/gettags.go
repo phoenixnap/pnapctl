@@ -9,8 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const commandName string = "get tags"
-
 var Name string
 
 func init() {
@@ -48,7 +46,7 @@ pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
 func getTags() error {
 	tags, httpResponse, err := tagclient.Client.TagsGet(Name)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError
@@ -60,7 +58,7 @@ func getTags() error {
 func getTagById(tagID string) error {
 	tag, httpResponse, err := tagclient.Client.TagGetById(tagID)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

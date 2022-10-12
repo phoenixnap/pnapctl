@@ -48,7 +48,7 @@ func createCluster() error {
 	}
 
 	response, httpResponse, err := rancher.Client.ClusterPost(*cluster)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

@@ -8,8 +8,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "get private-network"
-
 var location string
 
 func init() {

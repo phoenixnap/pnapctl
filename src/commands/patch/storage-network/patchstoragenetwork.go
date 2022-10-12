@@ -10,8 +10,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "patch storage-network"
-
 var (
 	Filename, ID string
 )
@@ -51,7 +49,7 @@ func patchStorageNetwork() error {
 
 	sdkResponse, httpResponse, err := networkstorage.Client.NetworkStoragePatch(ID, *request)
 
-	if generatedError := utils.CheckForErrors(httpResponse, err); generatedError != nil {
+	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
 		return generatedError
 	} else {
 		return printer.PrintStorageNetworkResponse(sdkResponse)

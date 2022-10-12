@@ -51,7 +51,7 @@ func reserveServer(id string) error {
 	}
 
 	serverResponse, httpResponse, err := bmcapi.Client.ServerReserve(id, *reserveRequest)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

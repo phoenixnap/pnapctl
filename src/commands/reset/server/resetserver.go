@@ -58,7 +58,7 @@ func resetServer(id string) error {
 	}
 
 	result, httpResponse, err := bmcapi.Client.ServerReset(id, *request)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

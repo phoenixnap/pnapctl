@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "get storage-networks"
-
 func init() {
 	utils.SetupOutputFlag(GetStorageNetworksCmd)
 	GetStorageNetworksCmd.AddCommand(volumes.GetStorageNetworkVolumesCmd)
@@ -46,7 +44,7 @@ pnapctl get storage-network <ID> [--output <OUTPUT_TYPE>]`,
 func getStorageNetworks() error {
 	storagenetworks, httpResponse, err := networkstorage.Client.NetworkStorageGet()
 
-	if generatedError := utils.CheckForErrors(httpResponse, err); generatedError != nil {
+	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
 		return generatedError
 	} else {
 		return printer.PrintStorageNetworkListResponse(storagenetworks)
@@ -56,7 +54,7 @@ func getStorageNetworks() error {
 func getStorageNetworksById(id string) error {
 	storagenetwork, httpResponse, err := networkstorage.Client.NetworkStorageGetById(id)
 
-	if generatedError := utils.CheckForErrors(httpResponse, err); generatedError != nil {
+	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
 		return generatedError
 	} else {
 		return printer.PrintStorageNetworkResponse(storagenetwork)

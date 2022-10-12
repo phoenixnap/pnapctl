@@ -35,7 +35,7 @@ pnapctl create reservation <RESERVATION_ID> --filename=<FILENAME>
 
 # reservationCreate.yaml
 sku: "skuCode"`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
 		cmdname.SetCommandName(cmd)
 		return createReservation()
 	},
@@ -50,10 +50,8 @@ func createReservation() error {
 
 	// Create the server
 	response, httpResponse, err := billing.Client.ReservationsPost(*reservationCreate)
-	generatedError := utils.CheckForErrors(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err := utils.CheckErrs(httpResponse, err); err != nil {
+		return err
 	} else {
 		return printer.PrintReservationResponse(response, Full)
 	}

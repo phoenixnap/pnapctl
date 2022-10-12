@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "get events"
-
 var ID string
 
 var From string
@@ -56,7 +54,7 @@ func getEvents() error {
 	}
 
 	events, httpResponse, err := audit.Client.EventsGet(*params)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

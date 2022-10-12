@@ -55,7 +55,7 @@ func getPublicNetworks() error {
 
 	publicNetworks, httpResponse, err := networks.Client.PublicNetworksGet(*queryParams)
 
-	if generatedError := utils.CheckForErrors(httpResponse, err); generatedError != nil {
+	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
 		return generatedError
 	} else {
 		return printer.PrintPublicNetworkListResponse(publicNetworks)
@@ -65,7 +65,7 @@ func getPublicNetworks() error {
 func getPublicNetworkById(id *string) error {
 	publicNetwork, httpResponse, err := networks.Client.PublicNetworkGetById(*id)
 
-	if generatedError := utils.CheckForErrors(httpResponse, err); generatedError != nil {
+	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
 		return generatedError
 	} else {
 		return printer.PrintPublicNetworkResponse(publicNetwork)

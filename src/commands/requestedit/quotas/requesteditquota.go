@@ -46,7 +46,7 @@ func requestToEditQuota(id string) error {
 	}
 
 	httpResponse, err := bmcapi.Client.QuotaEditById(id, *quotaEditRequest)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

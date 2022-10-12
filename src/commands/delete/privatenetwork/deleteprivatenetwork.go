@@ -8,8 +8,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "delete private-network"
-
 var DeletePrivateNetworkCmd = &cobra.Command{
 	Use:          "private-network PRIVATE_NETWORK_ID",
 	Short:        "Deletes a specific private network.",

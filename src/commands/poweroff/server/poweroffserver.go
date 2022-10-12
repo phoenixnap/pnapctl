@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "power-off server"
-
 var PowerOffServerCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
 	Short:        "Perform a hard shutdown on a specific server.",
@@ -27,7 +25,7 @@ var PowerOffServerCmd = &cobra.Command{
 
 func powerOffServer(id string) error {
 	result, httpResponse, err := bmcapi.Client.ServerPowerOff(id)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

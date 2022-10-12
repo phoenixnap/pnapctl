@@ -11,8 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const commandName string = "get rated-usage"
-
 var (
 	Full            bool
 	FromYearMonth   string
@@ -64,10 +62,8 @@ func getRatedUsage() error {
 
 	ratedUsageRecords, httpResponse, err := billing.Client.RatedUsageGet(*queryParams)
 
-	generatedError := utils.CheckForErrors(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err := utils.CheckErrs(httpResponse, err); err != nil {
+		return err
 	} else {
 		return printer.PrintRatedUsageListResponse(ratedUsageRecords, Full)
 	}

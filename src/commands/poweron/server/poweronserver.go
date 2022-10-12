@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "power-on server"
-
 var PowerOnServerCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
 	Short:        "Powers on a specific server.",
@@ -27,7 +25,7 @@ var PowerOnServerCmd = &cobra.Command{
 
 func powerOnServer(id string) error {
 	result, httpResponse, err := bmcapi.Client.ServerPowerOn(id)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

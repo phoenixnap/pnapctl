@@ -10,8 +10,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "create storage-network"
-
 var (
 	Filename string
 )
@@ -55,7 +53,7 @@ func createStorageNetwork() error {
 
 	sdkResponse, httpResponse, err := networkstorage.Client.NetworkStoragePost(*request)
 
-	if generatedError := utils.CheckForErrors(httpResponse, err); generatedError != nil {
+	if generatedError := utils.CheckErrs(httpResponse, err); generatedError != nil {
 		return generatedError
 	} else {
 		return printer.PrintStorageNetworkResponse(sdkResponse)

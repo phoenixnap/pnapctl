@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
-const commandName string = "get ip-blocks"
-
 var tags []string
 var Full bool
 
@@ -50,7 +48,7 @@ pnapctl get ip-block <IP_BLOCK_ID> [--output <OUTPUT_TYPE>]`,
 func getIpBlocks() error {
 	ipBlocks, httpResponse, err := ip.Client.IpBlocksGet(tags)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError
@@ -62,7 +60,7 @@ func getIpBlocks() error {
 func getIpBlockById(ipBlockId string) error {
 	ipBlock, httpResponse, err := ip.Client.IpBlocksGetById(ipBlockId)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

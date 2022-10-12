@@ -32,7 +32,7 @@ pnapctl delete server-private-network <SERVER_ID> <PRIVATE_NETWORK_ID>
 
 func deletePrivateNetworkFromServer(serverId, privateNetworkId string) error {
 	result, httpResponse, err := bmcapi.Client.ServerPrivateNetworkDelete(serverId, privateNetworkId)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

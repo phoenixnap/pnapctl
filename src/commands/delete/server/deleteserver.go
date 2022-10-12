@@ -10,8 +10,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "delete server"
-
 var DeleteServerCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
 	Short:        "Deletes a specific server.",
@@ -29,7 +27,7 @@ var DeleteServerCmd = &cobra.Command{
 
 func deleteServer(id string) error {
 	result, httpResponse, err := bmcapi.Client.ServerDelete(id)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

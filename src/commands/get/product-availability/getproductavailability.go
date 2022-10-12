@@ -60,10 +60,8 @@ func getProductAvailabilities() error {
 
 	products, httpResponse, err := billing.Client.ProductAvailabilityGet(*queryParams)
 
-	generatedError := utils.CheckForErrors(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err := utils.CheckErrs(httpResponse, err); err != nil {
+		return err
 	} else {
 		return printer.PrintProductAvailabilityListResponse(products)
 	}

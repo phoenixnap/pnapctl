@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "shutdown server"
-
 var ShutdownCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
 	Short:        "Perform a soft shutdown on a specific server.",
@@ -27,7 +25,7 @@ var ShutdownCmd = &cobra.Command{
 
 func shutdownServer(id string) error {
 	result, httpResponse, err := bmcapi.Client.ServerShutdown(id)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

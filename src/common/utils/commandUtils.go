@@ -17,7 +17,7 @@ func is2xxSuccessful(statusCode int) bool {
 	}
 }
 
-func CheckForErrors(httpResponse *http.Response, err error) error {
+func CheckErrs(httpResponse *http.Response, err error) error {
 	var generatedError error = nil
 	if httpResponse != nil && !is2xxSuccessful(httpResponse.StatusCode) {
 		generatedError = ctlerrors.HandleBMCError(httpResponse)

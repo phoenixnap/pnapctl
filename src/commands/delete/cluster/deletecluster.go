@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "delete cluster"
-
 var DeleteClusterCmd = &cobra.Command{
 	Use:          "cluster CLUSTER_ID",
 	Short:        "Deletes a specific cluster.",
@@ -26,7 +24,7 @@ var DeleteClusterCmd = &cobra.Command{
 
 func deleteCluster(id string) error {
 	result, httpResponse, err := rancher.Client.ClusterDelete(id)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

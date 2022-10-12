@@ -51,7 +51,7 @@ func createIpBlock() error {
 
 	// Create the ssh key
 	response, httpResponse, err := ip.Client.IpBlockPost(*ipBlockCreate)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "get products"
-
 var (
 	ProductCode     string
 	ProductCategory string
@@ -48,10 +46,8 @@ func getProducts() error {
 
 	products, httpResponse, err := billing.Client.ProductsGet(queryParams)
 
-	generatedError := utils.CheckForErrors(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err := utils.CheckErrs(httpResponse, err); err != nil {
+		return err
 	} else {
 		return printer.PrintProductListResponse(products)
 	}

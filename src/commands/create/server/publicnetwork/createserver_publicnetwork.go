@@ -53,7 +53,7 @@ func createPublicNetworkForServer(id string) error {
 	// Create the server private network
 	response, httpResponse, err := bmcapi.Client.ServerPublicNetworkPost(id, *serverPublicNetwork)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

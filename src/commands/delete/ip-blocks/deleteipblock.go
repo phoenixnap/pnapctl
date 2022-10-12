@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "delete ip-block"
-
 var DeleteIpBlockCmd = &cobra.Command{
 	Use:          "ip-block IP_BLOCK_ID",
 	Short:        "Deletes a specific ip-block.",
@@ -26,7 +24,7 @@ var DeleteIpBlockCmd = &cobra.Command{
 
 func deleteIpBlock(id string) error {
 	result, httpResponse, err := ip.Client.IpBlocksIpBlockIdDelete(id)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

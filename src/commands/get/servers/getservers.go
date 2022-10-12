@@ -8,8 +8,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "get servers"
-
 var Full bool
 var tags []string
 
@@ -50,7 +48,7 @@ pnapctl get servers <SERVER_ID> [--full] [--output <OUTPUT_TYPE>]`,
 func getServers() error {
 	servers, httpResponse, err := bmcapi.Client.ServersGet(tags)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError
@@ -62,7 +60,7 @@ func getServers() error {
 func getServersById(serverID string) error {
 	server, httpResponse, err := bmcapi.Client.ServerGetById(serverID)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

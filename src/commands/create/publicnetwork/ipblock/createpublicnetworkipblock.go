@@ -48,7 +48,7 @@ func createPublicNetworkIpBlock(id string) error {
 
 	response, httpResponse, err := networks.Client.PublicNetworkIpBlockPost(id, *ipBlock)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

@@ -14,8 +14,6 @@ var Filename string
 
 var Full bool
 
-const commandName = "update ip-block tag"
-
 func init() {
 	utils.SetupOutputFlag(PutIpBlockTagCmd)
 	utils.SetupFullFlag(PutIpBlockTagCmd, &Full, "ip-block")
@@ -54,7 +52,7 @@ func updateTagsOnIpBlock(id string) error {
 
 	response, httpResponse, err := ip.Client.IpBlocksIpBlockIdTagsPut(id, *ipBlockPutTag)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

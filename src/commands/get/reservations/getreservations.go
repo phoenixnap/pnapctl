@@ -52,10 +52,8 @@ func getReservations() error {
 
 	reservations, httpResponse, err := billing.Client.ReservationsGet(*queryParams)
 
-	generatedError := utils.CheckForErrors(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err := utils.CheckErrs(httpResponse, err); err != nil {
+		return err
 	} else {
 		return printer.PrintReservationListResponse(reservations, Full)
 	}
@@ -64,10 +62,8 @@ func getReservations() error {
 func getReservationById(reservationId string) error {
 	reservation, httpResponse, err := billing.Client.ReservationGetById(reservationId)
 
-	generatedError := utils.CheckForErrors(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err := utils.CheckErrs(httpResponse, err); err != nil {
+		return err
 	} else {
 		return printer.PrintReservationResponse(reservation, Full)
 	}

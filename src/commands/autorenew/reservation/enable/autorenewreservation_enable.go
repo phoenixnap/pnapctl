@@ -34,10 +34,9 @@ pnapctl auto-renew reservation enable <RESERVATION_ID>`,
 
 func enableAutoRenewForReservation(id string) error {
 	response, httpResponse, err := billing.Client.ReservationEnableAutoRenew(id)
-	generatedError := utils.CheckForErrors(httpResponse, err)
 
-	if generatedError != nil {
-		return generatedError
+	if err := utils.CheckErrs(httpResponse, err); err != nil {
+		return err
 	} else {
 		return printer.PrintReservationResponse(response, Full)
 	}

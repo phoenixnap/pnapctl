@@ -58,7 +58,7 @@ func createServer() error {
 
 	// Create the server
 	response, httpResponse, err := bmcapi.Client.ServersPost(*serverCreate)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

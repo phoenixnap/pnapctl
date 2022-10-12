@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "reboot server"
-
 var RebootCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
 	Short:        "Perform a soft reboot on a specific server.",
@@ -27,7 +25,7 @@ var RebootCmd = &cobra.Command{
 
 func rebootServer(id string) error {
 	result, httpResponse, err := bmcapi.Client.ServerReboot(id)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

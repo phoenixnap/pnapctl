@@ -51,7 +51,7 @@ func createPublicNetwork() error {
 
 	response, httpResponse, err := networks.Client.PublicNetworksPost(*publicNetworkCreate)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

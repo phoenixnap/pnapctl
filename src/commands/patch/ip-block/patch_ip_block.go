@@ -14,8 +14,6 @@ var Filename string
 
 var Full bool
 
-const commandName = "patch ip-block"
-
 func init() {
 	utils.SetupOutputFlag(PatchIpBlockCmd)
 	utils.SetupFullFlag(PatchIpBlockCmd, &Full, "ip-block")
@@ -51,7 +49,7 @@ func patchIpBlock(id string) error {
 
 	response, httpResponse, err := ip.Client.IpBlocksIpBlockIdPatch(id, *ipBlockPatch)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

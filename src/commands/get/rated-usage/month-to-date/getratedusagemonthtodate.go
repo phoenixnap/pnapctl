@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "get rated-usage month-to-date"
-
 var (
 	Full            bool
 	ProductCategory string
@@ -50,10 +48,8 @@ func getRatedUsageMonthToDate() error {
 
 	ratedUsageRecords, httpResponse, err := billing.Client.RatedUsageMonthToDateGet(*queryParams)
 
-	generatedError := utils.CheckForErrors(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err := utils.CheckErrs(httpResponse, err); err != nil {
+		return err
 	} else {
 		return printer.PrintRatedUsageListResponse(ratedUsageRecords, Full)
 	}

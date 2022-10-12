@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "delete tag"
-
 var DeleteTagCmd = &cobra.Command{
 	Use:          "tag TAG_ID",
 	Short:        "Deletes a specific tag.",
@@ -26,7 +24,7 @@ var DeleteTagCmd = &cobra.Command{
 
 func deleteTag(id string) error {
 	result, httpResponse, err := tags.Client.TagDelete(id)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

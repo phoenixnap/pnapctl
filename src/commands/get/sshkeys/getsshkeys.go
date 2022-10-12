@@ -8,8 +8,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "get ssh-keys"
-
 var Full bool
 
 func init() {
@@ -47,7 +45,7 @@ pnapctl get ssh-key <SSH_KEY_ID> [--full] [--output <OUTPUT_TYPE>]`,
 func getSshKeys() error {
 	sshKeys, httpResponse, err := bmcapi.Client.SshKeysGet()
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError
@@ -59,7 +57,7 @@ func getSshKeys() error {
 func getSshKeyById(sshKeyId string) error {
 	sshKey, httpResponse, err := bmcapi.Client.SshKeyGetById(sshKeyId)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

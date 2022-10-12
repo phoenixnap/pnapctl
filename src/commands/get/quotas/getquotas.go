@@ -8,8 +8,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "get quotas"
-
 func init() {
 	GetQuotasCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
 }
@@ -44,7 +42,7 @@ pnapctl get quota <QUOTA_ID> [--output <OUTPUT_TYPE>]`,
 func getQuotas() error {
 	quotas, httpResponse, err := bmcapi.Client.QuotasGet()
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError
@@ -56,7 +54,7 @@ func getQuotas() error {
 func getQuotaById(quotaId string) error {
 	quota, httpResponse, err := bmcapi.Client.QuotaGetById(quotaId)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

@@ -8,8 +8,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "get storage-network volumes"
-
 var (
 	Full bool
 )
@@ -49,10 +47,8 @@ pnapctl get volume <ID> [--full] [--output <OUTPUT_TYPE>]`,
 func getVolumes(storageId string) error {
 	volumes, httpResponse, err := networkstorage.Client.NetworkStorageGetVolumes(storageId)
 
-	generatedError := utils.CheckForErrors(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err := utils.CheckErrs(httpResponse, err); err != nil {
+		return err
 	} else {
 		return printer.PrintVolumeListResponse(volumes, Full)
 	}
@@ -61,10 +57,8 @@ func getVolumes(storageId string) error {
 func getVolumeById(storageId, volumeId string) error {
 	volume, httpResponse, err := networkstorage.Client.NetworkStorageGetVolumeById(storageId, volumeId)
 
-	generatedError := utils.CheckForErrors(httpResponse, err)
-
-	if generatedError != nil {
-		return generatedError
+	if err := utils.CheckErrs(httpResponse, err); err != nil {
+		return err
 	} else {
 		return printer.PrintVolumeResponse(volume, Full)
 	}

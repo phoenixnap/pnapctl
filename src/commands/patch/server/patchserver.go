@@ -13,8 +13,6 @@ import (
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-const commandName string = "patch server"
-
 var Full bool
 
 func init() {
@@ -52,7 +50,7 @@ func patchServer(id string) error {
 	}
 
 	serverResponse, httpResponse, err := bmcapi.Client.ServerPatch(id, *patchRequest)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

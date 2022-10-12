@@ -7,8 +7,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "delete storage-network"
-
 var (
 	ID string
 )

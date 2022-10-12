@@ -9,8 +9,6 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "delete ssh-key"
-
 var DeleteSshKeyCmd = &cobra.Command{
 	Use:          "ssh-key SSH_KEY_ID",
 	Short:        "Deletes a specific SSH Key.",
@@ -26,7 +24,7 @@ var DeleteSshKeyCmd = &cobra.Command{
 
 func deleteSshKey(id string) error {
 	result, httpResponse, err := bmcapi.Client.SshKeyDelete(id)
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError

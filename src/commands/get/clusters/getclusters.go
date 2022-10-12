@@ -9,8 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const commandName string = "get clusters"
-
 var GetClustersCmd = &cobra.Command{
 	Use:          "cluster [CLUSTER_ID]",
 	Short:        "Retrieve one or all clusters.",
@@ -41,7 +39,7 @@ pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
 func getClusters() error {
 	clusters, httpResponse, err := rancher.Client.ClustersGet()
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError
@@ -53,7 +51,7 @@ func getClusters() error {
 func getClusterById(clusterID string) error {
 	cluster, httpResponse, err := rancher.Client.ClusterGetById(clusterID)
 
-	var generatedError = utils.CheckForErrors(httpResponse, err)
+	var generatedError = utils.CheckErrs(httpResponse, err)
 
 	if generatedError != nil {
 		return generatedError
