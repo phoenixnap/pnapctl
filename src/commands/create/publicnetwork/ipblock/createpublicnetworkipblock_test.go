@@ -172,32 +172,3 @@ func TestCreatePublicNetworkIpBlockClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestCreatePublicNetworkIpBlockKeycloakFailure(test_framework *testing.T) {
-	// What the client should receive.
-	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreatePublicNetworkIpBlockCmd.RunE(CreatePublicNetworkIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

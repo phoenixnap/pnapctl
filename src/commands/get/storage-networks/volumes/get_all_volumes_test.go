@@ -51,19 +51,6 @@ func TestGetAllVolumesClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAllVolumesKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageGetVolumes(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := GetStorageNetworkVolumesCmd.RunE(GetStorageNetworkVolumesCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetAllVolumesPrinterFailure(test_framework *testing.T) {
 	// What the server should return.
 	volumeSdk := testutil.GenN(2, generators.Generate[networkstorageapi.Volume])

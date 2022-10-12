@@ -37,19 +37,6 @@ func TestGetAllQuotasSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetAllQuotasKeycloakFailure(test_framework *testing.T) {
-	quota := []bmcapisdk.Quota{generators.Generate[bmcapisdk.Quota]()}
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		QuotasGet().
-		Return(quota, testutil.TestKeycloakError)
-
-	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
 	quotaList := testutil.GenN(2, generators.Generate[bmcapisdk.Quota])
 

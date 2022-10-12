@@ -52,18 +52,6 @@ func TestGetAllClustersClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAllClustersKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareRancherMockClient(test_framework).
-		ClustersGet().
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetAllClustersPrinterFailure(test_framework *testing.T) {
 	clusters := testutil.GenN(2, generators.Generate[ranchersolutionapi.Cluster])
 

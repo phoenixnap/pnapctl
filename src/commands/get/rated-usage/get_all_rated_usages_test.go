@@ -10,7 +10,6 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
-	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func getQueryParams() (string, string, string) {
@@ -65,18 +64,6 @@ func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 
 	// Assertions
 	assert.NoError(test_framework, err)
-}
-
-func TestGetAllRatedUsages_KeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		RatedUsageGet(getQueryParams()).
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {

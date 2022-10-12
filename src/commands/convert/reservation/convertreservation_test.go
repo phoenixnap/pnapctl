@@ -140,30 +140,3 @@ func TestConvertReservationClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestConvertReservationKeycloakFailure(test_framework *testing.T) {
-	// What the client should receive.
-	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(reservationConvert)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

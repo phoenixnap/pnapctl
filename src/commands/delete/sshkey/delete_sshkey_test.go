@@ -39,16 +39,3 @@ func TestDeleteSshKeyClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestDeleteSshKeyKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		SshKeyDelete(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := DeleteSshKeyCmd.RunE(DeleteSshKeyCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

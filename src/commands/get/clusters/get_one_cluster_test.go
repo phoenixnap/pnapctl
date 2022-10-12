@@ -46,17 +46,6 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetServerKeycloakFailure(test_framework *testing.T) {
-	PrepareRancherMockClient(test_framework).
-		ClusterGetById(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetServerPrinterFailure(test_framework *testing.T) {
 	cluster := generators.Generate[ranchersolutionapi.Cluster]()
 	clusterTable := tables.ClusterFromSdk(cluster)

@@ -183,32 +183,3 @@ func TestPatchServerClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestPatchServerKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	serverPatch := generators.Generate[bmcapisdk.ServerPatch]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverPatch)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := PatchServerCmd.RunE(PatchServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

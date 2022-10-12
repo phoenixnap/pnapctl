@@ -31,7 +31,7 @@ func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200Response
 }
 
 // Products
-func PrintProductResponse(product *billingapi.ProductsGet200ResponseInner, full bool) error {
+func PrintProductResponse(product *billingapi.ProductsGet200ResponseInner) error {
 	productToPrint := PrepareProductForPrinting(*product)
 	return MainPrinter.PrintOutput(productToPrint)
 }

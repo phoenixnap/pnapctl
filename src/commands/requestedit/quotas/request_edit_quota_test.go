@@ -179,29 +179,3 @@ func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 	// assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestSubmitQuotaEditKeycloakFailure(test_framework *testing.T) {
-	// setup
-	editQuotaRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
-	yamlmarshal, _ := yaml.Marshal(editQuotaRequest)
-	Filename = FILENAME
-
-	// prepare mocks
-	PrepareBmcApiMockClient(test_framework).
-		QuotaEditById(RESOURCEID, gomock.Eq(editQuotaRequest)).
-		Return(testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// execute
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
-
-	// assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

@@ -39,16 +39,3 @@ func TestDeleteTagClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestDeleteTagKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareTagMockClient(test_framework).
-		TagDelete(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

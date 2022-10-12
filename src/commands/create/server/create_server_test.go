@@ -184,32 +184,3 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestCreateServerKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(serverCreate)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

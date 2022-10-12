@@ -38,15 +38,3 @@ func TestShutdownServerClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestShutdownServerKeycloakFailure(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		ServerShutdown(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := ShutdownCmd.RunE(ShutdownCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

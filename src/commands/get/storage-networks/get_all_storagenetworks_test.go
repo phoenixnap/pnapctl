@@ -51,19 +51,6 @@ func TestGetAllStorageNetworksClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAllStorageNetworksKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageGet().
-		Return(nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetAllStorageNetworksPrinterFailure(test_framework *testing.T) {
 	// What the server should return.
 	networkStorageSdk := testutil.GenN(2, generators.Generate[networkstorageapi.StorageNetwork])

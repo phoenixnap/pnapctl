@@ -179,32 +179,3 @@ func TestUpdatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestUpdatePrivateNetworkKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	privateNetworkUpdate := generators.Generate[networkapi.PrivateNetworkModify]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(privateNetworkUpdate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PrivateNetworkPut(RESOURCEID, gomock.Eq(privateNetworkUpdate)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := UpdatePrivateNetworkCmd.RunE(UpdatePrivateNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

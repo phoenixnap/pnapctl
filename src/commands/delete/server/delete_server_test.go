@@ -39,16 +39,3 @@ func TestDeleteServerClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestDeleteServerKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerDelete(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

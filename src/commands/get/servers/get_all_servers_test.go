@@ -107,18 +107,6 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServersGet(tags).
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetServersCmd.RunE(GetServersCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 	serverlist := testutil.GenN(5, generators.Generate[bmcapisdk.Server])
 

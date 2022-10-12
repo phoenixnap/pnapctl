@@ -45,17 +45,6 @@ func TestGetIpBlocksClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetIpBlocksKeycloakFailure(test_framework *testing.T) {
-	PrepareIPMockClient(test_framework).
-		IpBlocksGetById(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetIpBlocksPrinterFailure(test_framework *testing.T) {
 	ipBlock := generators.Generate[ipapi.IpBlock]()
 	tableIpBlock := tables.ToShortIpBlockTable(ipBlock)

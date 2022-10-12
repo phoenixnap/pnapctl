@@ -182,32 +182,3 @@ func TestReserveServerClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestReserveServerKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	serverReserve := generators.Generate[bmcapisdk.ServerReserve]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverReserve)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerReserve(RESOURCEID, gomock.Eq(serverReserve)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := ReserveServerCmd.RunE(ReserveServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

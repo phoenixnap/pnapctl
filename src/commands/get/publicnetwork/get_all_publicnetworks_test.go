@@ -53,18 +53,6 @@ func TestGetAllPublicNetworksClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAllPublicNetworksKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworksGet(getQueryParams()).
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetAllPublicNetworksPrinterFailure(test_framework *testing.T) {
 	publicNetworkList := testutil.GenN(2, generators.Generate[networkapi.PublicNetwork])
 	publicNetworkTables := iterutils.MapInterface(publicNetworkList, tables.PublicNetworkTableFromSdk)

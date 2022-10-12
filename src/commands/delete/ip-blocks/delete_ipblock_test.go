@@ -40,16 +40,3 @@ func TestDeleteIpBlockClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestDeleteIpBlockKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdDelete(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := DeleteIpBlockCmd.RunE(DeleteIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

@@ -68,16 +68,16 @@ func TestGetAllRatedUsagesMonthToDate_ShortTable(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetAllRatedUsagesMonthToDate_KeycloakFailure(test_framework *testing.T) {
+func TestGetAllRatedUsagesMonthToDate_ClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		RatedUsageMonthToDateGet(getQueryParams()).
-		Return(nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestError)
 
 	err := GetRatedUsageMonthToDateCmd.RunE(GetRatedUsageMonthToDateCmd, []string{})
 
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
+	// AssertionsqueryParams
+	assert.Equal(test_framework, testutil.TestError, err)
 }
 
 func TestGetAllRatedUsagesMonthToDate_PrinterFailure(test_framework *testing.T) {

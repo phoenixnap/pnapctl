@@ -56,18 +56,6 @@ func TestGetAllProductAvailabilitiesClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAllProductAvailabilitiesKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		ProductAvailabilityGet(getQueryParams()).
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetProductAvailabilitiesCmd.RunE(GetProductAvailabilitiesCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetAllProductAvailabilitiesPrinterFailure(test_framework *testing.T) {
 	productAvailabilities := testutil.GenN(5, generators.Generate[billingapi.ProductAvailability])
 

@@ -179,32 +179,3 @@ func TestCreateSshKeyClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestCreateSshKeyKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	sshKeyCreate := generators.Generate[bmcapi.SshKeyCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(sshKeyCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		SshKeyPost(gomock.Eq(sshKeyCreate)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateSshKeyCmd.RunE(CreateSshKeyCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

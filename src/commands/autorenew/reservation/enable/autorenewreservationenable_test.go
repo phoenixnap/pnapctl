@@ -44,15 +44,3 @@ func TestAutoRenewReservationEnableClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestAutoRenewReservationEnableKeycloakFailure(test_framework *testing.T) {
-	PrepareBillingMockClient(test_framework).
-		ReservationEnableAutoRenew(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := AutoRenewEnableReservationCmd.RunE(AutoRenewEnableReservationCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.EqualError(test_framework, testutil.TestKeycloakError, err.Error())
-}

@@ -82,17 +82,6 @@ func TestGetAllReservationsClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAllReservationsKeycloakFailure(test_framework *testing.T) { // Mocking
-	PrepareBillingMockClient(test_framework).
-		ReservationsGet(getQueryParams()).
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
 	reservationList := testutil.GenN(5, generators.Generate[billingapi.Reservation])
 

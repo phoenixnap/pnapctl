@@ -50,19 +50,6 @@ func TestGetStorageNetworkByIdClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetStorageNetworkByIdKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageGetById(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetStorageNetworkByIdPrinterFailure(test_framework *testing.T) {
 	// What the server should return.
 	networkStorageSdk := generators.Generate[networkstorageapi.StorageNetwork]()

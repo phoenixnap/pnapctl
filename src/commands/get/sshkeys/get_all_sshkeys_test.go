@@ -37,16 +37,16 @@ func TestGetAllSshKeysSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetAllSshKeysKeycloakFailure(test_framework *testing.T) {
+func TestGetAllSshKeysClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeysGet().
-		Return(nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestError)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
 
 	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestError, err)
 }
 
 func TestGetAllSshKeysPrinterFailure(test_framework *testing.T) {

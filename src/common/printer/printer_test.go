@@ -9,13 +9,11 @@ import (
 	"github.com/landoop/tableprinter"
 	"github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -145,7 +143,7 @@ func TestPrintOutputTableFormat(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	server := generators.Generate[bmcapisdk.Server]()
+	server := generators.Generate[bmcapi.Server]()
 	prepared := PrepareServerForPrinting(server, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -155,7 +153,7 @@ func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	server := generators.Generate[bmcapisdk.Server]()
+	server := generators.Generate[bmcapi.Server]()
 	prepared := PrepareServerForPrinting(server, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -165,7 +163,7 @@ func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingServer(test_framework *testing.T) {
 	OutputFormat = "json"
-	server := generators.Generate[bmcapisdk.Server]()
+	server := generators.Generate[bmcapi.Server]()
 	prepared := PrepareServerForPrinting(server, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -175,7 +173,7 @@ func TestPrepareServerForPrintingServer(test_framework *testing.T) {
 
 func TestPrepareServerListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	servers := testutil.GenN(1, generators.Generate[bmcapisdk.Server])
+	servers := testutil.GenN(1, generators.Generate[bmcapi.Server])
 	prepared := PrepareServerListForPrinting(servers, false)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -247,7 +245,7 @@ func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	tag := generators.Generate[tagapisdk.Tag]()
+	tag := generators.Generate[tagapi.Tag]()
 	prepared := PrepareTagForPrinting(tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -257,7 +255,7 @@ func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 	OutputFormat = "json"
-	tag := generators.Generate[tagapisdk.Tag]()
+	tag := generators.Generate[tagapi.Tag]()
 	prepared := PrepareTagForPrinting(tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -339,7 +337,7 @@ func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := generators.Generate[bmcapisdk.SshKey]()
+	sshkey := generators.Generate[bmcapi.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -349,7 +347,7 @@ func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := generators.Generate[bmcapisdk.SshKey]()
+	sshkey := generators.Generate[bmcapi.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -359,7 +357,7 @@ func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	sshkey := generators.Generate[bmcapisdk.SshKey]()
+	sshkey := generators.Generate[bmcapi.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)

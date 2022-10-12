@@ -169,28 +169,3 @@ func TestCreateStorageNetworkClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestCreateStorageNetworkKeycloakFailure(test_framework *testing.T) {
-	// What the client should receive.
-	networkStorageCreate := generators.Generate[networkstorageapi.StorageNetworkCreate]()
-
-	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStorageCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(marshalled, nil)
-
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePost(gomock.Eq(networkStorageCreate)).
-		Return(nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := CreateStorageNetworkCmd.RunE(CreateStorageNetworkCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

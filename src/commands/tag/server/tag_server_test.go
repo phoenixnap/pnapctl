@@ -210,32 +210,3 @@ func TestTagServerClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestTagServerKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	tagAssignmentRequests := testutil.GenN(2, generators.Generate[bmcapisdk.TagAssignmentRequest])
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(tagAssignmentRequests)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

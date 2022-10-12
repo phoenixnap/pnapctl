@@ -140,30 +140,3 @@ func TestAutoRenewReservationDisableClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestAutoRenewReservationDisableKeycloakFailure(test_framework *testing.T) {
-	// What the client should receive.
-	autoRenewDisableRequest := generators.Generate[billingapi.ReservationAutoRenewDisableRequest]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(autoRenewDisableRequest)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := AutoRenewDisableReservationCmd.RunE(AutoRenewDisableReservationCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

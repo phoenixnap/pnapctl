@@ -37,16 +37,15 @@ func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetAllIpBlocksKeycloakFailure(test_framework *testing.T) {
-	// Mocking
+func TestGetAllIpBlocksClientFailure(test_framework *testing.T) {
 	PrepareIPMockClient(test_framework).
 		IpBlocksGet(tags).
-		Return(nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestError)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{})
 
 	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestError, err)
 }
 
 func TestGetAllIpBlocksPrinterFailure(test_framework *testing.T) {

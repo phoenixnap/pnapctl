@@ -42,16 +42,15 @@ func TestGetAllEventsSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
-	// Mocking
+func TestGetAllEventsClientFailure(test_framework *testing.T) {
 	PrepareAuditMockClient(test_framework).
 		EventsGet(getRequestParams()).
-		Return(nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestError)
 
 	err := GetEventsCmd.RunE(GetEventsCmd, []string{})
 
 	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestError, err)
 }
 
 func TestGetAllEventsPrinterFailure(test_framework *testing.T) {

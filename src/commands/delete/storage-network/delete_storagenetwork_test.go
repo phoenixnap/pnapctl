@@ -37,16 +37,3 @@ func TestDeleteStorageNetworkClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestDeleteStorageNetworkKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageDelete(RESOURCEID).
-		Return(testutil.TestKeycloakError)
-
-	// Run command
-	err := DeleteStorageNetworkCmd.RunE(DeleteStorageNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

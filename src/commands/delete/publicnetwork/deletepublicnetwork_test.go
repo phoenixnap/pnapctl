@@ -37,16 +37,3 @@ func TestDeletePublicNetworkIpBlockClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestDeletePublicNetworkIpBlockKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworkDelete(RESOURCEID).
-		Return(testutil.TestKeycloakError)
-
-	// Run command
-	err := DeletePublicNetworkCmd.RunE(DeletePublicNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

@@ -147,30 +147,3 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestCreateTagKeycloakFailure(test_framework *testing.T) {
-	// What the client should receive.
-	tagCreate := generators.Generate[tagapisdk.TagCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(tagCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(tagCreate)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

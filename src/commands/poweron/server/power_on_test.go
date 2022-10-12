@@ -3,6 +3,7 @@ package server
 import (
 	"testing"
 
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -23,14 +24,17 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestPowerOnServerKeycloakFailure(test_framework *testing.T) {
+func TestPowerOnServerClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOn(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{RESOURCEID})
 
+	// Expected error
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
+
 	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }

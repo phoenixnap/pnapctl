@@ -182,32 +182,3 @@ func TestCreateServerPublicNetworkClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestCreateServerPublicNetworkKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	serverPublicNetwork := generators.Generate[bmcapisdk.ServerPublicNetwork]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverPublicNetwork)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

@@ -172,32 +172,3 @@ func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestCreatePublicNetworkKeycloakFailure(test_framework *testing.T) {
-	// What the client should receive.
-	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

@@ -147,30 +147,3 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestCreateClusterKeycloakFailure(test_framework *testing.T) {
-	// What the client should receive.
-	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(clusterCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

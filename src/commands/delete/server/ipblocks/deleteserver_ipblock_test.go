@@ -70,6 +70,21 @@ func TestDeleteServerIpBlockSuccessJSON(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestDeleteServerIpBlockSuccessUnmarshallingError(test_framework *testing.T) {
+	Filename = FILENAME
+
+	// Mocking
+	PrepareMockFileProcessor(test_framework).
+		ReadFile(FILENAME).
+		Return(nil, testutil.TestError)
+
+	// Run command
+	err := DeleteServerIpBlockCmd.RunE(DeleteServerIpBlockCmd, []string{RESOURCEID, RESOURCEID})
+
+	// Assertions
+	assert.Equal(test_framework, testutil.TestError, err)
+}
+
 func TestDeleteServerIpBlockClientFailure(test_framework *testing.T) {
 	relinquishIpBlock := generators.Generate[bmcapisdk.RelinquishIpBlock]()
 
@@ -98,31 +113,4 @@ func TestDeleteServerIpBlockClientFailure(test_framework *testing.T) {
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestDeleteServerIpBlockKeycloakFailure(test_framework *testing.T) {
-	relinquishIpBlock := generators.Generate[bmcapisdk.RelinquishIpBlock]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(relinquishIpBlock)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
-		Return("", testutil.TestKeycloakError)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := DeleteServerIpBlockCmd.RunE(DeleteServerIpBlockCmd, []string{RESOURCEID, RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }

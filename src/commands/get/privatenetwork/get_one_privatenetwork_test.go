@@ -46,17 +46,6 @@ func TestGetPrivateNetworkClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetPrivateNetworkKeycloakFailure(test_framework *testing.T) {
-	PrepareNetworkMockClient(test_framework).
-		PrivateNetworkGetById(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetPrivateNetworkPrinterFailure(test_framework *testing.T) {
 	privateNetwork := generators.Generate[networkapisdk.PrivateNetwork]()
 	privateNetworkTable := tables.PrivateNetworkFromSdk(privateNetwork)

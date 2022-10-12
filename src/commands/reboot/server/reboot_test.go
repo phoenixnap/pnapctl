@@ -38,14 +38,3 @@ func TestRebootServerClientFail(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestRebootServerKeycloakFailure(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		ServerReboot(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

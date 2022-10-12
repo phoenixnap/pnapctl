@@ -46,17 +46,6 @@ func TestGetTagClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetTagKeycloakFailure(test_framework *testing.T) {
-	PrepareTagMockClient(test_framework).
-		TagGetById(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetTagPrinterFailure(test_framework *testing.T) {
 	tag := generators.Generate[tagapisdk.Tag]()
 	tagTable := tables.TagFromSdk(tag)

@@ -195,32 +195,3 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestResetServerKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	serverReset := generators.Generate[bmcapisdk.ServerReset]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverReset)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerReset(RESOURCEID, serverReset).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

@@ -170,31 +170,3 @@ func TestDeprovisionServerClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestDeprovisionServerKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	requestBody := generators.Generate[bmcapisdk.RelinquishIpBlock]()
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(requestBody)
-
-	Filename = FILENAME
-
-	// Mocking
-
-	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(requestBody)).
-		Return("", testutil.TestKeycloakError)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

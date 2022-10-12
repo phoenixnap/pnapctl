@@ -181,29 +181,3 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestSubmitTagEditKeycloakFailure(test_framework *testing.T) {
-	// setup
-	tagEdit := generators.Generate[tagapi.TagUpdate]()
-	yamlmarshal, _ := yaml.Marshal(tagEdit)
-	Filename = FILENAME
-
-	// prepare mocks
-	PrepareTagMockClient(test_framework).
-		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// execute
-	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
-
-	// assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

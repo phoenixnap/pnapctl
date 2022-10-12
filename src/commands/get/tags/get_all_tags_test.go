@@ -52,18 +52,6 @@ func TestGetAllTagsClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAllTagsKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareTagMockClient(test_framework).
-		TagsGet("").
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetAllTagsPrinterFailure(test_framework *testing.T) {
 	tags := testutil.GenN(1, generators.Generate[tagapi.Tag])
 

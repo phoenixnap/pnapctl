@@ -37,16 +37,3 @@ func TestDeletePrivateNetworkClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestDeletePrivateNetworkKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PrivateNetworkDelete(RESOURCEID).
-		Return(testutil.TestKeycloakError)
-
-	// Run command
-	err := DeletePrivateNetworkCmd.RunE(DeletePrivateNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

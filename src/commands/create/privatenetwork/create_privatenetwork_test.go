@@ -147,30 +147,3 @@ func TestCreatePrivateNetworkClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestCreatePrivateNetworkKeycloakFailure(test_framework *testing.T) {
-	// What the client should receive.
-	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(privateNetworkCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreatePrivateNetworkCmd.RunE(CreatePrivateNetworkCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

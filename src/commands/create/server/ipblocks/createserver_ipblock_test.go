@@ -171,32 +171,3 @@ func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestCreateServerIpBlockKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateServerIpBlockCmd.RunE(CreateServerIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

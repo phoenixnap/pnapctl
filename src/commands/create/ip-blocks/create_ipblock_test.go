@@ -177,32 +177,3 @@ func TestCreateIpBlockClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestCreateIpBlockKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	ipBlockCreate := generators.Generate[ipapi.IpBlockCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareIPMockClient(test_framework).
-		IpBlockPost(gomock.Eq(ipBlockCreate)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}

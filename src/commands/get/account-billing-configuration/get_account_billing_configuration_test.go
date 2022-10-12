@@ -48,18 +48,6 @@ func TestGetAccountBillingConfigurationClientFailure(test_framework *testing.T) 
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAccountBillingConfigurationKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		AccountBillingConfigurationGet().
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetAccountBillingConfigurationPrinterFailure(test_framework *testing.T) {
 	configurationDetail := generators.Generate[billingapi.ConfigurationDetails]()
 

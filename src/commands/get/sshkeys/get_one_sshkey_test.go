@@ -65,17 +65,6 @@ func TestGetSshKeyByIdClientFailure(test_framework *testing.T) {
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetSshKeyByIdKeycloakFailure(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		SshKeyGetById(RESOURCEID).
-		Return(nil, testutil.TestKeycloakError)
-
-	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetSshKeyByIdPrinterFailure(test_framework *testing.T) {
 	Full = false
 	sshKey := generators.Generate[bmcapisdk.SshKey]()

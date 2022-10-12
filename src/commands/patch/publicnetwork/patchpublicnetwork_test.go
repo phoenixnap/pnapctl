@@ -178,33 +178,3 @@ func TestPatchPublicNetworkClientFailure(test_framework *testing.T) {
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
-
-func TestPatchPublicNetworkKeycloakFailure(test_framework *testing.T) {
-	// What the client should receive.
-	publicNetworkModifyCli := generators.Generate[networkapi.PublicNetworkModify]()
-	publicNetworkModifySdk := publicNetworkModifyCli
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(publicNetworkModifySdk)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworkPatch(RESOURCEID, gomock.Eq(publicNetworkModifySdk)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := PatchPublicNetworkCmd.RunE(PatchPublicNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
