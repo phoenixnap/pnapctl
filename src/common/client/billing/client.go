@@ -75,13 +75,13 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 func (m MainClient) RatedUsageGet(fromYearMonth, toYearMonth, productCategory string) ([]billingapisdk.RatedUsageGet200ResponseInner, error) {
 	request := m.RatedUsageApiClient.RatedUsageGet(context.Background())
 
-	if !client.IsZero(fromYearMonth) {
+	if !client.IsZeroValue(fromYearMonth) {
 		request = request.FromYearMonth(fromYearMonth)
 	}
-	if !client.IsZero(toYearMonth) {
+	if !client.IsZeroValue(toYearMonth) {
 		request = request.ToYearMonth(toYearMonth)
 	}
-	if !client.IsZero(productCategory) {
+	if !client.IsZeroValue(productCategory) {
 		if enum, err := billingapisdk.NewProductCategoryEnumFromValue(productCategory); err == nil && enum != nil {
 			request = request.ProductCategory(*enum)
 		} else {
@@ -105,16 +105,16 @@ func (m MainClient) RatedUsageMonthToDateGet(productCategory string) ([]billinga
 func (m MainClient) ProductsGet(productCode, productCategory, skuCode, location string) ([]billingapisdk.ProductsGet200ResponseInner, error) {
 	request := m.ProductsApiClient.ProductsGet(context.Background())
 
-	if !client.IsZero(productCode) {
+	if !client.IsZeroValue(productCode) {
 		request = request.ProductCode(productCode)
 	}
-	if !client.IsZero(productCategory) {
+	if !client.IsZeroValue(productCategory) {
 		request = request.ProductCategory(productCategory)
 	}
-	if !client.IsZero(skuCode) {
+	if !client.IsZeroValue(skuCode) {
 		request = request.SkuCode(skuCode)
 	}
-	if !client.IsZero(location) {
+	if !client.IsZeroValue(location) {
 		request = request.Location(location)
 	}
 
@@ -124,7 +124,7 @@ func (m MainClient) ProductsGet(productCode, productCategory, skuCode, location 
 func (m MainClient) ReservationsGet(productCategory string) ([]billingapisdk.Reservation, error) {
 	request := m.ReservationApiClient.ReservationsGet(context.Background())
 
-	if !client.IsZero(productCategory) {
+	if !client.IsZeroValue(productCategory) {
 		if enum, err := billingapisdk.NewProductCategoryEnumFromValue(productCategory); err == nil && enum != nil {
 			request = request.ProductCategory(*enum)
 		} else {
@@ -171,7 +171,7 @@ func (m MainClient) ProductAvailabilityGet(productCategory []string, productCode
 	if len(solution) != 0 {
 		request = request.Solution(solution)
 	}
-	if !client.IsZero(minQuantity) {
+	if !client.IsZeroValue(minQuantity) {
 		request = request.MinQuantity(minQuantity)
 	}
 

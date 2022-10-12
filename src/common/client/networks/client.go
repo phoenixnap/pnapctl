@@ -97,7 +97,7 @@ func (m MainClient) PrivateNetworkDelete(networkId string) error {
 func (m MainClient) PublicNetworksGet(location string) ([]networkapisdk.PublicNetwork, error) {
 	request := m.PublicNetworksClient.PublicNetworksGet(context.Background())
 
-	if !client.IsZero(location) {
+	if !client.IsZeroValue(location) {
 		request = request.Location(location)
 	}
 

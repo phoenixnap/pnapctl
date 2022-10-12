@@ -7,7 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 )
 
-func IsZero[T comparable](item T) bool {
+func IsZeroValue[T comparable](item T) bool {
 	var t T
 	return t == item
 }

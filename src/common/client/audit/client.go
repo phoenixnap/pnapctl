@@ -64,19 +64,19 @@ func (m MainClient) EventsGet(from string, to string, limit int, order string, u
 	if date := client.ParseDate(to); date != nil {
 		request = request.To(*date)
 	}
-	if !client.IsZero(limit) {
+	if !client.IsZeroValue(limit) {
 		request = request.Limit(int32(limit))
 	}
-	if !client.IsZero(order) {
+	if !client.IsZeroValue(order) {
 		request = request.Order(order)
 	}
-	if !client.IsZero(username) {
+	if !client.IsZeroValue(username) {
 		request = request.Username(username)
 	}
-	if !client.IsZero(verb) {
+	if !client.IsZeroValue(verb) {
 		request = request.Verb(verb)
 	}
-	if !client.IsZero(uri) {
+	if !client.IsZeroValue(uri) {
 		request = request.Uri(uri)
 	}
 
