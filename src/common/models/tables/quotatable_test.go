@@ -11,7 +11,7 @@ import (
 )
 
 func TestToQuotaTable(test_framework *testing.T) {
-	quota := generators.GenerateQuotaSdk()
+	quota := generators.Generate[bmcapisdk.Quota]()
 	table := ToQuotaTable(quota)
 
 	assertQuotasEqual(test_framework, quota, table)

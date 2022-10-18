@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -13,10 +14,10 @@ import (
 
 func TestRebootServerSuccess(test_framework *testing.T) {
 	// Mocking
-	actionResult := generators.GenerateActionResultSdk()
+	actionResult := generators.Generate[bmcapisdk.ActionResult]()
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(RESOURCEID).
-		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
+		Return(&actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
 	// Run command
 	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})

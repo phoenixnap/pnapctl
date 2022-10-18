@@ -15,14 +15,16 @@ func GetFromAllOf[Inner any, AllOf any](allOf AllOf) *Inner {
 	bin, err := json.Marshal(allOf)
 
 	if err != nil {
-		fmt.Printf("Error when extracting JSON from (%s): %v\n", typename[AllOf](), err)
+		// TODO replace with log
+		// fmt.Printf("Error when extracting JSON from (%s): %v\n", typename[AllOf](), err)
 		return nil
 	}
 
 	err = json.Unmarshal(bin, &inner)
 
 	if err != nil {
-		fmt.Printf("Error when parsing (%s) from (%s): %v\n", typename[Inner](), typename[AllOf](), err)
+		// TODO replace with log
+		// fmt.Printf("Error when parsing (%s) from (%s): %v\n", typename[Inner](), typename[AllOf](), err)
 		return nil
 	}
 

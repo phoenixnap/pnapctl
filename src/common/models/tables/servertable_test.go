@@ -11,28 +11,28 @@ import (
 )
 
 func TestToShortServerTable(test_framework *testing.T) {
-	server := generators.GenerateServerSdk()
+	server := generators.Generate[bmcapisdk.Server]()
 	table := ToShortServerTable(server)
 
 	assertShortServersEqual(test_framework, server, table)
 }
 
 func TestToLongServerTable(test_framework *testing.T) {
-	server := generators.GenerateServerSdk()
+	server := generators.Generate[bmcapisdk.Server]()
 	table := ToLongServerTable(server)
 
 	assertLongServersEqual(test_framework, server, table)
 }
 
 func TestToServerPrivateNetworkTable(test_framework *testing.T) {
-	network := generators.GenerateServerPrivateNetworkSdk()
-	table := ToServerPrivateNetworkTable(*network)
+	network := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
+	table := ToServerPrivateNetworkTable(network)
 
-	assertServerPrivateNetworksEqual(test_framework, *network, table)
+	assertServerPrivateNetworksEqual(test_framework, network, table)
 }
 
 func TestToServerIpBlockTable(test_framework *testing.T) {
-	sdkModel := generators.GenerateServerIpBlockSdk()
+	sdkModel := generators.Generate[bmcapisdk.ServerIpBlock]()
 	table := ToServerIpBlockTable(sdkModel)
 
 	assertServerIpBlockEqual(test_framework, sdkModel, table)

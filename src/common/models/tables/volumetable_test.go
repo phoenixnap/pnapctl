@@ -10,14 +10,14 @@ import (
 )
 
 func TestVolumeFromSdk(test_framework *testing.T) {
-	volume := generators.GenerateVolumeSdk()
+	volume := generators.Generate[networkstorageapi.Volume]()
 	table := VolumeTableFromSdk(volume)
 
 	assertVolumesEqual(test_framework, volume, table)
 }
 
 func TestShortVolumeFromSdk(test_framework *testing.T) {
-	volume := generators.GenerateVolumeSdk()
+	volume := generators.Generate[networkstorageapi.Volume]()
 	table := ShortVolumeTableFromSdk(volume)
 
 	assertShortVolumesEqual(test_framework, volume, table)

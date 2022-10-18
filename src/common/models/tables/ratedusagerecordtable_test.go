@@ -11,45 +11,35 @@ import (
 
 // Full version
 func TestRatedUsageRecordFromBandwidthSdk(test_framework *testing.T) {
-	record := billingapi.RatedUsageGet200ResponseInner{
-		BandwidthRecord: generators.GenerateBandwidthRecordSdk(),
-	}
+	record := generators.GenerateBandwidthRecordSdk()
 	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullBandwidthRecordsEqual(test_framework, *record.BandwidthRecord, table)
 }
 
 func TestRatedUsageRecordFromOperatingSystemSdk(test_framework *testing.T) {
-	record := billingapi.RatedUsageGet200ResponseInner{
-		OperatingSystemRecord: generators.GenerateOperatingSystemRecordSdk(),
-	}
+	record := generators.GenerateOperatingSystemRecordSdk()
 	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullOperatingSystemRecordsEqual(test_framework, *record.OperatingSystemRecord, table)
 }
 
 func TestRatedUsageRecordFromPublicSubnetSdk(test_framework *testing.T) {
-	record := billingapi.RatedUsageGet200ResponseInner{
-		PublicSubnetRecord: generators.GeneratePublicSubnetRecordSdk(),
-	}
+	record := generators.GeneratePublicSubnetRecordSdk()
 	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullPublicSubnetRecordsEqual(test_framework, *record.PublicSubnetRecord, table)
 }
 
 func TestRatedUsageRecordFromServerSdk(test_framework *testing.T) {
-	record := billingapi.RatedUsageGet200ResponseInner{
-		ServerRecord: generators.GenerateServerRecordSdk(),
-	}
+	record := generators.GenerateServerRecordSdk()
 	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullServerRecordsEqual(test_framework, *record.ServerRecord, table)
 }
 
 func TestRatedUsageRecordFromStorageSdk(test_framework *testing.T) {
-	record := billingapi.RatedUsageGet200ResponseInner{
-		StorageRecord: generators.GenerateStorageRecordSdk(),
-	}
+	record := generators.GenerateStorageRecordSdk()
 	table := *RatedUsageRecordTableFromSdk(record)
 
 	assertFullStorageRecordsEqual(test_framework, *record.StorageRecord, table)

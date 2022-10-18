@@ -10,6 +10,7 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/stretchr/testify/assert"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -17,7 +18,7 @@ import (
 )
 
 func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
-	ipBlockPutTagCli := generators.GenerateIpBlockTagListSdk(3)
+	ipBlockPutTagCli := testutil.GenN(3, generators.Generate[ipapi.TagAssignmentRequest])
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockPutTagCli)
@@ -25,7 +26,7 @@ func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	ipBlock := generators.GenerateIpBlockSdk()
+	ipBlock := generators.Generate[ipapi.IpBlock]()
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
@@ -48,7 +49,7 @@ func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
 }
 
 func TestPutIpBlockTagSuccessJSON(test_framework *testing.T) {
-	ipBlockPutTagCli := generators.GenerateIpBlockTagListSdk(3)
+	ipBlockPutTagCli := testutil.GenN(3, generators.Generate[ipapi.TagAssignmentRequest])
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -56,7 +57,7 @@ func TestPutIpBlockTagSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	ipBlock := generators.GenerateIpBlockSdk()
+	ipBlock := generators.Generate[ipapi.IpBlock]()
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
@@ -81,7 +82,7 @@ func TestPutIpBlockTagSuccessJSON(test_framework *testing.T) {
 func TestIpBlockPutTagIdNotFound(test_framework *testing.T) {
 
 	// Setup
-	ipBlockPutTagCli := generators.GenerateIpBlockTagListSdk(3)
+	ipBlockPutTagCli := testutil.GenN(3, generators.Generate[ipapi.TagAssignmentRequest])
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -180,7 +181,7 @@ func TestIpBlockPutTagFileReadingFailure(test_framework *testing.T) {
 
 func TestIpBlockPutTagBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPutTagCli := generators.GenerateIpBlockTagListSdk(3)
+	ipBlockPutTagCli := testutil.GenN(3, generators.Generate[ipapi.TagAssignmentRequest])
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -212,7 +213,7 @@ func TestIpBlockPutTagBackendErrorFailure(test_framework *testing.T) {
 
 func TestIpBlockPutTagClientFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPutTagCli := generators.GenerateIpBlockTagListSdk(3)
+	ipBlockPutTagCli := testutil.GenN(3, generators.Generate[ipapi.TagAssignmentRequest])
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPutTagCli)
@@ -244,7 +245,7 @@ func TestIpBlockPutTagClientFailure(test_framework *testing.T) {
 
 func TestIpBlockPutTagKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPutTagCli := generators.GenerateIpBlockTagListSdk(3)
+	ipBlockPutTagCli := testutil.GenN(3, generators.Generate[ipapi.TagAssignmentRequest])
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockPutTagCli)

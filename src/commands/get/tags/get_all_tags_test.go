@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestGetAllTagsSuccess(test_framework *testing.T) {
-	tags := generators.GenerateTagListSdk(5)
+	tags := testutil.GenN(1, generators.Generate[tagapi.Tag])
 
 	var taglist []interface{}
 
@@ -64,7 +65,7 @@ func TestGetAllTagsKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllTagsPrinterFailure(test_framework *testing.T) {
-	tags := generators.GenerateTagListSdk(5)
+	tags := testutil.GenN(1, generators.Generate[tagapi.Tag])
 
 	var taglist []interface{}
 

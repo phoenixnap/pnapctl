@@ -10,10 +10,10 @@ import (
 )
 
 func TestToEventTable(test_framework *testing.T) {
-	event := generators.GenerateEventSdk()
-	table := ToEventTable(*event)
+	event := generators.Generate[auditsdk.Event]()
+	table := ToEventTable(event)
 
-	assertEventsEqual(test_framework, *event, table)
+	assertEventsEqual(test_framework, event, table)
 }
 
 func assertEventsEqual(test_framework *testing.T, event auditsdk.Event, table Event) {

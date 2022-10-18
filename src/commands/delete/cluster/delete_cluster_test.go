@@ -3,6 +3,7 @@ package cluster
 import (
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -14,7 +15,7 @@ func TestDeleteClusterSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterDelete(RESOURCEID).
-		Return(generators.GenerateRancherDeleteResultSdk(), WithResponse(200, nil), nil)
+		Return(testutil.AsPointer(generators.Generate[ranchersolutionapi.DeleteResult]()), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteClusterCmd.RunE(DeleteClusterCmd, []string{RESOURCEID})

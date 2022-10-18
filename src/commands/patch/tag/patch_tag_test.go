@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -16,8 +17,8 @@ import (
 
 func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 	// setup
-	tag := *generators.GenerateTagSdk()
-	tagEdit := generators.GenerateTagUpdateSdk()
+	tag := generators.Generate[tagapi.Tag]()
+	tagEdit := generators.Generate[tagapi.TagUpdate]()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 
 	Filename = FILENAME
@@ -43,8 +44,8 @@ func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 
 func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
 	//setup
-	tag := *generators.GenerateTagSdk()
-	tagEdit := generators.GenerateTagUpdateSdk()
+	tag := generators.Generate[tagapi.Tag]()
+	tagEdit := generators.Generate[tagapi.TagUpdate]()
 	jsonmarshal, _ := json.Marshal(tagEdit)
 	Filename = FILENAME
 
@@ -155,7 +156,7 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := generators.GenerateTagUpdateSdk()
+	tagEdit := generators.Generate[tagapi.TagUpdate]()
 	yamlmarshal, _ := yaml.Marshal(&tagEdit)
 	Filename = FILENAME
 
@@ -183,7 +184,7 @@ func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := generators.GenerateTagUpdateSdk()
+	tagEdit := generators.Generate[tagapi.TagUpdate]()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 	Filename = FILENAME
 
@@ -211,7 +212,7 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditKeycloakFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := generators.GenerateTagUpdateSdk()
+	tagEdit := generators.Generate[tagapi.TagUpdate]()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 	Filename = FILENAME
 

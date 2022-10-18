@@ -11,7 +11,7 @@ import (
 )
 
 func TestClusterFromSdk(test_framework *testing.T) {
-	cluster := generators.GenerateClusterSdk()
+	cluster := generators.Generate[ranchersdk.Cluster]()
 	table := ClusterFromSdk(cluster)
 
 	assertClustersEqual(test_framework, cluster, table)

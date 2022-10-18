@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -12,8 +13,8 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
-func TestGetAllServersShortSuccess(test_framework *testing.T) {
-	clusters := generators.GenerateClusterListSdk(5)
+func TestGetAllClustersShortSuccess(test_framework *testing.T) {
+	clusters := testutil.GenN(2, generators.Generate[ranchersolutionapi.Cluster])
 
 	var clusterlist []interface{}
 
@@ -36,7 +37,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetAllServersClientFailure(test_framework *testing.T) {
+func TestGetAllClustersClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
@@ -45,13 +46,13 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get servers", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, "get Clusters", ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
+func TestGetAllClustersKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
@@ -63,8 +64,8 @@ func TestGetAllServersKeycloakFailure(test_framework *testing.T) {
 	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
-func TestGetAllServersPrinterFailure(test_framework *testing.T) {
-	clusters := generators.GenerateClusterListSdk(5)
+func TestGetAllClustersPrinterFailure(test_framework *testing.T) {
+	clusters := testutil.GenN(2, generators.Generate[ranchersolutionapi.Cluster])
 
 	var clusterlist []interface{}
 

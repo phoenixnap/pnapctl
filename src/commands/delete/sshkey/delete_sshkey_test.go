@@ -3,6 +3,7 @@ package sshkey
 import (
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -14,7 +15,7 @@ func TestDeleteSshKeySuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyDelete(RESOURCEID).
-		Return(generators.GenerateSshKeyDeleteResultSdk(), WithResponse(200, nil), nil)
+		Return(testutil.AsPointer(generators.Generate[bmcapi.DeleteSshKeyResult]()), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteSshKeyCmd.RunE(DeleteSshKeyCmd, []string{RESOURCEID})

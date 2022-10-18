@@ -10,7 +10,7 @@ import (
 )
 
 func TestPrivateNetworkFromSdk(test_framework *testing.T) {
-	privateNetwork := generators.GeneratePrivateNetworkSdk()
+	privateNetwork := generators.Generate[networksdk.PrivateNetwork]()
 	table := PrivateNetworkFromSdk(privateNetwork)
 
 	assertPrivateNetworksEqual(test_framework, privateNetwork, table)

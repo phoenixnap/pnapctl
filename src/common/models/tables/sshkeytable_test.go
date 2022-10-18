@@ -9,14 +9,14 @@ import (
 )
 
 func TestToSshKeyTable(test_framework *testing.T) {
-	sshkey := generators.GenerateSshKeySdk()
+	sshkey := generators.Generate[bmcapisdk.SshKey]()
 	table := ToSshKeyTable(sshkey)
 
 	assertSshKeysEqual(test_framework, sshkey, table)
 }
 
 func TestToSshKeyTableFull(test_framework *testing.T) {
-	sshkey := generators.GenerateSshKeySdk()
+	sshkey := generators.Generate[bmcapisdk.SshKey]()
 	table := ToSshKeyTableFull(sshkey)
 
 	assertSshKeysFullEqual(test_framework, sshkey, table)

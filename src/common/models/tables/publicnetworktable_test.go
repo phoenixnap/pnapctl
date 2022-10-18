@@ -11,7 +11,7 @@ import (
 )
 
 func TestPublicNetworkTableFromSdkSuccess(test_framework *testing.T) {
-	sdk := generators.GeneratePublicNetworkSdk()
+	sdk := generators.Generate[networkapi.PublicNetwork]()
 	tbl := PublicNetworkTableFromSdk(sdk)
 
 	assertPublicNetworksEqual(test_framework, sdk, tbl)

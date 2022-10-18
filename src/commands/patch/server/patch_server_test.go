@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -18,7 +19,7 @@ import (
 
 func TestPatchServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	serverPatch := generators.GenerateServerPatchSdk()
+	serverPatch := generators.Generate[bmcapisdk.ServerPatch]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverPatch)
@@ -26,11 +27,11 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	server := generators.GenerateServerSdk()
+	server := generators.Generate[bmcapisdk.Server]()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(&server, WithResponse(200, WithBody(server)), nil).
 		Times(1)
 
@@ -50,7 +51,7 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 
 func TestPatchServerSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	serverPatch := generators.GenerateServerPatchSdk()
+	serverPatch := generators.Generate[bmcapisdk.ServerPatch]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)
@@ -58,11 +59,11 @@ func TestPatchServerSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	server := generators.GenerateServerSdk()
+	server := generators.Generate[bmcapisdk.Server]()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(&server, WithResponse(200, WithBody(server)), nil).
 		Times(1)
 
@@ -153,7 +154,7 @@ func TestPatchServerFileReadingFailure(test_framework *testing.T) {
 
 func TestPatchServerBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverPatch := generators.GenerateServerPatchSdk()
+	serverPatch := generators.Generate[bmcapisdk.ServerPatch]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)
@@ -162,7 +163,7 @@ func TestPatchServerBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -185,7 +186,7 @@ func TestPatchServerBackendErrorFailure(test_framework *testing.T) {
 
 func TestPatchServerClientFailure(test_framework *testing.T) {
 	// Setup
-	serverPatch := generators.GenerateServerPatchSdk()
+	serverPatch := generators.Generate[bmcapisdk.ServerPatch]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)
@@ -194,7 +195,7 @@ func TestPatchServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -217,7 +218,7 @@ func TestPatchServerClientFailure(test_framework *testing.T) {
 
 func TestPatchServerKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverPatch := generators.GenerateServerPatchSdk()
+	serverPatch := generators.Generate[bmcapisdk.ServerPatch]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)
@@ -226,7 +227,7 @@ func TestPatchServerKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPatch(RESOURCEID, gomock.Eq(*serverPatch)).
+		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

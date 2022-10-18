@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -13,12 +14,12 @@ import (
 )
 
 func TestGetReservationShortSuccess(test_framework *testing.T) {
-	reservation := generators.GenerateReservation()
-	var shortReservation = tables.ShortReservationTableFromSdk(*reservation)
+	reservation := generators.Generate[billingapi.Reservation]()
+	var shortReservation = tables.ShortReservationTableFromSdk(reservation)
 
 	PrepareBillingMockClient(test_framework).
 		ReservationGetById(RESOURCEID).
-		Return(reservation, WithResponse(200, WithBody(*reservation)), nil)
+		Return(&reservation, WithResponse(200, WithBody(reservation)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(shortReservation, "get reservations").
@@ -32,12 +33,12 @@ func TestGetReservationShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetReservationFullSuccess(test_framework *testing.T) {
-	reservation := generators.GenerateReservation()
-	var reservationTable = tables.ReservationTableFromSdk(*reservation)
+	reservation := generators.Generate[billingapi.Reservation]()
+	var reservationTable = tables.ReservationTableFromSdk(reservation)
 
 	PrepareBillingMockClient(test_framework).
 		ReservationGetById(RESOURCEID).
-		Return(reservation, WithResponse(200, WithBody(*reservation)), nil)
+		Return(&reservation, WithResponse(200, WithBody(reservation)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(reservationTable, "get reservations").
@@ -90,12 +91,12 @@ func TestGetReservationKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetReservationPrinterFailure(test_framework *testing.T) {
-	reservation := generators.GenerateReservation()
-	var shortReservation = tables.ShortReservationTableFromSdk(*reservation)
+	reservation := generators.Generate[billingapi.Reservation]()
+	var shortReservation = tables.ShortReservationTableFromSdk(reservation)
 
 	PrepareBillingMockClient(test_framework).
 		ReservationGetById(RESOURCEID).
-		Return(reservation, WithResponse(200, WithBody(*reservation)), nil)
+		Return(&reservation, WithResponse(200, WithBody(reservation)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(shortReservation, "get reservations").

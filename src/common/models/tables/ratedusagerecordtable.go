@@ -5,7 +5,7 @@ import (
 
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"phoenixnap.com/pnapctl/common/models"
-	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/models/oneof/ratedusage"
 )
 
 var ONE_OF_TYPES = []string{
@@ -106,7 +106,7 @@ func parseCommonRatedUsage(sdk billingapisdk.RatedUsageGet200ResponseInner) *Rat
 func (table *RatedUsageRecordTable) attachUnique(sdk billingapisdk.RatedUsageGet200ResponseInner) {
 	switch table.ProductCategory {
 
-	case generators.RatedUsageBandwidth:
+	case ratedusage.Bandwidth:
 		table.Metadata = map[string]interface{}{
 			EGRESS_GB:        sdk.BandwidthRecord.Metadata.EgressGb,
 			INGRESS_GB:       sdk.BandwidthRecord.Metadata.IngressGb,
@@ -114,26 +114,26 @@ func (table *RatedUsageRecordTable) attachUnique(sdk billingapisdk.RatedUsageGet
 			PACKAGE_UNIT:     sdk.BandwidthRecord.Metadata.PackageUnit,
 		}
 
-	case generators.RatedUsageOperatingSystem:
+	case ratedusage.OperatingSystem:
 		table.Metadata = map[string]interface{}{
 			CORES:          sdk.OperatingSystemRecord.Metadata.Cores,
 			CORRELATION_ID: sdk.OperatingSystemRecord.Metadata.CorrelationId,
 		}
 
-	case generators.RatedUsagePublicSubnet:
+	case ratedusage.PublicSubnet:
 		table.Metadata = map[string]interface{}{
 			CIDR:      sdk.PublicSubnetRecord.Metadata.Cidr,
 			SUBNET_ID: sdk.PublicSubnetRecord.Metadata.Id,
 			SIZE:      sdk.PublicSubnetRecord.Metadata.Size,
 		}
 
-	case generators.RatedUsageServer:
+	case ratedusage.Server:
 		table.Metadata = map[string]interface{}{
 			SERVER_ID: sdk.ServerRecord.Metadata.Id,
 			HOSTNAME:  sdk.ServerRecord.Metadata.Hostname,
 		}
 
-	case generators.RatedUsageStorage:
+	case ratedusage.Storage:
 		table.Metadata = map[string]interface{}{
 			NETWORK_STORAGE_ID:   sdk.StorageRecord.Metadata.NetworkStorageId,
 			NETWORK_STORAGE_NAME: sdk.StorageRecord.Metadata.NetworkStorageName,

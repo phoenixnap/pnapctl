@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -16,7 +17,7 @@ import (
 const deleteResult = "The specified IP block is being removed from the server."
 
 func TestDeleteServerIpBlockSuccessYAML(test_framework *testing.T) {
-	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.Generate[bmcapisdk.RelinquishIpBlock]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(relinquishIpBlock)
@@ -25,7 +26,7 @@ func TestDeleteServerIpBlockSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return(deleteResult, WithResponse(202, nil), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -43,7 +44,7 @@ func TestDeleteServerIpBlockSuccessYAML(test_framework *testing.T) {
 }
 
 func TestDeleteServerIpBlockSuccessJSON(test_framework *testing.T) {
-	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.Generate[bmcapisdk.RelinquishIpBlock]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(relinquishIpBlock)
@@ -52,7 +53,7 @@ func TestDeleteServerIpBlockSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return(deleteResult, WithResponse(202, nil), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -70,7 +71,7 @@ func TestDeleteServerIpBlockSuccessJSON(test_framework *testing.T) {
 }
 
 func TestDeleteServerIpBlockNotFound(test_framework *testing.T) {
-	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.Generate[bmcapisdk.RelinquishIpBlock]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(relinquishIpBlock)
@@ -79,7 +80,7 @@ func TestDeleteServerIpBlockNotFound(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return("", WithResponse(404, nil), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -99,7 +100,7 @@ func TestDeleteServerIpBlockNotFound(test_framework *testing.T) {
 }
 
 func TestDeleteServerIpBlockError(test_framework *testing.T) {
-	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.Generate[bmcapisdk.RelinquishIpBlock]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(relinquishIpBlock)
@@ -108,7 +109,7 @@ func TestDeleteServerIpBlockError(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return("", WithResponse(500, nil), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -128,7 +129,7 @@ func TestDeleteServerIpBlockError(test_framework *testing.T) {
 }
 
 func TestDeleteServerIpBlockSdkentFailure(test_framework *testing.T) {
-	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.Generate[bmcapisdk.RelinquishIpBlock]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(relinquishIpBlock)
@@ -137,7 +138,7 @@ func TestDeleteServerIpBlockSdkentFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return("", nil, testutil.TestError)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -158,7 +159,7 @@ func TestDeleteServerIpBlockSdkentFailure(test_framework *testing.T) {
 }
 
 func TestDeleteServerIpBlockKeycloakFailure(test_framework *testing.T) {
-	relinquishIpBlock := generators.GenerateRelinquishIpBlockSdk()
+	relinquishIpBlock := generators.Generate[bmcapisdk.RelinquishIpBlock]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(relinquishIpBlock)
@@ -167,7 +168,7 @@ func TestDeleteServerIpBlockKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(*relinquishIpBlock)).
+		ServerIpBlockDelete(RESOURCEID, RESOURCEID, gomock.Eq(relinquishIpBlock)).
 		Return("", nil, testutil.TestKeycloakError)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

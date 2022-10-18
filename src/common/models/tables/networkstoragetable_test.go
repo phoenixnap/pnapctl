@@ -11,7 +11,7 @@ import (
 )
 
 func TestStorageNetworkFromSdk(test_framework *testing.T) {
-	storageNetwork := generators.GenerateStorageNetworkSdk()
+	storageNetwork := generators.Generate[networkstorageapi.StorageNetwork]()
 	table := StorageNetworkTableFromSdk(storageNetwork)
 
 	assertStorageNetworksEqual(test_framework, storageNetwork, table)

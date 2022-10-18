@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -14,13 +15,12 @@ import (
 
 func TestGetTagSuccess(test_framework *testing.T) {
 
-	tag := generators.GenerateTagSdk()
-	var tagTable interface{}
-	tagTable = tables.TagFromSdk(*tag)
+	tag := generators.Generate[tagapisdk.Tag]()
+	tagTable := tables.TagFromSdk(tag)
 
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(tag, WithResponse(200, WithBody(tag)), nil)
+		Return(&tag, WithResponse(200, WithBody(tag)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tagTable, "get tags").
@@ -70,12 +70,12 @@ func TestGetTagKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetTagPrinterFailure(test_framework *testing.T) {
-	tag := generators.GenerateTagSdk()
-	tagTable := tables.TagFromSdk(*tag)
+	tag := generators.Generate[tagapisdk.Tag]()
+	tagTable := tables.TagFromSdk(tag)
 
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(tag, WithResponse(200, WithBody(tag)), nil)
+		Return(&tag, WithResponse(200, WithBody(tag)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(tagTable, "get tags").

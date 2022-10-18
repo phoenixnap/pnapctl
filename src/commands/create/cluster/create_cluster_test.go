@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -16,7 +17,7 @@ import (
 
 func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := generators.GenerateClusterSdk()
+	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)
@@ -24,7 +25,7 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdCluster := generators.GenerateClusterSdk()
+	createdCluster := generators.Generate[ranchersolutionapi.Cluster]()
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
@@ -48,7 +49,7 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 
 func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := generators.GenerateClusterSdk()
+	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(clusterCreate)
@@ -56,7 +57,7 @@ func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdCluster := generators.GenerateClusterSdk()
+	createdCluster := generators.Generate[ranchersolutionapi.Cluster]()
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
@@ -120,7 +121,7 @@ func TestCreateClusterUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := generators.GenerateClusterSdk()
+	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)
@@ -150,7 +151,7 @@ func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateClusterClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := generators.GenerateClusterSdk()
+	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)
@@ -180,7 +181,7 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 
 func TestCreateClusterKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := generators.GenerateClusterSdk()
+	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)

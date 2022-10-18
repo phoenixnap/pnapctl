@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -15,19 +16,19 @@ import (
 )
 
 func TestCreateIpBlockSuccessYAML(test_framework *testing.T) {
-	ipBlockCreateCli := generators.GenerateIpBlockCreateSdk()
+	ipBlockCreate := generators.Generate[ipapi.IpBlockCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(ipBlockCreateCli)
+	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)
 
 	Filename = FILENAME
 
 	// What the server should return.
-	ipBlock := generators.GenerateIpBlockSdk()
+	ipBlock := generators.Generate[ipapi.IpBlock]()
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlockPost(gomock.Eq(ipBlockCreateCli)).
+		IpBlockPost(gomock.Eq(ipBlockCreate)).
 		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
 		Times(1)
 
@@ -46,7 +47,7 @@ func TestCreateIpBlockSuccessYAML(test_framework *testing.T) {
 }
 
 func TestCreateIpBlockSuccessJSON(test_framework *testing.T) {
-	ipBlockCreateCli := generators.GenerateIpBlockCreateSdk()
+	ipBlockCreateCli := generators.Generate[ipapi.IpBlockCreate]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockCreateCli)
@@ -54,7 +55,7 @@ func TestCreateIpBlockSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	ipBlock := generators.GenerateIpBlockSdk()
+	ipBlock := generators.Generate[ipapi.IpBlock]()
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
@@ -147,7 +148,7 @@ func TestCreateIpBlockFileReadingFailure(test_framework *testing.T) {
 
 func TestCreateIpBlockBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockCreate := generators.GenerateIpBlockCreateSdk()
+	ipBlockCreate := generators.Generate[ipapi.IpBlockCreate]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockCreate)
@@ -179,7 +180,7 @@ func TestCreateIpBlockBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateIpBlockClientFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockCreate := generators.GenerateIpBlockCreateSdk()
+	ipBlockCreate := generators.Generate[ipapi.IpBlockCreate]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockCreate)
@@ -211,7 +212,7 @@ func TestCreateIpBlockClientFailure(test_framework *testing.T) {
 
 func TestCreateIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockCreate := generators.GenerateIpBlockCreateSdk()
+	ipBlockCreate := generators.Generate[ipapi.IpBlockCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)

@@ -13,42 +13,30 @@ import (
 // Full version
 func TestProductActualFromSdk_BandwidthProduct(test_framework *testing.T) {
 	bandwidthProduct := generators.GenerateBandwidthProduct()
-	ProductsResponse := billingapi.ProductsGet200ResponseInner{
-		Product: bandwidthProduct,
-	}
 
-	actual := ProductTableFromSdk(ProductsResponse)
-	assertEqualAsProduct(test_framework, *bandwidthProduct, *actual)
+	actual := ProductTableFromSdk(bandwidthProduct)
+	assertEqualAsProduct(test_framework, *bandwidthProduct.Product, *actual)
 }
 
 func TestProductActualFromSdk_OperatingSystemProduct(test_framework *testing.T) {
 	operatingSystemProduct := generators.GenerateOperatingSystemProduct()
-	ProductsResponse := billingapi.ProductsGet200ResponseInner{
-		Product: operatingSystemProduct,
-	}
 
-	actual := ProductTableFromSdk(ProductsResponse)
-	assertEqualAsProduct(test_framework, *operatingSystemProduct, *actual)
+	actual := ProductTableFromSdk(operatingSystemProduct)
+	assertEqualAsProduct(test_framework, *operatingSystemProduct.Product, *actual)
 }
 
 func TestProductActualFromSdk_StorageProduct(test_framework *testing.T) {
 	storageProduct := generators.GenerateStorageProduct()
-	ProductsResponse := billingapi.ProductsGet200ResponseInner{
-		Product: storageProduct,
-	}
 
-	actual := ProductTableFromSdk(ProductsResponse)
-	assertEqualAsProduct(test_framework, *storageProduct, *actual)
+	actual := ProductTableFromSdk(storageProduct)
+	assertEqualAsProduct(test_framework, *storageProduct.Product, *actual)
 }
 
 func TestProductActualFromSdk_ServerProduct(test_framework *testing.T) {
 	serverProduct := generators.GenerateServerProduct()
-	ProductsResponse := billingapi.ProductsGet200ResponseInner{
-		ServerProduct: serverProduct,
-	}
 
-	actual := ProductTableFromSdk(ProductsResponse)
-	assertEqualAsServerProduct(test_framework, *serverProduct, *actual)
+	actual := ProductTableFromSdk(serverProduct)
+	assertEqualAsServerProduct(test_framework, *serverProduct.ServerProduct, *actual)
 }
 
 // Assertions

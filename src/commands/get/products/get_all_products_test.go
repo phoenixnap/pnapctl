@@ -16,7 +16,7 @@ import (
 
 func TestGetAllProducts_FullTable(test_framework *testing.T) {
 	responseList := generators.GenerateProductSdkList()
-	queryParams := generators.GenerateProductsGetQueryParams()
+	queryParams := generators.Generate[billing.ProductsGetQueryParams]()
 	setQueryParams(queryParams)
 
 	var products []interface{}
@@ -41,7 +41,7 @@ func TestGetAllProducts_FullTable(test_framework *testing.T) {
 }
 
 func TestGetAllProducts_KeycloakFailure(test_framework *testing.T) {
-	queryParams := generators.GenerateProductsGetQueryParams()
+	queryParams := generators.Generate[billing.ProductsGetQueryParams]()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -57,7 +57,7 @@ func TestGetAllProducts_KeycloakFailure(test_framework *testing.T) {
 
 func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
 	responseList := generators.GenerateProductSdkList()
-	queryParams := generators.GenerateProductsGetQueryParams()
+	queryParams := generators.Generate[billing.ProductsGetQueryParams]()
 	setQueryParams(queryParams)
 
 	var products []interface{}
@@ -82,7 +82,7 @@ func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
 }
 
 func TestGetAllProducts_ServerError(test_framework *testing.T) {
-	queryParams := generators.GenerateProductsGetQueryParams()
+	queryParams := generators.Generate[billing.ProductsGetQueryParams]()
 	setQueryParams(queryParams)
 
 	// Mocking

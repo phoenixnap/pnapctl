@@ -9,7 +9,7 @@ import (
 )
 
 func TestReservationTableFromSdk_NotNil(t *testing.T) {
-	sdk := *generators.GenerateReservation()
+	sdk := generators.Generate[billingapi.Reservation]()
 	tbl := ReservationTableFromSdk(sdk)
 
 	assertReservationTablesEqual(t, sdk, tbl)

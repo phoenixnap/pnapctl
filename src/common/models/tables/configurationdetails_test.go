@@ -10,7 +10,7 @@ import (
 )
 
 func TestToConfigurationDetailsTable_NotNil(t *testing.T) {
-	sdk := *generators.GenerateConfigurationDetails()
+	sdk := generators.Generate[billingapi.ConfigurationDetails]()
 	tbl := ConfigurationDetailsTableFromSdk(sdk)
 
 	assertConfigurationTablesEqual(t, sdk, tbl)

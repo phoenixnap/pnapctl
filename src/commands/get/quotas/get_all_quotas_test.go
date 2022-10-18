@@ -14,7 +14,7 @@ import (
 )
 
 func TestGetAllQuotasSuccess(test_framework *testing.T) {
-	quotaList := generators.GenerateQuotaSdkList(2)
+	quotaList := testutil.GenN(2, generators.Generate[bmcapisdk.Quota])
 
 	var quotaTables []interface{}
 
@@ -38,7 +38,7 @@ func TestGetAllQuotasSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllQuotasKeycloakFailure(test_framework *testing.T) {
-	quota := []bmcapisdk.Quota{generators.GenerateQuotaSdk()}
+	quota := []bmcapisdk.Quota{generators.Generate[bmcapisdk.Quota]()}
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		QuotasGet().
@@ -51,7 +51,7 @@ func TestGetAllQuotasKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
-	quotaList := generators.GenerateQuotaSdkList(2)
+	quotaList := testutil.GenN(2, generators.Generate[bmcapisdk.Quota])
 
 	var quotaTables []interface{}
 

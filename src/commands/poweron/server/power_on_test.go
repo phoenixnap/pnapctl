@@ -8,15 +8,15 @@ import (
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPowerOnServerSuccess(test_framework *testing.T) {
-	actionResult := generators.GenerateActionResultSdk()
-
+	actionResult := generators.Generate[bmcapisdk.ActionResult]()
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOn(RESOURCEID).
-		Return(actionResult, WithResponse(200, WithBody(actionResult)), nil)
+		Return(&actionResult, WithResponse(200, WithBody(actionResult)), nil)
 
 	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{RESOURCEID})
 

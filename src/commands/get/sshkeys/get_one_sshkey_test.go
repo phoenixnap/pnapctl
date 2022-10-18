@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -14,7 +15,7 @@ import (
 
 func TestGetSshKeyByIdFullSuccess(test_framework *testing.T) {
 	Full = true
-	sshKey := generators.GenerateSshKeySdk()
+	sshKey := generators.Generate[bmcapisdk.SshKey]()
 	sshKeyTable := tables.ToSshKeyTableFull(sshKey)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -33,7 +34,7 @@ func TestGetSshKeyByIdFullSuccess(test_framework *testing.T) {
 
 func TestGetSshKeyByIdSuccess(test_framework *testing.T) {
 	Full = false
-	sshKey := generators.GenerateSshKeySdk()
+	sshKey := generators.Generate[bmcapisdk.SshKey]()
 	sshKeyTable := tables.ToSshKeyTable(sshKey)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -89,7 +90,7 @@ func TestGetSshKeyByIdKeycloakFailure(test_framework *testing.T) {
 
 func TestGetSshKeyByIdPrinterFailure(test_framework *testing.T) {
 	Full = false
-	sshKey := generators.GenerateSshKeySdk()
+	sshKey := generators.Generate[bmcapisdk.SshKey]()
 	sshKeyTable := tables.ToSshKeyTable(sshKey)
 
 	PrepareBmcApiMockClient(test_framework).

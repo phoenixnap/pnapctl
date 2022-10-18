@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
@@ -19,7 +20,7 @@ import (
 
 func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	serverCreate := generators.GenerateServerCreateSdk()
+	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
@@ -27,11 +28,11 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdServer := generators.GenerateServerSdk()
+	createdServer := generators.Generate[bmcapisdk.Server]()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate)).
+		ServersPost(gomock.Eq(serverCreate)).
 		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
@@ -51,7 +52,7 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 
 func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	serverCreate := generators.GenerateServerCreateSdk()
+	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverCreate)
@@ -59,11 +60,11 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdServer := generators.GenerateServerSdk()
+	createdServer := generators.Generate[bmcapisdk.Server]()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate)).
+		ServersPost(gomock.Eq(serverCreate)).
 		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
 		Times(1)
 
@@ -153,7 +154,7 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 
 func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverCreate := generators.GenerateServerCreateSdk()
+	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
@@ -162,7 +163,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate)).
+		ServersPost(gomock.Eq(serverCreate)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -186,7 +187,7 @@ func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
 func TestCreateServerClientFailure(test_framework *testing.T) {
 
 	// Setup
-	serverCreate := generators.GenerateServerCreateSdk()
+	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
@@ -195,7 +196,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate)).
+		ServersPost(gomock.Eq(serverCreate)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -218,7 +219,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 
 func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverCreate := generators.GenerateServerCreateSdk()
+	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(serverCreate)
@@ -227,7 +228,7 @@ func TestCreateServerKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(*serverCreate)).
+		ServersPost(gomock.Eq(serverCreate)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

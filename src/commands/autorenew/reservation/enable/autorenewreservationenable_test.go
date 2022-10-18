@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -14,13 +15,13 @@ import (
 
 func TestAutoRenewReservationEnableSuccess(test_framework *testing.T) {
 	// Mocking
-	reservation := generators.GenerateReservation()
+	reservation := generators.Generate[billingapi.Reservation]()
 	PrepareBillingMockClient(test_framework).
 		ReservationEnableAutoRenew(RESOURCEID).
-		Return(reservation, WithResponse(200, WithBody(reservation)), nil)
+		Return(&reservation, WithResponse(200, WithBody(reservation)), nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tables.ShortReservationTableFromSdk(*reservation), "auto-renew reservation enable").
+		PrintOutput(tables.ShortReservationTableFromSdk(reservation), "auto-renew reservation enable").
 		Return(nil)
 
 	// Run command

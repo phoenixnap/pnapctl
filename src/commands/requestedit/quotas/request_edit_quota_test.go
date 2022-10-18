@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -16,7 +17,7 @@ import (
 
 func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 	// setup
-	quotaEditLimitRequest := generators.GenerateQuotaEditLimitRequestSdk()
+	quotaEditLimitRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
 	yamlmarshal, _ := yaml.Marshal(quotaEditLimitRequest)
 
 	Filename = FILENAME
@@ -42,7 +43,7 @@ func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 
 func TestSubmitQuotaEditRequestSuccessJSON(test_framework *testing.T) {
 	//setup
-	quotaEditLimitRequest := generators.GenerateQuotaEditLimitRequestSdk()
+	quotaEditLimitRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
 	jsonmarshal, _ := json.Marshal(quotaEditLimitRequest)
 	Filename = FILENAME
 
@@ -153,7 +154,7 @@ func TestSubmitQuotaEditFileReadingFailure(test_framework *testing.T) {
 
 func TestSubmitQuotaEditBackendErrorFailure(test_framework *testing.T) {
 	// setup
-	quotaEditLimitRequest := generators.GenerateQuotaEditLimitRequestSdk()
+	quotaEditLimitRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
 	yamlmarshal, _ := yaml.Marshal(quotaEditLimitRequest)
 	Filename = FILENAME
 
@@ -181,7 +182,7 @@ func TestSubmitQuotaEditBackendErrorFailure(test_framework *testing.T) {
 
 func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 	// setup
-	editQuotaRequest := generators.GenerateQuotaEditLimitRequestSdk()
+	editQuotaRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
 	yamlmarshal, _ := yaml.Marshal(editQuotaRequest)
 	Filename = FILENAME
 
@@ -209,7 +210,7 @@ func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 
 func TestSubmitQuotaEditKeycloakFailure(test_framework *testing.T) {
 	// setup
-	editQuotaRequest := generators.GenerateQuotaEditLimitRequestSdk()
+	editQuotaRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
 	yamlmarshal, _ := yaml.Marshal(editQuotaRequest)
 	Filename = FILENAME
 

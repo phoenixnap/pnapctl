@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -13,14 +14,14 @@ import (
 )
 
 func TestGetAccountBillingConfigurationSuccess(test_framework *testing.T) {
-	configurationDetail := generators.GenerateConfigurationDetails()
+	configurationDetail := generators.Generate[billingapi.ConfigurationDetails]()
 
-	configurationDetailTable := tables.ConfigurationDetailsTableFromSdk(*configurationDetail)
+	configurationDetailTable := tables.ConfigurationDetailsTableFromSdk(configurationDetail)
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		AccountBillingConfigurationGet().
-		Return(configurationDetail, WithResponse(200, WithBody(configurationDetail)), nil)
+		Return(&configurationDetail, WithResponse(200, WithBody(configurationDetail)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(configurationDetailTable, "get account-billing-configuration").
@@ -60,14 +61,14 @@ func TestGetAccountBillingConfigurationKeycloakFailure(test_framework *testing.T
 }
 
 func TestGetAccountBillingConfigurationPrinterFailure(test_framework *testing.T) {
-	configurationDetail := generators.GenerateConfigurationDetails()
+	configurationDetail := generators.Generate[billingapi.ConfigurationDetails]()
 
-	configurationDetailTable := tables.ConfigurationDetailsTableFromSdk(*configurationDetail)
+	configurationDetailTable := tables.ConfigurationDetailsTableFromSdk(configurationDetail)
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		AccountBillingConfigurationGet().
-		Return(configurationDetail, WithResponse(200, WithBody(configurationDetail)), nil)
+		Return(&configurationDetail, WithResponse(200, WithBody(configurationDetail)), nil)
 
 	PrepareMockPrinter(test_framework).
 		PrintOutput(configurationDetailTable, "get account-billing-configuration").
