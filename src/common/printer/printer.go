@@ -7,9 +7,9 @@ import (
 	"reflect"
 
 	"github.com/landoop/tableprinter"
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	iter "phoenixnap.com/pnapctl/common/utils/iterutils"
+	"sigs.k8s.io/yaml"
 )
 
 // The main printer used by the application.

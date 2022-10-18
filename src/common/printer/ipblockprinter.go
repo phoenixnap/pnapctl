@@ -2,7 +2,6 @@ package printer
 
 import (
 	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
@@ -35,6 +34,6 @@ func PrepareIpBlockForPrinting(ipBlock ipapisdk.IpBlock, full bool) interface{} 
 	case table:
 		return tables.ToShortIpBlockTable(ipBlock)
 	default:
-		return ipmodels.IpBlockFromSdk(ipBlock)
+		return ipBlock
 	}
 }

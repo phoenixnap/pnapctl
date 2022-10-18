@@ -2,16 +2,17 @@ package tables
 
 import (
 	"testing"
+	"time"
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 // Full version
 func TestRatedUsageRecordFromBandwidthSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
-		BandwidthRecord: billingmodels.GenerateBandwidthRecordSdk(),
+		BandwidthRecord: generators.GenerateBandwidthRecordSdk(),
 	}
 	table := *RatedUsageRecordTableFromSdk(record)
 
@@ -20,7 +21,7 @@ func TestRatedUsageRecordFromBandwidthSdk(test_framework *testing.T) {
 
 func TestRatedUsageRecordFromOperatingSystemSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
-		OperatingSystemRecord: billingmodels.GenerateOperatingSystemRecordSdk(),
+		OperatingSystemRecord: generators.GenerateOperatingSystemRecordSdk(),
 	}
 	table := *RatedUsageRecordTableFromSdk(record)
 
@@ -29,7 +30,7 @@ func TestRatedUsageRecordFromOperatingSystemSdk(test_framework *testing.T) {
 
 func TestRatedUsageRecordFromPublicSubnetSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
-		PublicSubnetRecord: billingmodels.GeneratePublicSubnetRecordSdk(),
+		PublicSubnetRecord: generators.GeneratePublicSubnetRecordSdk(),
 	}
 	table := *RatedUsageRecordTableFromSdk(record)
 
@@ -38,7 +39,7 @@ func TestRatedUsageRecordFromPublicSubnetSdk(test_framework *testing.T) {
 
 func TestRatedUsageRecordFromServerSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
-		ServerRecord: billingmodels.GenerateServerRecordSdk(),
+		ServerRecord: generators.GenerateServerRecordSdk(),
 	}
 	table := *RatedUsageRecordTableFromSdk(record)
 
@@ -47,7 +48,7 @@ func TestRatedUsageRecordFromServerSdk(test_framework *testing.T) {
 
 func TestRatedUsageRecordFromStorageSdk(test_framework *testing.T) {
 	record := billingapi.RatedUsageGet200ResponseInner{
-		StorageRecord: billingmodels.GenerateStorageRecordSdk(),
+		StorageRecord: generators.GenerateStorageRecordSdk(),
 	}
 	table := *RatedUsageRecordTableFromSdk(record)
 
@@ -59,10 +60,10 @@ func assertFullBandwidthRecordsEqual(test_framework *testing.T, bandwidthRecord 
 	assert.Equal(test_framework, bandwidthRecord.Id, cliOneOf.Id)
 	assert.Equal(test_framework, bandwidthRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, bandwidthRecord.ProductCode, cliOneOf.ProductCode)
-	assert.Equal(test_framework, string(bandwidthRecord.Location), cliOneOf.Location)
+	assert.Equal(test_framework, bandwidthRecord.Location, cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(bandwidthRecord.YearMonth), cliOneOf.YearMonth)
-	assert.Equal(test_framework, bandwidthRecord.StartDateTime.String(), cliOneOf.StartDateTime)
-	assert.Equal(test_framework, bandwidthRecord.EndDateTime.String(), cliOneOf.EndDateTime)
+	assert.Equal(test_framework, bandwidthRecord.StartDateTime.Format(time.RFC1123), cliOneOf.StartDateTime)
+	assert.Equal(test_framework, bandwidthRecord.EndDateTime.Format(time.RFC1123), cliOneOf.EndDateTime)
 	assert.Equal(test_framework, bandwidthRecord.Cost, cliOneOf.Cost)
 	assert.Equal(test_framework, bandwidthRecord.PriceModel, cliOneOf.PriceModel)
 	assert.Equal(test_framework, bandwidthRecord.UnitPrice, cliOneOf.UnitPrice)
@@ -83,10 +84,10 @@ func assertFullOperatingSystemRecordsEqual(test_framework *testing.T, operatingS
 	assert.Equal(test_framework, operatingSystemRecord.Id, cliOneOf.Id)
 	assert.Equal(test_framework, operatingSystemRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, operatingSystemRecord.ProductCode, cliOneOf.ProductCode)
-	assert.Equal(test_framework, string(operatingSystemRecord.Location), cliOneOf.Location)
+	assert.Equal(test_framework, operatingSystemRecord.Location, cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(operatingSystemRecord.YearMonth), cliOneOf.YearMonth)
-	assert.Equal(test_framework, operatingSystemRecord.StartDateTime.String(), cliOneOf.StartDateTime)
-	assert.Equal(test_framework, operatingSystemRecord.EndDateTime.String(), cliOneOf.EndDateTime)
+	assert.Equal(test_framework, operatingSystemRecord.StartDateTime.Format(time.RFC1123), cliOneOf.StartDateTime)
+	assert.Equal(test_framework, operatingSystemRecord.EndDateTime.Format(time.RFC1123), cliOneOf.EndDateTime)
 	assert.Equal(test_framework, operatingSystemRecord.Cost, cliOneOf.Cost)
 	assert.Equal(test_framework, operatingSystemRecord.PriceModel, cliOneOf.PriceModel)
 	assert.Equal(test_framework, operatingSystemRecord.UnitPrice, cliOneOf.UnitPrice)
@@ -105,10 +106,10 @@ func assertFullPublicSubnetRecordsEqual(test_framework *testing.T, publicSubnetR
 	assert.Equal(test_framework, publicSubnetRecord.Id, cliOneOf.Id)
 	assert.Equal(test_framework, publicSubnetRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, publicSubnetRecord.ProductCode, cliOneOf.ProductCode)
-	assert.Equal(test_framework, string(publicSubnetRecord.Location), cliOneOf.Location)
+	assert.Equal(test_framework, publicSubnetRecord.Location, cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(publicSubnetRecord.YearMonth), cliOneOf.YearMonth)
-	assert.Equal(test_framework, publicSubnetRecord.StartDateTime.String(), cliOneOf.StartDateTime)
-	assert.Equal(test_framework, publicSubnetRecord.EndDateTime.String(), cliOneOf.EndDateTime)
+	assert.Equal(test_framework, publicSubnetRecord.StartDateTime.Format(time.RFC1123), cliOneOf.StartDateTime)
+	assert.Equal(test_framework, publicSubnetRecord.EndDateTime.Format(time.RFC1123), cliOneOf.EndDateTime)
 	assert.Equal(test_framework, publicSubnetRecord.Cost, cliOneOf.Cost)
 	assert.Equal(test_framework, publicSubnetRecord.PriceModel, cliOneOf.PriceModel)
 	assert.Equal(test_framework, publicSubnetRecord.UnitPrice, cliOneOf.UnitPrice)
@@ -128,10 +129,10 @@ func assertFullServerRecordsEqual(test_framework *testing.T, serverRecord billin
 	assert.Equal(test_framework, serverRecord.Id, cliOneOf.Id)
 	assert.Equal(test_framework, serverRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, serverRecord.ProductCode, cliOneOf.ProductCode)
-	assert.Equal(test_framework, string(serverRecord.Location), cliOneOf.Location)
+	assert.Equal(test_framework, serverRecord.Location, cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(serverRecord.YearMonth), cliOneOf.YearMonth)
-	assert.Equal(test_framework, serverRecord.StartDateTime.String(), cliOneOf.StartDateTime)
-	assert.Equal(test_framework, serverRecord.EndDateTime.String(), cliOneOf.EndDateTime)
+	assert.Equal(test_framework, serverRecord.StartDateTime.Format(time.RFC1123), cliOneOf.StartDateTime)
+	assert.Equal(test_framework, serverRecord.EndDateTime.Format(time.RFC1123), cliOneOf.EndDateTime)
 	assert.Equal(test_framework, serverRecord.Cost, cliOneOf.Cost)
 	assert.Equal(test_framework, serverRecord.PriceModel, cliOneOf.PriceModel)
 	assert.Equal(test_framework, serverRecord.UnitPrice, cliOneOf.UnitPrice)
@@ -150,10 +151,10 @@ func assertFullStorageRecordsEqual(test_framework *testing.T, storageRecord bill
 	assert.Equal(test_framework, storageRecord.Id, cliOneOf.Id)
 	assert.Equal(test_framework, storageRecord.ProductCategory, string(cliOneOf.ProductCategory))
 	assert.Equal(test_framework, storageRecord.ProductCode, cliOneOf.ProductCode)
-	assert.Equal(test_framework, string(storageRecord.Location), cliOneOf.Location)
+	assert.Equal(test_framework, storageRecord.Location, cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(storageRecord.YearMonth), cliOneOf.YearMonth)
-	assert.Equal(test_framework, storageRecord.StartDateTime.String(), cliOneOf.StartDateTime)
-	assert.Equal(test_framework, storageRecord.EndDateTime.String(), cliOneOf.EndDateTime)
+	assert.Equal(test_framework, storageRecord.StartDateTime.Format(time.RFC1123), cliOneOf.StartDateTime)
+	assert.Equal(test_framework, storageRecord.EndDateTime.Format(time.RFC1123), cliOneOf.EndDateTime)
 	assert.Equal(test_framework, storageRecord.Cost, cliOneOf.Cost)
 	assert.Equal(test_framework, storageRecord.PriceModel, cliOneOf.PriceModel)
 	assert.Equal(test_framework, storageRecord.UnitPrice, cliOneOf.UnitPrice)

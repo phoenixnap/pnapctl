@@ -2,7 +2,8 @@ package tables
 
 import (
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
-	"phoenixnap.com/pnapctl/common/models/ranchermodels"
+	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 type ClusterTable struct {
@@ -24,9 +25,9 @@ func ClusterFromSdk(cluster ranchersdk.Cluster) ClusterTable {
 		Description:           DerefString(cluster.Description),
 		Location:              cluster.Location,
 		InitialClusterVersion: DerefString(cluster.InitialClusterVersion),
-		NodePools:             ranchermodels.NodePoolsToTableStrings(cluster.NodePools),
-		Configuration:         ranchermodels.RancherClusterConfigToTableString(cluster.Configuration),
-		Metadata:              ranchermodels.RancherServerMetadataToTableString(cluster.Metadata),
+		NodePools:             iterutils.MapRef(cluster.NodePools, models.NodePoolToTableString),
+		Configuration:         models.ClusterConfigurationToTableString(cluster.Configuration),
+		Metadata:              models.ClusterMetadataToTableString(cluster.Metadata),
 		StatusDescription:     DerefString(cluster.StatusDescription),
 	}
 }

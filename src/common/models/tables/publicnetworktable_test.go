@@ -5,12 +5,13 @@ import (
 
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func TestPublicNetworkTableFromSdkSuccess(test_framework *testing.T) {
-	sdk := networkmodels.GeneratePublicNetworkSdk()
+	sdk := generators.GeneratePublicNetworkSdk()
 	tbl := PublicNetworkTableFromSdk(sdk)
 
 	assertPublicNetworksEqual(test_framework, sdk, tbl)
@@ -24,8 +25,8 @@ func assertPublicNetworksEqual(test_framework *testing.T, sdk networkapi.PublicN
 	assert.Equal(test_framework, *sdk.Description, tbl.Description)
 	assert.Equal(test_framework, sdk.CreatedOn.String(), tbl.CreatedOn)
 
-	sdkMemberships := iterutils.Map(sdk.Memberships, networkmodels.NetworkMembershipToTableStrings)
-	sdkIpBlocks := iterutils.Map(sdk.IpBlocks, networkmodels.PublicNetworkIpBlockToTableStrings)
+	sdkMemberships := iterutils.MapRef(sdk.Memberships, models.NetworkMembershipToTableString)
+	sdkIpBlocks := iterutils.MapRef(sdk.IpBlocks, models.PublicNetworkIpBlockToTableString)
 
 	assert.Equal(test_framework, sdkMemberships, tbl.Memberships)
 	assert.Equal(test_framework, sdkIpBlocks, tbl.IpBlocks)

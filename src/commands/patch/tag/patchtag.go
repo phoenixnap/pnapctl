@@ -1,9 +1,10 @@
 package tag
 
 import (
+	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/tags"
-	"phoenixnap.com/pnapctl/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -30,7 +31,7 @@ name: Tag Name
 description: The description of the tag.
 isBillingTag: false`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		tagEdit, err := tagmodels.CreateTagUpdateFromFile(Filename, commandName)
+		tagEdit, err := models.CreateRequestFromFile[tagapi.TagUpdate](Filename, commandName)
 		if err != nil {
 			return err
 		}

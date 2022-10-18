@@ -2,7 +2,6 @@ package printer
 
 import (
 	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
@@ -24,7 +23,7 @@ func PreparePrivateNetworkForPrinting(network networksdk.PrivateNetwork) interfa
 	case table:
 		return tables.PrivateNetworkFromSdk(network)
 	default:
-		return networkmodels.PrivateNetworkFromSdk(network)
+		return network
 	}
 }
 
@@ -55,7 +54,7 @@ func PreparePublicNetworkForPrinting(network networksdk.PublicNetwork) interface
 	case table:
 		return tables.PublicNetworkTableFromSdk(network)
 	default:
-		return networkmodels.PublicNetworkFromSdk(network)
+		return network
 	}
 }
 
@@ -76,6 +75,6 @@ func PreparePublicNetworkIpBlockForPrinting(ipBlock networksdk.PublicNetworkIpBl
 	case table:
 		return tables.PublicNetworkIpBlockTableFromSdk(ipBlock)
 	default:
-		return networkmodels.PublicNetworkIpBlockFromSdk(ipBlock)
+		return ipBlock
 	}
 }

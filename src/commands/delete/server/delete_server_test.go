@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -14,7 +14,7 @@ func TestDeleteServerSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDelete(RESOURCEID).
-		Return(servermodels.GenerateBmcApiDeleteResultSdk(), WithResponse(200, nil), nil)
+		Return(generators.GenerateBmcApiDeleteResultSdk(), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteServerCmd.RunE(DeleteServerCmd, []string{RESOURCEID})

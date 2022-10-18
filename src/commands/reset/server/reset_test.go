@@ -7,10 +7,10 @@ import (
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"sigs.k8s.io/yaml"
 
 	"github.com/stretchr/testify/assert"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -18,19 +18,11 @@ import (
 
 func TestResetServerSuccessYAML(test_framework *testing.T) {
 	// Setup
-	serverReset := servermodels.GenerateServerResetSdk()
-	resetResult := servermodels.GenerateResetResultSdk()
-
-	// to be used for marshaling only
-	serverResetModel := servermodels.ServerReset{
-		InstallDefaultSshKeys: nil,
-		SshKeys:               serverReset.SshKeys,
-		SshKeyIds:             serverReset.SshKeyIds,
-		OsConfiguration:       nil,
-	}
+	serverReset := generators.GenerateServerResetSdk()
+	resetResult := generators.GenerateResetResultSdk()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverResetModel)
+	yamlmarshal, _ := yaml.Marshal(serverReset)
 
 	Filename = FILENAME
 
@@ -56,8 +48,8 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 
 func TestResetServerSuccessJSON(test_framework *testing.T) {
 	// Setup
-	serverReset := servermodels.GenerateServerResetSdk()
-	resetResult := servermodels.GenerateResetResultSdk()
+	serverReset := generators.GenerateServerResetSdk()
+	resetResult := generators.GenerateResetResultSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverReset)
@@ -86,7 +78,7 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 
 func TestResetServerSuccessNoFile(test_framework *testing.T) {
 	// Setup
-	resetResult := servermodels.GenerateResetResultSdk()
+	resetResult := generators.GenerateResetResultSdk()
 
 	Filename = ""
 
@@ -150,7 +142,7 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 
 func TestResetServerNotFoundFailure(test_framework *testing.T) {
 	// Setup
-	serverReset := servermodels.GenerateServerResetSdk()
+	serverReset := generators.GenerateServerResetSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverReset)
@@ -202,7 +194,7 @@ func TestResetServerFileReadingFailure(test_framework *testing.T) {
 
 func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverReset := servermodels.GenerateServerResetSdk()
+	serverReset := generators.GenerateServerResetSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverReset)
@@ -234,7 +226,7 @@ func TestResetServerBackendErrorFailure(test_framework *testing.T) {
 
 func TestResetServerClientFailure(test_framework *testing.T) {
 	// Setup
-	serverReset := servermodels.GenerateServerResetSdk()
+	serverReset := generators.GenerateServerResetSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverReset)
@@ -266,7 +258,7 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 
 func TestResetServerKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverReset := servermodels.GenerateServerResetSdk()
+	serverReset := generators.GenerateServerResetSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverReset)

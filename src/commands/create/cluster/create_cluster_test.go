@@ -7,16 +7,16 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/ranchermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"sigs.k8s.io/yaml"
 )
 
 func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := ranchermodels.GenerateClusterCli()
+	clusterCreate := generators.GenerateClusterSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)
@@ -24,11 +24,11 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdCluster := ranchermodels.GenerateClusterSdk()
+	createdCluster := generators.GenerateClusterSdk()
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
+		ClusterPost(gomock.Eq(clusterCreate)).
 		Return(&createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
 		Times(1)
 
@@ -48,7 +48,7 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 
 func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := ranchermodels.GenerateClusterCli()
+	clusterCreate := generators.GenerateClusterSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(clusterCreate)
@@ -56,11 +56,11 @@ func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	createdCluster := ranchermodels.GenerateClusterSdk()
+	createdCluster := generators.GenerateClusterSdk()
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
+		ClusterPost(gomock.Eq(clusterCreate)).
 		Return(&createdCluster, WithResponse(201, WithBody(createdCluster)), nil).
 		Times(1)
 
@@ -120,7 +120,7 @@ func TestCreateClusterUnmarshallingFailure(test_framework *testing.T) {
 
 func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := ranchermodels.GenerateClusterCli()
+	clusterCreate := generators.GenerateClusterSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)
@@ -129,7 +129,7 @@ func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
+		ClusterPost(gomock.Eq(clusterCreate)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -150,7 +150,7 @@ func TestCreateClusterBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateClusterClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := ranchermodels.GenerateClusterCli()
+	clusterCreate := generators.GenerateClusterSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)
@@ -159,7 +159,7 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
+		ClusterPost(gomock.Eq(clusterCreate)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -180,7 +180,7 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 
 func TestCreateClusterKeycloakFailure(test_framework *testing.T) {
 	// What the client should receive.
-	clusterCreate := ranchermodels.GenerateClusterCli()
+	clusterCreate := generators.GenerateClusterSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(clusterCreate)
@@ -189,7 +189,7 @@ func TestCreateClusterKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate.ToSdk())).
+		ClusterPost(gomock.Eq(clusterCreate)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

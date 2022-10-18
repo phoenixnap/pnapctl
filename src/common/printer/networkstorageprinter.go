@@ -2,7 +2,6 @@ package printer
 
 import (
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
-	"phoenixnap.com/pnapctl/common/models/networkstoragemodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
@@ -25,7 +24,7 @@ func PrepareNetworkStorageForPrinting(storageNetwork networkstorageapi.StorageNe
 	case table:
 		return tables.StorageNetworkTableFromSdk(storageNetwork)
 	default:
-		return networkstoragemodels.StorageNetworkFromSdk(storageNetwork)
+		return storageNetwork
 	}
 }
 
@@ -49,6 +48,6 @@ func PrepareVolumeForPrinting(volume networkstorageapi.Volume, full bool) interf
 	case table:
 		return tables.ShortVolumeTableFromSdk(volume)
 	default:
-		return networkstoragemodels.VolumeFromSdk(volume)
+		return volume
 	}
 }

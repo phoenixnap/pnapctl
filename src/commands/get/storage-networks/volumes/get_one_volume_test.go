@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/networkstoragemodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -14,7 +14,7 @@ import (
 
 func TestGetVolumeByIdSuccess(test_framework *testing.T) {
 	// What the server should return.
-	volumeSdk := networkstoragemodels.GenerateVolumeSdk()
+	volumeSdk := generators.GenerateVolumeSdk()
 	volumeTable := tables.ShortVolumeTableFromSdk(volumeSdk)
 
 	// Mocking
@@ -78,7 +78,7 @@ func TestGetVolumeByIdKeycloakFailure(test_framework *testing.T) {
 
 func TestGetVolumeByIdPrinterFailure(test_framework *testing.T) {
 	// What the server should return.
-	volumeSdk := networkstoragemodels.GenerateVolumeSdk()
+	volumeSdk := generators.GenerateVolumeSdk()
 	volumeTable := tables.ShortVolumeTableFromSdk(volumeSdk)
 
 	// Mocking

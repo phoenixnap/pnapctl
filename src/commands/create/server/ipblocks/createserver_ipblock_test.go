@@ -7,19 +7,18 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"sigs.k8s.io/yaml"
 )
 
 func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
-	serverIpBlockCli := servermodels.GenerateServerIpBlockCli()
-	serverIpBlockSdk := serverIpBlockCli.ToSdk()
+	serverIpBlockSdk := generators.GenerateServerIpBlockSdk()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverIpBlockCli)
+	yamlmarshal, _ := yaml.Marshal(serverIpBlockSdk)
 
 	Filename = FILENAME
 
@@ -44,11 +43,10 @@ func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
 }
 
 func TestCreateServerIpBlockSuccessJSON(test_framework *testing.T) {
-	serverIpBlockCli := servermodels.GenerateServerIpBlockCli()
-	serverIpBlockSdk := serverIpBlockCli.ToSdk()
+	serverIpBlockSdk := generators.GenerateServerIpBlockSdk()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverIpBlockCli)
+	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)
 
 	Filename = FILENAME
 
@@ -143,7 +141,7 @@ func TestCreateServerIpBlockFileReadingFailure(test_framework *testing.T) {
 
 func TestCreateServerIpBlockBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverIpBlockSdk := servermodels.GenerateServerIpBlockSdk()
+	serverIpBlockSdk := generators.GenerateServerIpBlockSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)
@@ -174,7 +172,7 @@ func TestCreateServerIpBlockBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
 	// Setup
-	serverIpBlockSdk := servermodels.GenerateServerIpBlockSdk()
+	serverIpBlockSdk := generators.GenerateServerIpBlockSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)
@@ -206,7 +204,7 @@ func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
 
 func TestCreateServerIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverIpBlockSdk := servermodels.GenerateServerIpBlockSdk()
+	serverIpBlockSdk := generators.GenerateServerIpBlockSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)

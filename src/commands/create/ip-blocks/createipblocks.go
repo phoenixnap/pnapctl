@@ -1,9 +1,10 @@
 package ip_blocks
 
 import (
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/ip"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -31,7 +32,7 @@ pnapctl create ip-block --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 cidrBlockSize: /28
 location: PHX`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ipBlockCreate, err := ipmodels.CreateIpBlockRequestFromFile(Filename, commandName)
+		ipBlockCreate, err := models.CreateRequestFromFile[ipapi.IpBlockCreate](Filename, commandName)
 
 		if err != nil {
 			return err

@@ -7,7 +7,7 @@ import (
 	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	configuration "phoenixnap.com/pnapctl/configs"
 )
 
@@ -15,17 +15,17 @@ var Client BillingSdkClient
 
 type BillingSdkClient interface {
 	// Rated Usages
-	RatedUsageGet(queryParams billingmodels.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
-	RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageMonthToDateGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
-	ProductsGet(queryParams billingmodels.ProductsGetQueryParams) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error)
-	ReservationsGet(queryParams billingmodels.ReservationsGetQueryParams) ([]billingapisdk.Reservation, *http.Response, error)
+	RatedUsageGet(queryParams billing.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
+	RatedUsageMonthToDateGet(queryParams billing.RatedUsageMonthToDateGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error)
+	ProductsGet(queryParams billing.ProductsGetQueryParams) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error)
+	ReservationsGet(queryParams billing.ReservationsGetQueryParams) ([]billingapisdk.Reservation, *http.Response, error)
 	ReservationsPost(request billingapisdk.ReservationRequest) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationGetById(id string) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationDisableAutoRenew(id string, request billingapisdk.ReservationAutoRenewDisableRequest) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationEnableAutoRenew(id string) (*billingapisdk.Reservation, *http.Response, error)
 	ReservationConvert(id string, request billingapisdk.ReservationRequest) (*billingapisdk.Reservation, *http.Response, error)
 	AccountBillingConfigurationGet() (*billingapisdk.ConfigurationDetails, *http.Response, error)
-	ProductAvailabilityGet(queryParams billingmodels.ProductAvailabilityGetQueryParams) ([]billingapisdk.ProductAvailability, *http.Response, error)
+	ProductAvailabilityGet(queryParams billing.ProductAvailabilityGetQueryParams) ([]billingapisdk.ProductAvailability, *http.Response, error)
 }
 
 type MainClient struct {
@@ -71,28 +71,28 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	}
 }
 
-func (m MainClient) RatedUsageGet(queryParams billingmodels.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
+func (m MainClient) RatedUsageGet(queryParams billing.RatedUsageGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
 	request := m.RatedUsageApiClient.RatedUsageGet(context.Background())
 	request = queryParams.AttachToRequest(request)
 
 	return request.Execute()
 }
 
-func (m MainClient) RatedUsageMonthToDateGet(queryParams billingmodels.RatedUsageMonthToDateGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
+func (m MainClient) RatedUsageMonthToDateGet(queryParams billing.RatedUsageMonthToDateGetQueryParams) ([]billingapisdk.RatedUsageGet200ResponseInner, *http.Response, error) {
 	request := m.RatedUsageApiClient.RatedUsageMonthToDateGet(context.Background())
 	request = queryParams.AttachToRequest(request)
 
 	return request.Execute()
 }
 
-func (m MainClient) ProductsGet(queryParams billingmodels.ProductsGetQueryParams) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error) {
+func (m MainClient) ProductsGet(queryParams billing.ProductsGetQueryParams) ([]billingapisdk.ProductsGet200ResponseInner, *http.Response, error) {
 	request := m.ProductsApiClient.ProductsGet(context.Background())
 	request = queryParams.AttachToRequest(request)
 
 	return request.Execute()
 }
 
-func (m MainClient) ReservationsGet(queryParams billingmodels.ReservationsGetQueryParams) ([]billingapisdk.Reservation, *http.Response, error) {
+func (m MainClient) ReservationsGet(queryParams billing.ReservationsGetQueryParams) ([]billingapisdk.Reservation, *http.Response, error) {
 	request := m.ReservationApiClient.ReservationsGet(context.Background())
 	request = queryParams.AttachToRequest(request)
 
@@ -123,7 +123,7 @@ func (m MainClient) AccountBillingConfigurationGet() (*billingapisdk.Configurati
 	return m.BillingConfigurationsApiClient.AccountBillingConfigurationMeGet(context.Background()).Execute()
 }
 
-func (m MainClient) ProductAvailabilityGet(queryParams billingmodels.ProductAvailabilityGetQueryParams) ([]billingapisdk.ProductAvailability, *http.Response, error) {
+func (m MainClient) ProductAvailabilityGet(queryParams billing.ProductAvailabilityGetQueryParams) ([]billingapisdk.ProductAvailability, *http.Response, error) {
 	request := m.ProductsApiClient.ProductAvailabilityGet(context.Background())
 	request = queryParams.AttachToRequest(request)
 

@@ -3,7 +3,7 @@ package rated_usage
 import (
 	month_to_date "phoenixnap.com/pnapctl/commands/get/rated-usage/month-to-date"
 	"phoenixnap.com/pnapctl/common/client/billing"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	qp "phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 
@@ -34,7 +34,7 @@ pnapctl get rated-usages --from=2020/10 --to=2021/11 [--category <CATEGORY>] [--
 }
 
 func getRatedUsage() error {
-	queryParams, err := billingmodels.NewRatedUsageGetQueryParams(FromYearMonth, ToYearMonth, ProductCategory)
+	queryParams, err := qp.NewRatedUsageGetQueryParams(FromYearMonth, ToYearMonth, ProductCategory)
 	if err != nil {
 		return err
 	}

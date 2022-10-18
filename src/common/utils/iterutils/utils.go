@@ -63,6 +63,24 @@ func Map[T, O any](slice []T, mapper Mapper[T, O]) (sliceOut []O) {
 	return
 }
 
+// Same as Map, except it starts by referencing each element in a list.
+// Useful for passing a list of non-pointers into a function that only
+// accepts pointers.
+//
+//	nums := []int{1, 2, 3}
+//	double := MapRef(nums, func(n *int) int {
+//		return *n * 2
+//	})
+func MapRef[T, O any](slice []T, mapper Mapper[*T, O]) (sliceOut []O) {
+	sliceOut = make([]O, len(slice))
+
+	for i, v := range slice {
+		sliceOut[i] = mapper(&v)
+	}
+
+	return
+}
+
 // Converts the mapper into an *optional* mapper that takes a potential parameter.
 // If the input is `nil`, it returns `nil`. Otherwise, it applies the mapper.
 //

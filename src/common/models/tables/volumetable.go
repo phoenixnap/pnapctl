@@ -2,7 +2,7 @@ package tables
 
 import (
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
-	"phoenixnap.com/pnapctl/common/models/networkstoragemodels"
+	"phoenixnap.com/pnapctl/common/models"
 )
 
 type VolumeTable struct {
@@ -36,7 +36,7 @@ func VolumeTableFromSdk(sdk networkstorageapi.Volume) VolumeTable {
 		Protocol:     DerefString(sdk.Protocol),
 		Status:       DerefString(sdk.Status),
 		CreatedOn:    DerefTimeAsString(sdk.CreatedOn),
-		Permissions:  networkstoragemodels.PermissionsToTableString(sdk.Permissions),
+		Permissions:  models.PermissionsToTableString(sdk.Permissions),
 	}
 }
 

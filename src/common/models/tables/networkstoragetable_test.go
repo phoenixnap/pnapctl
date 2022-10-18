@@ -5,12 +5,13 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
-	"phoenixnap.com/pnapctl/common/models/networkstoragemodels"
+	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func TestStorageNetworkFromSdk(test_framework *testing.T) {
-	storageNetwork := networkstoragemodels.GenerateStorageNetworkSdk()
+	storageNetwork := generators.GenerateStorageNetworkSdk()
 	table := StorageNetworkTableFromSdk(storageNetwork)
 
 	assertStorageNetworksEqual(test_framework, storageNetwork, table)
@@ -25,5 +26,5 @@ func assertStorageNetworksEqual(test_framework *testing.T, sdkStorageNetwork net
 	assert.Equal(test_framework, DerefString(sdkStorageNetwork.NetworkId), tblStorageNetwork.NetworkId)
 	assert.Equal(test_framework, sdkStorageNetwork.Ips, tblStorageNetwork.Ips)
 	assert.Equal(test_framework, DerefStringable(sdkStorageNetwork.CreatedOn), tblStorageNetwork.CreatedOn)
-	assert.Equal(test_framework, iterutils.Map(sdkStorageNetwork.Volumes, networkstoragemodels.VolumeToTableString), tblStorageNetwork.Volumes)
+	assert.Equal(test_framework, iterutils.MapRef(sdkStorageNetwork.Volumes, models.VolumeToTableString), tblStorageNetwork.Volumes)
 }

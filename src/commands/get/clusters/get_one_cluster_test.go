@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/ranchermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -14,7 +14,7 @@ import (
 
 func TestGetServerShortSuccess(test_framework *testing.T) {
 
-	cluster := ranchermodels.GenerateClusterSdk()
+	cluster := generators.GenerateClusterSdk()
 	var clusterTable = tables.ClusterFromSdk(cluster)
 
 	PrepareRancherMockClient(test_framework).
@@ -69,7 +69,7 @@ func TestGetServerKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
-	cluster := ranchermodels.GenerateClusterSdk()
+	cluster := generators.GenerateClusterSdk()
 	clusterTable := tables.ClusterFromSdk(cluster)
 
 	PrepareRancherMockClient(test_framework).

@@ -6,7 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/models/tables"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -14,8 +15,8 @@ import (
 )
 
 func TestGetAllProducts_FullTable(test_framework *testing.T) {
-	responseList := billingmodels.GenerateProductSdkList()
-	queryParams := billingmodels.GenerateProductsGetQueryParams()
+	responseList := generators.GenerateProductSdkList()
+	queryParams := generators.GenerateProductsGetQueryParams()
 	setQueryParams(queryParams)
 
 	var products []interface{}
@@ -40,7 +41,7 @@ func TestGetAllProducts_FullTable(test_framework *testing.T) {
 }
 
 func TestGetAllProducts_KeycloakFailure(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateProductsGetQueryParams()
+	queryParams := generators.GenerateProductsGetQueryParams()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -55,8 +56,8 @@ func TestGetAllProducts_KeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
-	responseList := billingmodels.GenerateProductSdkList()
-	queryParams := billingmodels.GenerateProductsGetQueryParams()
+	responseList := generators.GenerateProductSdkList()
+	queryParams := generators.GenerateProductsGetQueryParams()
 	setQueryParams(queryParams)
 
 	var products []interface{}
@@ -81,7 +82,7 @@ func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
 }
 
 func TestGetAllProducts_ServerError(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateProductsGetQueryParams()
+	queryParams := generators.GenerateProductsGetQueryParams()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -96,7 +97,7 @@ func TestGetAllProducts_ServerError(test_framework *testing.T) {
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
-func setQueryParams(queryparams billingmodels.ProductsGetQueryParams) {
+func setQueryParams(queryparams billing.ProductsGetQueryParams) {
 	ProductCategory = *queryparams.ProductCategory
 	ProductCode = *queryparams.ProductCode
 	SkuCode = *queryparams.SkuCode

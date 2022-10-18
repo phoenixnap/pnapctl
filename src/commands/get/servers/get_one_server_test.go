@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -14,7 +14,7 @@ import (
 
 func TestGetServerShortSuccess(test_framework *testing.T) {
 
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 	var shortServer = tables.ToShortServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -33,7 +33,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetServerLongSuccess(test_framework *testing.T) {
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 	var longServer = tables.ToLongServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).
@@ -89,7 +89,7 @@ func TestGetServerKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 	shortServer := tables.ToShortServerTable(server)
 
 	PrepareBmcApiMockClient(test_framework).

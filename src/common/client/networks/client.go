@@ -7,7 +7,7 @@ import (
 	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models/queryparams/network"
 	configuration "phoenixnap.com/pnapctl/configs"
 )
 
@@ -21,7 +21,7 @@ type NetworkSdkClient interface {
 	PrivateNetworkPut(networkId string, privateNetworkUpdate networkapisdk.PrivateNetworkModify) (*networkapisdk.PrivateNetwork, *http.Response, error)
 	PrivateNetworkDelete(networkId string) (*http.Response, error)
 
-	PublicNetworksGet(location networkmodels.PublicNetworksGetQueryParams) ([]networkapisdk.PublicNetwork, *http.Response, error)
+	PublicNetworksGet(location network.PublicNetworksGetQueryParams) ([]networkapisdk.PublicNetwork, *http.Response, error)
 	PublicNetworkGetById(networkId string) (*networkapisdk.PublicNetwork, *http.Response, error)
 	PublicNetworksPost(publicNetworkCreate networkapisdk.PublicNetworkCreate) (*networkapisdk.PublicNetwork, *http.Response, error)
 	PublicNetworkDelete(networkId string) (*http.Response, error)
@@ -95,7 +95,7 @@ func (m MainClient) PrivateNetworkDelete(networkId string) (*http.Response, erro
 	return m.PrivateNetworksClient.PrivateNetworksNetworkIdDelete(context.Background(), networkId).Execute()
 }
 
-func (m MainClient) PublicNetworksGet(queryParams networkmodels.PublicNetworksGetQueryParams) ([]networkapisdk.PublicNetwork, *http.Response, error) {
+func (m MainClient) PublicNetworksGet(queryParams network.PublicNetworksGetQueryParams) ([]networkapisdk.PublicNetwork, *http.Response, error) {
 	request := m.PublicNetworksClient.PublicNetworksGet(context.Background())
 	request = queryParams.AttachToRequest(request)
 

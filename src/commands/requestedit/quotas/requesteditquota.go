@@ -3,9 +3,10 @@ package quotas
 import (
 	"fmt"
 
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/quotamodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
@@ -30,7 +31,7 @@ pnapctl request-edit quota <QUOTA_ID> --filename <FILE_PATH>
 limit: 75
 reason: My current limit is not enough.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		quotaEditRequest, err := quotamodels.CreateQuotaEditRequestFromFile(Filename, commandName)
+		quotaEditRequest, err := models.CreateRequestFromFile[bmcapisdk.QuotaEditLimitRequest](Filename, commandName)
 		if err != nil {
 			return err
 		}

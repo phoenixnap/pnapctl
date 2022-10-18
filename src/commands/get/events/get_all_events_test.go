@@ -7,7 +7,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/auditmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/models/queryparams/audit"
 	"phoenixnap.com/pnapctl/common/models/tables"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -15,8 +16,8 @@ import (
 )
 
 func TestGetAllEventsSuccess(test_framework *testing.T) {
-	eventList := auditmodels.GenerateEventListSdk(2)
-	queryParams := auditmodels.GenerateQueryParamsCli()
+	eventList := generators.GenerateEventListSdk(2)
+	queryParams := generators.GenerateQueryParamsSdk()
 	setQueryParams(queryParams)
 
 	var eventTables []interface{}
@@ -41,7 +42,7 @@ func TestGetAllEventsSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
-	queryParams := auditmodels.GenerateQueryParamsCli()
+	queryParams := generators.GenerateQueryParamsSdk()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -56,8 +57,8 @@ func TestGetAllEventsKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
-	eventList := auditmodels.GenerateEventListSdk(2)
-	queryParams := auditmodels.GenerateQueryParamsCli()
+	eventList := generators.GenerateEventListSdk(2)
+	queryParams := generators.GenerateQueryParamsSdk()
 	setQueryParams(queryParams)
 
 	var eventTables []interface{}
@@ -81,7 +82,7 @@ func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
 }
 
 func TestGetEventsServerError(test_framework *testing.T) {
-	queryParams := auditmodels.GenerateQueryParamsCli()
+	queryParams := generators.GenerateQueryParamsSdk()
 	setQueryParams(queryParams)
 
 	PrepareAuditMockClient(test_framework).
@@ -96,7 +97,7 @@ func TestGetEventsServerError(test_framework *testing.T) {
 }
 
 func TestGetEventsInvalidTimeFormat(test_framework *testing.T) {
-	queryParams := auditmodels.GenerateQueryParamsCli()
+	queryParams := generators.GenerateQueryParamsSdk()
 	setQueryParams(queryParams)
 	From = "Not A Date"
 
@@ -108,7 +109,7 @@ func TestGetEventsInvalidTimeFormat(test_framework *testing.T) {
 }
 
 func TestGetEventsInvalidOrderFormat(test_framework *testing.T) {
-	queryParams := auditmodels.GenerateQueryParamsCli()
+	queryParams := generators.GenerateQueryParamsSdk()
 	setQueryParams(queryParams)
 	Order = "None"
 
@@ -120,7 +121,7 @@ func TestGetEventsInvalidOrderFormat(test_framework *testing.T) {
 }
 
 func TestGetEventsInvalidVerbFormat(test_framework *testing.T) {
-	queryParams := auditmodels.GenerateQueryParamsCli()
+	queryParams := generators.GenerateQueryParamsSdk()
 	setQueryParams(queryParams)
 	Verb = "Doing"
 
@@ -131,7 +132,7 @@ func TestGetEventsInvalidVerbFormat(test_framework *testing.T) {
 	assert.Equal(test_framework, expectedMessage, err.Error())
 }
 
-func setQueryParams(queryparams auditmodels.EventsGetQueryParams) {
+func setQueryParams(queryparams audit.EventsGetQueryParams) {
 	From = queryparams.From.Format(time.RFC3339)
 	To = queryparams.To.Format(time.RFC3339)
 	Limit = queryparams.Limit

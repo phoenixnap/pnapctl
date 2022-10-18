@@ -9,8 +9,8 @@ import (
 	"runtime"
 	"strings"
 
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"sigs.k8s.io/yaml"
 )
 
 // MainFileProcessor is the main instance of FileProcessor that is used by the main code.

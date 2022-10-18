@@ -2,9 +2,11 @@ package ipblocks
 
 import (
 	"fmt"
+
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
 )
 
@@ -28,7 +30,7 @@ pnapctl delete server-ip-block <SERVER_ID> <IP_BLOCK_ID> --filename <FILE_PATH>
 # serveripblockdelete.yaml
 deleteIpBlocks: false`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		relinquishIpBlockRequest, err := servermodels.CreateRelinquishIpBlockRequestFromFile(Filename, commandName)
+		relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename, commandName)
 		result, httpResponse, err := bmcapi.Client.ServerIpBlockDelete(args[0], args[1], *relinquishIpBlockRequest)
 		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 

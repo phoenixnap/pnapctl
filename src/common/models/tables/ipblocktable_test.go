@@ -4,11 +4,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 func TestToIpBlockTable(test_framework *testing.T) {
-	ipBlock := ipmodels.GenerateIpBlockSdk()
+	ipBlock := generators.GenerateIpBlockSdk()
 	table := ToIpBlockTable(ipBlock)
 
 	assert.Equal(test_framework, ipBlock.Id, table.Id)

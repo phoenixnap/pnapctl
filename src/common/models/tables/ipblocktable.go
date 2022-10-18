@@ -2,7 +2,7 @@ package tables
 
 import (
 	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
+	"phoenixnap.com/pnapctl/common/models"
 )
 
 type IpBlock struct {
@@ -35,7 +35,7 @@ func ToIpBlockTable(ipBlock ipapisdk.IpBlock) IpBlock {
 	var tags []string
 
 	for _, tag := range ipBlock.Tags {
-		tags = append(tags, ipmodels.TagAssignmentToTableString(&tag))
+		tags = append(tags, models.TagAssignmentToTableString(&tag))
 	}
 
 	return IpBlock{
@@ -58,7 +58,7 @@ func ToShortIpBlockTable(ipBlock ipapisdk.IpBlock) IpBlockShort {
 	var tags []string
 
 	for _, tag := range ipBlock.Tags {
-		tags = append(tags, ipmodels.TagAssignmentToTableString(&tag))
+		tags = append(tags, models.TagAssignmentToTableString(&tag))
 	}
 
 	return IpBlockShort{

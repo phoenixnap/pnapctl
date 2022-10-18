@@ -6,18 +6,18 @@ import (
 	"testing"
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 
-	"gopkg.in/yaml.v2"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+	"sigs.k8s.io/yaml"
 )
 
 func TestPatchIpBlockSuccessYAML(test_framework *testing.T) {
-	ipBlockPatchCli := ipmodels.GenerateIpBlockPatchCLI()
+	ipBlockPatchCli := generators.GenerateIpBlockPatchSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockPatchCli)
@@ -25,11 +25,11 @@ func TestPatchIpBlockSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	ipBlock := ipmodels.GenerateIpBlockSdk()
+	ipBlock := generators.GenerateIpBlockSdk()
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(*ipBlockPatchCli.ToSdk())).
+		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
 		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
 		Times(1)
 
@@ -48,7 +48,7 @@ func TestPatchIpBlockSuccessYAML(test_framework *testing.T) {
 }
 
 func TestPatchIpBlockSuccessJSON(test_framework *testing.T) {
-	ipBlockPatchCli := ipmodels.GenerateIpBlockPatchCLI()
+	ipBlockPatchCli := generators.GenerateIpBlockPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPatchCli)
@@ -56,11 +56,11 @@ func TestPatchIpBlockSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	ipBlock := ipmodels.GenerateIpBlockSdk()
+	ipBlock := generators.GenerateIpBlockSdk()
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(*ipBlockPatchCli.ToSdk())).
+		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
 		Return(&ipBlock, WithResponse(201, WithBody(ipBlock)), nil).
 		Times(1)
 
@@ -81,7 +81,7 @@ func TestPatchIpBlockSuccessJSON(test_framework *testing.T) {
 func TestPatchIpBlockIdNotFound(test_framework *testing.T) {
 
 	// Setup
-	ipBlockPatchCli := ipmodels.GenerateIpBlockPatchCLI()
+	ipBlockPatchCli := generators.GenerateIpBlockPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPatchCli)
@@ -90,7 +90,7 @@ func TestPatchIpBlockIdNotFound(test_framework *testing.T) {
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(*ipBlockPatchCli.ToSdk())).
+		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
 		Return(nil, WithResponse(404, nil), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -180,7 +180,7 @@ func TestPatchIpBlockFileReadingFailure(test_framework *testing.T) {
 
 func TestPatchIpBlockBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPatchCli := ipmodels.GenerateIpBlockPatchCLI()
+	ipBlockPatchCli := generators.GenerateIpBlockPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPatchCli)
@@ -189,7 +189,7 @@ func TestPatchIpBlockBackendErrorFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(*ipBlockPatchCli.ToSdk())).
+		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -212,7 +212,7 @@ func TestPatchIpBlockBackendErrorFailure(test_framework *testing.T) {
 
 func TestPatchIpBlockClientFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPatchCli := ipmodels.GenerateIpBlockPatchCLI()
+	ipBlockPatchCli := generators.GenerateIpBlockPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(ipBlockPatchCli)
@@ -221,7 +221,7 @@ func TestPatchIpBlockClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(*ipBlockPatchCli.ToSdk())).
+		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -244,7 +244,7 @@ func TestPatchIpBlockClientFailure(test_framework *testing.T) {
 
 func TestPatchIpBlockKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	ipBlockPatchCli := ipmodels.GenerateIpBlockPatchCLI()
+	ipBlockPatchCli := generators.GenerateIpBlockPatchSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(ipBlockPatchCli)
@@ -253,7 +253,7 @@ func TestPatchIpBlockKeycloakFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(*ipBlockPatchCli.ToSdk())).
+		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

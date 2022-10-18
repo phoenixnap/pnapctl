@@ -2,7 +2,6 @@ package printer
 
 import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
@@ -26,10 +25,8 @@ func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200Response
 		return tables.RatedUsageRecordTableFromSdk(ratedUsage)
 	case table:
 		return tables.ShortRatedUsageRecordFromSdk(ratedUsage)
-	case full:
-		return billingmodels.RatedUsageActualFromSdk(ratedUsage)
 	default:
-		return billingmodels.ShortRatedUsageActualFromSdk(ratedUsage)
+		return ratedUsage
 	}
 }
 
@@ -51,7 +48,7 @@ func PrepareProductForPrinting(product billingapi.ProductsGet200ResponseInner) i
 	case table:
 		return tables.ProductTableFromSdk(product)
 	default:
-		return billingmodels.ProductActualFromSdk(product)
+		return product
 	}
 }
 
@@ -74,10 +71,8 @@ func PrepareReservationForPrinting(reservation billingapi.Reservation, full bool
 		return tables.ReservationTableFromSdk(reservation)
 	case table:
 		return tables.ShortReservationTableFromSdk(reservation)
-	case full:
-		return billingmodels.ReservationFromSdk(reservation)
 	default:
-		return billingmodels.ShortReservationFromSdk(reservation)
+		return reservation
 	}
 }
 
@@ -99,7 +94,7 @@ func PrepareConfigurationDetailsForPrinting(configurationDetails billingapi.Conf
 	case table:
 		return tables.ConfigurationDetailsTableFromSdk(configurationDetails)
 	default:
-		return billingmodels.ConfigurationDetailsFromSdk(configurationDetails)
+		return configurationDetails
 	}
 }
 
@@ -121,6 +116,6 @@ func PrepareProductAvailabilityForPrinting(productAvailability billingapi.Produc
 	case table:
 		return tables.ProductAvailabilityTableFromSdk(productAvailability)
 	default:
-		return billingmodels.ProductAvailabilityFromSdk(productAvailability)
+		return productAvailability
 	}
 }

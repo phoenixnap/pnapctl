@@ -5,11 +5,11 @@ import (
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 func TestReservationTableFromSdk_NotNil(t *testing.T) {
-	sdk := *billingmodels.GenerateReservation()
+	sdk := *generators.GenerateReservation()
 	tbl := ReservationTableFromSdk(sdk)
 
 	assertReservationTablesEqual(t, sdk, tbl)

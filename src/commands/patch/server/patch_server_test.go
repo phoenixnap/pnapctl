@@ -8,30 +8,25 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
-	"gopkg.in/yaml.v2"
+	"sigs.k8s.io/yaml"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
 func TestPatchServerSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	serverPatch := servermodels.GenerateServerPatchSdk()
-
-	serverPatchModel := servermodels.ServerPatch{
-		Hostname:    serverPatch.Hostname,
-		Description: serverPatch.Description,
-	}
+	serverPatch := generators.GenerateServerPatchSdk()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverPatchModel)
+	yamlmarshal, _ := yaml.Marshal(serverPatch)
 
 	Filename = FILENAME
 
 	// What the server should return.
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -55,7 +50,7 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 
 func TestPatchServerSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	serverPatch := servermodels.GenerateServerPatchSdk()
+	serverPatch := generators.GenerateServerPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)
@@ -63,7 +58,7 @@ func TestPatchServerSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	server := servermodels.GenerateServerSdk()
+	server := generators.GenerateServerSdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -110,7 +105,7 @@ func TestPatchServerFileNotFoundFailure(test_framework *testing.T) {
 func TestPatchServerUnmarshallingFailure(test_framework *testing.T) {
 	// Invalid contents of the file
 	// filecontents := make([]byte, 10)
-	filecontents := []byte(`Description: desc`)
+	filecontents := []byte(`notproperty: desc`)
 
 	Filename = FILENAME
 
@@ -158,7 +153,7 @@ func TestPatchServerFileReadingFailure(test_framework *testing.T) {
 
 func TestPatchServerBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverPatch := servermodels.GenerateServerPatchSdk()
+	serverPatch := generators.GenerateServerPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)
@@ -190,7 +185,7 @@ func TestPatchServerBackendErrorFailure(test_framework *testing.T) {
 
 func TestPatchServerClientFailure(test_framework *testing.T) {
 	// Setup
-	serverPatch := servermodels.GenerateServerPatchSdk()
+	serverPatch := generators.GenerateServerPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)
@@ -222,7 +217,7 @@ func TestPatchServerClientFailure(test_framework *testing.T) {
 
 func TestPatchServerKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverPatch := servermodels.GenerateServerPatchSdk()
+	serverPatch := generators.GenerateServerPatchSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPatch)

@@ -6,11 +6,12 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 
-	"gopkg.in/yaml.v2"
+	"sigs.k8s.io/yaml"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -18,9 +19,9 @@ import (
 
 func TestCreateServerPublicNetworkSuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	serverPublicNetwork := servermodels.GenerateServerPublicNetworkSdk()
+	serverPublicNetwork := generators.GenerateServerPublicNetworkSdk()
 
-	serverPublicNetworkModel := servermodels.ServerPublicNetwork{
+	serverPublicNetworkModel := bmcapi.ServerPublicNetwork{
 		Id:                serverPublicNetwork.Id,
 		Ips:               serverPublicNetwork.Ips,
 		StatusDescription: serverPublicNetwork.StatusDescription,
@@ -53,7 +54,7 @@ func TestCreateServerPublicNetworkSuccessYAML(test_framework *testing.T) {
 
 func TestCreateServerPublicNetworkSuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	serverPublicNetwork := servermodels.GenerateServerPublicNetworkSdk()
+	serverPublicNetwork := generators.GenerateServerPublicNetworkSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPublicNetwork)
@@ -152,7 +153,7 @@ func TestCreateServerPublicNetworkFileReadingFailure(test_framework *testing.T) 
 
 func TestCreateServerPublicNetworkBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	serverPublicNetwork := servermodels.GenerateServerPublicNetworkSdk()
+	serverPublicNetwork := generators.GenerateServerPublicNetworkSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPublicNetwork)
@@ -183,7 +184,7 @@ func TestCreateServerPublicNetworkBackendErrorFailure(test_framework *testing.T)
 
 func TestCreateServerPublicNetworkClientFailure(test_framework *testing.T) {
 	// Setup
-	serverPublicNetwork := servermodels.GenerateServerPublicNetworkSdk()
+	serverPublicNetwork := generators.GenerateServerPublicNetworkSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPublicNetwork)
@@ -215,7 +216,7 @@ func TestCreateServerPublicNetworkClientFailure(test_framework *testing.T) {
 
 func TestCreateServerPublicNetworkKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	serverPublicNetwork := servermodels.GenerateServerPublicNetworkSdk()
+	serverPublicNetwork := generators.GenerateServerPublicNetworkSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(serverPublicNetwork)

@@ -6,7 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -14,8 +15,8 @@ import (
 )
 
 func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
-	reservationList := testutil.GenNDeref(5, billingmodels.GenerateReservation)
-	queryParams := billingmodels.GenerateReservationGetQueryParams()
+	reservationList := testutil.GenNDeref(5, generators.GenerateReservation)
+	queryParams := generators.GenerateReservationGetQueryParams()
 	setQueryParams(*queryParams)
 
 	shortReservations := iterutils.MapInterface(
@@ -39,8 +40,8 @@ func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
-	reservationList := testutil.GenNDeref(5, billingmodels.GenerateReservation)
-	queryParams := billingmodels.GenerateReservationGetQueryParams()
+	reservationList := testutil.GenNDeref(5, generators.GenerateReservation)
+	queryParams := generators.GenerateReservationGetQueryParams()
 	setQueryParams(*queryParams)
 
 	reservationTables := iterutils.MapInterface(
@@ -67,7 +68,7 @@ func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllReservationsClientFailure(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateReservationGetQueryParams()
+	queryParams := generators.GenerateReservationGetQueryParams()
 	setQueryParams(*queryParams)
 
 	// Mocking
@@ -85,7 +86,7 @@ func TestGetAllReservationsClientFailure(test_framework *testing.T) {
 }
 
 func TestGetAllReservationsKeycloakFailure(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateReservationGetQueryParams()
+	queryParams := generators.GenerateReservationGetQueryParams()
 	setQueryParams(*queryParams)
 
 	// Mocking
@@ -100,8 +101,8 @@ func TestGetAllReservationsKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
-	reservationList := testutil.GenNDeref(5, billingmodels.GenerateReservation)
-	queryParams := billingmodels.GenerateReservationGetQueryParams()
+	reservationList := testutil.GenNDeref(5, generators.GenerateReservation)
+	queryParams := generators.GenerateReservationGetQueryParams()
 	setQueryParams(*queryParams)
 
 	shortReservations := iterutils.MapInterface(
@@ -126,6 +127,6 @@ func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
 }
 
-func setQueryParams(queryparams billingmodels.ReservationsGetQueryParams) {
+func setQueryParams(queryparams billing.ReservationsGetQueryParams) {
 	productCategory = string(*queryparams.ProductCategory)
 }

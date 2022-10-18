@@ -6,7 +6,7 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models/queryparams/network"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -45,7 +45,7 @@ func getPublicNetworks(id *string) error {
 	var publicNetwork *networkapi.PublicNetwork
 	var publicNetworks []networkapi.PublicNetwork
 
-	queryParams, err := networkmodels.NewPublicNetworksGetQueryParams(location)
+	queryParams, err := network.NewPublicNetworksGetQueryParams(location)
 
 	if err != nil {
 		return err

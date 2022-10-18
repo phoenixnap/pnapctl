@@ -6,19 +6,19 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"sigs.k8s.io/yaml"
 
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
 func TestDeprovisionServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	result := "Server Deprovisioned"
-	requestBody := servermodels.GenerateRelinquishIpBlockCli()
+	requestBody := generators.GenerateRelinquishIpBlockSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(requestBody)
@@ -26,7 +26,7 @@ func TestDeprovisionServerSuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody.ToSdk())).
+		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody)).
 		Return(result, WithResponse(200, WithBody(result)), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -46,7 +46,7 @@ func TestDeprovisionServerSuccessYAML(test_framework *testing.T) {
 func TestDeprovisionServerSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	result := "Server Deprovisioned"
-	requestBody := servermodels.GenerateRelinquishIpBlockCli()
+	requestBody := generators.GenerateRelinquishIpBlockSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(requestBody)
@@ -54,7 +54,7 @@ func TestDeprovisionServerSuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody.ToSdk())).
+		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody)).
 		Return(result, WithResponse(200, WithBody(result)), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -142,7 +142,7 @@ func TestDeprovisionServerFileReadingFailure(test_framework *testing.T) {
 func TestDeprovisionServerBackendErrorFailure(test_framework *testing.T) {
 	// Setup
 	// Mocking
-	requestBody := servermodels.GenerateRelinquishIpBlockCli()
+	requestBody := generators.GenerateRelinquishIpBlockSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(requestBody)
@@ -150,7 +150,7 @@ func TestDeprovisionServerBackendErrorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody.ToSdk())).
+		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody)).
 		Return("", WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -172,7 +172,7 @@ func TestDeprovisionServerBackendErrorFailure(test_framework *testing.T) {
 
 func TestDeprovisionServerClientFailure(test_framework *testing.T) {
 	// Setup
-	requestBody := servermodels.GenerateRelinquishIpBlockCli()
+	requestBody := generators.GenerateRelinquishIpBlockSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(requestBody)
@@ -181,7 +181,7 @@ func TestDeprovisionServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody.ToSdk())).
+		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody)).
 		Return("", nil, testutil.TestError)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
@@ -203,7 +203,7 @@ func TestDeprovisionServerClientFailure(test_framework *testing.T) {
 
 func TestDeprovisionServerKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	requestBody := servermodels.GenerateRelinquishIpBlockCli()
+	requestBody := generators.GenerateRelinquishIpBlockSdk()
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(requestBody)
 
@@ -212,7 +212,7 @@ func TestDeprovisionServerKeycloakFailure(test_framework *testing.T) {
 	// Mocking
 
 	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody.ToSdk())).
+		ServerDeprovision(RESOURCEID, gomock.Eq(*requestBody)).
 		Return("", nil, testutil.TestKeycloakError)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)

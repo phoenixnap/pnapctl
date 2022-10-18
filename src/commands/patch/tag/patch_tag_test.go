@@ -7,24 +7,24 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/tagmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"sigs.k8s.io/yaml"
 )
 
 func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 	// setup
-	tag := *tagmodels.GenerateTagSdk()
-	tagEdit := *tagmodels.GenerateTagUpdateCli()
+	tag := *generators.GenerateTagSdk()
+	tagEdit := generators.GenerateTagUpdateSdk()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 
 	Filename = FILENAME
 
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
-		TagPatch(RESOURCEID, gomock.Eq(*tagEdit.ToSdk())).
+		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
 		Return(&tag, WithResponse(200, WithBody(nil)), nil).
 		Times(1)
 
@@ -43,14 +43,14 @@ func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 
 func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
 	//setup
-	tag := *tagmodels.GenerateTagSdk()
-	tagEdit := *tagmodels.GenerateTagUpdateCli()
+	tag := *generators.GenerateTagSdk()
+	tagEdit := generators.GenerateTagUpdateSdk()
 	jsonmarshal, _ := json.Marshal(tagEdit)
 	Filename = FILENAME
 
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
-		TagPatch(RESOURCEID, gomock.Eq(*tagEdit.ToSdk())).
+		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
 		Return(&tag, WithResponse(200, WithBody(nil)), nil).
 		Times(1)
 
@@ -155,13 +155,13 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := *tagmodels.GenerateTagUpdateCli()
+	tagEdit := generators.GenerateTagUpdateSdk()
 	yamlmarshal, _ := yaml.Marshal(&tagEdit)
 	Filename = FILENAME
 
 	// prepare mocks
 	PrepareTagMockClient(test_framework).
-		TagPatch(RESOURCEID, gomock.Eq(*tagEdit.ToSdk())).
+		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
 		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
 		Times(1)
 
@@ -183,13 +183,13 @@ func TestSubmitTagEditBackendErrorFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := *tagmodels.GenerateTagUpdateCli()
+	tagEdit := generators.GenerateTagUpdateSdk()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 	Filename = FILENAME
 
 	// prepare mocks
 	PrepareTagMockClient(test_framework).
-		TagPatch(RESOURCEID, gomock.Eq(*tagEdit.ToSdk())).
+		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
 		Return(nil, nil, testutil.TestError).
 		Times(1)
 
@@ -211,13 +211,13 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 
 func TestSubmitTagEditKeycloakFailure(test_framework *testing.T) {
 	// setup
-	tagEdit := *tagmodels.GenerateTagUpdateCli()
+	tagEdit := generators.GenerateTagUpdateSdk()
 	yamlmarshal, _ := yaml.Marshal(tagEdit)
 	Filename = FILENAME
 
 	// prepare mocks
 	PrepareTagMockClient(test_framework).
-		TagPatch(RESOURCEID, gomock.Eq(*tagEdit.ToSdk())).
+		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
 		Return(nil, nil, testutil.TestKeycloakError).
 		Times(1)
 

@@ -2,7 +2,6 @@ package printer
 
 import (
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
-	"phoenixnap.com/pnapctl/common/models/ranchermodels"
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
@@ -23,7 +22,7 @@ func PrepareClusterForPrinting(cluster ranchersdk.Cluster) interface{} {
 	case table:
 		return tables.ClusterFromSdk(cluster)
 	default:
-		return ranchermodels.ClusterFromSdk(cluster)
+		return cluster
 	}
 }
 

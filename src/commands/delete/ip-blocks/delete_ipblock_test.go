@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -15,7 +15,7 @@ func TestDeleteIpBlockSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksIpBlockIdDelete(RESOURCEID).
-		Return(ipmodels.GenerateDeleteIpBlockResultSdk(), WithResponse(200, nil), nil)
+		Return(generators.GenerateDeleteIpBlockResultSdk(), WithResponse(200, nil), nil)
 
 	// Run command
 	err := DeleteIpBlockCmd.RunE(DeleteIpBlockCmd, []string{RESOURCEID})

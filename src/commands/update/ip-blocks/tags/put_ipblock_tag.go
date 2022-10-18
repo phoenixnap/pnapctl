@@ -1,9 +1,10 @@
 package ip_blocks
 
 import (
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/ip"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -34,13 +35,13 @@ var PutIpBlockTagCmd = &cobra.Command{
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		ipBlockPutTag, err := ipmodels.PutIpBlockTagRequestFromFile(Filename, commandName)
+		ipBlockPutTag, err := models.CreateRequestFromFile[[]ipapi.TagAssignmentRequest](Filename, commandName)
 
 		if err != nil {
 			return err
 		}
 
-		response, httpResponse, err := ip.Client.IpBlocksIpBlockIdTagsPut(args[0], ipBlockPutTag)
+		response, httpResponse, err := ip.Client.IpBlocksIpBlockIdTagsPut(args[0], *ipBlockPutTag)
 
 		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 

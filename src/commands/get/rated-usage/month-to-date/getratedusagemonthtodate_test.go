@@ -7,7 +7,8 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/models/tables"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -15,8 +16,8 @@ import (
 )
 
 func TestGetAllRatedUsagesMonthToDate_FullTable(test_framework *testing.T) {
-	responseList := billingmodels.GenerateRatedUsageRecordSdkList()
-	queryParams := billingmodels.GenerateRatedUsageMonthToDateGetQueryParams()
+	responseList := generators.GenerateRatedUsageRecordSdkList()
+	queryParams := generators.GenerateRatedUsageMonthToDateGetQueryParams()
 	setQueryParams(queryParams)
 
 	Full = true
@@ -44,8 +45,8 @@ func TestGetAllRatedUsagesMonthToDate_FullTable(test_framework *testing.T) {
 
 // Currently the short table is an empty struct.
 func TestGetAllRatedUsagesMonthToDate_ShortTable(test_framework *testing.T) {
-	responseList := billingmodels.GenerateRatedUsageRecordSdkList()
-	queryParams := billingmodels.GenerateRatedUsageMonthToDateGetQueryParams()
+	responseList := generators.GenerateRatedUsageRecordSdkList()
+	queryParams := generators.GenerateRatedUsageMonthToDateGetQueryParams()
 	setQueryParams(queryParams)
 
 	Full = false
@@ -72,7 +73,7 @@ func TestGetAllRatedUsagesMonthToDate_ShortTable(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsagesMonthToDate_KeycloakFailure(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateRatedUsageMonthToDateGetQueryParams()
+	queryParams := generators.GenerateRatedUsageMonthToDateGetQueryParams()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -87,8 +88,8 @@ func TestGetAllRatedUsagesMonthToDate_KeycloakFailure(test_framework *testing.T)
 }
 
 func TestGetAllRatedUsagesMonthToDate_PrinterFailure(test_framework *testing.T) {
-	responseList := billingmodels.GenerateRatedUsageRecordSdkList()
-	queryParams := billingmodels.GenerateRatedUsageMonthToDateGetQueryParams()
+	responseList := generators.GenerateRatedUsageRecordSdkList()
+	queryParams := generators.GenerateRatedUsageMonthToDateGetQueryParams()
 	setQueryParams(queryParams)
 
 	var recordTables []interface{}
@@ -113,7 +114,7 @@ func TestGetAllRatedUsagesMonthToDate_PrinterFailure(test_framework *testing.T) 
 }
 
 func TestGetAllRatedUsagesMonthToDate_ServerError(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateRatedUsageMonthToDateGetQueryParams()
+	queryParams := generators.GenerateRatedUsageMonthToDateGetQueryParams()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -129,7 +130,7 @@ func TestGetAllRatedUsagesMonthToDate_ServerError(test_framework *testing.T) {
 }
 
 func TestGetAllRatedUsagesMonthToDate_InvalidParams(test_framework *testing.T) {
-	queryParams := billingmodels.GenerateRatedUsageMonthToDateGetQueryParams()
+	queryParams := generators.GenerateRatedUsageMonthToDateGetQueryParams()
 
 	var invalidCategory = billingapi.ProductCategoryEnum("NONE")
 	queryParams.ProductCategory = &invalidCategory
@@ -142,6 +143,6 @@ func TestGetAllRatedUsagesMonthToDate_InvalidParams(test_framework *testing.T) {
 	assert.Equal(test_framework, ctlerrors.InvalidFlagValuePassedError("category", "NONE", billingapi.AllowedProductCategoryEnumEnumValues), err)
 }
 
-func setQueryParams(queryparams billingmodels.RatedUsageMonthToDateGetQueryParams) {
+func setQueryParams(queryparams billing.RatedUsageMonthToDateGetQueryParams) {
 	ProductCategory = string(*queryparams.ProductCategory)
 }

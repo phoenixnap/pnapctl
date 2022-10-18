@@ -6,14 +6,14 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllSshKeysSuccess(test_framework *testing.T) {
-	sshKeyList := sshkeymodels.GenerateSshKeyListSdk(2)
+	sshKeyList := generators.GenerateSshKeyListSdk(2)
 
 	var sshKeyTables []interface{}
 
@@ -49,7 +49,7 @@ func TestGetAllSshKeysKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllSshKeysPrinterFailure(test_framework *testing.T) {
-	sshKeyList := sshkeymodels.GenerateSshKeyListSdk(2)
+	sshKeyList := generators.GenerateSshKeyListSdk(2)
 
 	var sshKeyTables []interface{}
 

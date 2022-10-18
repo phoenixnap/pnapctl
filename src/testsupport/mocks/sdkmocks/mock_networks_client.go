@@ -10,7 +10,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	networkapi "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
-	networkmodels "phoenixnap.com/pnapctl/common/models/networkmodels"
+	network "phoenixnap.com/pnapctl/common/models/queryparams/network"
 )
 
 // MockNetworkSdkClient is a mock of NetworkSdkClient interface.
@@ -195,7 +195,7 @@ func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkPatch(networkId, public
 }
 
 // PublicNetworksGet mocks base method.
-func (m *MockNetworkSdkClient) PublicNetworksGet(location networkmodels.PublicNetworksGetQueryParams) ([]networkapi.PublicNetwork, *http.Response, error) {
+func (m *MockNetworkSdkClient) PublicNetworksGet(location network.PublicNetworksGetQueryParams) ([]networkapi.PublicNetwork, *http.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PublicNetworksGet", location)
 	ret0, _ := ret[0].([]networkapi.PublicNetwork)

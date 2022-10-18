@@ -2,7 +2,7 @@ package tables
 
 import (
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
-	"phoenixnap.com/pnapctl/common/models/networkstoragemodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
@@ -28,6 +28,6 @@ func StorageNetworkTableFromSdk(sdk networkstorageapi.StorageNetwork) StorageNet
 		NetworkId:   DerefString(sdk.NetworkId),
 		Ips:         sdk.Ips,
 		CreatedOn:   DerefStringable(sdk.CreatedOn),
-		Volumes:     iterutils.Map(sdk.Volumes, networkstoragemodels.VolumeToTableString),
+		Volumes:     iterutils.MapRef(sdk.Volumes, models.VolumeToTableString),
 	}
 }

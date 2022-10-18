@@ -6,14 +6,14 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetIpBlocksSuccess(test_framework *testing.T) {
-	ipBlock := ipmodels.GenerateIpBlockSdk()
+	ipBlock := generators.GenerateIpBlockSdk()
 	tableIpBlock := tables.ToShortIpBlockTable(ipBlock)
 
 	PrepareIPMockClient(test_framework).
@@ -68,7 +68,7 @@ func TestGetIpBlocksKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetIpBlocksPrinterFailure(test_framework *testing.T) {
-	ipBlock := ipmodels.GenerateIpBlockSdk()
+	ipBlock := generators.GenerateIpBlockSdk()
 	tableIpBlock := tables.ToShortIpBlockTable(ipBlock)
 
 	PrepareIPMockClient(test_framework).

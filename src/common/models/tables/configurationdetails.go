@@ -2,7 +2,7 @@ package tables
 
 import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models"
 )
 
 type ConfigurationDetailsTable struct {
@@ -11,6 +11,6 @@ type ConfigurationDetailsTable struct {
 
 func ConfigurationDetailsTableFromSdk(sdk billingapi.ConfigurationDetails) ConfigurationDetailsTable {
 	return ConfigurationDetailsTable{
-		ThresholdConfiguration: billingmodels.ThresholdConfigurationToTableString(sdk.ThresholdConfiguration),
+		ThresholdConfiguration: models.ThresholdConfigurationToTableString(sdk.ThresholdConfiguration),
 	}
 }

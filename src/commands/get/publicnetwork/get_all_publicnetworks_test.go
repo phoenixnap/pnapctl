@@ -6,7 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/models/queryparams/network"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
@@ -14,8 +15,8 @@ import (
 )
 
 func TestGetAllPublicNetworksSuccess(test_framework *testing.T) {
-	publicNetworkList := testutil.GenN(2, networkmodels.GeneratePublicNetworkSdk)
-	queryParams := networkmodels.GeneratePublicNetworksGetQueryParams()
+	publicNetworkList := testutil.GenN(2, generators.GeneratePublicNetworkSdk)
+	queryParams := generators.GeneratePublicNetworksGetQueryParams()
 	setQueryParams(queryParams)
 
 	publicNetworkTables := iterutils.MapInterface(publicNetworkList, tables.PublicNetworkTableFromSdk)
@@ -36,7 +37,7 @@ func TestGetAllPublicNetworksSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllPublicNetworksInvalidQueryParams(test_framework *testing.T) {
-	queryParams := networkmodels.GeneratePublicNetworksGetQueryParams()
+	queryParams := generators.GeneratePublicNetworksGetQueryParams()
 	invalid := "INVALID"
 	queryParams.Location = &invalid
 	setQueryParams(queryParams)
@@ -48,7 +49,7 @@ func TestGetAllPublicNetworksInvalidQueryParams(test_framework *testing.T) {
 }
 
 func TestGetAllPublicNetworksClientFailure(test_framework *testing.T) {
-	queryParams := networkmodels.GeneratePublicNetworksGetQueryParams()
+	queryParams := generators.GeneratePublicNetworksGetQueryParams()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -66,7 +67,7 @@ func TestGetAllPublicNetworksClientFailure(test_framework *testing.T) {
 }
 
 func TestGetAllPublicNetworksKeycloakFailure(test_framework *testing.T) {
-	queryParams := networkmodels.GeneratePublicNetworksGetQueryParams()
+	queryParams := generators.GeneratePublicNetworksGetQueryParams()
 	setQueryParams(queryParams)
 
 	// Mocking
@@ -81,8 +82,8 @@ func TestGetAllPublicNetworksKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetAllPublicNetworksPrinterFailure(test_framework *testing.T) {
-	publicNetworkList := testutil.GenN(2, networkmodels.GeneratePublicNetworkSdk)
-	queryParams := networkmodels.GeneratePublicNetworksGetQueryParams()
+	publicNetworkList := testutil.GenN(2, generators.GeneratePublicNetworkSdk)
+	queryParams := generators.GeneratePublicNetworksGetQueryParams()
 	setQueryParams(queryParams)
 
 	publicNetworkTables := iterutils.MapInterface(publicNetworkList, tables.PublicNetworkTableFromSdk)
@@ -102,6 +103,6 @@ func TestGetAllPublicNetworksPrinterFailure(test_framework *testing.T) {
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
 }
 
-func setQueryParams(queryparams networkmodels.PublicNetworksGetQueryParams) {
+func setQueryParams(queryparams network.PublicNetworksGetQueryParams) {
 	location = *queryparams.Location
 }

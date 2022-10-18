@@ -6,7 +6,7 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/servermodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -37,12 +37,12 @@ pnapctl tag server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 - name: tagName2
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		tagRequests, err := servermodels.TagServerRequestFromFile(Filename, commandName)
+		tagRequests, err := models.CreateRequestFromFile[[]bmcapisdk.TagAssignmentRequest](Filename, commandName)
 		if err != nil {
 			return err
 		}
 
-		serverResponse, httpResponse, err := performTagRequest(args[0], tagRequests)
+		serverResponse, httpResponse, err := performTagRequest(args[0], *tagRequests)
 		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
 
 		if *generatedError != nil {

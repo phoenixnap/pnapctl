@@ -6,11 +6,11 @@ import (
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 func TestToConfigurationDetailsTable_NotNil(t *testing.T) {
-	sdk := *billingmodels.GenerateConfigurationDetails()
+	sdk := *generators.GenerateConfigurationDetails()
 	tbl := ConfigurationDetailsTableFromSdk(sdk)
 
 	assertConfigurationTablesEqual(t, sdk, tbl)

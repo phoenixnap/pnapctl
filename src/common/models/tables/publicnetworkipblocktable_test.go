@@ -5,11 +5,11 @@ import (
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 )
 
 func TestPublicNetworkIpBlockTableFromSdkSuccess(test_framework *testing.T) {
-	sdk := networkmodels.GeneratePublicNetworkIpBlockSdk()
+	sdk := generators.GeneratePublicNetworkIpBlockSdk()
 	tbl := PublicNetworkIpBlockTableFromSdk(sdk)
 
 	assertPublicNetworkIpBlocksEqual(test_framework, sdk, tbl)

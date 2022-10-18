@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/networkmodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -14,7 +14,7 @@ import (
 
 func TestGetPrivateNetworkSuccess(test_framework *testing.T) {
 
-	privateNetwork := networkmodels.GeneratePrivateNetworkSdk()
+	privateNetwork := generators.GeneratePrivateNetworkSdk()
 	var privateNetworkTable = tables.PrivateNetworkFromSdk(privateNetwork)
 
 	PrepareNetworkMockClient(test_framework).
@@ -69,7 +69,7 @@ func TestGetPrivateNetworkKeycloakFailure(test_framework *testing.T) {
 }
 
 func TestGetPrivateNetworkPrinterFailure(test_framework *testing.T) {
-	privateNetwork := networkmodels.GeneratePrivateNetworkSdk()
+	privateNetwork := generators.GeneratePrivateNetworkSdk()
 	privateNetworkTable := tables.PrivateNetworkFromSdk(privateNetwork)
 
 	PrepareNetworkMockClient(test_framework).

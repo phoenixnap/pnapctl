@@ -1,9 +1,10 @@
 package ipblock
 
 import (
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/ip"
-	"phoenixnap.com/pnapctl/common/models/ipmodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 )
@@ -30,7 +31,7 @@ Requires a file (yaml or json) containing the information needed to update the i
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		ipBlockPatch, err := ipmodels.PatchIpBlockRequestFromFile(Filename, commandName)
+		ipBlockPatch, err := models.CreateRequestFromFile[ipapi.IpBlockPatch](Filename, commandName)
 
 		if err != nil {
 			return err

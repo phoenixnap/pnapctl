@@ -2,7 +2,7 @@ package tables
 
 import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"phoenixnap.com/pnapctl/common/models/billingmodels"
+	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
@@ -16,6 +16,6 @@ func ProductAvailabilityTableFromSdk(sdk billingapi.ProductAvailability) Product
 	return ProductAvailabilityTable{
 		ProductCode:                 sdk.ProductCode,
 		ProductCategory:             sdk.ProductCategory,
-		LocationAvailabilityDetails: iterutils.Map(sdk.LocationAvailabilityDetails, billingmodels.LocationAvailabilityDetailsToTableString),
+		LocationAvailabilityDetails: iterutils.MapRef(sdk.LocationAvailabilityDetails, models.LocationAvailabilityDetailsToTableString),
 	}
 }

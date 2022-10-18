@@ -7,16 +7,16 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"phoenixnap.com/pnapctl/common/models/bmcapimodels/sshkeymodels"
+	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"sigs.k8s.io/yaml"
 )
 
 func TestCreateSshKeySuccessYAML(test_framework *testing.T) {
 	// What the client should receive.
-	sshKeyCreate := sshkeymodels.GenerateSshKeyCreateSdk()
+	sshKeyCreate := generators.GenerateSshKeyCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(sshKeyCreate)
@@ -24,7 +24,7 @@ func TestCreateSshKeySuccessYAML(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	sshKey := sshkeymodels.GenerateSshKeySdk()
+	sshKey := generators.GenerateSshKeySdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -48,7 +48,7 @@ func TestCreateSshKeySuccessYAML(test_framework *testing.T) {
 
 func TestCreateSshKeySuccessJSON(test_framework *testing.T) {
 	// What the client should receive.
-	sshKeyCreate := sshkeymodels.GenerateSshKeyCreateSdk()
+	sshKeyCreate := generators.GenerateSshKeyCreateSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(sshKeyCreate)
@@ -56,7 +56,7 @@ func TestCreateSshKeySuccessJSON(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// What the server should return.
-	sshKey := sshkeymodels.GenerateSshKeySdk()
+	sshKey := generators.GenerateSshKeySdk()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -149,7 +149,7 @@ func TestCreateSshKeyFileReadingFailure(test_framework *testing.T) {
 
 func TestCreateSshKeyBackendErrorFailure(test_framework *testing.T) {
 	// Setup
-	sshKeyCreate := sshkeymodels.GenerateSshKeyCreateSdk()
+	sshKeyCreate := generators.GenerateSshKeyCreateSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(sshKeyCreate)
@@ -181,7 +181,7 @@ func TestCreateSshKeyBackendErrorFailure(test_framework *testing.T) {
 
 func TestCreateSshKeyClientFailure(test_framework *testing.T) {
 	// Setup
-	sshKeyCreate := sshkeymodels.GenerateSshKeyCreateSdk()
+	sshKeyCreate := generators.GenerateSshKeyCreateSdk()
 
 	// Assumed contents of the file.
 	jsonmarshal, _ := json.Marshal(sshKeyCreate)
@@ -213,7 +213,7 @@ func TestCreateSshKeyClientFailure(test_framework *testing.T) {
 
 func TestCreateSshKeyKeycloakFailure(test_framework *testing.T) {
 	// Setup
-	sshKeyCreate := sshkeymodels.GenerateSshKeyCreateSdk()
+	sshKeyCreate := generators.GenerateSshKeyCreateSdk()
 
 	// Assumed contents of the file.
 	yamlmarshal, _ := yaml.Marshal(sshKeyCreate)
