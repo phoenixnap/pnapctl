@@ -51,6 +51,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 
 	networkstorageAPIconfiguration.HTTPClient = config.Client(context.Background())
 	networkstorageAPIconfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
+	networkstorageAPIconfiguration.XPoweredBy = configuration.XPoweredBy + version.AppVersion.Version
 
 	api_client := networkstoragesdk.NewAPIClient(networkstorageAPIconfiguration)
 

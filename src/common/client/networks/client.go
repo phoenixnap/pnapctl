@@ -59,6 +59,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 
 	networksAPIconfiguration.HTTPClient = config.Client(context.Background())
 	networksAPIconfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
+	networksAPIconfiguration.XPoweredBy = configuration.XPoweredBy + version.AppVersion.Version
 
 	api_client := networkapisdk.NewAPIClient(networksAPIconfiguration)
 

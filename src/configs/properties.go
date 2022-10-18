@@ -6,4 +6,5 @@ const (
 	// KnowledgeBaseURL represents the URL of the public knowledge base for pnapCTL
 	KnowledgeBaseURL = "https://developers.phoenixnap.com/cli"
 	UserAgent        = "pnapctl/"
+	XPoweredBy       = "pnapctl/"
 )

@@ -78,6 +78,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 
 	bmcAPIconfiguration.HTTPClient = config.Client(context.Background())
 	bmcAPIconfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
+	bmcAPIconfiguration.XPoweredBy = configuration.XPoweredBy + version.AppVersion.Version
 
 	api_client := bmcapisdk.NewAPIClient(bmcAPIconfiguration)
 

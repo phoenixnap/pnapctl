@@ -61,6 +61,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 
 	billingAPIconfiguration.HTTPClient = config.Client(context.Background())
 	billingAPIconfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
+	billingAPIconfiguration.XPoweredBy = configuration.XPoweredBy + version.AppVersion.Version
 
 	api_client := billingapisdk.NewAPIClient(billingAPIconfiguration)
 
