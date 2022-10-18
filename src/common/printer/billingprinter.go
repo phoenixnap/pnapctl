@@ -26,7 +26,7 @@ func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200Response
 	case table:
 		return tables.ShortRatedUsageRecordFromSdk(ratedUsage)
 	default:
-		return ratedUsage
+		return ratedUsage.GetActualInstance()
 	}
 }
 
@@ -48,7 +48,7 @@ func PrepareProductForPrinting(product billingapi.ProductsGet200ResponseInner) i
 	case table:
 		return tables.ProductTableFromSdk(product)
 	default:
-		return product
+		return product.GetActualInstance()
 	}
 }
 

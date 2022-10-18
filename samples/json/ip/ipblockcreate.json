@@ -1,4 +1,5 @@
 {
   "cidrBlockSize": "/28",
-  "location": "PHX"
+  "location": "PHX",
+  "description": "Created from PNAPCTL"
 }

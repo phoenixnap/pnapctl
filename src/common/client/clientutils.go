@@ -24,8 +24,12 @@ func HandleResponse[T any](response T, httpResponse *http.Response, err error) (
 	return response, HandleResponseWithoutBody(httpResponse, err)
 }
 
+func is2xxSuccessful(response *http.Response) bool {
+	return response.StatusCode >= 200 && response.StatusCode < 300
+}
+
 func HandleResponseWithoutBody(httpResponse *http.Response, err error) error {
-	if httpResponse != nil && httpResponse.StatusCode >= 200 && httpResponse.StatusCode < 300 {
+	if httpResponse != nil && !is2xxSuccessful(httpResponse) {
 		return ctlerrors.HandleBMCError(httpResponse)
 	} else if err != nil {
 		return ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
