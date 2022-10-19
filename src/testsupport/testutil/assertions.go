@@ -1,6 +1,7 @@
 package testutil
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 
@@ -17,4 +18,13 @@ func AssertNilEquality(test_framework *testing.T, varName string, cliVar interfa
 	}
 
 	return true
+}
+
+func AssertIsType[T any](test_framework *testing.T, item interface{}) {
+	var t T
+	assert.Equal(
+		test_framework,
+		fmt.Sprintf("%T", item),
+		fmt.Sprintf("%T", t),
+	)
 }
