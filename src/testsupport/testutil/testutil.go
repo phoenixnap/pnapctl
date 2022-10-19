@@ -2,6 +2,7 @@ package testutil
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -110,4 +111,13 @@ type Stringlike interface {
 
 func AsStrings[S Stringlike](enums []S) []string {
 	return iterutils.Map(enums, func(s S) string { return string(s) })
+}
+
+func AssertIsType[T any](test_framework *testing.T, item interface{}) {
+	var t T
+	assert.Equal(
+		test_framework,
+		fmt.Sprintf("%T", item),
+		fmt.Sprintf("%T", t),
+	)
 }
