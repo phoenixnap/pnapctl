@@ -19,9 +19,8 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	tagCreate := generators.Generate[tagapisdk.TagCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(tagCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, tagCreate)
 
 	// What the server should return.
 	createdTag := generators.Generate[tagapisdk.Tag]()
@@ -30,10 +29,6 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
 		Return(&createdTag, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
@@ -47,9 +42,8 @@ func TestCreateTagSuccessJSON(test_framework *testing.T) {
 	tagCreate := generators.Generate[tagapisdk.TagCreate]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(tagCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, tagCreate)
 
 	// What the server should return.
 	createdTag := generators.Generate[tagapisdk.Tag]()
@@ -58,10 +52,6 @@ func TestCreateTagSuccessJSON(test_framework *testing.T) {
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
 		Return(&createdTag, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
@@ -73,27 +63,20 @@ func TestCreateTagSuccessJSON(test_framework *testing.T) {
 func TestCreateTagFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
 
 	// Expected error
-	expectedErr := testutil.TestError
-
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreateTagUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
-
 	Filename = FILENAME
 
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
@@ -106,18 +89,13 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 	tagCreate := generators.Generate[tagapisdk.TagCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(tagCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, tagCreate)
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})

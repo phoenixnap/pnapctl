@@ -10,7 +10,6 @@ import (
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -23,9 +22,8 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverCreate)
 
 	// What the server should return.
 	createdServer := generators.Generate[bmcapisdk.Server]()
@@ -34,10 +32,6 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
 		Return(&createdServer, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
@@ -51,9 +45,8 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, serverCreate)
 
 	// What the server should return.
 	createdServer := generators.Generate[bmcapisdk.Server]()
@@ -62,10 +55,6 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
 		Return(&createdServer, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
@@ -79,13 +68,10 @@ func TestCreateServerFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
-
-	// Expected command
-	expectedErr := testutil.TestError // TODO remove this from tests. We should give plain text here, not compare it.
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -93,15 +79,10 @@ func TestCreateServerFileProcessorFailure(test_framework *testing.T) {
 }
 
 func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
-
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
@@ -109,44 +90,18 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
-func TestCreateServerFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		})
-
-	// Run command
-	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
-}
-
 func TestCreateServerClientFailure(test_framework *testing.T) {
 	// Setup
 	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverCreate)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})

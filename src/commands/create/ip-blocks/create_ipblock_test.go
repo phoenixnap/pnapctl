@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -19,9 +18,8 @@ func TestCreateIpBlockSuccessYAML(test_framework *testing.T) {
 	ipBlockCreate := generators.Generate[ipapi.IpBlockCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, ipBlockCreate)
 
 	// What the server should return.
 	ipBlock := generators.Generate[ipapi.IpBlock]()
@@ -30,10 +28,6 @@ func TestCreateIpBlockSuccessYAML(test_framework *testing.T) {
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(ipBlockCreate)).
 		Return(&ipBlock, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
@@ -46,9 +40,8 @@ func TestCreateIpBlockSuccessJSON(test_framework *testing.T) {
 	ipBlockCreateCli := generators.Generate[ipapi.IpBlockCreate]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(ipBlockCreateCli)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, ipBlockCreateCli)
 
 	// What the server should return.
 	ipBlock := generators.Generate[ipapi.IpBlock]()
@@ -57,10 +50,6 @@ func TestCreateIpBlockSuccessJSON(test_framework *testing.T) {
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(ipBlockCreateCli)).
 		Return(&ipBlock, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
@@ -74,13 +63,10 @@ func TestCreateIpBlockFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
-
-	// Expected command
-	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -88,15 +74,10 @@ func TestCreateIpBlockFileProcessorFailure(test_framework *testing.T) {
 }
 
 func TestCreateIpBlockUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`error error`)
-
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
@@ -104,44 +85,18 @@ func TestCreateIpBlockUnmarshallingFailure(test_framework *testing.T) {
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
-func TestCreateIpBlockFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		})
-
-	// Run command
-	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
-}
-
 func TestCreateIpBlockClientFailure(test_framework *testing.T) {
 	// Setup
 	ipBlockCreate := generators.Generate[ipapi.IpBlockCreate]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(ipBlockCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, ipBlockCreate)
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(ipBlockCreate)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})

@@ -19,9 +19,8 @@ func TestConvertReservationSuccessYAML(test_framework *testing.T) {
 	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(reservationConvert)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, reservationConvert)
 
 	// What the server should return.
 	createdReservation := generators.Generate[billingapi.Reservation]()
@@ -30,10 +29,6 @@ func TestConvertReservationSuccessYAML(test_framework *testing.T) {
 	PrepareBillingMockClient(test_framework).
 		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
 		Return(&createdReservation, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})
@@ -47,9 +42,8 @@ func TestConvertReservationSuccessJSON(test_framework *testing.T) {
 	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(reservationConvert)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, reservationConvert)
 
 	// What the server should return.
 	createdReservation := generators.Generate[billingapi.Reservation]()
@@ -58,10 +52,6 @@ func TestConvertReservationSuccessJSON(test_framework *testing.T) {
 	PrepareBillingMockClient(test_framework).
 		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
 		Return(&createdReservation, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})
@@ -73,27 +63,20 @@ func TestConvertReservationSuccessJSON(test_framework *testing.T) {
 func TestConvertReservationFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := testutil.TestError
-
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestConvertReservationUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`reservation? ["maybe"]`)
-
 	Filename = FILENAME
 
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})
@@ -106,18 +89,13 @@ func TestConvertReservationClientFailure(test_framework *testing.T) {
 	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(reservationConvert)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, reservationConvert)
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})

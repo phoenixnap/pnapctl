@@ -34,14 +34,16 @@ func ExpectFromFileSuccess(t *testing.T, marshaller func(interface{}) ([]byte, e
 		Return(marshalled, nil)
 }
 
-func ExpectFromFileFailure(t *testing.T) {
+func ExpectFromFileFailure(t *testing.T) error {
 	PrepareMockFileProcessor(t).
 		ReadFile(FILENAME).
 		Return(nil, testutil.TestError)
+
+	return testutil.TestError
 }
 
 func ExpectFromFileUnmarshalFailure(t *testing.T) {
 	PrepareMockFileProcessor(t).
 		ReadFile(FILENAME).
-		Return([]byte(`Invalid JSON/YAML - Should cause unmarshal to fail.`))
+		Return([]byte(`Invalid JSON/YAML - Should cause unmarshal to fail.`), nil)
 }

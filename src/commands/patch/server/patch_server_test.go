@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"sigs.k8s.io/yaml"
@@ -22,9 +21,8 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 	serverPatch := generators.Generate[bmcapisdk.ServerPatch]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverPatch)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverPatch)
 
 	// What the server should return.
 	server := generators.Generate[bmcapisdk.Server]()
@@ -33,10 +31,6 @@ func TestPatchServerSuccessYAML(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(&server, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := PatchServerCmd.RunE(PatchServerCmd, []string{RESOURCEID})
@@ -50,9 +44,8 @@ func TestPatchServerSuccessJSON(test_framework *testing.T) {
 	serverPatch := generators.Generate[bmcapisdk.ServerPatch]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverPatch)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, serverPatch)
 
 	// What the server should return.
 	server := generators.Generate[bmcapisdk.Server]()
@@ -61,10 +54,6 @@ func TestPatchServerSuccessJSON(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(&server, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := PatchServerCmd.RunE(PatchServerCmd, []string{RESOURCEID})
@@ -78,13 +67,10 @@ func TestPatchServerFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := PatchServerCmd.RunE(PatchServerCmd, []string{RESOURCEID})
-
-	// Expected command
-	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -93,15 +79,10 @@ func TestPatchServerFileProcessorFailure(test_framework *testing.T) {
 
 func TestPatchServerUnmarshallingFailure(test_framework *testing.T) {
 	// Invalid contents of the file
-	// filecontents := make([]byte, 10)
-	filecontents := []byte(`notproperty: desc`)
-
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := PatchServerCmd.RunE(PatchServerCmd, []string{RESOURCEID})
@@ -109,44 +90,18 @@ func TestPatchServerUnmarshallingFailure(test_framework *testing.T) {
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
-func TestPatchServerFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		})
-
-	// Run command
-	err := PatchServerCmd.RunE(PatchServerCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
-}
-
 func TestPatchServerClientFailure(test_framework *testing.T) {
 	// Setup
 	serverPatch := generators.Generate[bmcapisdk.ServerPatch]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverPatch)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, serverPatch)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPatch(RESOURCEID, gomock.Eq(serverPatch)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := PatchServerCmd.RunE(PatchServerCmd, []string{RESOURCEID})

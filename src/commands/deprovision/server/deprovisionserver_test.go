@@ -8,7 +8,6 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
 
@@ -22,17 +21,12 @@ func TestDeprovisionServerSuccessYAML(test_framework *testing.T) {
 	requestBody := generators.Generate[bmcapisdk.RelinquishIpBlock]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(requestBody)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, requestBody)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerDeprovision(RESOURCEID, gomock.Eq(requestBody)).
 		Return(result, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
@@ -47,17 +41,12 @@ func TestDeprovisionServerSuccessJSON(test_framework *testing.T) {
 	requestBody := generators.Generate[bmcapisdk.RelinquishIpBlock]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(requestBody)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, requestBody)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerDeprovision(RESOURCEID, gomock.Eq(requestBody)).
 		Return(result, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
@@ -71,28 +60,20 @@ func TestDeprovisionServerFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
-
-	// Expected command
-	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestDeprovisionServerUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`deleteIpBlocks negative`)
-
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
@@ -100,44 +81,18 @@ func TestDeprovisionServerUnmarshallingFailure(test_framework *testing.T) {
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
-func TestDeprovisionServerFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		})
-
-	// Run command
-	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
-}
-
 func TestDeprovisionServerClientFailure(test_framework *testing.T) {
 	// Setup
 	requestBody := generators.Generate[bmcapisdk.RelinquishIpBlock]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(requestBody)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, requestBody)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerDeprovision(RESOURCEID, gomock.Eq(requestBody)).
 		Return("", testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})

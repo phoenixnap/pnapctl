@@ -19,9 +19,8 @@ func TestCreateReservationSuccessYAML(test_framework *testing.T) {
 	reservationCreate := generators.Generate[billingapi.ReservationRequest]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(reservationCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, reservationCreate)
 
 	// What the server should return.
 	createdReservation := generators.Generate[billingapi.Reservation]()
@@ -30,10 +29,6 @@ func TestCreateReservationSuccessYAML(test_framework *testing.T) {
 	PrepareBillingMockClient(test_framework).
 		ReservationsPost(gomock.Eq(reservationCreate)).
 		Return(&createdReservation, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateReservationCmd.RunE(CreateReservationCmd, []string{})
@@ -47,9 +42,8 @@ func TestCreateReservationSuccessJSON(test_framework *testing.T) {
 	reservationCreate := generators.Generate[billingapi.ReservationRequest]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(reservationCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, reservationCreate)
 
 	// What the server should return.
 	createdReservation := generators.Generate[billingapi.Reservation]()
@@ -58,10 +52,6 @@ func TestCreateReservationSuccessJSON(test_framework *testing.T) {
 	PrepareBillingMockClient(test_framework).
 		ReservationsPost(gomock.Eq(reservationCreate)).
 		Return(&createdReservation, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateReservationCmd.RunE(CreateReservationCmd, []string{})
@@ -73,27 +63,20 @@ func TestCreateReservationSuccessJSON(test_framework *testing.T) {
 func TestCreateReservationFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateReservationCmd.RunE(CreateReservationCmd, []string{})
 
 	// Expected error
-	expectedErr := testutil.TestError
-
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreateReservationUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`reservation? ["maybe"]`)
-
 	Filename = FILENAME
 
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateReservationCmd.RunE(CreateReservationCmd, []string{})
@@ -106,18 +89,13 @@ func TestCreateReservationClientFailure(test_framework *testing.T) {
 	reservationCreate := generators.Generate[billingapi.ReservationRequest]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(reservationCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, reservationCreate)
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationsPost(gomock.Eq(reservationCreate)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateReservationCmd.RunE(CreateReservationCmd, []string{})

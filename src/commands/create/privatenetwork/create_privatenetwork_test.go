@@ -19,9 +19,8 @@ func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(privateNetworkCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, privateNetworkCreate)
 
 	// What the server should return.
 	createdPrivateNetwork := generators.Generate[networkapi.PrivateNetwork]()
@@ -30,10 +29,6 @@ func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
 		Return(&createdPrivateNetwork, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreatePrivateNetworkCmd.RunE(CreatePrivateNetworkCmd, []string{})
@@ -47,9 +42,8 @@ func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(privateNetworkCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, privateNetworkCreate)
 
 	// What the server should return.
 	createdPrivateNetwork := generators.Generate[networkapi.PrivateNetwork]()
@@ -58,10 +52,6 @@ func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
 		Return(&createdPrivateNetwork, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreatePrivateNetworkCmd.RunE(CreatePrivateNetworkCmd, []string{})
@@ -73,27 +63,20 @@ func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 func TestCreatePrivateNetworkFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreatePrivateNetworkCmd.RunE(CreatePrivateNetworkCmd, []string{})
 
 	// Expected error
-	expectedErr := testutil.TestError
-
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreatePrivateNetworkUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
-
 	Filename = FILENAME
 
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreatePrivateNetworkCmd.RunE(CreatePrivateNetworkCmd, []string{})
@@ -106,18 +89,13 @@ func TestCreatePrivateNetworkClientFailure(test_framework *testing.T) {
 	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(privateNetworkCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, privateNetworkCreate)
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreatePrivateNetworkCmd.RunE(CreatePrivateNetworkCmd, []string{})

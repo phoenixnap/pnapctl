@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -20,9 +19,8 @@ func TestCreateSshKeySuccessYAML(test_framework *testing.T) {
 	sshKeyCreate := generators.Generate[bmcapi.SshKeyCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(sshKeyCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, sshKeyCreate)
 
 	// What the server should return.
 	sshKey := generators.Generate[bmcapi.SshKey]()
@@ -31,10 +29,6 @@ func TestCreateSshKeySuccessYAML(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPost(gomock.Eq(sshKeyCreate)).
 		Return(&sshKey, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateSshKeyCmd.RunE(CreateSshKeyCmd, []string{})
@@ -48,9 +42,8 @@ func TestCreateSshKeySuccessJSON(test_framework *testing.T) {
 	sshKeyCreate := generators.Generate[bmcapi.SshKeyCreate]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(sshKeyCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, sshKeyCreate)
 
 	// What the server should return.
 	sshKey := generators.Generate[bmcapi.SshKey]()
@@ -59,10 +52,6 @@ func TestCreateSshKeySuccessJSON(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPost(gomock.Eq(sshKeyCreate)).
 		Return(&sshKey, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateSshKeyCmd.RunE(CreateSshKeyCmd, []string{})
@@ -76,13 +65,10 @@ func TestCreateSshKeyFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateSshKeyCmd.RunE(CreateSshKeyCmd, []string{})
-
-	// Expected command
-	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -90,15 +76,10 @@ func TestCreateSshKeyFileProcessorFailure(test_framework *testing.T) {
 }
 
 func TestCreateSshKeyUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`name this is a bad name`)
-
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateSshKeyCmd.RunE(CreateSshKeyCmd, []string{})
@@ -106,44 +87,18 @@ func TestCreateSshKeyUnmarshallingFailure(test_framework *testing.T) {
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
-func TestCreateSshKeyFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		})
-
-	// Run command
-	err := CreateSshKeyCmd.RunE(CreateSshKeyCmd, []string{})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
-}
-
 func TestCreateSshKeyClientFailure(test_framework *testing.T) {
 	// Setup
 	sshKeyCreate := generators.Generate[bmcapi.SshKeyCreate]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(sshKeyCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, sshKeyCreate)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPost(gomock.Eq(sshKeyCreate)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateSshKeyCmd.RunE(CreateSshKeyCmd, []string{})

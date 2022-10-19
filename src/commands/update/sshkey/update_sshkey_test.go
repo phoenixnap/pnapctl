@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -20,9 +19,8 @@ func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
 	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(sshKeyUpdate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, sshKeyUpdate)
 
 	// What the server should return.
 	sshKey := generators.Generate[bmcapi.SshKey]()
@@ -31,10 +29,6 @@ func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
 		Return(&sshKey, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := UpdateSshKeyCmd.RunE(UpdateSshKeyCmd, []string{RESOURCEID})
@@ -48,9 +42,8 @@ func TestUpdateSshKeySuccessJSON(test_framework *testing.T) {
 	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(sshKeyUpdate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, sshKeyUpdate)
 
 	// What the server should return.
 	sshKey := generators.Generate[bmcapi.SshKey]()
@@ -59,10 +52,6 @@ func TestUpdateSshKeySuccessJSON(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
 		Return(&sshKey, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := UpdateSshKeyCmd.RunE(UpdateSshKeyCmd, []string{RESOURCEID})
@@ -76,13 +65,10 @@ func TestUpdateSshKeyFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := UpdateSshKeyCmd.RunE(UpdateSshKeyCmd, []string{RESOURCEID})
-
-	// Expected command
-	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -90,15 +76,10 @@ func TestUpdateSshKeyFileProcessorFailure(test_framework *testing.T) {
 }
 
 func TestUpdateSshKeyUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`name this is a bad name`)
-
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := UpdateSshKeyCmd.RunE(UpdateSshKeyCmd, []string{RESOURCEID})
@@ -106,44 +87,18 @@ func TestUpdateSshKeyUnmarshallingFailure(test_framework *testing.T) {
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
-func TestUpdateSshKeyFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		})
-
-	// Run command
-	err := UpdateSshKeyCmd.RunE(UpdateSshKeyCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
-}
-
 func TestUpdateSshKeyClientFailure(test_framework *testing.T) {
 	// Setup
 	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(sshKeyUpdate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, sshKeyUpdate)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := UpdateSshKeyCmd.RunE(UpdateSshKeyCmd, []string{RESOURCEID})

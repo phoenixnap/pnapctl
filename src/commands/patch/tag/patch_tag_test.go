@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -19,18 +18,13 @@ func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 	// setup
 	tag := generators.Generate[tagapi.Tag]()
 	tagEdit := generators.Generate[tagapi.TagUpdate]()
-	yamlmarshal, _ := yaml.Marshal(tagEdit)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, tagEdit)
 
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
 		Return(&tag, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
@@ -42,17 +36,13 @@ func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
 	//setup
 	tag := generators.Generate[tagapi.Tag]()
 	tagEdit := generators.Generate[tagapi.TagUpdate]()
-	jsonmarshal, _ := json.Marshal(tagEdit)
+	ExpectFromFileSuccess(test_framework, json.Marshal, tagEdit)
 	Filename = FILENAME
 
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
 		Return(&tag, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
@@ -65,12 +55,10 @@ func TestSubmitTagEditFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// prepare mocks
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
-
-	expectedErr := testutil.TestError
 
 	// assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -78,57 +66,15 @@ func TestSubmitTagEditFileProcessorFailure(test_framework *testing.T) {
 }
 
 func TestSubmitTagEditUnmarshallingFailure(test_framework *testing.T) {
-	// setup file with incorrect data
-	filecontents := []byte(`limit 45`)
 	Filename = FILENAME
 
 	// prepare mocks
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
-}
-
-func TestSubmitTagEditYAMLUnmarshallingFailure(test_framework *testing.T) {
-	// setup
-	filecontents := []byte(`: 45`)
-	yamlmarshal, _ := yaml.Marshal(filecontents)
-	Filename = FILENAME
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
-
-	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
-
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// assertions
-	assert.EqualError(test_framework, expectedErr, expectedErr.Error())
-}
-
-func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
-	// setup
-	Filename = FILENAME
-
-	// prepare mocks
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		})
-
-	// execute
-	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
-
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
 
 	// assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -137,7 +83,7 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// setup
 	tagEdit := generators.Generate[tagapi.TagUpdate]()
-	yamlmarshal, _ := yaml.Marshal(tagEdit)
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, tagEdit)
 	Filename = FILENAME
 
 	// prepare mocks
@@ -145,11 +91,7 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
 		Return(nil, testutil.TestError)
 
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
-
-	// execute
+		// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)

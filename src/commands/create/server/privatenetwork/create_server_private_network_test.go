@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"sigs.k8s.io/yaml"
@@ -29,18 +28,13 @@ func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 	}
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverPrivateNetworkModel)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverPrivateNetworkModel)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
 		Return(&serverPrivateNetwork, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
@@ -54,18 +48,13 @@ func TestCreateServerPrivateNetworkSuccessJSON(test_framework *testing.T) {
 	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, serverPrivateNetwork)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
 		Return(&serverPrivateNetwork, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
@@ -79,13 +68,10 @@ func TestCreateServerPrivateNetworkFileProcessorFailure(test_framework *testing.
 	Filename = FILENAME
 
 	// Mocking
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
-
-	// Expected command
-	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -93,15 +79,10 @@ func TestCreateServerPrivateNetworkFileProcessorFailure(test_framework *testing.
 }
 
 func TestCreateServerPrivateNetworkUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`Name: desc`)
-
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
@@ -109,44 +90,18 @@ func TestCreateServerPrivateNetworkUnmarshallingFailure(test_framework *testing.
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
-func TestCreateServerPrivateNetworkFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		})
-
-	// Run command
-	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
-}
-
 func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
 	// Setup
 	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverPrivateNetwork)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, serverPrivateNetwork)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})

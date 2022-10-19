@@ -59,27 +59,20 @@ func TestAutoRenewReservationDisableSuccessJSON(test_framework *testing.T) {
 func TestAutoRenewReservationDisableFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := AutoRenewDisableReservationCmd.RunE(AutoRenewDisableReservationCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := testutil.TestError
-
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestAutoRenewReservationDisableUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`reservation? ["maybe"]`)
-
 	Filename = FILENAME
 
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := AutoRenewDisableReservationCmd.RunE(AutoRenewDisableReservationCmd, []string{RESOURCEID})
@@ -92,18 +85,13 @@ func TestAutoRenewReservationDisableClientFailure(test_framework *testing.T) {
 	autoRenewDisableRequest := generators.Generate[billingapi.ReservationAutoRenewDisableRequest]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(autoRenewDisableRequest)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, autoRenewDisableRequest)
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := AutoRenewDisableReservationCmd.RunE(AutoRenewDisableReservationCmd, []string{RESOURCEID})

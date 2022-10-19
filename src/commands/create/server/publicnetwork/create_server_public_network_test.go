@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"sigs.k8s.io/yaml"
 
@@ -28,18 +27,13 @@ func TestCreateServerPublicNetworkSuccessYAML(test_framework *testing.T) {
 	}
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverPublicNetworkModel)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverPublicNetworkModel)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
 		Return(&serverPublicNetwork, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
@@ -53,18 +47,13 @@ func TestCreateServerPublicNetworkSuccessJSON(test_framework *testing.T) {
 	serverPublicNetwork := generators.Generate[bmcapisdk.ServerPublicNetwork]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverPublicNetwork)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, serverPublicNetwork)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
 		Return(&serverPublicNetwork, nil)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
@@ -78,13 +67,10 @@ func TestCreateServerPublicNetworkFileProcessorFailure(test_framework *testing.T
 	Filename = FILENAME
 
 	// Mocking
-	ExpectFromFileFailure(test_framework)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
-
-	// Expected command
-	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -92,15 +78,10 @@ func TestCreateServerPublicNetworkFileProcessorFailure(test_framework *testing.T
 }
 
 func TestCreateServerPublicNetworkUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`Name: desc`)
-
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
@@ -108,44 +89,18 @@ func TestCreateServerPublicNetworkUnmarshallingFailure(test_framework *testing.T
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
-func TestCreateServerPublicNetworkFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		})
-
-	// Run command
-	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
-}
-
 func TestCreateServerPublicNetworkClientFailure(test_framework *testing.T) {
 	// Setup
 	serverPublicNetwork := generators.Generate[bmcapisdk.ServerPublicNetwork]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverPublicNetwork)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, serverPublicNetwork)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
 		Return(nil, testutil.TestError)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
