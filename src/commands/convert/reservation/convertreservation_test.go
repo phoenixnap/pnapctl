@@ -33,8 +33,7 @@ func TestConvertReservationSuccessYAML(test_framework *testing.T) {
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// Run command
 	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})
@@ -62,8 +61,7 @@ func TestConvertReservationSuccessJSON(test_framework *testing.T) {
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	// Run command
 	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})
@@ -77,8 +75,7 @@ func TestConvertReservationFileNotFoundFailure(test_framework *testing.T) {
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
 
 	// Run command
 	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})
@@ -98,8 +95,7 @@ func TestConvertReservationUnmarshallingFailure(test_framework *testing.T) {
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+		Return(filecontents, nil)
 
 	// Run command
 	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})
@@ -123,13 +119,11 @@ func TestConvertReservationClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
-		Return(nil, testutil.TestError).
-		Times(1)
+		Return(nil, testutil.TestError)
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// Run command
 	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})

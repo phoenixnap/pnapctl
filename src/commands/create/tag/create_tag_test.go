@@ -29,15 +29,11 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
-		Return(&createdTag, nil).
-		Times(1)
+		Return(&createdTag, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
@@ -61,15 +57,11 @@ func TestCreateTagSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
-		Return(&createdTag, nil).
-		Times(1)
+		Return(&createdTag, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
@@ -84,8 +76,7 @@ func TestCreateTagFileNotFoundFailure(test_framework *testing.T) {
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
@@ -105,8 +96,7 @@ func TestCreateTagUnmarshallingFailure(test_framework *testing.T) {
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+		Return(filecontents, nil)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
@@ -130,13 +120,11 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
-		Return(nil, testutil.TestError).
-		Times(1)
+		Return(nil, testutil.TestError)
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})

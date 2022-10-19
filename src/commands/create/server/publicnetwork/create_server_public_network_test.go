@@ -35,15 +35,11 @@ func TestCreateServerPublicNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
-		Return(&serverPublicNetwork, nil).
-		Times(1)
+		Return(&serverPublicNetwork, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
@@ -64,15 +60,11 @@ func TestCreateServerPublicNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
-		Return(&serverPublicNetwork, nil).
-		Times(1)
+		Return(&serverPublicNetwork, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
@@ -89,8 +81,7 @@ func TestCreateServerPublicNetworkFileNotFoundFailure(test_framework *testing.T)
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
 
 	// Run command
 	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
@@ -110,12 +101,9 @@ func TestCreateServerPublicNetworkUnmarshallingFailure(test_framework *testing.T
 	Filename = FILENAME
 
 	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+		Return(filecontents, nil)
 
 	// Run command
 	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
@@ -132,14 +120,11 @@ func TestCreateServerPublicNetworkFileReadingFailure(test_framework *testing.T) 
 	Filename = FILENAME
 
 	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		}).
-		Times(1)
+		})
 
 	// Run command
 	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
@@ -163,15 +148,11 @@ func TestCreateServerPublicNetworkClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
-		Return(nil, testutil.TestError).
-		Times(1)
+		Return(nil, testutil.TestError)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})

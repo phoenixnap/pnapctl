@@ -29,15 +29,11 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(&createdCluster, nil).
-		Times(1)
+		Return(&createdCluster, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
@@ -61,15 +57,11 @@ func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(&createdCluster, nil).
-		Times(1)
+		Return(&createdCluster, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
@@ -84,8 +76,7 @@ func TestCreateClusterFileNotFoundFailure(test_framework *testing.T) {
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
 
 	// Run command
 	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
@@ -105,8 +96,7 @@ func TestCreateClusterUnmarshallingFailure(test_framework *testing.T) {
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+		Return(filecontents, nil)
 
 	// Run command
 	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
@@ -130,13 +120,11 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(nil, testutil.TestError).
-		Times(1)
+		Return(nil, testutil.TestError)
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})

@@ -30,15 +30,11 @@ func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(&createdPublicNetwork, nil).
-		Times(1)
+		Return(&createdPublicNetwork, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
@@ -62,13 +58,11 @@ func TestCreatePublicNetworkSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(&createdPublicNetwork, nil).
-		Times(1)
+		Return(&createdPublicNetwork, nil)
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
@@ -84,8 +78,7 @@ func TestCreatePublicNetworkFileNotFoundFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
 
 	// Run command
 	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
@@ -106,8 +99,7 @@ func TestCreatePublicNetworkUnmarshallingFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+		Return(filecontents, nil)
 
 	// Run command
 	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
@@ -128,8 +120,7 @@ func TestCreatePublicNetworkFileReadingFailure(test_framework *testing.T) {
 		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		}).
-		Times(1)
+		})
 
 	// Run command
 	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
@@ -153,15 +144,11 @@ func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(nil, testutil.TestError).
-		Times(1)
+		Return(nil, testutil.TestError)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})

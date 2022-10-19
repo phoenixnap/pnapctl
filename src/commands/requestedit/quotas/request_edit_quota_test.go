@@ -25,15 +25,11 @@ func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 	//prepare mocks
 	PrepareBmcApiMockClient(test_framework).
 		QuotaEditById(RESOURCEID, gomock.Eq(quotaEditLimitRequest)).
-		Return(nil).
-		Times(1)
+		Return(nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
@@ -50,15 +46,11 @@ func TestSubmitQuotaEditRequestSuccessJSON(test_framework *testing.T) {
 	//prepare mocks
 	PrepareBmcApiMockClient(test_framework).
 		QuotaEditById(RESOURCEID, gomock.Eq(quotaEditLimitRequest)).
-		Return(nil).
-		Times(1)
+		Return(nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
@@ -73,8 +65,7 @@ func TestSubmitQuotaEditRequestFileNotFoundFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
 
 	// execute
 	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
@@ -92,12 +83,9 @@ func TestSubmitQuotaEditRequestUnmarshallingFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// prepare mocks
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+		Return(filecontents, nil)
 
 	// execute
 	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
@@ -114,12 +102,9 @@ func TestSubmitQuotaEditRequestYAMLUnmarshallingFailure(test_framework *testing.
 	yamlmarshal, _ := yaml.Marshal(filecontents)
 	Filename = FILENAME
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
@@ -134,14 +119,11 @@ func TestSubmitQuotaEditFileReadingFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// prepare mocks
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		}).
-		Times(1)
+		})
 
 	// execute
 	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
@@ -161,15 +143,11 @@ func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareBmcApiMockClient(test_framework).
 		QuotaEditById(RESOURCEID, gomock.Eq(editQuotaRequest)).
-		Return(testutil.TestError).
-		Times(1)
+		Return(testutil.TestError)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// execute
 	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})

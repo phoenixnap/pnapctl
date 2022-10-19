@@ -29,15 +29,11 @@ func TestCreateIpBlockSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(ipBlockCreate)).
-		Return(&ipBlock, nil).
-		Times(1)
+		Return(&ipBlock, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// Run command
 	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
@@ -60,15 +56,11 @@ func TestCreateIpBlockSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(ipBlockCreateCli)).
-		Return(&ipBlock, nil).
-		Times(1)
+		Return(&ipBlock, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
@@ -84,8 +76,7 @@ func TestCreateIpBlockFileNotFoundFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
 
 	// Run command
 	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
@@ -105,12 +96,9 @@ func TestCreateIpBlockUnmarshallingFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+		Return(filecontents, nil)
 
 	// Run command
 	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
@@ -127,14 +115,11 @@ func TestCreateIpBlockFileReadingFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		}).
-		Times(1)
+		})
 
 	// Run command
 	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
@@ -158,15 +143,11 @@ func TestCreateIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlockPost(gomock.Eq(ipBlockCreate)).
-		Return(nil, testutil.TestError).
-		Times(1)
+		Return(nil, testutil.TestError)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	// Run command
 	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})

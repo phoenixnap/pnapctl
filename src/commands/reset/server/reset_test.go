@@ -29,15 +29,11 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(RESOURCEID, serverReset).
-		Return(&resetResult, nil).
-		Times(1)
+		Return(&resetResult, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
@@ -59,15 +55,11 @@ func TestResetServerSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(RESOURCEID, serverReset).
-		Return(&resetResult, nil).
-		Times(1)
+		Return(&resetResult, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
@@ -85,8 +77,7 @@ func TestResetServerSuccessNoFile(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(RESOURCEID, bmcapisdk.ServerReset{}).
-		Return(&resetResult, nil).
-		Times(1)
+		Return(&resetResult, nil)
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
@@ -102,8 +93,7 @@ func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
@@ -123,12 +113,9 @@ func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+		Return(filecontents, nil)
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
@@ -145,14 +132,11 @@ func TestResetServerFileReadingFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		}).
-		Times(1)
+		})
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
@@ -176,15 +160,11 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(RESOURCEID, serverReset).
-		Return(nil, testutil.TestError).
-		Times(1)
+		Return(nil, testutil.TestError)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})

@@ -26,15 +26,11 @@ func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
-		Return(&tag, nil).
-		Times(1)
+		Return(&tag, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
@@ -52,15 +48,11 @@ func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
-		Return(&tag, nil).
-		Times(1)
+		Return(&tag, nil)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(jsonmarshal, nil)
 
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
@@ -75,8 +67,7 @@ func TestSubmitTagEditFileNotFoundFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
 
 	// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
@@ -94,12 +85,9 @@ func TestSubmitTagEditUnmarshallingFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// prepare mocks
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+		Return(filecontents, nil)
 
 	// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
@@ -116,12 +104,9 @@ func TestSubmitTagEditYAMLUnmarshallingFailure(test_framework *testing.T) {
 	yamlmarshal, _ := yaml.Marshal(filecontents)
 	Filename = FILENAME
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
@@ -136,14 +121,11 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// prepare mocks
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
 			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		}).
-		Times(1)
+		})
 
 	// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
@@ -163,15 +145,11 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareTagMockClient(test_framework).
 		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
-		Return(nil, testutil.TestError).
-		Times(1)
+		Return(nil, testutil.TestError)
 
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
+	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(yamlmarshal, nil)
 
 	// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
