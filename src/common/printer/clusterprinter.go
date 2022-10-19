@@ -3,6 +3,7 @@ package printer
 import (
 	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func PrintClusterResponse(cluster *ranchersdk.Cluster) error {
@@ -11,7 +12,7 @@ func PrintClusterResponse(cluster *ranchersdk.Cluster) error {
 }
 
 func PrintClusterListResponse(clusters []ranchersdk.Cluster) error {
-	clusterListToPrint := PrepareClusterListForPrinting(clusters)
+	clusterListToPrint := iterutils.Map(clusters, PrepareClusterForPrinting)
 	return MainPrinter.PrintOutput(clusterListToPrint)
 }
 
@@ -24,14 +25,4 @@ func PrepareClusterForPrinting(cluster ranchersdk.Cluster) interface{} {
 	default:
 		return cluster
 	}
-}
-
-func PrepareClusterListForPrinting(clusters []ranchersdk.Cluster) []interface{} {
-	var clusterList []interface{}
-
-	for _, cluster := range clusters {
-		clusterList = append(clusterList, PrepareClusterForPrinting(cluster))
-	}
-
-	return clusterList
 }

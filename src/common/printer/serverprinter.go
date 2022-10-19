@@ -3,6 +3,7 @@ package printer
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func PrintServerResponse(server *bmcapisdk.Server, full bool) error {
@@ -11,7 +12,7 @@ func PrintServerResponse(server *bmcapisdk.Server, full bool) error {
 }
 
 func PrintServerListResponse(servers []bmcapisdk.Server, full bool) error {
-	serverListToPrint := PrepareServerListForPrinting(servers, full)
+	serverListToPrint := iterutils.Map(servers, withFull(full, PrepareServerForPrinting))
 	return MainPrinter.PrintOutput(serverListToPrint)
 }
 
@@ -56,14 +57,4 @@ func PrepareServerForPrinting(server bmcapisdk.Server, full bool) interface{} {
 	default:
 		return server
 	}
-}
-
-func PrepareServerListForPrinting(servers []bmcapisdk.Server, full bool) []interface{} {
-	var serverList []interface{}
-
-	for _, bmcServer := range servers {
-		serverList = append(serverList, PrepareServerForPrinting(bmcServer, full))
-	}
-
-	return serverList
 }

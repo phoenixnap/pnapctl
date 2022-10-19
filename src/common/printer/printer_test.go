@@ -8,6 +8,7 @@ import (
 	"github.com/influxdata/influxdb/pkg/testing/assert"
 	"github.com/landoop/tableprinter"
 	"github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
@@ -15,7 +16,7 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
 type ExampleStruct1 struct {
@@ -26,6 +27,15 @@ type ExampleStruct1 struct {
 // Setup
 func printerSetup() {
 	MainPrinter = NewBodyPrinter()
+}
+
+func assertIsType[T any](test_framework *testing.T, item interface{}) {
+	var t T
+	assert.Equal(
+		test_framework,
+		fmt.Sprintf("%T", item),
+		fmt.Sprintf("%T", t),
+	)
 }
 
 func TestPrintOutputJsonFormat(test_framework *testing.T) {
@@ -146,9 +156,7 @@ func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
 	server := generators.Generate[bmcapi.Server]()
 	prepared := PrepareServerForPrinting(server, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.LongServerTable")
+	assertIsType[tables.LongServerTable](test_framework, prepared)
 }
 
 func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
@@ -156,9 +164,7 @@ func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 	server := generators.Generate[bmcapi.Server]()
 	prepared := PrepareServerForPrinting(server, false)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.ShortServerTable")
+	assertIsType[tables.ShortServerTable](test_framework, prepared)
 }
 
 func TestPrepareServerForPrintingServer(test_framework *testing.T) {
@@ -166,20 +172,7 @@ func TestPrepareServerForPrintingServer(test_framework *testing.T) {
 	server := generators.Generate[bmcapi.Server]()
 	prepared := PrepareServerForPrinting(server, false)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "bmcapi.Server")
-}
-
-func TestPrepareServerListForPrinting(test_framework *testing.T) {
-	OutputFormat = "json"
-	servers := testutil.GenN(1, generators.Generate[bmcapi.Server])
-	prepared := PrepareServerListForPrinting(servers, false)
-
-	outputType := fmt.Sprintf("%T", prepared[0])
-
-	assert.Equal(test_framework, outputType, "bmcapi.Server")
-	assert.Equal(test_framework, len(prepared), 1)
+	assertIsType[bmcapi.Server](test_framework, prepared)
 }
 
 func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
@@ -187,9 +180,7 @@ func TestPrepareEventForPrintingNonTable(test_framework *testing.T) {
 	event := generators.Generate[auditapi.Event]()
 	prepared := PrepareEventForPrinting(event)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "auditapi.Event")
+	assertIsType[auditapi.Event](test_framework, prepared)
 }
 
 func TestPrepareEventForPrintingTable(test_framework *testing.T) {
@@ -197,19 +188,7 @@ func TestPrepareEventForPrintingTable(test_framework *testing.T) {
 	event := generators.Generate[auditapi.Event]()
 	prepared := PrepareEventForPrinting(event)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.Event")
-}
-
-func TestPrepareEventListForPrinting(test_framework *testing.T) {
-	OutputFormat = "table"
-	events := testutil.GenN(1, generators.Generate[auditapi.Event])
-	prepared := PrepareEventListForPrinting(events)
-
-	outputType := fmt.Sprintf("%T", prepared[0])
-
-	assert.Equal(test_framework, outputType, "tables.Event")
+	assertIsType[tables.Event](test_framework, prepared)
 }
 
 func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
@@ -217,9 +196,7 @@ func TestPrepareClusterForPrintingTable(test_framework *testing.T) {
 	cluster := generators.Generate[ranchersolutionapi.Cluster]()
 	prepared := PrepareClusterForPrinting(cluster)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.ClusterTable")
+	assertIsType[tables.ClusterTable](test_framework, prepared)
 }
 
 func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
@@ -227,20 +204,7 @@ func TestPrepareClusterForPrintingCluster(test_framework *testing.T) {
 	cluster := generators.Generate[ranchersolutionapi.Cluster]()
 	prepared := PrepareClusterForPrinting(cluster)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "ranchersolutionapi.Cluster")
-}
-
-func TestPrepareClusterListForPrinting(test_framework *testing.T) {
-	OutputFormat = "json"
-	clusters := testutil.GenN(1, generators.Generate[ranchersolutionapi.Cluster])
-	prepared := PrepareClusterListForPrinting(clusters)
-
-	outputType := fmt.Sprintf("%T", prepared[0])
-
-	assert.Equal(test_framework, outputType, "ranchersolutionapi.Cluster")
-	assert.Equal(test_framework, len(prepared), 1)
+	assertIsType[ranchersolutionapi.Cluster](test_framework, prepared)
 }
 
 func TestPrepareTagForPrintingTable(test_framework *testing.T) {
@@ -248,9 +212,7 @@ func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 	tag := generators.Generate[tagapi.Tag]()
 	prepared := PrepareTagForPrinting(tag)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.TagTable")
+	assertIsType[tables.TagTable](test_framework, prepared)
 }
 
 func TestPrepareTagForPrintingTag(test_framework *testing.T) {
@@ -258,20 +220,7 @@ func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 	tag := generators.Generate[tagapi.Tag]()
 	prepared := PrepareTagForPrinting(tag)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tagapi.Tag")
-}
-
-func TestPrepareTagListForPrinting(test_framework *testing.T) {
-	OutputFormat = "json"
-	tags := testutil.GenN(1, generators.Generate[tagapi.Tag])
-	prepared := PrepareTagListForPrinting(tags)
-
-	outputType := fmt.Sprintf("%T", prepared[0])
-
-	assert.Equal(test_framework, outputType, "tagapi.Tag")
-	assert.Equal(test_framework, len(prepared), 1)
+	assertIsType[tagapi.Tag](test_framework, prepared)
 }
 
 func TestPreparePrivateNetworkForPrintingTable(test_framework *testing.T) {
@@ -279,9 +228,7 @@ func TestPreparePrivateNetworkForPrintingTable(test_framework *testing.T) {
 	privateNetwork := generators.Generate[networkapi.PrivateNetwork]()
 	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.PrivateNetworkTable")
+	assertIsType[tables.PrivateNetworkTable](test_framework, prepared)
 }
 
 func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
@@ -289,20 +236,7 @@ func TestPreparePrivateNetworkForPrintingNonTable(test_framework *testing.T) {
 	privateNetwork := generators.Generate[networkapi.PrivateNetwork]()
 	prepared := PreparePrivateNetworkForPrinting(privateNetwork)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "networkapi.PrivateNetwork")
-}
-
-func TestPreparePrivateNetworkListForPrinting(test_framework *testing.T) {
-	OutputFormat = "json"
-	privateNetworks := testutil.GenN(1, generators.Generate[networkapi.PrivateNetwork])
-	prepared := PreparePrivateNetworkListForPrinting(privateNetworks)
-
-	outputType := fmt.Sprintf("%T", prepared[0])
-
-	assert.Equal(test_framework, outputType, "networkapi.PrivateNetwork")
-	assert.Equal(test_framework, len(prepared), 1)
+	assertIsType[networkapi.PrivateNetwork](test_framework, prepared)
 }
 
 func TestPrepareQuotaForPrintingTable(test_framework *testing.T) {
@@ -310,9 +244,7 @@ func TestPrepareQuotaForPrintingTable(test_framework *testing.T) {
 	quota := generators.Generate[bmcapi.Quota]()
 	prepared := PrepareQuotaForPrinting(quota)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.Quota")
+	assertIsType[tables.Quota](test_framework, prepared)
 }
 
 func TestPrepareQuotaForPrintingNonTable(test_framework *testing.T) {
@@ -320,19 +252,7 @@ func TestPrepareQuotaForPrintingNonTable(test_framework *testing.T) {
 	quota := generators.Generate[bmcapi.Quota]()
 	prepared := PrepareQuotaForPrinting(quota)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "bmcapi.Quota")
-}
-
-func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
-	OutputFormat = "table"
-	quotas := testutil.GenN(1, generators.Generate[bmcapi.Quota])
-	prepared := PrepareQuotaListForPrinting(quotas)
-
-	outputType := fmt.Sprintf("%T", prepared[0])
-
-	assert.Equal(test_framework, outputType, "tables.Quota")
+	assertIsType[bmcapi.Quota](test_framework, prepared)
 }
 
 func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
@@ -340,9 +260,7 @@ func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 	sshkey := generators.Generate[bmcapi.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.SshKeyTableFull")
+	assertIsType[tables.SshKeyTableFull](test_framework, prepared)
 }
 
 func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
@@ -350,9 +268,7 @@ func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 	sshkey := generators.Generate[bmcapi.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, false)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.SshKeyTable")
+	assertIsType[tables.SshKeyTable](test_framework, prepared)
 }
 
 func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
@@ -360,29 +276,7 @@ func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 	sshkey := generators.Generate[bmcapi.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "bmcapi.SshKey")
-}
-
-func TestPrepareSshkeyFullListForPrintingTable(test_framework *testing.T) {
-	OutputFormat = "table"
-	sshkeys := testutil.GenN(1, generators.Generate[bmcapi.SshKey])
-	prepared := PrepareSshKeyListForPrinting(sshkeys, true)
-
-	outputType := fmt.Sprintf("%T", prepared[0])
-
-	assert.Equal(test_framework, outputType, "tables.SshKeyTableFull")
-}
-
-func TestPrepareSshkeyListForPrintingTable(test_framework *testing.T) {
-	OutputFormat = "table"
-	sshkeys := testutil.GenN(1, generators.Generate[bmcapi.SshKey])
-	prepared := PrepareSshKeyListForPrinting(sshkeys, false)
-
-	outputType := fmt.Sprintf("%T", prepared[0])
-
-	assert.Equal(test_framework, outputType, "tables.SshKeyTable")
+	assertIsType[bmcapi.SshKey](test_framework, prepared)
 }
 
 func TestPrepareIpBlockForPrintingTable(test_framework *testing.T) {
@@ -390,9 +284,7 @@ func TestPrepareIpBlockForPrintingTable(test_framework *testing.T) {
 	ipBlock := generators.Generate[ipapi.IpBlock]()
 	prepared := PrepareIpBlockForPrinting(ipBlock, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.IpBlock")
+	assertIsType[tables.IpBlock](test_framework, prepared)
 }
 
 func TestPrepareIpBlockForPrintingShortTable(test_framework *testing.T) {
@@ -400,9 +292,7 @@ func TestPrepareIpBlockForPrintingShortTable(test_framework *testing.T) {
 	ipBlock := generators.Generate[ipapi.IpBlock]()
 	prepared := PrepareIpBlockForPrinting(ipBlock, false)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.IpBlockShort")
+	assertIsType[tables.IpBlockShort](test_framework, prepared)
 }
 
 func TestPrepareIpBlockForPrintingNonTable(test_framework *testing.T) {
@@ -410,30 +300,7 @@ func TestPrepareIpBlockForPrintingNonTable(test_framework *testing.T) {
 	ipBlock := generators.Generate[ipapi.IpBlock]()
 	prepared := PrepareIpBlockForPrinting(ipBlock, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "ipapi.IpBlock")
-}
-
-func TestPrepareIpBlockListForPrintingTable(test_framework *testing.T) {
-	OutputFormat = "table"
-	ipBlocks := testutil.GenN(1, generators.Generate[ipapi.IpBlock])
-	prepared := PrepareIpBlockListForPrinting(ipBlocks, true)
-
-	outputType := fmt.Sprintf("%T", prepared[0])
-
-	assert.Equal(test_framework, outputType, "tables.IpBlock")
-}
-
-func TestPrepareIpBlockListForPrinting(test_framework *testing.T) {
-	OutputFormat = "json"
-	ipBlocks := testutil.GenN(1, generators.Generate[ipapi.IpBlock])
-	prepared := PrepareIpBlockListForPrinting(ipBlocks, true)
-
-	outputType := fmt.Sprintf("%T", prepared[0])
-
-	assert.Equal(test_framework, outputType, "ipapi.IpBlock")
-	assert.Equal(test_framework, len(prepared), 1)
+	assertIsType[ipapi.IpBlock](test_framework, prepared)
 }
 
 // Billing
@@ -443,9 +310,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Bandwidth(test_framework *te
 	ratedUsage := generators.GenerateBandwidthRecordSdk()
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*billingapi.BandwidthRecord")
+	assertIsType[*billingapi.BandwidthRecord](test_framework, prepared)
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framework *testing.T) {
@@ -453,9 +318,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framewo
 	ratedUsage := generators.GenerateOperatingSystemRecordSdk()
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*billingapi.OperatingSystemRecord")
+	assertIsType[*billingapi.OperatingSystemRecord](test_framework, prepared)
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework *testing.T) {
@@ -463,9 +326,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework 
 	ratedUsage := generators.GeneratePublicSubnetRecordSdk()
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*billingapi.PublicSubnetRecord")
+	assertIsType[*billingapi.PublicSubnetRecord](test_framework, prepared)
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testing.T) {
@@ -473,9 +334,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testi
 	ratedUsage := generators.GenerateServerRecordSdk()
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*billingapi.ServerRecord")
+	assertIsType[*billingapi.ServerRecord](test_framework, prepared)
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_Storage(test_framework *testing.T) {
@@ -483,9 +342,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Storage(test_framework *test
 	ratedUsage := generators.GenerateStorageRecordSdk()
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*billingapi.StorageRecord")
+	assertIsType[*billingapi.StorageRecord](test_framework, prepared)
 }
 
 func TestPrepareRatedUsageRecordForPrintingTableFull(test_framework *testing.T) {
@@ -493,9 +350,7 @@ func TestPrepareRatedUsageRecordForPrintingTableFull(test_framework *testing.T) 
 	ratedUsage := generators.GenerateServerRecordSdk()
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*tables.RatedUsageRecordTable")
+	assertIsType[*tables.RatedUsageRecordTable](test_framework, prepared)
 }
 
 func TestPrepareRatedUsageRecordForPrintingTableShort(test_framework *testing.T) {
@@ -503,9 +358,7 @@ func TestPrepareRatedUsageRecordForPrintingTableShort(test_framework *testing.T)
 	ratedUsage := generators.GenerateServerRecordSdk()
 	prepared := PrepareRatedUsageForPrinting(ratedUsage, false)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*tables.ShortRatedUsageRecordTable")
+	assertIsType[*tables.ShortRatedUsageRecordTable](test_framework, prepared)
 }
 
 func TestPrepareProductForPrintingNonTable_BandwidthProduct(test_framework *testing.T) {
@@ -513,9 +366,7 @@ func TestPrepareProductForPrintingNonTable_BandwidthProduct(test_framework *test
 	product := generators.GenerateBandwidthProduct()
 	prepared := PrepareProductForPrinting(product)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*billingapi.Product")
+	assertIsType[*billingapi.Product](test_framework, prepared)
 }
 
 func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework *testing.T) {
@@ -523,9 +374,7 @@ func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework
 	product := generators.GenerateOperatingSystemProduct()
 	prepared := PrepareProductForPrinting(product)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*billingapi.Product")
+	assertIsType[*billingapi.Product](test_framework, prepared)
 }
 
 func TestPrepareProductForPrintingNonTable_StorageProduct(test_framework *testing.T) {
@@ -533,9 +382,7 @@ func TestPrepareProductForPrintingNonTable_StorageProduct(test_framework *testin
 	product := generators.GenerateStorageProduct()
 	prepared := PrepareProductForPrinting(product)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*billingapi.Product")
+	assertIsType[*billingapi.Product](test_framework, prepared)
 }
 
 func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing.T) {
@@ -543,9 +390,7 @@ func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing
 	product := generators.GenerateServerProduct()
 	prepared := PrepareProductForPrinting(product)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*billingapi.ServerProduct")
+	assertIsType[*billingapi.ServerProduct](test_framework, prepared)
 }
 
 func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
@@ -553,9 +398,7 @@ func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
 	product := generators.GenerateBandwidthProduct()
 	prepared := PrepareProductForPrinting(product)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "*tables.ProductTable")
+	assertIsType[*tables.ProductTable](test_framework, prepared)
 }
 
 func TestPreparePublicNetworkForPrintingTable(test_framework *testing.T) {
@@ -563,9 +406,7 @@ func TestPreparePublicNetworkForPrintingTable(test_framework *testing.T) {
 	publicNetwork := generators.Generate[networkapi.PublicNetwork]()
 	prepared := PreparePublicNetworkForPrinting(publicNetwork)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.PublicNetworkTable")
+	assertIsType[tables.PublicNetworkTable](test_framework, prepared)
 }
 
 func TestPreparePublicNetworkForPrintingNonTable(test_framework *testing.T) {
@@ -573,9 +414,7 @@ func TestPreparePublicNetworkForPrintingNonTable(test_framework *testing.T) {
 	publicNetwork := generators.Generate[networkapi.PublicNetwork]()
 	prepared := PreparePublicNetworkForPrinting(publicNetwork)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "networkapi.PublicNetwork")
+	assertIsType[networkapi.PublicNetwork](test_framework, prepared)
 }
 
 func TestPreparePublicNetworkIpBlockForPrintingTable(test_framework *testing.T) {
@@ -583,9 +422,7 @@ func TestPreparePublicNetworkIpBlockForPrintingTable(test_framework *testing.T) 
 	ipBlock := generators.Generate[networkapi.PublicNetworkIpBlock]()
 	prepared := PreparePublicNetworkIpBlockForPrinting(ipBlock)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.PublicNetworkIpBlockTable")
+	assertIsType[tables.PublicNetworkIpBlockTable](test_framework, prepared)
 }
 
 func TestPreparePublicNetworkIpBlockForPrintingNonTable(test_framework *testing.T) {
@@ -593,9 +430,7 @@ func TestPreparePublicNetworkIpBlockForPrintingNonTable(test_framework *testing.
 	ipBlock := generators.Generate[networkapi.PublicNetworkIpBlock]()
 	prepared := PreparePublicNetworkIpBlockForPrinting(ipBlock)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "networkapi.PublicNetworkIpBlock")
+	assertIsType[networkapi.PublicNetworkIpBlock](test_framework, prepared)
 }
 
 func TestPrepareStorageNetworkForPrintingTable(test_framework *testing.T) {
@@ -603,9 +438,7 @@ func TestPrepareStorageNetworkForPrintingTable(test_framework *testing.T) {
 	networkStorage := generators.Generate[networkstorageapi.StorageNetwork]()
 	prepared := PrepareNetworkStorageForPrinting(networkStorage)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.StorageNetworkTable")
+	assertIsType[tables.StorageNetworkTable](test_framework, prepared)
 }
 
 func TestPrepareStorageNetworkForPrintingNonTable(test_framework *testing.T) {
@@ -613,9 +446,7 @@ func TestPrepareStorageNetworkForPrintingNonTable(test_framework *testing.T) {
 	networkStorage := generators.Generate[networkstorageapi.StorageNetwork]()
 	prepared := PrepareNetworkStorageForPrinting(networkStorage)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "networkstorageapi.StorageNetwork")
+	assertIsType[networkstorageapi.StorageNetwork](test_framework, prepared)
 }
 
 func TestPrepareVolumeForPrintingTableFull(test_framework *testing.T) {
@@ -623,9 +454,7 @@ func TestPrepareVolumeForPrintingTableFull(test_framework *testing.T) {
 	networkStorage := generators.Generate[networkstorageapi.Volume]()
 	prepared := PrepareVolumeForPrinting(networkStorage, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.VolumeTable")
+	assertIsType[tables.VolumeTable](test_framework, prepared)
 }
 
 func TestPrepareVolumeForPrintingTableShort(test_framework *testing.T) {
@@ -633,9 +462,7 @@ func TestPrepareVolumeForPrintingTableShort(test_framework *testing.T) {
 	networkStorage := generators.Generate[networkstorageapi.Volume]()
 	prepared := PrepareVolumeForPrinting(networkStorage, false)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "tables.ShortVolumeTable")
+	assertIsType[tables.ShortVolumeTable](test_framework, prepared)
 }
 
 func TestPrepareVolumeForPrintingNonTable(test_framework *testing.T) {
@@ -643,9 +470,7 @@ func TestPrepareVolumeForPrintingNonTable(test_framework *testing.T) {
 	networkStorage := generators.Generate[networkstorageapi.Volume]()
 	prepared := PrepareVolumeForPrinting(networkStorage, true)
 
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "networkstorageapi.Volume")
+	assertIsType[networkstorageapi.Volume](test_framework, prepared)
 }
 
 func ExamplePrintOutputTableFormatEmpty() {
