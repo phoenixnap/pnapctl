@@ -76,9 +76,7 @@ func TestCreatePublicNetworkIpBlockFileProcessorFailure(test_framework *testing.
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, testutil.TestError)
+	ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreatePublicNetworkIpBlockCmd.RunE(CreatePublicNetworkIpBlockCmd, []string{RESOURCEID})

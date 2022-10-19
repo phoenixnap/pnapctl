@@ -73,9 +73,7 @@ func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 func TestCreatePrivateNetworkFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, testutil.TestError)
+	ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreatePrivateNetworkCmd.RunE(CreatePrivateNetworkCmd, []string{})

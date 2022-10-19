@@ -65,9 +65,7 @@ func TestSubmitTagEditFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// prepare mocks
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, testutil.TestError)
+	ExpectFromFileFailure(test_framework)
 
 	// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})

@@ -5,6 +5,9 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"testing"
+
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 const FILENAME = "testfile.yaml"
@@ -21,4 +24,24 @@ func WithBody(body interface{}) io.ReadCloser {
 	data, _ := json.Marshal(body)
 
 	return io.NopCloser(bytes.NewBuffer(data))
+}
+
+func ExpectFromFileSuccess(t *testing.T, marshaller func(interface{}) ([]byte, error), item interface{}) {
+	marshalled, _ := marshaller(item)
+
+	PrepareMockFileProcessor(t).
+		ReadFile(FILENAME).
+		Return(marshalled, nil)
+}
+
+func ExpectFromFileFailure(t *testing.T) {
+	PrepareMockFileProcessor(t).
+		ReadFile(FILENAME).
+		Return(nil, testutil.TestError)
+}
+
+func ExpectFromFileUnmarshalFailure(t *testing.T) {
+	PrepareMockFileProcessor(t).
+		ReadFile(FILENAME).
+		Return([]byte(`Invalid JSON/YAML - Should cause unmarshal to fail.`))
 }
