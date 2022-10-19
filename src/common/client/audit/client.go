@@ -46,6 +46,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 
 	auditAPIconfiguration.HTTPClient = config.Client(context.Background())
 	auditAPIconfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
+	auditAPIconfiguration.XPoweredBy = configuration.XPoweredBy + version.AppVersion.Version
 
 	api_client := auditapisdk.NewAPIClient(auditAPIconfiguration)
 

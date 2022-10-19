@@ -51,6 +51,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 
 	ipAPIconfiguration.HTTPClient = config.Client(context.Background())
 	ipAPIconfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
+	ipAPIconfiguration.XPoweredBy = configuration.XPoweredBy + version.AppVersion.Version
 
 	api_client := ipapisdk.NewAPIClient(ipAPIconfiguration)
 

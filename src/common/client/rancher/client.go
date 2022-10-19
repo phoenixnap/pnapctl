@@ -48,6 +48,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 
 	rancherConfiguration.HTTPClient = config.Client(context.Background())
 	rancherConfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
+	rancherConfiguration.XPoweredBy = configuration.XPoweredBy + version.AppVersion.Version
 
 	api_client := ranchersdk.NewAPIClient(rancherConfiguration)
 

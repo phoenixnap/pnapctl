@@ -49,6 +49,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 
 	tagConfiguration.HTTPClient = config.Client(context.Background())
 	tagConfiguration.UserAgent = configuration.UserAgent + version.AppVersion.Version
+	tagConfiguration.XPoweredBy = configuration.XPoweredBy + version.AppVersion.Version
 
 	api_client := tagapisdk.NewAPIClient(tagConfiguration)
 
