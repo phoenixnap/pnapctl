@@ -5,14 +5,14 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintSshKeyResponse(sshKey *bmcapisdk.SshKey, full bool, commandName string) error {
+func PrintSshKeyResponse(sshKey *bmcapisdk.SshKey, full bool) error {
 	sshKeyToPrint := PrepareSshKeyForPrinting(*sshKey, full)
-	return MainPrinter.PrintOutput(sshKeyToPrint, commandName)
+	return MainPrinter.PrintOutput(sshKeyToPrint)
 }
 
-func PrintSshKeyListResponse(sshKeys []bmcapisdk.SshKey, full bool, commandName string) error {
+func PrintSshKeyListResponse(sshKeys []bmcapisdk.SshKey, full bool) error {
 	sshKeyListToPrint := PrepareSshKeyListForPrinting(sshKeys, full)
-	return MainPrinter.PrintOutput(sshKeyListToPrint, commandName)
+	return MainPrinter.PrintOutput(sshKeyListToPrint)
 }
 
 func PrepareSshKeyListForPrinting(quotas []bmcapisdk.SshKey, full bool) []interface{} {

@@ -25,10 +25,10 @@ func TestGetAllClustersShortSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
-		Return(clusters, WithResponse(200, WithBody(clusters)), nil)
+		Return(clusters, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterlist, "get clusters").
+		PrintOutput(clusterlist).
 		Return(nil)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
@@ -41,27 +41,15 @@ func TestGetAllClustersClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
-		Return(nil, WithResponse(200, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get Clusters", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetAllClustersKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareRancherMockClient(test_framework).
-		ClustersGet().
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetAllClustersPrinterFailure(test_framework *testing.T) {
@@ -75,10 +63,10 @@ func TestGetAllClustersPrinterFailure(test_framework *testing.T) {
 
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
-		Return(clusters, WithResponse(200, WithBody(clusters)), nil)
+		Return(clusters, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterlist, "get clusters").
+		PrintOutput(clusterlist).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})

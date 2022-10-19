@@ -7,12 +7,16 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-var commandName = "create server-public-network"
+func init() {
+	utils.SetupOutputFlag(CreateServerPublicNetworkCmd)
+	utils.SetupFilenameFlag(CreateServerPublicNetworkCmd, &Filename, utils.CREATION)
+}
 
 var CreateServerPublicNetworkCmd = &cobra.Command{
 	Use:          "server-public-network SERVER_ID",
@@ -34,27 +38,24 @@ statusDescription: in-progress
 `,
 
 	RunE: func(cmd *cobra.Command, args []string) error {
-		serverPublicNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPublicNetwork](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// Create the server private network
-		response, httpResponse, err := bmcapi.Client.ServerPublicNetworkPost(args[0], *serverPublicNetwork)
-
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintServerPublicNetwork(response, commandName)
-		}
+		cmdname.SetCommandName(cmd)
+		return createPublicNetworkForServer(args[0])
 	},
 }
 
-func init() {
-	CreateServerPublicNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateServerPublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateServerPublicNetworkCmd.MarkFlagRequired("filename")
+func createPublicNetworkForServer(id string) error {
+	serverPublicNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPublicNetwork](Filename)
+
+	if err != nil {
+		return err
+	}
+
+	// Create the server private network
+	response, err := bmcapi.Client.ServerPublicNetworkPost(id, *serverPublicNetwork)
+
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintServerPublicNetwork(response)
+	}
 }

@@ -22,10 +22,10 @@ func TestGetAllVolumesSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetVolumes(RESOURCEID).
-		Return(volumeSdk, WithResponse(200, WithBody(volumeSdk)), nil)
+		Return(volumeSdk, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(volumeTables, "get storage-network volumes").
+		PrintOutput(volumeTables).
 		Return(nil)
 
 	// Run command
@@ -39,29 +39,16 @@ func TestGetAllVolumesClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetVolumes(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := GetStorageNetworkVolumesCmd.RunE(GetStorageNetworkVolumesCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "get storage-network volumes", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetAllVolumesKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageGetVolumes(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := GetStorageNetworkVolumesCmd.RunE(GetStorageNetworkVolumesCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetAllVolumesPrinterFailure(test_framework *testing.T) {
@@ -72,10 +59,10 @@ func TestGetAllVolumesPrinterFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetVolumes(RESOURCEID).
-		Return(volumeSdk, WithResponse(200, WithBody(volumeSdk)), nil)
+		Return(volumeSdk, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(volumeTables, "get storage-network volumes").
+		PrintOutput(volumeTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	// Run command

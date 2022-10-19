@@ -1,19 +1,20 @@
 package quotas
 
 import (
-	"fmt"
-
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-var commandName = "request-edit quota"
+func init() {
+	utils.SetupFilenameFlag(RequestEditQuotaCmd, &Filename, utils.SUBMISSION)
+}
 
 // RequestEditQuotaCmd is the command for requesting a quota modification.
 var RequestEditQuotaCmd = &cobra.Command{
@@ -31,24 +32,16 @@ pnapctl request-edit quota <QUOTA_ID> --filename <FILE_PATH>
 limit: 75
 reason: My current limit is not enough.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		quotaEditRequest, err := models.CreateRequestFromFile[bmcapisdk.QuotaEditLimitRequest](Filename, commandName)
-		if err != nil {
-			return err
-		}
-
-		httpResponse, err := bmcapi.Client.QuotaEditById(args[0], *quotaEditRequest)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println("Quota Edit Limit Request Accepted.")
-			return nil
-		}
+		cmdname.SetCommandName(cmd)
+		return requestToEditQuota(args[0])
 	},
 }
 
-func init() {
-	RequestEditQuotaCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	RequestEditQuotaCmd.MarkFlagRequired("filename")
+func requestToEditQuota(id string) error {
+	quotaEditRequest, err := models.CreateRequestFromFile[bmcapisdk.QuotaEditLimitRequest](Filename)
+	if err != nil {
+		return err
+	}
+
+	return bmcapi.Client.QuotaEditById(id, *quotaEditRequest)
 }

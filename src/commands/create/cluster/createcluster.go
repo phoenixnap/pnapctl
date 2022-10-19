@@ -7,11 +7,15 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 var Filename string
 
-var commandName = "create cluster"
+func init() {
+	utils.SetupOutputFlag(CreateClusterCmd)
+	utils.SetupFilenameFlag(CreateClusterCmd, &Filename, utils.CREATION)
+}
 
 var CreateClusterCmd = &cobra.Command{
 	Use:          "cluster",
@@ -30,26 +34,23 @@ name: rancher-cluster-test
 nodePools:
   - serverType: s1.c1.medium
 `,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		cluster, err := models.CreateRequestFromFile[ranchersolutionapi.Cluster](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		response, httpResponse, err := rancher.Client.ClusterPost(*cluster)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintClusterResponse(response, commandName)
-		}
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
+		return createCluster()
 	},
 }
 
-func init() {
-	CreateClusterCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateClusterCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateClusterCmd.MarkFlagRequired("filename")
+func createCluster() error {
+	cluster, err := models.CreateRequestFromFile[ranchersolutionapi.Cluster](Filename)
+
+	if err != nil {
+		return err
+	}
+
+	response, err := rancher.Client.ClusterPost(*cluster)
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintClusterResponse(response)
+	}
 }

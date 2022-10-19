@@ -20,10 +20,10 @@ func TestGetPrivateNetworkSuccess(test_framework *testing.T) {
 
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkGetById(RESOURCEID).
-		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil)
+		Return(&privateNetwork, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkTable, "get private-network").
+		PrintOutput(privateNetworkTable).
 		Return(nil)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
@@ -32,41 +32,18 @@ func TestGetPrivateNetworkSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetPrivateNetworkNotFound(test_framework *testing.T) {
-	PrepareNetworkMockClient(test_framework).
-		PrivateNetworkGetById(RESOURCEID).
-		Return(nil, WithResponse(400, nil), nil)
-
-	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command 'get private-network' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetPrivateNetworkClientFailure(test_framework *testing.T) {
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get private-network", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetPrivateNetworkKeycloakFailure(test_framework *testing.T) {
-	PrepareNetworkMockClient(test_framework).
-		PrivateNetworkGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetPrivateNetworkPrinterFailure(test_framework *testing.T) {
@@ -75,10 +52,10 @@ func TestGetPrivateNetworkPrinterFailure(test_framework *testing.T) {
 
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworkGetById(RESOURCEID).
-		Return(&privateNetwork, WithResponse(200, WithBody(privateNetwork)), nil)
+		Return(&privateNetwork, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkTable, "get private-network").
+		PrintOutput(privateNetworkTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})

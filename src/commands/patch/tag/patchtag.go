@@ -7,12 +7,16 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-var commandName = "patch tag"
+func init() {
+	utils.SetupOutputFlag(PatchTagCmd)
+	utils.SetupFilenameFlag(PatchTagCmd, &Filename, utils.UPDATING)
+}
 
 // PatchTagCmd is the command for creating a server.
 var PatchTagCmd = &cobra.Command{
@@ -31,24 +35,21 @@ name: Tag Name
 description: The description of the tag.
 isBillingTag: false`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		tagEdit, err := models.CreateRequestFromFile[tagapi.TagUpdate](Filename, commandName)
-		if err != nil {
-			return err
-		}
-
-		tag, httpResponse, err := tags.Client.TagPatch(args[0], *tagEdit)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintTagResponse(tag, commandName)
-		}
+		cmdname.SetCommandName(cmd)
+		return patchTag(args[0])
 	},
 }
 
-func init() {
-	PatchTagCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	PatchTagCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for modification")
-	PatchTagCmd.MarkFlagRequired("filename")
+func patchTag(id string) error {
+	tagEdit, err := models.CreateRequestFromFile[tagapi.TagUpdate](Filename)
+	if err != nil {
+		return err
+	}
+
+	tag, err := tags.Client.TagPatch(id, *tagEdit)
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintTagResponse(tag)
+	}
 }

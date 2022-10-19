@@ -8,12 +8,15 @@ import (
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-var commandName = "deprovision server"
+func init() {
+	utils.SetupFilenameFlag(DeprovisionServerCmd, &Filename, utils.DEPROVISION)
+}
 
 // DeprovisionServerCmd
 var DeprovisionServerCmd = &cobra.Command{
@@ -30,24 +33,22 @@ pnapctl deprovision server <SERVER_ID> --filename <FILE_PATH>
 # serverdeprovision.yaml
 deleteIpBlocks: false`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename, commandName)
-		if err != nil {
-			return err
-		}
-
-		result, httpResponse, err := bmcapi.Client.ServerDeprovision(args[0], *relinquishIpBlockRequest)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println(result)
-			return nil
-		}
+		cmdname.SetCommandName(cmd)
+		return deprovisionServer(args[0])
 	},
 }
 
-func init() {
-	DeprovisionServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for deprovision")
-	DeprovisionServerCmd.MarkFlagRequired("filename")
+func deprovisionServer(id string) error {
+	relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename)
+	if err != nil {
+		return err
+	}
+
+	result, err := bmcapi.Client.ServerDeprovision(id, *relinquishIpBlockRequest)
+	if err != nil {
+		return err
+	} else {
+		fmt.Println(result)
+		return nil
+	}
 }

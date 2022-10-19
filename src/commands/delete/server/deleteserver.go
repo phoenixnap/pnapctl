@@ -6,10 +6,8 @@ import (
 	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-const commandName = "delete server"
 
 var DeleteServerCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
@@ -21,14 +19,17 @@ var DeleteServerCmd = &cobra.Command{
 	SilenceUsage: true,
 	Deprecated:   "Use the deprovision command instead: pnapctl deprovision server <SERVER_ID> --filename <FILE_PATH>",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		result, httpResponse, err := bmcapi.Client.ServerDelete(args[0])
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println(result.Result, result.ServerId)
-			return nil
-		}
+		cmdname.SetCommandName(cmd)
+		return deleteServer(args[0])
 	},
+}
+
+func deleteServer(id string) error {
+	result, err := bmcapi.Client.ServerDelete(id)
+	if err != nil {
+		return err
+	} else {
+		fmt.Println(result.Result, result.ServerId)
+		return nil
+	}
 }

@@ -5,9 +5,12 @@ import (
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-var commandName = "get account-billing-configuration"
+func init() {
+	utils.SetupOutputFlag(GetAccountBillingConfigurationCmd)
+}
 
 var GetAccountBillingConfigurationCmd = &cobra.Command{
 	Use:          "account-billing-configuration",
@@ -18,23 +21,18 @@ var GetAccountBillingConfigurationCmd = &cobra.Command{
 	Example: `
 # Retrieve your account billing configuration
 pnapctl get account-billing-configuration [--output=<OUTPUT_TYPE>]`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
 		return getAccountBillingConfiguration()
 	},
 }
 
 func getAccountBillingConfiguration() error {
-	configurationDetails, httpResponse, err := billing.Client.AccountBillingConfigurationGet()
+	configurationDetails, err := billing.Client.AccountBillingConfigurationGet()
 
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
-
-	if *generatedError != nil {
-		return *generatedError
+	if err != nil {
+		return err
 	} else {
-		return printer.PrintConfigurationDetailsResponse(configurationDetails, commandName)
+		return printer.PrintConfigurationDetailsResponse(configurationDetails)
 	}
-}
-
-func init() {
-	utils.SetupOutputFlag(GetAccountBillingConfigurationCmd)
 }

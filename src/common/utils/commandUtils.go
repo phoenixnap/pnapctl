@@ -2,31 +2,10 @@ package utils
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/spf13/cobra"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/printer"
 )
-
-func is2xxSuccessful(statusCode int) bool {
-	if statusCode >= 200 && statusCode < 300 {
-		return true
-	} else {
-		return false
-	}
-}
-
-func CheckForErrors(httpResponse *http.Response, err error, commandName string) *error {
-	var generatedError error = nil
-	if httpResponse != nil && !is2xxSuccessful(httpResponse.StatusCode) {
-		generatedError = ctlerrors.HandleBMCError(httpResponse, commandName)
-	} else if err != nil {
-		generatedError = ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-	}
-
-	return &generatedError
-}
 
 func SetupOutputFlag(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
@@ -39,8 +18,14 @@ func SetupFullFlag(cmd *cobra.Command, full *bool, resource string) {
 type Action string
 
 const (
-	CREATION Action = "creation"
-	UPDATING Action = "updating"
+	CREATION    Action = "creation"
+	UPDATING    Action = "updating"
+	RESERVATION Action = "reservation"
+	TAGGING     Action = "tagging"
+	CONVERSION  Action = "conversion"
+	DELETION    Action = "deletion"
+	DEPROVISION Action = "deprovisioning"
+	SUBMISSION  Action = "submission"
 )
 
 func SetupFilenameFlag(cmd *cobra.Command, filename *string, action Action) {

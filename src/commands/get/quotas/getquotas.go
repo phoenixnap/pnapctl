@@ -1,18 +1,16 @@
 package quotas
 
 import (
-	netHttp "net/http"
-
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "get quotas"
-
-var ID string
+func init() {
+	utils.SetupOutputFlag(GetQuotasCmd)
+}
 
 var GetQuotasCmd = &cobra.Command{
 	Use:          "quota [QUOTA_ID]",
@@ -33,39 +31,30 @@ pnapctl get quotas [--output <OUTPUT_TYPE>]
 # List a specific quota.
 pnapctl get quota <QUOTA_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
-			ID = args[0]
-			return getQuotas(ID)
+			return getQuotaById(args[0])
 		}
-		return getQuotas("")
+		return getQuotas()
 	},
 }
 
-func getQuotas(quotaId string) error {
-	var httpResponse *netHttp.Response
-	var err error
-	var quota *bmcapisdk.Quota
-	var quotas []bmcapisdk.Quota
+func getQuotas() error {
+	quotas, err := bmcapi.Client.QuotasGet()
 
-	if quotaId == "" {
-		quotas, httpResponse, err = bmcapi.Client.QuotasGet()
+	if err != nil {
+		return err
 	} else {
-		quota, httpResponse, err = bmcapi.Client.QuotaGetById(quotaId)
-	}
-
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-	if *generatedError != nil {
-		return *generatedError
-	} else {
-		if quotaId == "" {
-			return printer.PrintQuotaListResponse(quotas, commandName)
-		} else {
-			return printer.PrintQuotaResponse(quota, commandName)
-		}
+		return printer.PrintQuotaListResponse(quotas)
 	}
 }
 
-func init() {
-	GetQuotasCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+func getQuotaById(quotaId string) error {
+	quota, err := bmcapi.Client.QuotaGetById(quotaId)
+
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintQuotaResponse(quota)
+	}
 }

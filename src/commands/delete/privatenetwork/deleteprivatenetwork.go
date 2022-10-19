@@ -4,10 +4,8 @@ import (
 	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-const commandName = "delete private-network"
 
 var DeletePrivateNetworkCmd = &cobra.Command{
 	Use:          "private-network PRIVATE_NETWORK_ID",
@@ -17,14 +15,11 @@ var DeletePrivateNetworkCmd = &cobra.Command{
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		httpResponse, err := networks.Client.PrivateNetworkDelete(args[0])
-
-		if httpResponse != nil && httpResponse.StatusCode != 204 {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
-		} else if err != nil {
-			return err
-		}
-
-		return nil
+		cmdname.SetCommandName(cmd)
+		return deletePrivateNetwork(args[0])
 	},
+}
+
+func deletePrivateNetwork(id string) error {
+	return networks.Client.PrivateNetworkDelete(id)
 }

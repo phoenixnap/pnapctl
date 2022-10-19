@@ -25,10 +25,10 @@ func TestGetAllTagsSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagsGet("").
-		Return(tags, WithResponse(200, WithBody(tags)), nil)
+		Return(tags, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(taglist, "get tags").
+		PrintOutput(taglist).
 		Return(nil)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
@@ -41,27 +41,15 @@ func TestGetAllTagsClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagsGet("").
-		Return(nil, WithResponse(200, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get servers", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetAllTagsKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareTagMockClient(test_framework).
-		TagsGet("").
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetAllTagsPrinterFailure(test_framework *testing.T) {
@@ -75,10 +63,10 @@ func TestGetAllTagsPrinterFailure(test_framework *testing.T) {
 
 	PrepareTagMockClient(test_framework).
 		TagsGet("").
-		Return(tags, WithResponse(200, WithBody(tags)), nil)
+		Return(tags, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(taglist, "get tags").
+		PrintOutput(taglist).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})

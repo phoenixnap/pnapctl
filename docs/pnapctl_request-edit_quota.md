@@ -26,7 +26,7 @@ reason: My current limit is not enough.
 ### Options
 
 ```
-  -f, --filename string   File containing required information for creation
+  -f, --filename string   File containing required information for submission
   -h, --help              help for quota
 ```
 

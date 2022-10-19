@@ -7,14 +7,19 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-var commandName = "update ssh-key"
-
 var Full bool
+
+func init() {
+	utils.SetupOutputFlag(UpdateSshKeyCmd)
+	utils.SetupFullFlag(UpdateSshKeyCmd, &Full, "ssh key")
+	utils.SetupFilenameFlag(UpdateSshKeyCmd, &Filename, utils.UPDATING)
+}
 
 // UpdateSshKeyCmd is the command for creating a server.
 var UpdateSshKeyCmd = &cobra.Command{
@@ -32,27 +37,23 @@ pnapctl update ssh-key <SSH_KEY_ID> --filename <FILE_PATH> [--full] [--output <O
 default: true
 name: default ssh key`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		sshKeyUpdate, err := models.CreateRequestFromFile[bmcapisdk.SshKeyUpdate](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// update the ssh key
-		response, httpResponse, err := bmcapi.Client.SshKeyPut(args[0], *sshKeyUpdate)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintSshKeyResponse(response, Full, commandName)
-		}
+		cmdname.SetCommandName(cmd)
+		return updateSshKey(args[0])
 	},
 }
 
-func init() {
-	UpdateSshKeyCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ssh key details")
-	UpdateSshKeyCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	UpdateSshKeyCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	UpdateSshKeyCmd.MarkFlagRequired("filename")
+func updateSshKey(id string) error {
+	sshKeyUpdate, err := models.CreateRequestFromFile[bmcapisdk.SshKeyUpdate](Filename)
+
+	if err != nil {
+		return err
+	}
+
+	// update the ssh key
+	response, err := bmcapi.Client.SshKeyPut(id, *sshKeyUpdate)
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintSshKeyResponse(response, Full)
+	}
 }

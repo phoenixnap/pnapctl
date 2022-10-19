@@ -5,12 +5,10 @@
 package sdkmocks
 
 import (
-	http "net/http"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
 	auditapi "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
-	audit "phoenixnap.com/pnapctl/common/models/queryparams/audit"
 )
 
 // MockAuditSdkClient is a mock of AuditSdkClient interface.
@@ -37,17 +35,16 @@ func (m *MockAuditSdkClient) EXPECT() *MockAuditSdkClientMockRecorder {
 }
 
 // EventsGet mocks base method.
-func (m *MockAuditSdkClient) EventsGet(queryParams audit.EventsGetQueryParams) ([]auditapi.Event, *http.Response, error) {
+func (m *MockAuditSdkClient) EventsGet(from, to string, limit int, order, username, verb, uri string) ([]auditapi.Event, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "EventsGet", queryParams)
+	ret := m.ctrl.Call(m, "EventsGet", from, to, limit, order, username, verb, uri)
 	ret0, _ := ret[0].([]auditapi.Event)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // EventsGet indicates an expected call of EventsGet.
-func (mr *MockAuditSdkClientMockRecorder) EventsGet(queryParams interface{}) *gomock.Call {
+func (mr *MockAuditSdkClientMockRecorder) EventsGet(from, to, limit, order, username, verb, uri interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EventsGet", reflect.TypeOf((*MockAuditSdkClient)(nil).EventsGet), queryParams)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EventsGet", reflect.TypeOf((*MockAuditSdkClient)(nil).EventsGet), from, to, limit, order, username, verb, uri)
 }

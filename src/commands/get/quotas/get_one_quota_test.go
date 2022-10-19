@@ -19,10 +19,10 @@ func TestGetQuotaSuccess(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		QuotaGetById(RESOURCEID).
-		Return(&quota, WithResponse(200, WithBody(quota)), nil)
+		Return(&quota, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tableQuota, "get quotas").
+		PrintOutput(tableQuota).
 		Return(nil)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
@@ -31,41 +31,18 @@ func TestGetQuotaSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetQuotaNotFound(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		QuotaGetById(RESOURCEID).
-		Return(nil, WithResponse(400, nil), nil)
-
-	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command 'get quotas' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetQuotaClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		QuotaGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get quotas", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetQuotaKeycloakFailure(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		QuotaGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetQuotaPrinterFailure(test_framework *testing.T) {
@@ -74,10 +51,10 @@ func TestGetQuotaPrinterFailure(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		QuotaGetById(RESOURCEID).
-		Return(&quota, WithResponse(200, WithBody(tableQuota)), nil)
+		Return(&quota, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tableQuota, "get quotas").
+		PrintOutput(tableQuota).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})

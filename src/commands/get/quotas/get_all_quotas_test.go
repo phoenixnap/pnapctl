@@ -25,29 +25,16 @@ func TestGetAllQuotasSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		QuotasGet().
-		Return(quotaList, WithResponse(200, WithBody(quotaList)), nil)
+		Return(quotaList, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(quotaTables, "get quotas").
+		PrintOutput(quotaTables).
 		Return(nil)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
-}
-
-func TestGetAllQuotasKeycloakFailure(test_framework *testing.T) {
-	quota := []bmcapisdk.Quota{generators.Generate[bmcapisdk.Quota]()}
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		QuotasGet().
-		Return(quota, nil, testutil.TestKeycloakError)
-
-	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
@@ -61,10 +48,10 @@ func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		QuotasGet().
-		Return(quotaList, WithResponse(200, WithBody(quotaList)), nil)
+		Return(quotaList, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(quotaTables, "get quotas").
+		PrintOutput(quotaTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})

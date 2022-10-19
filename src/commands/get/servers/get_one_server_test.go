@@ -20,10 +20,10 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).
-		Return(&server, WithResponse(200, WithBody(server)), nil)
+		Return(&server, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServer, "get servers").
+		PrintOutput(shortServer).
 		Return(nil)
 
 	Full = false
@@ -39,10 +39,10 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).
-		Return(&server, WithResponse(200, WithBody(server)), nil)
+		Return(&server, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(longServer, "get servers").
+		PrintOutput(longServer).
 		Return(nil)
 
 	Full = true
@@ -52,41 +52,18 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetServerNotFound(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		ServerGetById(RESOURCEID).
-		Return(nil, WithResponse(400, nil), nil)
-
-	err := GetServersCmd.RunE(GetServersCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command 'get servers' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetServerClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get servers", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetServerKeycloakFailure(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		ServerGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	err := GetServersCmd.RunE(GetServersCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
@@ -95,10 +72,10 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerGetById(RESOURCEID).
-		Return(&server, WithResponse(200, WithBody(server)), nil)
+		Return(&server, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServer, "get servers").
+		PrintOutput(shortServer).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	Full = false

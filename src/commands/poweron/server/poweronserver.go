@@ -5,10 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-const commandName string = "power-on server"
 
 var PowerOnServerCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
@@ -19,17 +17,17 @@ var PowerOnServerCmd = &cobra.Command{
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		result, httpResponse, err := bmcapi.Client.ServerPowerOn(args[0])
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println(result.Result)
-			return nil
-		}
+		cmdname.SetCommandName(cmd)
+		return powerOnServer(args[0])
 	},
 }
 
-func init() {
+func powerOnServer(id string) error {
+	result, err := bmcapi.Client.ServerPowerOn(id)
+	if err != nil {
+		return err
+	} else {
+		fmt.Println(result.Result)
+		return nil
+	}
 }

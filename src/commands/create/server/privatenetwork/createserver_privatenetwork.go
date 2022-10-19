@@ -7,12 +7,16 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-var commandName = "create server-private-network"
+func init() {
+	utils.SetupOutputFlag(CreateServerPrivateNetworkCmd)
+	utils.SetupFilenameFlag(CreateServerPrivateNetworkCmd, &Filename, utils.CREATION)
+}
 
 // CreateServerPrivateNetworkCmd is the command for creating a server.
 var CreateServerPrivateNetworkCmd = &cobra.Command{
@@ -36,27 +40,24 @@ statusDescription: in-progress
 `,
 
 	RunE: func(cmd *cobra.Command, args []string) error {
-		serverPrivateNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPrivateNetwork](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// Create the server private network
-		response, httpResponse, err := bmcapi.Client.ServerPrivateNetworkPost(args[0], *serverPrivateNetwork)
-
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintServerPrivateNetwork(response, commandName)
-		}
+		cmdname.SetCommandName(cmd)
+		return createPrivateNetworkForServer(args[0])
 	},
 }
 
-func init() {
-	CreateServerPrivateNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateServerPrivateNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateServerPrivateNetworkCmd.MarkFlagRequired("filename")
+func createPrivateNetworkForServer(id string) error {
+	serverPrivateNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPrivateNetwork](Filename)
+
+	if err != nil {
+		return err
+	}
+
+	// Create the server private network
+	response, err := bmcapi.Client.ServerPrivateNetworkPost(id, *serverPrivateNetwork)
+
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintServerPrivateNetwork(response)
+	}
 }

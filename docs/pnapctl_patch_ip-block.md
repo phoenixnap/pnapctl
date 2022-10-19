@@ -25,7 +25,7 @@ pnapctl patch ip-block IP_BLOCK_ID [flags]
 ### Options
 
 ```
-  -f, --filename string   File containing required information for patch
+  -f, --filename string   File containing required information for updating
       --full              Shows all ip-block details
   -h, --help              help for ip-block
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")

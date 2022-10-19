@@ -2,13 +2,13 @@ package server
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"sigs.k8s.io/yaml"
@@ -32,13 +32,13 @@ func TestTagServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(&server, WithResponse(200, WithBody(server)), nil).
+		Return(&server, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -60,13 +60,13 @@ func TestTagServerEmptyBodySuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, []bmcapisdk.TagAssignmentRequest{}).
-		Return(&server, WithResponse(200, WithBody(server)), nil).
+		Return(&server, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -92,13 +92,13 @@ func TestTagServerSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(&server, WithResponse(200, WithBody(server)), nil).
+		Return(&server, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -116,7 +116,7 @@ func TestTagServerFileNotFoundFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
@@ -141,7 +141,7 @@ func TestTagServerUnmarshallingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -149,7 +149,7 @@ func TestTagServerUnmarshallingFailure(test_framework *testing.T) {
 	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "tag server", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -163,9 +163,9 @@ func TestTagServerFileReadingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
-			Message: "Command 'tag server' has been performed, but something went wrong. Error code: 0503",
+			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
 		}).
 		Times(1)
 
@@ -173,38 +173,7 @@ func TestTagServerFileReadingFailure(test_framework *testing.T) {
 	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "tag server", err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestTagServerBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	tagAssignmentRequests := testutil.GenN(2, generators.Generate[bmcapisdk.TagAssignmentRequest])
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(tagAssignmentRequests)
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -222,13 +191,13 @@ func TestTagServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -236,37 +205,8 @@ func TestTagServerClientFailure(test_framework *testing.T) {
 	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "tag server", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestTagServerKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	tagAssignmentRequests := testutil.GenN(2, generators.Generate[bmcapisdk.TagAssignmentRequest])
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(tagAssignmentRequests)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(nil, nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }

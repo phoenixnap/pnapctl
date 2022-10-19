@@ -7,14 +7,14 @@ import (
 )
 
 // Rated Usage
-func PrintRatedUsageResponse(ratedUsage *billingapi.RatedUsageGet200ResponseInner, full bool, commandName string) error {
+func PrintRatedUsageResponse(ratedUsage *billingapi.RatedUsageGet200ResponseInner, full bool) error {
 	ratedUsageToPrint := PrepareRatedUsageForPrinting(*ratedUsage, full)
-	return MainPrinter.PrintOutput(ratedUsageToPrint, commandName)
+	return MainPrinter.PrintOutput(ratedUsageToPrint)
 }
 
-func PrintRatedUsageListResponse(ratedUsages []billingapi.RatedUsageGet200ResponseInner, full bool, commandName string) error {
+func PrintRatedUsageListResponse(ratedUsages []billingapi.RatedUsageGet200ResponseInner, full bool) error {
 	ratedUsagesToPrint := prepareOneOfWith(ratedUsages, withFull(full, PrepareRatedUsageForPrinting))
-	return MainPrinter.PrintOutput(ratedUsagesToPrint, commandName)
+	return MainPrinter.PrintOutput(ratedUsagesToPrint)
 }
 
 func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200ResponseInner, full bool) interface{} {
@@ -26,19 +26,19 @@ func PrepareRatedUsageForPrinting(ratedUsage billingapi.RatedUsageGet200Response
 	case table:
 		return tables.ShortRatedUsageRecordFromSdk(ratedUsage)
 	default:
-		return ratedUsage
+		return ratedUsage.GetActualInstance()
 	}
 }
 
 // Products
-func PrintProductResponse(product *billingapi.ProductsGet200ResponseInner, full bool, commandName string) error {
+func PrintProductResponse(product *billingapi.ProductsGet200ResponseInner) error {
 	productToPrint := PrepareProductForPrinting(*product)
-	return MainPrinter.PrintOutput(productToPrint, commandName)
+	return MainPrinter.PrintOutput(productToPrint)
 }
 
-func PrintProductListResponse(products []billingapi.ProductsGet200ResponseInner, commandName string) error {
+func PrintProductListResponse(products []billingapi.ProductsGet200ResponseInner) error {
 	productsToPrint := prepareOneOfWith(products, PrepareProductForPrinting)
-	return MainPrinter.PrintOutput(productsToPrint, commandName)
+	return MainPrinter.PrintOutput(productsToPrint)
 }
 
 func PrepareProductForPrinting(product billingapi.ProductsGet200ResponseInner) interface{} {
@@ -48,19 +48,19 @@ func PrepareProductForPrinting(product billingapi.ProductsGet200ResponseInner) i
 	case table:
 		return tables.ProductTableFromSdk(product)
 	default:
-		return product
+		return product.GetActualInstance()
 	}
 }
 
 // Reservations
-func PrintReservationResponse(reservation *billingapi.Reservation, full bool, commandName string) error {
+func PrintReservationResponse(reservation *billingapi.Reservation, full bool) error {
 	reservationToPrint := PrepareReservationForPrinting(*reservation, full)
-	return MainPrinter.PrintOutput(reservationToPrint, commandName)
+	return MainPrinter.PrintOutput(reservationToPrint)
 }
 
-func PrintReservationListResponse(reservations []billingapi.Reservation, full bool, commandName string) error {
+func PrintReservationListResponse(reservations []billingapi.Reservation, full bool) error {
 	reservationsToPrint := iterutils.Map(reservations, withFull(full, PrepareReservationForPrinting))
-	return MainPrinter.PrintOutput(reservationsToPrint, commandName)
+	return MainPrinter.PrintOutput(reservationsToPrint)
 }
 
 func PrepareReservationForPrinting(reservation billingapi.Reservation, full bool) interface{} {
@@ -77,14 +77,14 @@ func PrepareReservationForPrinting(reservation billingapi.Reservation, full bool
 }
 
 // Configuration Details
-func PrintConfigurationDetailsResponse(configurationDetails *billingapi.ConfigurationDetails, commandName string) error {
+func PrintConfigurationDetailsResponse(configurationDetails *billingapi.ConfigurationDetails) error {
 	configurationDetailsToPrint := PrepareConfigurationDetailsForPrinting(*configurationDetails)
-	return MainPrinter.PrintOutput(configurationDetailsToPrint, commandName)
+	return MainPrinter.PrintOutput(configurationDetailsToPrint)
 }
 
-func PrintConfigurationDetailsListResponse(configurationDetails []billingapi.ConfigurationDetails, commandName string) error {
+func PrintConfigurationDetailsListResponse(configurationDetails []billingapi.ConfigurationDetails) error {
 	configurationDetailsToPrint := iterutils.Map(configurationDetails, PrepareConfigurationDetailsForPrinting)
-	return MainPrinter.PrintOutput(configurationDetailsToPrint, commandName)
+	return MainPrinter.PrintOutput(configurationDetailsToPrint)
 }
 
 func PrepareConfigurationDetailsForPrinting(configurationDetails billingapi.ConfigurationDetails) interface{} {
@@ -99,14 +99,14 @@ func PrepareConfigurationDetailsForPrinting(configurationDetails billingapi.Conf
 }
 
 // Product Availability
-func PrintProductAvailabilityResponse(productAvailability *billingapi.ProductAvailability, commandName string) error {
+func PrintProductAvailabilityResponse(productAvailability *billingapi.ProductAvailability) error {
 	productAvailabilityToPrint := PrepareProductAvailabilityForPrinting(*productAvailability)
-	return MainPrinter.PrintOutput(productAvailabilityToPrint, commandName)
+	return MainPrinter.PrintOutput(productAvailabilityToPrint)
 }
 
-func PrintProductAvailabilityListResponse(productAvailability []billingapi.ProductAvailability, commandName string) error {
+func PrintProductAvailabilityListResponse(productAvailability []billingapi.ProductAvailability) error {
 	productAvailabilityToPrint := iterutils.Map(productAvailability, PrepareProductAvailabilityForPrinting)
-	return MainPrinter.PrintOutput(productAvailabilityToPrint, commandName)
+	return MainPrinter.PrintOutput(productAvailabilityToPrint)
 }
 
 func PrepareProductAvailabilityForPrinting(productAvailability billingapi.ProductAvailability) interface{} {

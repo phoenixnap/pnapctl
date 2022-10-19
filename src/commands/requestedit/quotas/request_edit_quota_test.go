@@ -2,7 +2,6 @@ package quotas
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -10,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -25,13 +25,13 @@ func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 	//prepare mocks
 	PrepareBmcApiMockClient(test_framework).
 		QuotaEditById(RESOURCEID, gomock.Eq(quotaEditLimitRequest)).
-		Return(WithResponse(202, WithBody(nil)), nil).
+		Return(nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -50,13 +50,13 @@ func TestSubmitQuotaEditRequestSuccessJSON(test_framework *testing.T) {
 	//prepare mocks
 	PrepareBmcApiMockClient(test_framework).
 		QuotaEditById(RESOURCEID, gomock.Eq(quotaEditLimitRequest)).
-		Return(WithResponse(202, WithBody(nil)), nil).
+		Return(nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -72,12 +72,12 @@ func TestSubmitQuotaEditRequestFileNotFoundFailure(test_framework *testing.T) {
 
 	// prepare mocks
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
 	// execute
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{})
+	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
 
@@ -95,14 +95,14 @@ func TestSubmitQuotaEditRequestUnmarshallingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(filecontents, nil).
 		Times(1)
 
 	// execute
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{})
+	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "request-edit quota", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
 
 	// assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -117,13 +117,13 @@ func TestSubmitQuotaEditRequestYAMLUnmarshallingFailure(test_framework *testing.
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(yamlmarshal, nil).
 		Times(1)
 
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{})
+	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "request-edit quota", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
 
 	// assertions
 	assert.EqualError(test_framework, expectedErr, expectedErr.Error())
@@ -137,44 +137,16 @@ func TestSubmitQuotaEditFileReadingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
-			Message: "Command 'request-edit quota' has been performed, but something went wrong. Error code: 0503",
+			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
 		}).
-		Times(1)
-
-	// execute
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{})
-
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "request-edit quota", err)
-
-	// assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestSubmitQuotaEditBackendErrorFailure(test_framework *testing.T) {
-	// setup
-	quotaEditLimitRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
-	yamlmarshal, _ := yaml.Marshal(quotaEditLimitRequest)
-	Filename = FILENAME
-
-	// prepare mocks
-	PrepareBmcApiMockClient(test_framework).
-		QuotaEditById(RESOURCEID, gomock.Eq(quotaEditLimitRequest)).
-		Return(WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
-		Return(yamlmarshal, nil).
 		Times(1)
 
 	// execute
 	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
 
 	// assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -189,47 +161,21 @@ func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 	// prepare mocks
 	PrepareBmcApiMockClient(test_framework).
 		QuotaEditById(RESOURCEID, gomock.Eq(editQuotaRequest)).
-		Return(nil, testutil.TestError).
+		Return(testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(yamlmarshal, nil).
 		Times(1)
 
 	// execute
 	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
 
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "request-edit quota", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestSubmitQuotaEditKeycloakFailure(test_framework *testing.T) {
-	// setup
-	editQuotaRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
-	yamlmarshal, _ := yaml.Marshal(editQuotaRequest)
-	Filename = FILENAME
-
-	// prepare mocks
-	PrepareBmcApiMockClient(test_framework).
-		QuotaEditById(RESOURCEID, gomock.Eq(editQuotaRequest)).
-		Return(nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// execute
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
-
-	// assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }

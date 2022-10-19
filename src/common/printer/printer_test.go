@@ -9,13 +9,11 @@ import (
 	"github.com/landoop/tableprinter"
 	"github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
@@ -45,7 +43,7 @@ func TestPrintOutputJsonFormat(test_framework *testing.T) {
 
 	for _, tc := range testCases {
 		test_framework.Run(tc.name, func(test_framework *testing.T) {
-			outputError := MainPrinter.PrintOutput(&tc.input, "dummy command")
+			outputError := MainPrinter.PrintOutput(&tc.input)
 
 			assert.NoError(test_framework, outputError)
 		})
@@ -59,7 +57,7 @@ func ExamplePrintOutputJsonFormat() {
 
 	inputStruct := ExampleStruct1{ID: "123", Status: "OK"}
 
-	MainPrinter.PrintOutput(inputStruct, "dummy command")
+	MainPrinter.PrintOutput(inputStruct)
 
 	// Output: {
 	//     "id": "123",
@@ -82,7 +80,7 @@ func TestPrintOutputYamlFormat(test_framework *testing.T) {
 
 	for _, tc := range testCases {
 		test_framework.Run(tc.name, func(test_framework *testing.T) {
-			outputError := MainPrinter.PrintOutput(tc.input, "dummy command")
+			outputError := MainPrinter.PrintOutput(tc.input)
 
 			assert.NoError(test_framework, outputError)
 		})
@@ -96,7 +94,7 @@ func ExamplePrintOutputYamlFormat() {
 
 	inputStruct := ExampleStruct1{ID: "123", Status: "OK"}
 
-	MainPrinter.PrintOutput(inputStruct, "dummy command")
+	MainPrinter.PrintOutput(inputStruct)
 
 	// Output: id: "123"
 	// status: OK
@@ -131,7 +129,7 @@ func TestPrintOutputTableFormat(test_framework *testing.T) {
 				Tableprinter: tableprinter.New(customTablePrinterBuffer),
 			}
 
-			outputError := MainPrinter.PrintOutput(tc.input, "dummy command")
+			outputError := MainPrinter.PrintOutput(tc.input)
 
 			assert.NoError(test_framework, outputError)
 
@@ -145,7 +143,7 @@ func TestPrintOutputTableFormat(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	server := generators.Generate[bmcapisdk.Server]()
+	server := generators.Generate[bmcapi.Server]()
 	prepared := PrepareServerForPrinting(server, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -155,7 +153,7 @@ func TestPrepareServerForPrintingLongTable(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	server := generators.Generate[bmcapisdk.Server]()
+	server := generators.Generate[bmcapi.Server]()
 	prepared := PrepareServerForPrinting(server, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -165,7 +163,7 @@ func TestPrepareServerForPrintingShortTable(test_framework *testing.T) {
 
 func TestPrepareServerForPrintingServer(test_framework *testing.T) {
 	OutputFormat = "json"
-	server := generators.Generate[bmcapisdk.Server]()
+	server := generators.Generate[bmcapi.Server]()
 	prepared := PrepareServerForPrinting(server, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -175,7 +173,7 @@ func TestPrepareServerForPrintingServer(test_framework *testing.T) {
 
 func TestPrepareServerListForPrinting(test_framework *testing.T) {
 	OutputFormat = "json"
-	servers := testutil.GenN(1, generators.Generate[bmcapisdk.Server])
+	servers := testutil.GenN(1, generators.Generate[bmcapi.Server])
 	prepared := PrepareServerListForPrinting(servers, false)
 
 	outputType := fmt.Sprintf("%T", prepared[0])
@@ -247,7 +245,7 @@ func TestPrepareClusterListForPrinting(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	tag := generators.Generate[tagapisdk.Tag]()
+	tag := generators.Generate[tagapi.Tag]()
 	prepared := PrepareTagForPrinting(tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -257,7 +255,7 @@ func TestPrepareTagForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareTagForPrintingTag(test_framework *testing.T) {
 	OutputFormat = "json"
-	tag := generators.Generate[tagapisdk.Tag]()
+	tag := generators.Generate[tagapi.Tag]()
 	prepared := PrepareTagForPrinting(tag)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -339,7 +337,7 @@ func TestPrepareQuotaListForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := generators.Generate[bmcapisdk.SshKey]()
+	sshkey := generators.Generate[bmcapi.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -349,7 +347,7 @@ func TestPrepareSshkeyFullForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 	OutputFormat = "table"
-	sshkey := generators.Generate[bmcapisdk.SshKey]()
+	sshkey := generators.Generate[bmcapi.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, false)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -359,7 +357,7 @@ func TestPrepareSshkeyForPrintingTable(test_framework *testing.T) {
 
 func TestPrepareSshkeyForPrintingNonTable(test_framework *testing.T) {
 	OutputFormat = "json"
-	sshkey := generators.Generate[bmcapisdk.SshKey]()
+	sshkey := generators.Generate[bmcapi.SshKey]()
 	prepared := PrepareSshKeyForPrinting(sshkey, true)
 
 	outputType := fmt.Sprintf("%T", prepared)
@@ -447,7 +445,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Bandwidth(test_framework *te
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.BandwidthRecord")
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framework *testing.T) {
@@ -457,7 +455,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framewo
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.OperatingSystemRecord")
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework *testing.T) {
@@ -467,7 +465,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework 
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.PublicSubnetRecord")
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testing.T) {
@@ -477,7 +475,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testi
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.ServerRecord")
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_Storage(test_framework *testing.T) {
@@ -487,17 +485,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Storage(test_framework *test
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
-}
-
-func TestPrepareRatedUsageRecordForPrintingNonTable_Short(test_framework *testing.T) {
-	OutputFormat = "json"
-	ratedUsage := generators.GenerateBandwidthRecordSdk()
-	prepared := PrepareRatedUsageForPrinting(ratedUsage, false)
-
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.StorageRecord")
 }
 
 func TestPrepareRatedUsageRecordForPrintingTableFull(test_framework *testing.T) {
@@ -527,7 +515,7 @@ func TestPrepareProductForPrintingNonTable_BandwidthProduct(test_framework *test
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.ProductsGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.Product")
 }
 
 func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework *testing.T) {
@@ -537,7 +525,7 @@ func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.ProductsGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.Product")
 }
 
 func TestPrepareProductForPrintingNonTable_StorageProduct(test_framework *testing.T) {
@@ -547,7 +535,7 @@ func TestPrepareProductForPrintingNonTable_StorageProduct(test_framework *testin
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.ProductsGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.Product")
 }
 
 func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing.T) {
@@ -557,7 +545,7 @@ func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.ProductsGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.ServerProduct")
 }
 
 func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
@@ -664,7 +652,7 @@ func ExamplePrintOutputTableFormatEmpty() {
 	printerSetup()
 	OutputFormat = ""
 
-	MainPrinter.PrintOutput([]ExampleStruct1{}, "dummy command")
+	MainPrinter.PrintOutput([]ExampleStruct1{})
 
 	// Output: No data found.
 }

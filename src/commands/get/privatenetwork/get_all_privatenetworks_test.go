@@ -25,10 +25,10 @@ func TestGetAllPrivateNetworksShortSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").
-		Return(privateNetworks, WithResponse(200, WithBody(privateNetworks)), nil)
+		Return(privateNetworks, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkList, "get private-network").
+		PrintOutput(privateNetworkList).
 		Return(nil)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
@@ -41,27 +41,15 @@ func TestGetAllPrivateNetworksClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").
-		Return(nil, WithResponse(200, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get servers", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetAllPrivateNetworksKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PrivateNetworksGet("").
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetAllPrivateNetworksPrinterFailure(test_framework *testing.T) {
@@ -75,10 +63,10 @@ func TestGetAllPrivateNetworksPrinterFailure(test_framework *testing.T) {
 
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").
-		Return(privateNetworks, WithResponse(200, WithBody(privateNetworks)), nil)
+		Return(privateNetworks, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkList, "get private-network").
+		PrintOutput(privateNetworkList).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})

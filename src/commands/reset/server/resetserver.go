@@ -5,7 +5,7 @@ import (
 
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
-	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
@@ -14,7 +14,10 @@ import (
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-var commandName = "reset server"
+func init() {
+	// filename is optional
+	ResetServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for reset")
+}
 
 // ResetServerCmd is the command for resetting a server.
 var ResetServerCmd = &cobra.Command{
@@ -37,33 +40,27 @@ sshKeys:
 sshKeyIds: 
 	- 5fa54d1e91867c03a0a7b4a4`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		resetRequest, err := createResetRequest()
-
-		if err != nil {
-			return err
-		}
-
-		result, httpResponse, err := bmcapi.Client.ServerReset(args[0], *resetRequest)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println(result.Result)
-			return err
-		}
+		cmdname.SetCommandName(cmd)
+		return resetServer(args[0])
 	},
 }
 
-func init() {
-	//filename is optional
-	ResetServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for reset")
-}
+func resetServer(id string) error {
+	var request *bmcapisdk.ServerReset = &bmcapisdk.ServerReset{}
+	var err error
 
-func createResetRequest() (*bmcapisdk.ServerReset, error) {
-	if len(Filename) < 1 {
-		return &bmcapisdk.ServerReset{}, nil
+	if Filename != "" {
+		request, err = models.CreateRequestFromFile[bmcapisdk.ServerReset](Filename)
+		if err != nil {
+			return err
+		}
+	}
+
+	result, err := bmcapi.Client.ServerReset(id, *request)
+	if err != nil {
+		return err
 	} else {
-		return models.CreateRequestFromFile[bmcapisdk.ServerReset](Filename, commandName)
+		fmt.Println(result.Result)
+		return err
 	}
 }

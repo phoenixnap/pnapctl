@@ -5,10 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
-	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-const commandName = "shutdown server"
 
 var ShutdownCmd = &cobra.Command{
 	Use:          "server SERVER_ID",
@@ -19,14 +17,17 @@ var ShutdownCmd = &cobra.Command{
 	Aliases:      []string{"srv"},
 	SilenceUsage: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		result, httpResponse, err := bmcapi.Client.ServerShutdown(args[0])
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println(result.Result)
-			return err
-		}
+		cmdname.SetCommandName(cmd)
+		return shutdownServer(args[0])
 	},
+}
+
+func shutdownServer(id string) error {
+	result, err := bmcapi.Client.ServerShutdown(id)
+	if err != nil {
+		return err
+	} else {
+		fmt.Println(result.Result)
+		return err
+	}
 }

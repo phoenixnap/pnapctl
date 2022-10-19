@@ -8,17 +8,18 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/models/queryparams/billing"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
+func getQueryParams() string {
+	return productCategory
+}
+
 func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
 	reservationList := testutil.GenN(5, generators.Generate[billingapi.Reservation])
-	queryParams := generators.GenerateReservationGetQueryParams()
-	setQueryParams(queryParams)
 
 	shortReservations := iterutils.MapInterface(
 		reservationList,
@@ -27,11 +28,11 @@ func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationsGet(queryParams).
-		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
+		ReservationsGet(getQueryParams()).
+		Return(reservationList, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortReservations, "get reservations").
+		PrintOutput(shortReservations).
 		Return(nil)
 
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
@@ -42,8 +43,6 @@ func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
 
 func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
 	reservationList := testutil.GenN(5, generators.Generate[billingapi.Reservation])
-	queryParams := generators.GenerateReservationGetQueryParams()
-	setQueryParams(queryParams)
 
 	reservationTables := iterutils.MapInterface(
 		reservationList,
@@ -52,11 +51,11 @@ func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationsGet(queryParams).
-		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
+		ReservationsGet(getQueryParams()).
+		Return(reservationList, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(reservationTables, "get reservations").
+		PrintOutput(reservationTables).
 		Return(nil)
 
 	// to display full output
@@ -69,42 +68,22 @@ func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
 }
 
 func TestGetAllReservationsClientFailure(test_framework *testing.T) {
-	queryParams := generators.GenerateReservationGetQueryParams()
-	setQueryParams(queryParams)
-
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationsGet(queryParams).
-		Return(nil, WithResponse(400, nil), testutil.TestError)
+		ReservationsGet(getQueryParams()).
+		Return(nil, testutil.TestError)
 
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get reservations", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
 }
 
-func TestGetAllReservationsKeycloakFailure(test_framework *testing.T) {
-	queryParams := generators.GenerateReservationGetQueryParams()
-	setQueryParams(queryParams)
-
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		ReservationsGet(queryParams).
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
 func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
 	reservationList := testutil.GenN(5, generators.Generate[billingapi.Reservation])
-	queryParams := generators.GenerateReservationGetQueryParams()
-	setQueryParams(queryParams)
 
 	shortReservations := iterutils.MapInterface(
 		reservationList,
@@ -113,11 +92,11 @@ func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
-		ReservationsGet(queryParams).
-		Return(reservationList, WithResponse(200, WithBody(reservationList)), nil)
+		ReservationsGet(getQueryParams()).
+		Return(reservationList, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(shortReservations, "get reservations").
+		PrintOutput(shortReservations).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	Full = false
@@ -126,8 +105,4 @@ func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
 
 	// Assertions
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
-}
-
-func setQueryParams(queryparams billing.ReservationsGetQueryParams) {
-	productCategory = string(*queryparams.ProductCategory)
 }

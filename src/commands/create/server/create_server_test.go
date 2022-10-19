@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -11,6 +10,7 @@ import (
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -33,13 +33,13 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
-		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
+		Return(&createdServer, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -65,13 +65,13 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
-		Return(&createdServer, WithResponse(200, WithBody(createdServer)), nil).
+		Return(&createdServer, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -89,7 +89,7 @@ func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
@@ -114,7 +114,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -122,7 +122,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "create server", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -136,9 +136,9 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
-			Message: "Command 'create server' has been performed, but something went wrong. Error code: 0503",
+			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
 		}).
 		Times(1)
 
@@ -146,39 +146,7 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "create server", err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestCreateServerBackendErrorFailure(test_framework *testing.T) {
-	// Setup
-	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(serverCreate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -197,13 +165,13 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -211,37 +179,8 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "create server", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestCreateServerKeycloakFailure(test_framework *testing.T) {
-	// Setup
-	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(serverCreate)).
-		Return(nil, nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }

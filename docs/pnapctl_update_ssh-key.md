@@ -26,7 +26,7 @@ name: default ssh key
 ### Options
 
 ```
-  -f, --filename string   File containing required information for creation
+  -f, --filename string   File containing required information for updating
       --full              Shows all ssh key details
   -h, --help              help for ssh-key
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")

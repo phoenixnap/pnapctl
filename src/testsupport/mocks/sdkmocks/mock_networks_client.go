@@ -5,12 +5,10 @@
 package sdkmocks
 
 import (
-	http "net/http"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
 	networkapi "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
-	network "phoenixnap.com/pnapctl/common/models/queryparams/network"
 )
 
 // MockNetworkSdkClient is a mock of NetworkSdkClient interface.
@@ -37,12 +35,11 @@ func (m *MockNetworkSdkClient) EXPECT() *MockNetworkSdkClientMockRecorder {
 }
 
 // PrivateNetworkDelete mocks base method.
-func (m *MockNetworkSdkClient) PrivateNetworkDelete(networkId string) (*http.Response, error) {
+func (m *MockNetworkSdkClient) PrivateNetworkDelete(networkId string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PrivateNetworkDelete", networkId)
-	ret0, _ := ret[0].(*http.Response)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // PrivateNetworkDelete indicates an expected call of PrivateNetworkDelete.
@@ -52,13 +49,12 @@ func (mr *MockNetworkSdkClientMockRecorder) PrivateNetworkDelete(networkId inter
 }
 
 // PrivateNetworkGetById mocks base method.
-func (m *MockNetworkSdkClient) PrivateNetworkGetById(networkId string) (*networkapi.PrivateNetwork, *http.Response, error) {
+func (m *MockNetworkSdkClient) PrivateNetworkGetById(networkId string) (*networkapi.PrivateNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PrivateNetworkGetById", networkId)
 	ret0, _ := ret[0].(*networkapi.PrivateNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PrivateNetworkGetById indicates an expected call of PrivateNetworkGetById.
@@ -68,13 +64,12 @@ func (mr *MockNetworkSdkClientMockRecorder) PrivateNetworkGetById(networkId inte
 }
 
 // PrivateNetworkPut mocks base method.
-func (m *MockNetworkSdkClient) PrivateNetworkPut(networkId string, privateNetworkUpdate networkapi.PrivateNetworkModify) (*networkapi.PrivateNetwork, *http.Response, error) {
+func (m *MockNetworkSdkClient) PrivateNetworkPut(networkId string, privateNetworkUpdate networkapi.PrivateNetworkModify) (*networkapi.PrivateNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PrivateNetworkPut", networkId, privateNetworkUpdate)
 	ret0, _ := ret[0].(*networkapi.PrivateNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PrivateNetworkPut indicates an expected call of PrivateNetworkPut.
@@ -84,13 +79,12 @@ func (mr *MockNetworkSdkClientMockRecorder) PrivateNetworkPut(networkId, private
 }
 
 // PrivateNetworksGet mocks base method.
-func (m *MockNetworkSdkClient) PrivateNetworksGet(location string) ([]networkapi.PrivateNetwork, *http.Response, error) {
+func (m *MockNetworkSdkClient) PrivateNetworksGet(location string) ([]networkapi.PrivateNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PrivateNetworksGet", location)
 	ret0, _ := ret[0].([]networkapi.PrivateNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PrivateNetworksGet indicates an expected call of PrivateNetworksGet.
@@ -100,13 +94,12 @@ func (mr *MockNetworkSdkClientMockRecorder) PrivateNetworksGet(location interfac
 }
 
 // PrivateNetworksPost mocks base method.
-func (m *MockNetworkSdkClient) PrivateNetworksPost(privateNetworkCreate networkapi.PrivateNetworkCreate) (*networkapi.PrivateNetwork, *http.Response, error) {
+func (m *MockNetworkSdkClient) PrivateNetworksPost(privateNetworkCreate networkapi.PrivateNetworkCreate) (*networkapi.PrivateNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PrivateNetworksPost", privateNetworkCreate)
 	ret0, _ := ret[0].(*networkapi.PrivateNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PrivateNetworksPost indicates an expected call of PrivateNetworksPost.
@@ -116,12 +109,11 @@ func (mr *MockNetworkSdkClientMockRecorder) PrivateNetworksPost(privateNetworkCr
 }
 
 // PublicNetworkDelete mocks base method.
-func (m *MockNetworkSdkClient) PublicNetworkDelete(networkId string) (*http.Response, error) {
+func (m *MockNetworkSdkClient) PublicNetworkDelete(networkId string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PublicNetworkDelete", networkId)
-	ret0, _ := ret[0].(*http.Response)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // PublicNetworkDelete indicates an expected call of PublicNetworkDelete.
@@ -131,13 +123,12 @@ func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkDelete(networkId interf
 }
 
 // PublicNetworkGetById mocks base method.
-func (m *MockNetworkSdkClient) PublicNetworkGetById(networkId string) (*networkapi.PublicNetwork, *http.Response, error) {
+func (m *MockNetworkSdkClient) PublicNetworkGetById(networkId string) (*networkapi.PublicNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PublicNetworkGetById", networkId)
 	ret0, _ := ret[0].(*networkapi.PublicNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PublicNetworkGetById indicates an expected call of PublicNetworkGetById.
@@ -147,13 +138,12 @@ func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkGetById(networkId inter
 }
 
 // PublicNetworkIpBlockDelete mocks base method.
-func (m *MockNetworkSdkClient) PublicNetworkIpBlockDelete(networkId, ipBlockId string) (string, *http.Response, error) {
+func (m *MockNetworkSdkClient) PublicNetworkIpBlockDelete(networkId, ipBlockId string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PublicNetworkIpBlockDelete", networkId, ipBlockId)
 	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PublicNetworkIpBlockDelete indicates an expected call of PublicNetworkIpBlockDelete.
@@ -163,13 +153,12 @@ func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkIpBlockDelete(networkId
 }
 
 // PublicNetworkIpBlockPost mocks base method.
-func (m *MockNetworkSdkClient) PublicNetworkIpBlockPost(networkId string, idBlockCreate networkapi.PublicNetworkIpBlock) (*networkapi.PublicNetworkIpBlock, *http.Response, error) {
+func (m *MockNetworkSdkClient) PublicNetworkIpBlockPost(networkId string, idBlockCreate networkapi.PublicNetworkIpBlock) (*networkapi.PublicNetworkIpBlock, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PublicNetworkIpBlockPost", networkId, idBlockCreate)
 	ret0, _ := ret[0].(*networkapi.PublicNetworkIpBlock)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PublicNetworkIpBlockPost indicates an expected call of PublicNetworkIpBlockPost.
@@ -179,13 +168,12 @@ func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkIpBlockPost(networkId, 
 }
 
 // PublicNetworkPatch mocks base method.
-func (m *MockNetworkSdkClient) PublicNetworkPatch(networkId string, publicNetworkPatch networkapi.PublicNetworkModify) (*networkapi.PublicNetwork, *http.Response, error) {
+func (m *MockNetworkSdkClient) PublicNetworkPatch(networkId string, publicNetworkPatch networkapi.PublicNetworkModify) (*networkapi.PublicNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PublicNetworkPatch", networkId, publicNetworkPatch)
 	ret0, _ := ret[0].(*networkapi.PublicNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PublicNetworkPatch indicates an expected call of PublicNetworkPatch.
@@ -195,13 +183,12 @@ func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkPatch(networkId, public
 }
 
 // PublicNetworksGet mocks base method.
-func (m *MockNetworkSdkClient) PublicNetworksGet(location network.PublicNetworksGetQueryParams) ([]networkapi.PublicNetwork, *http.Response, error) {
+func (m *MockNetworkSdkClient) PublicNetworksGet(location string) ([]networkapi.PublicNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PublicNetworksGet", location)
 	ret0, _ := ret[0].([]networkapi.PublicNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PublicNetworksGet indicates an expected call of PublicNetworksGet.
@@ -211,13 +198,12 @@ func (mr *MockNetworkSdkClientMockRecorder) PublicNetworksGet(location interface
 }
 
 // PublicNetworksPost mocks base method.
-func (m *MockNetworkSdkClient) PublicNetworksPost(publicNetworkCreate networkapi.PublicNetworkCreate) (*networkapi.PublicNetwork, *http.Response, error) {
+func (m *MockNetworkSdkClient) PublicNetworksPost(publicNetworkCreate networkapi.PublicNetworkCreate) (*networkapi.PublicNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PublicNetworksPost", publicNetworkCreate)
 	ret0, _ := ret[0].(*networkapi.PublicNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PublicNetworksPost indicates an expected call of PublicNetworksPost.

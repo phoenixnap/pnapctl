@@ -22,10 +22,10 @@ func TestGetAllStorageNetworksSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGet().
-		Return(networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTables, "get storage-networks").
+		PrintOutput(networkStorageTables).
 		Return(nil)
 
 	// Run command
@@ -39,29 +39,16 @@ func TestGetAllStorageNetworksClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGet().
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "get storage-networks", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetAllStorageNetworksKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageGet().
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetAllStorageNetworksPrinterFailure(test_framework *testing.T) {
@@ -72,10 +59,10 @@ func TestGetAllStorageNetworksPrinterFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGet().
-		Return(networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTables, "get storage-networks").
+		PrintOutput(networkStorageTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	// Run command

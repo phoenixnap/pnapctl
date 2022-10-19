@@ -7,9 +7,8 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
-
-const commandName string = "patch storage-network"
 
 var (
 	Filename, ID string
@@ -35,23 +34,24 @@ pnapctl patch storage-network <ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE
 # storageNetworkPatch.yaml
 name: "UpdatedSN"
 description: "Description"`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		ID = args[0]
 		return patchStorageNetwork()
 	},
 }
 
 func patchStorageNetwork() error {
-	request, err := models.CreateRequestFromFile[networkstorageapi.StorageNetworkUpdate](Filename, commandName)
+	request, err := models.CreateRequestFromFile[networkstorageapi.StorageNetworkUpdate](Filename)
 	if err != nil {
 		return err
 	}
 
-	sdkResponse, httpResponse, err := networkstorage.Client.NetworkStoragePatch(ID, *request)
+	sdkResponse, err := networkstorage.Client.NetworkStoragePatch(ID, *request)
 
-	if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
-		return *generatedError
+	if err != nil {
+		return err
 	} else {
-		return printer.PrintStorageNetworkResponse(sdkResponse, commandName)
+		return printer.PrintStorageNetworkResponse(sdkResponse)
 	}
 }

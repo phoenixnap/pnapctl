@@ -4,15 +4,19 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-var commandName = "update private-network"
+func init() {
+	utils.SetupOutputFlag(UpdatePrivateNetworkCmd)
+	utils.SetupFilenameFlag(UpdatePrivateNetworkCmd, &Filename, utils.UPDATING)
+}
 
 // UpdatePrivateNetworkCmd is the command for creating a private network.
 var UpdatePrivateNetworkCmd = &cobra.Command{
@@ -31,27 +35,24 @@ name: Example CLI Network Updated,
 description: Example CLI Network (Updated Description),
 locationDefault: true`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		privateNetworkUpdate, err := models.CreateRequestFromFile[networkapi.PrivateNetworkModify](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// update the private network
-		response, httpResponse, err := networks.Client.PrivateNetworkPut(args[0], *privateNetworkUpdate)
-
-		if httpResponse != nil && httpResponse.StatusCode != 200 {
-			return ctlerrors.HandleBMCError(httpResponse, commandName)
-		} else if err != nil {
-			return ctlerrors.GenericFailedRequestError(err, commandName, ctlerrors.ErrorSendingRequest)
-		} else {
-			return printer.PrintPrivateNetworkResponse(response, commandName)
-		}
+		cmdname.SetCommandName(cmd)
+		return updatePrivateNetwork(args[0])
 	},
 }
 
-func init() {
-	UpdatePrivateNetworkCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	UpdatePrivateNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	UpdatePrivateNetworkCmd.MarkFlagRequired("filename")
+func updatePrivateNetwork(id string) error {
+	privateNetworkUpdate, err := models.CreateRequestFromFile[networkapi.PrivateNetworkModify](Filename)
+
+	if err != nil {
+		return err
+	}
+
+	// update the private network
+	response, err := networks.Client.PrivateNetworkPut(id, *privateNetworkUpdate)
+
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintPrivateNetworkResponse(response)
+	}
 }

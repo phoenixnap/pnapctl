@@ -27,7 +27,7 @@ locationDefault: true
 ### Options
 
 ```
-  -f, --filename string   File containing required information for creation
+  -f, --filename string   File containing required information for updating
   -h, --help              help for private-network
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
 ```

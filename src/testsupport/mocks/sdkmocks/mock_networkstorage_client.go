@@ -5,7 +5,6 @@
 package sdkmocks
 
 import (
-	http "net/http"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -36,12 +35,11 @@ func (m *MockNetworkStorageSdkClient) EXPECT() *MockNetworkStorageSdkClientMockR
 }
 
 // NetworkStorageDelete mocks base method.
-func (m *MockNetworkStorageSdkClient) NetworkStorageDelete(storageId string) (*http.Response, error) {
+func (m *MockNetworkStorageSdkClient) NetworkStorageDelete(storageId string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NetworkStorageDelete", storageId)
-	ret0, _ := ret[0].(*http.Response)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // NetworkStorageDelete indicates an expected call of NetworkStorageDelete.
@@ -51,13 +49,12 @@ func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageDelete(storageI
 }
 
 // NetworkStorageGet mocks base method.
-func (m *MockNetworkStorageSdkClient) NetworkStorageGet() ([]networkstorageapi.StorageNetwork, *http.Response, error) {
+func (m *MockNetworkStorageSdkClient) NetworkStorageGet() ([]networkstorageapi.StorageNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NetworkStorageGet")
 	ret0, _ := ret[0].([]networkstorageapi.StorageNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // NetworkStorageGet indicates an expected call of NetworkStorageGet.
@@ -67,13 +64,12 @@ func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageGet() *gomock.C
 }
 
 // NetworkStorageGetById mocks base method.
-func (m *MockNetworkStorageSdkClient) NetworkStorageGetById(storageId string) (*networkstorageapi.StorageNetwork, *http.Response, error) {
+func (m *MockNetworkStorageSdkClient) NetworkStorageGetById(storageId string) (*networkstorageapi.StorageNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NetworkStorageGetById", storageId)
 	ret0, _ := ret[0].(*networkstorageapi.StorageNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // NetworkStorageGetById indicates an expected call of NetworkStorageGetById.
@@ -83,13 +79,12 @@ func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageGetById(storage
 }
 
 // NetworkStorageGetVolumeById mocks base method.
-func (m *MockNetworkStorageSdkClient) NetworkStorageGetVolumeById(storageId, volumeId string) (*networkstorageapi.Volume, *http.Response, error) {
+func (m *MockNetworkStorageSdkClient) NetworkStorageGetVolumeById(storageId, volumeId string) (*networkstorageapi.Volume, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NetworkStorageGetVolumeById", storageId, volumeId)
 	ret0, _ := ret[0].(*networkstorageapi.Volume)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // NetworkStorageGetVolumeById indicates an expected call of NetworkStorageGetVolumeById.
@@ -99,13 +94,12 @@ func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageGetVolumeById(s
 }
 
 // NetworkStorageGetVolumes mocks base method.
-func (m *MockNetworkStorageSdkClient) NetworkStorageGetVolumes(storageId string) ([]networkstorageapi.Volume, *http.Response, error) {
+func (m *MockNetworkStorageSdkClient) NetworkStorageGetVolumes(storageId string) ([]networkstorageapi.Volume, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NetworkStorageGetVolumes", storageId)
 	ret0, _ := ret[0].([]networkstorageapi.Volume)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // NetworkStorageGetVolumes indicates an expected call of NetworkStorageGetVolumes.
@@ -115,13 +109,12 @@ func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageGetVolumes(stor
 }
 
 // NetworkStoragePatch mocks base method.
-func (m *MockNetworkStorageSdkClient) NetworkStoragePatch(storageId string, storageUpdate networkstorageapi.StorageNetworkUpdate) (*networkstorageapi.StorageNetwork, *http.Response, error) {
+func (m *MockNetworkStorageSdkClient) NetworkStoragePatch(storageId string, storageUpdate networkstorageapi.StorageNetworkUpdate) (*networkstorageapi.StorageNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NetworkStoragePatch", storageId, storageUpdate)
 	ret0, _ := ret[0].(*networkstorageapi.StorageNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // NetworkStoragePatch indicates an expected call of NetworkStoragePatch.
@@ -131,13 +124,12 @@ func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStoragePatch(storageId
 }
 
 // NetworkStoragePost mocks base method.
-func (m *MockNetworkStorageSdkClient) NetworkStoragePost(storageCreate networkstorageapi.StorageNetworkCreate) (*networkstorageapi.StorageNetwork, *http.Response, error) {
+func (m *MockNetworkStorageSdkClient) NetworkStoragePost(storageCreate networkstorageapi.StorageNetworkCreate) (*networkstorageapi.StorageNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NetworkStoragePost", storageCreate)
 	ret0, _ := ret[0].(*networkstorageapi.StorageNetwork)
-	ret1, _ := ret[1].(*http.Response)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // NetworkStoragePost indicates an expected call of NetworkStoragePost.

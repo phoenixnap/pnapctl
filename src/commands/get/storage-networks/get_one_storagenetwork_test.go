@@ -21,10 +21,10 @@ func TestGetStorageNetworkByIdSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetById(RESOURCEID).
-		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(&networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable, "get storage-networks").
+		PrintOutput(networkStorageTable).
 		Return(nil)
 
 	// Run command
@@ -34,47 +34,20 @@ func TestGetStorageNetworkByIdSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetStorageNetworkByIdNotFound(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageGetById(RESOURCEID).
-		Return(nil, WithResponse(404, nil), nil)
-
-	// Run command
-	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command 'get storage-networks' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetStorageNetworkByIdClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "get storage-networks", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetStorageNetworkByIdKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetStorageNetworkByIdPrinterFailure(test_framework *testing.T) {
@@ -85,10 +58,10 @@ func TestGetStorageNetworkByIdPrinterFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStorageGetById(RESOURCEID).
-		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(&networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable, "get storage-networks").
+		PrintOutput(networkStorageTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	// Run command

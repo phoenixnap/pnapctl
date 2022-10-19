@@ -20,10 +20,10 @@ func TestGetTagSuccess(test_framework *testing.T) {
 
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(&tag, WithResponse(200, WithBody(tag)), nil)
+		Return(&tag, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tagTable, "get tags").
+		PrintOutput(tagTable).
 		Return(nil)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
@@ -32,41 +32,18 @@ func TestGetTagSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetTagNotFound(test_framework *testing.T) {
-	PrepareTagMockClient(test_framework).
-		TagGetById(RESOURCEID).
-		Return(nil, WithResponse(400, nil), nil)
-
-	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command 'get tags' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetTagClientFailure(test_framework *testing.T) {
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get tags", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetTagKeycloakFailure(test_framework *testing.T) {
-	PrepareTagMockClient(test_framework).
-		TagGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetTagPrinterFailure(test_framework *testing.T) {
@@ -75,10 +52,10 @@ func TestGetTagPrinterFailure(test_framework *testing.T) {
 
 	PrepareTagMockClient(test_framework).
 		TagGetById(RESOURCEID).
-		Return(&tag, WithResponse(200, WithBody(tag)), nil)
+		Return(&tag, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tagTable, "get tags").
+		PrintOutput(tagTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})

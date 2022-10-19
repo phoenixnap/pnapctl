@@ -2,7 +2,6 @@ package storagenetwork
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -11,6 +10,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -31,15 +31,15 @@ func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(marshalled, nil)
 
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
-		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(&networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable, "patch storage-network").
+		PrintOutput(networkStorageTable).
 		Return(nil)
 
 	// Run command
@@ -64,15 +64,15 @@ func TestPatchStorageNetworkSuccessJSON(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(marshalled, nil)
 
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
-		Return(&networkStorageSdk, WithResponse(200, WithBody(networkStorageSdk)), nil)
+		Return(&networkStorageSdk, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable, "patch storage-network").
+		PrintOutput(networkStorageTable).
 		Return(nil)
 
 	// Run command
@@ -87,7 +87,7 @@ func TestPatchStorageNetworkFileNotFoundFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
 
 	// Run command
@@ -109,14 +109,14 @@ func TestPatchStorageNetworkUnmarshallingFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(filecontents, nil)
 
 	// Run command
 	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "patch storage-network", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -127,44 +127,16 @@ func TestPatchStorageNetworkFileReadingFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
-			Message: "Command 'patch storage-network' has been performed, but something went wrong. Error code: 0503",
+			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
 		})
 
 	// Run command
 	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "patch storage-network", err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestPatchStorageNetworkBackendErrorFailure(test_framework *testing.T) {
-	// What the client should receive.
-	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
-
-	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStoragePatch)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
-		Return(marshalled, nil)
-
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
-
-	// Run command
-	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -181,44 +153,19 @@ func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(marshalled, nil)
 
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "patch storage-network", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestPatchStorageNetworkKeycloakFailure(test_framework *testing.T) {
-	// What the client should receive.
-	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
-
-	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStoragePatch)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
-		Return(marshalled, nil)
-
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }

@@ -15,7 +15,7 @@ func TestDeleteTagSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagDelete(RESOURCEID).
-		Return(testutil.AsPointer(generators.Generate[tagapisdk.DeleteResult]()), WithResponse(200, nil), nil)
+		Return(testutil.AsPointer(generators.Generate[tagapisdk.DeleteResult]()), nil)
 
 	// Run command
 	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})
@@ -24,61 +24,18 @@ func TestDeleteTagSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestDeleteTagNotFound(test_framework *testing.T) {
-	// Mocking
-	PrepareTagMockClient(test_framework).
-		TagDelete(RESOURCEID).
-		Return(nil, WithResponse(404, nil), nil)
-
-	// Run command
-	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command 'delete tag' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-
-}
-
-func TestDeleteTagError(test_framework *testing.T) {
-	// Mocking
-	PrepareTagMockClient(test_framework).
-		TagDelete(RESOURCEID).
-		Return(nil, WithResponse(500, nil), nil)
-
-	// Run command
-	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})
-
-	expectedMessage := "Command 'delete tag' has been performed, but something went wrong. Error code: 0201"
-
-	// Assertions
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestDeleteTagClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagDelete(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "delete tag", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestDeleteTagKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareTagMockClient(test_framework).
-		TagDelete(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	// Run command
-	err := DeleteTagCmd.RunE(DeleteTagCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }

@@ -26,7 +26,7 @@ description: My custom server edit
 ### Options
 
 ```
-  -f, --filename string   File containing required information for creation.
+  -f, --filename string   File containing required information for creation
   -h, --help              help for public-network
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
 ```

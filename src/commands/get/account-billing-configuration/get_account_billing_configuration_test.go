@@ -21,10 +21,10 @@ func TestGetAccountBillingConfigurationSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		AccountBillingConfigurationGet().
-		Return(&configurationDetail, WithResponse(200, WithBody(configurationDetail)), nil)
+		Return(&configurationDetail, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(configurationDetailTable, "get account-billing-configuration").
+		PrintOutput(configurationDetailTable).
 		Return(nil)
 
 	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})
@@ -37,27 +37,15 @@ func TestGetAccountBillingConfigurationClientFailure(test_framework *testing.T) 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		AccountBillingConfigurationGet().
-		Return(nil, WithResponse(400, nil), testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get account-billing-configuration", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetAccountBillingConfigurationKeycloakFailure(test_framework *testing.T) {
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		AccountBillingConfigurationGet().
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetAccountBillingConfigurationPrinterFailure(test_framework *testing.T) {
@@ -68,10 +56,10 @@ func TestGetAccountBillingConfigurationPrinterFailure(test_framework *testing.T)
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		AccountBillingConfigurationGet().
-		Return(&configurationDetail, WithResponse(200, WithBody(configurationDetail)), nil)
+		Return(&configurationDetail, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(configurationDetailTable, "get account-billing-configuration").
+		PrintOutput(configurationDetailTable).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})

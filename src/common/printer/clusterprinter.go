@@ -5,14 +5,14 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintClusterResponse(cluster *ranchersdk.Cluster, commandName string) error {
+func PrintClusterResponse(cluster *ranchersdk.Cluster) error {
 	clusterToPrint := PrepareClusterForPrinting(*cluster)
-	return MainPrinter.PrintOutput(clusterToPrint, commandName)
+	return MainPrinter.PrintOutput(clusterToPrint)
 }
 
-func PrintClusterListResponse(clusters []ranchersdk.Cluster, commandName string) error {
+func PrintClusterListResponse(clusters []ranchersdk.Cluster) error {
 	clusterListToPrint := PrepareClusterListForPrinting(clusters)
-	return MainPrinter.PrintOutput(clusterListToPrint, commandName)
+	return MainPrinter.PrintOutput(clusterListToPrint)
 }
 
 func PrepareClusterForPrinting(cluster ranchersdk.Cluster) interface{} {

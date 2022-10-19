@@ -26,7 +26,7 @@ description: My custom server edit
 ### Options
 
 ```
-  -f, --filename string   File containing required information for creating.
+  -f, --filename string   File containing required information for creation
   -h, --help              help for ip-block
 ```
 

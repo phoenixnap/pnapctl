@@ -7,14 +7,14 @@ import (
 )
 
 // Storage Network
-func PrintStorageNetworkResponse(storageNetwork *networkstorageapi.StorageNetwork, commandName string) error {
+func PrintStorageNetworkResponse(storageNetwork *networkstorageapi.StorageNetwork) error {
 	networkStorageToPrint := PrepareNetworkStorageForPrinting(*storageNetwork)
-	return MainPrinter.PrintOutput(networkStorageToPrint, commandName)
+	return MainPrinter.PrintOutput(networkStorageToPrint)
 }
 
-func PrintStorageNetworkListResponse(storageNetworks []networkstorageapi.StorageNetwork, commandName string) error {
+func PrintStorageNetworkListResponse(storageNetworks []networkstorageapi.StorageNetwork) error {
 	networkStoragesToPrint := iterutils.Map(storageNetworks, PrepareNetworkStorageForPrinting)
-	return MainPrinter.PrintOutput(networkStoragesToPrint, commandName)
+	return MainPrinter.PrintOutput(networkStoragesToPrint)
 }
 
 func PrepareNetworkStorageForPrinting(storageNetwork networkstorageapi.StorageNetwork) interface{} {
@@ -29,14 +29,14 @@ func PrepareNetworkStorageForPrinting(storageNetwork networkstorageapi.StorageNe
 }
 
 // Volume
-func PrintVolumeResponse(volume *networkstorageapi.Volume, full bool, commandName string) error {
+func PrintVolumeResponse(volume *networkstorageapi.Volume, full bool) error {
 	volumeToPrint := PrepareVolumeForPrinting(*volume, full)
-	return MainPrinter.PrintOutput(volumeToPrint, commandName)
+	return MainPrinter.PrintOutput(volumeToPrint)
 }
 
-func PrintVolumeListResponse(volumes []networkstorageapi.Volume, full bool, commandName string) error {
+func PrintVolumeListResponse(volumes []networkstorageapi.Volume, full bool) error {
 	volumesToPrint := iterutils.Map(volumes, withFull(full, PrepareVolumeForPrinting))
-	return MainPrinter.PrintOutput(volumesToPrint, commandName)
+	return MainPrinter.PrintOutput(volumesToPrint)
 }
 
 func PrepareVolumeForPrinting(volume networkstorageapi.Volume, full bool) interface{} {

@@ -7,9 +7,17 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-var commandName = "patch public-network"
+var (
+	Filename string
+)
+
+func init() {
+	utils.SetupOutputFlag(PatchPublicNetworkCmd)
+	utils.SetupFilenameFlag(PatchPublicNetworkCmd, &Filename, utils.UPDATING)
+}
 
 var PatchPublicNetworkCmd = &cobra.Command{
 	Use:          "public-network [ID]",
@@ -25,30 +33,24 @@ pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTP
 # serverPatch.yaml
 hostname: patched-server
 description: My custom server edit`,
-	RunE: func(_ *cobra.Command, args []string) error {
-		publicNetworkPatch, err := models.CreateRequestFromFile[networkapi.PublicNetworkModify](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		response, httpResponse, err := networks.Client.PublicNetworkPatch(args[0], *publicNetworkPatch)
-
-		if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintPublicNetworkResponse(response, commandName)
-		}
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
+		return patchPublicNetwork(args[0])
 	},
 }
 
-var (
-	Filename string
-)
+func patchPublicNetwork(id string) error {
+	publicNetworkPatch, err := models.CreateRequestFromFile[networkapi.PublicNetworkModify](Filename)
 
-func init() {
-	utils.SetupOutputFlag(PatchPublicNetworkCmd)
+	if err != nil {
+		return err
+	}
 
-	PatchPublicNetworkCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for updating.")
-	PatchPublicNetworkCmd.MarkFlagRequired("filename")
+	response, err := networks.Client.PublicNetworkPatch(id, *publicNetworkPatch)
+
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintPublicNetworkResponse(response)
+	}
 }

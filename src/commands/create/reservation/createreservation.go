@@ -7,9 +7,19 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-var commandName = "create reservation"
+var (
+	Full     bool
+	Filename string
+)
+
+func init() {
+	utils.SetupFullFlag(CreateReservationCmd, &Full, "reservation")
+	utils.SetupOutputFlag(CreateReservationCmd)
+	utils.SetupFilenameFlag(CreateReservationCmd, &Filename, utils.CREATION)
+}
 
 var CreateReservationCmd = &cobra.Command{
 	Use:          "reservation [RESERVATION_ID]",
@@ -25,34 +35,24 @@ pnapctl create reservation <RESERVATION_ID> --filename=<FILENAME>
 
 # reservationCreate.yaml
 sku: "skuCode"`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		reservationCreate, err := models.CreateRequestFromFile[billingapi.ReservationRequest](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// Create the server
-		response, httpResponse, err := billing.Client.ReservationsPost(*reservationCreate)
-		generatedError := utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintReservationResponse(response, Full, commandName)
-		}
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
+		return createReservation()
 	},
 }
 
-var (
-	Full     bool
-	Filename string
-)
+func createReservation() error {
+	reservationCreate, err := models.CreateRequestFromFile[billingapi.ReservationRequest](Filename)
 
-func init() {
-	utils.SetupFullFlag(CreateReservationCmd, &Full, "reservation")
-	utils.SetupOutputFlag(CreateReservationCmd)
+	if err != nil {
+		return err
+	}
 
-	CreateReservationCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateReservationCmd.MarkFlagRequired("filename")
+	// Create the server
+	response, err := billing.Client.ReservationsPost(*reservationCreate)
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintReservationResponse(response, Full)
+	}
 }

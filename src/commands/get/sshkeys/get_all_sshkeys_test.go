@@ -25,10 +25,10 @@ func TestGetAllSshKeysSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeysGet().
-		Return(sshKeyList, WithResponse(200, WithBody(sshKeyList)), nil)
+		Return(sshKeyList, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTables, "get ssh-keys").
+		PrintOutput(sshKeyTables).
 		Return(nil)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
@@ -37,16 +37,16 @@ func TestGetAllSshKeysSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetAllSshKeysKeycloakFailure(test_framework *testing.T) {
+func TestGetAllSshKeysClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeysGet().
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestError)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
 
 	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
+	assert.Equal(test_framework, testutil.TestError, err)
 }
 
 func TestGetAllSshKeysPrinterFailure(test_framework *testing.T) {
@@ -60,10 +60,10 @@ func TestGetAllSshKeysPrinterFailure(test_framework *testing.T) {
 
 	PrepareBmcApiMockClient(test_framework).
 		SshKeysGet().
-		Return(sshKeyList, WithResponse(200, WithBody(sshKeyList)), nil)
+		Return(sshKeyList, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTables, "get ssh-keys").
+		PrintOutput(sshKeyTables).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})

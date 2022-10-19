@@ -1,20 +1,15 @@
 package volumes
 
 import (
-	"net/http"
-
-	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName = "get storage-network volumes"
-
 var (
-	STORAGE_ID, VOLUME_ID string
-	Full                  bool
+	Full bool
 )
 
 func init() {
@@ -40,36 +35,31 @@ pnapctl get volumes [--full] [--output <OUTPUT_TYPE>]
 
 # List a specific volume.
 pnapctl get volume <ID> [--full] [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
-		STORAGE_ID = args[0]
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 2 {
-			VOLUME_ID = args[1]
+			return getVolumeById(args[0], args[1])
 		}
-		return getStorageNetworkVolumes()
+		return getVolumes(args[0])
 	},
 }
 
-func getStorageNetworkVolumes() error {
-	var httpResponse *http.Response
-	var err error
-	var volume *networkstorageapi.Volume
-	var volumes []networkstorageapi.Volume
+func getVolumes(storageId string) error {
+	volumes, err := networkstorage.Client.NetworkStorageGetVolumes(storageId)
 
-	if VOLUME_ID == "" {
-		volumes, httpResponse, err = networkstorage.Client.NetworkStorageGetVolumes(STORAGE_ID)
+	if err != nil {
+		return err
 	} else {
-		volume, httpResponse, err = networkstorage.Client.NetworkStorageGetVolumeById(STORAGE_ID, VOLUME_ID)
+		return printer.PrintVolumeListResponse(volumes, Full)
 	}
+}
 
-	generatedError := utils.CheckForErrors(httpResponse, err, commandName)
+func getVolumeById(storageId, volumeId string) error {
+	volume, err := networkstorage.Client.NetworkStorageGetVolumeById(storageId, volumeId)
 
-	if *generatedError != nil {
-		return *generatedError
+	if err != nil {
+		return err
 	} else {
-		if VOLUME_ID == "" {
-			return printer.PrintVolumeListResponse(volumes, Full, commandName)
-		} else {
-			return printer.PrintVolumeResponse(volume, Full, commandName)
-		}
+		return printer.PrintVolumeResponse(volume, Full)
 	}
 }

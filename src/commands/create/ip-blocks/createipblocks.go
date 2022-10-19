@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
@@ -14,7 +15,11 @@ var Filename string
 
 var Full bool
 
-var commandName = "create ip-block"
+func init() {
+	utils.SetupOutputFlag(CreateIpBlockCmd)
+	utils.SetupFullFlag(CreateIpBlockCmd, &Full, "ip-block")
+	utils.SetupFilenameFlag(CreateIpBlockCmd, &Filename, utils.CREATION)
+}
 
 // CreateIpBlockCmd is the command for creating an ip block.
 var CreateIpBlockCmd = &cobra.Command{
@@ -31,28 +36,24 @@ pnapctl create ip-block --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 # ipblockcreate.yaml
 cidrBlockSize: /28
 location: PHX`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		ipBlockCreate, err := models.CreateRequestFromFile[ipapi.IpBlockCreate](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		// Create the ssh key
-		response, httpResponse, err := ip.Client.IpBlockPost(*ipBlockCreate)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintIpBlockResponse(response, Full, commandName)
-		}
+	RunE: func(cmd *cobra.Command, _ []string) error {
+		cmdname.SetCommandName(cmd)
+		return createIpBlock()
 	},
 }
 
-func init() {
-	CreateIpBlockCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
-	CreateIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	CreateIpBlockCmd.MarkFlagRequired("filename")
-	CreateIpBlockCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ip-block details")
+func createIpBlock() error {
+	ipBlockCreate, err := models.CreateRequestFromFile[ipapi.IpBlockCreate](Filename)
+
+	if err != nil {
+		return err
+	}
+
+	// Create the ssh key
+	response, err := ip.Client.IpBlockPost(*ipBlockCreate)
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintIpBlockResponse(response, Full)
+	}
 }

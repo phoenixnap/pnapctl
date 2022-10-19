@@ -2,7 +2,6 @@ package ipblock
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -10,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -30,13 +30,13 @@ func TestCreatePublicNetworkIpBlockSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(&createdIpBlock, WithResponse(200, WithBody(createdIpBlock)), nil).
+		Return(&createdIpBlock, nil).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -62,11 +62,11 @@ func TestCreatePublicNetworkIpBlockSuccessJSON(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(&createdIpBlock, WithResponse(200, WithBody(createdIpBlock)), nil).
+		Return(&createdIpBlock, nil).
 		Times(1)
 
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(jsonmarshal, nil).
 		Times(1)
 
@@ -83,7 +83,7 @@ func TestCreatePublicNetworkIpBlockFileNotFoundFailure(test_framework *testing.T
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
 		Times(1)
 
@@ -105,7 +105,7 @@ func TestCreatePublicNetworkIpBlockUnmarshallingFailure(test_framework *testing.
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(filecontents, nil).
 		Times(1)
 
@@ -113,7 +113,7 @@ func TestCreatePublicNetworkIpBlockUnmarshallingFailure(test_framework *testing.
 	err := CreatePublicNetworkIpBlockCmd.RunE(CreatePublicNetworkIpBlockCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, "create public-network ip-block", err)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -125,9 +125,9 @@ func TestCreatePublicNetworkIpBlockFileReadingFailure(test_framework *testing.T)
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(nil, ctlerrors.CLIError{
-			Message: "Command 'create public-network ip-block' has been performed, but something went wrong. Error code: 0503",
+			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
 		}).
 		Times(1)
 
@@ -135,39 +135,7 @@ func TestCreatePublicNetworkIpBlockFileReadingFailure(test_framework *testing.T)
 	err := CreatePublicNetworkIpBlockCmd.RunE(CreatePublicNetworkIpBlockCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, "create public-network ip-block", err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestCreatePublicNetworkIpBlockBackendErrorFailure(test_framework *testing.T) {
-	// What the client should receive.
-	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreatePublicNetworkIpBlockCmd.RunE(CreatePublicNetworkIpBlockCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
+	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
@@ -185,13 +153,13 @@ func TestCreatePublicNetworkIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(nil, nil, testutil.TestError).
+		Return(nil, testutil.TestError).
 		Times(1)
 
 	mockFileProcessor := PrepareMockFileProcessor(test_framework)
 
 	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
+		ReadFile(FILENAME).
 		Return(yamlmarshal, nil).
 		Times(1)
 
@@ -199,37 +167,8 @@ func TestCreatePublicNetworkIpBlockClientFailure(test_framework *testing.T) {
 	err := CreatePublicNetworkIpBlockCmd.RunE(CreatePublicNetworkIpBlockCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "create public-network ip-block", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestCreatePublicNetworkIpBlockKeycloakFailure(test_framework *testing.T) {
-	// What the client should receive.
-	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
-
-	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(ipBlockCreate)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(nil, nil, testutil.TestKeycloakError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME, commandName).
-		Return(yamlmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreatePublicNetworkIpBlockCmd.RunE(CreatePublicNetworkIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }

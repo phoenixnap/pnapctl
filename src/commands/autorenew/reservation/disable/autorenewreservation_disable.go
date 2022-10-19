@@ -7,9 +7,19 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-var commandName = "auto-renew reservation disable"
+var (
+	Full     bool
+	Filename string
+)
+
+func init() {
+	utils.SetupFullFlag(AutoRenewDisableReservationCmd, &Full, "reservation")
+	utils.SetupOutputFlag(AutoRenewDisableReservationCmd)
+	utils.SetupFilenameFlag(AutoRenewDisableReservationCmd, &Filename, utils.CREATION)
+}
 
 var AutoRenewDisableReservationCmd = &cobra.Command{
 	Use:          "disable [RESERVATION_ID]",
@@ -26,31 +36,21 @@ pnapctl auto-renew reservation disable <RESERVATION_ID> --filename=<FILENAME>
 # reservationAutoRenewDisable.yaml
 autoRenewDisableReasons: "disable reason"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		request, err := models.CreateRequestFromFile[billingapi.ReservationAutoRenewDisableRequest](Filename, commandName)
-		if err != nil {
-			return err
-		}
-
-		response, httpResponse, err := billing.Client.ReservationDisableAutoRenew(args[0], *request)
-		generatedError := utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintReservationResponse(response, Full, commandName)
-		}
+		cmdname.SetCommandName(cmd)
+		return disableAutoRenewForReservation(args[0])
 	},
 }
 
-var (
-	Full     bool
-	Filename string
-)
+func disableAutoRenewForReservation(id string) error {
+	request, err := models.CreateRequestFromFile[billingapi.ReservationAutoRenewDisableRequest](Filename)
+	if err != nil {
+		return err
+	}
 
-func init() {
-	utils.SetupFullFlag(AutoRenewDisableReservationCmd, &Full, "reservation")
-	utils.SetupOutputFlag(AutoRenewDisableReservationCmd)
-
-	AutoRenewDisableReservationCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	AutoRenewDisableReservationCmd.MarkFlagRequired("filename")
+	response, err := billing.Client.ReservationDisableAutoRenew(id, *request)
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintReservationResponse(response, Full)
+	}
 }

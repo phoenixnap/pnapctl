@@ -5,14 +5,14 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintQuotaResponse(quota *bmcapisdk.Quota, commandName string) error {
+func PrintQuotaResponse(quota *bmcapisdk.Quota) error {
 	quotaToPrint := PrepareQuotaForPrinting(*quota)
-	return MainPrinter.PrintOutput(quotaToPrint, commandName)
+	return MainPrinter.PrintOutput(quotaToPrint)
 }
 
-func PrintQuotaListResponse(quotas []bmcapisdk.Quota, commandName string) error {
+func PrintQuotaListResponse(quotas []bmcapisdk.Quota) error {
 	quotaListToPrint := PrepareQuotaListForPrinting(quotas)
-	return MainPrinter.PrintOutput(quotaListToPrint, commandName)
+	return MainPrinter.PrintOutput(quotaListToPrint)
 }
 
 func PrepareQuotaListForPrinting(quotas []bmcapisdk.Quota) []interface{} {

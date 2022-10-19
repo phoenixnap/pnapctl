@@ -7,14 +7,19 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-const commandName string = "patch server"
-
 var Full bool
+
+func init() {
+	utils.SetupOutputFlag(PatchServerCmd)
+	utils.SetupFullFlag(PatchServerCmd, &Full, "server")
+	utils.SetupFilenameFlag(PatchServerCmd, &Filename, utils.UPDATING)
+}
 
 // PatchServerCmd is the command for patching a server.
 var PatchServerCmd = &cobra.Command{
@@ -33,25 +38,21 @@ pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTP
 hostname: patched-server
 description: My custom server edit`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		patchRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerPatch](Filename, commandName)
-		if err != nil {
-			return err
-		}
-
-		serverResponse, httpResponse, err := bmcapi.Client.ServerPatch(args[0], *patchRequest)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintServerResponse(serverResponse, Full, commandName)
-		}
+		cmdname.SetCommandName(cmd)
+		return patchServer(args[0])
 	},
 }
 
-func init() {
-	PatchServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	PatchServerCmd.MarkFlagRequired("filename")
-	PatchServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
-	PatchServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+func patchServer(id string) error {
+	patchRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerPatch](Filename)
+	if err != nil {
+		return err
+	}
+
+	serverResponse, err := bmcapi.Client.ServerPatch(id, *patchRequest)
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintServerResponse(serverResponse, Full)
+	}
 }

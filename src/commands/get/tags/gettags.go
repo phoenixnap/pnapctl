@@ -1,21 +1,21 @@
 package tags
 
 import (
-	netHttp "net/http"
-
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	tagclient "phoenixnap.com/pnapctl/common/client/tags"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
 )
 
-const commandName string = "get tags"
-
-var ID string
-
 var Name string
+
+func init() {
+	utils.SetupOutputFlag(GetTagsCmd)
+
+	GetTagsCmd.Flags().StringVar(&Name, "name", "", "Name of the tag")
+}
 
 var GetTagsCmd = &cobra.Command{
 	Use:          "tag [TAG_ID]",
@@ -36,40 +36,30 @@ pnapctl get tags [--output <OUTPUT_TYPE>]
 # List a specific tag.
 pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
-			ID = args[0]
-			return getTags(ID)
+			return getTagById(args[0])
 		}
-		return getTags("")
+		return getTags()
 	},
 }
 
-func getTags(tagID string) error {
-	var httpResponse *netHttp.Response
-	var err error
-	var tag *tagapisdk.Tag
-	var tags []tagapisdk.Tag
+func getTags() error {
+	tags, err := tagclient.Client.TagsGet(Name)
 
-	if tagID == "" {
-		tags, httpResponse, err = tagclient.Client.TagsGet(Name)
+	if err != nil {
+		return err
 	} else {
-		tag, httpResponse, err = tagclient.Client.TagGetById(tagID)
-	}
-
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-	if *generatedError != nil {
-		return *generatedError
-	} else {
-		if tagID == "" {
-			return printer.PrintTagListResponse(tags, commandName)
-		} else {
-			return printer.PrintTagResponse(tag, commandName)
-		}
+		return printer.PrintTagListResponse(tags)
 	}
 }
 
-func init() {
-	GetTagsCmd.Flags().StringVar(&Name, "name", "", "Name of the tag")
-	GetTagsCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+func getTagById(tagID string) error {
+	tag, err := tagclient.Client.TagGetById(tagID)
+
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintTagResponse(tag)
+	}
 }

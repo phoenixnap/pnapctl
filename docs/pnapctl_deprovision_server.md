@@ -25,7 +25,7 @@ deleteIpBlocks: false
 ### Options
 
 ```
-  -f, --filename string   File containing required information for deprovision
+  -f, --filename string   File containing required information for deprovisioning
   -h, --help              help for server
 ```
 

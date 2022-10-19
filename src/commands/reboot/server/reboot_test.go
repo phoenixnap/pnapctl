@@ -1,7 +1,6 @@
 package server
 
 import (
-	"errors"
 	"testing"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
@@ -17,7 +16,7 @@ func TestRebootServerSuccess(test_framework *testing.T) {
 	actionResult := generators.Generate[bmcapisdk.ActionResult]()
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(RESOURCEID).
-		Return(&actionResult, WithResponse(200, WithBody(actionResult)), nil)
+		Return(&actionResult, nil)
 
 	// Run command
 	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})
@@ -29,48 +28,12 @@ func TestRebootServerSuccess(test_framework *testing.T) {
 func TestRebootServerClientFail(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerReboot(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, "reboot server", ctlerrors.ErrorSendingRequest)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestRebootServerKeycloakFailure(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		ServerReboot(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
-}
-
-func TestRebootServerNotFoundFail(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		ServerReboot(RESOURCEID).
-		Return(nil, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
-
-	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
-}
-
-func TestRebootServerErrorFail(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		ServerReboot(RESOURCEID).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
-
-	err := RebootCmd.RunE(RebootCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())

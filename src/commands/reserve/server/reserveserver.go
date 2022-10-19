@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
 )
@@ -13,9 +14,13 @@ import (
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-var commandName = "reserve server"
-
 var Full bool
+
+func init() {
+	utils.SetupOutputFlag(ReserveServerCmd)
+	utils.SetupFullFlag(ReserveServerCmd, &Full, "server")
+	utils.SetupFilenameFlag(ReserveServerCmd, &Filename, utils.RESERVATION)
+}
 
 // ResetServerCmd is the command for resetting a server.
 var ReserveServerCmd = &cobra.Command{
@@ -33,26 +38,22 @@ pnapctl reserve server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OU
 # serverReserve.yaml
 pricingModel: ONE_MONTH_RESERVATION`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		reserveRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerReserve](Filename, commandName)
-
-		if err != nil {
-			return err
-		}
-
-		serverResponse, httpResponse, err := bmcapi.Client.ServerReserve(args[0], *reserveRequest)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			return printer.PrintServerResponse(serverResponse, Full, commandName)
-		}
+		cmdname.SetCommandName(cmd)
+		return reserveServer(args[0])
 	},
 }
 
-func init() {
-	ReserveServerCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for creation")
-	ReserveServerCmd.MarkFlagRequired("filename")
-	ReserveServerCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all server details")
-	ReserveServerCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+func reserveServer(id string) error {
+	reserveRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerReserve](Filename)
+
+	if err != nil {
+		return err
+	}
+
+	serverResponse, err := bmcapi.Client.ServerReserve(id, *reserveRequest)
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintServerResponse(serverResponse, Full)
+	}
 }

@@ -1,9 +1,9 @@
 package server
 
 import (
-	"errors"
 	"testing"
 
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -16,7 +16,7 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 	actionResult := generators.Generate[bmcapisdk.ActionResult]()
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOn(RESOURCEID).
-		Return(&actionResult, WithResponse(200, WithBody(actionResult)), nil)
+		Return(&actionResult, nil)
 
 	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{RESOURCEID})
 
@@ -24,39 +24,17 @@ func TestPowerOnServerSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestPowerOnServerNotFound(test_framework *testing.T) {
+func TestPowerOnServerClientFailure(test_framework *testing.T) {
 	PrepareBmcApiMockClient(test_framework).
 		ServerPowerOn(RESOURCEID).
-		Return(nil, WithResponse(404, WithBody(testutil.GenericBMCError)), nil)
-
-	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.GenericBMCError.Message, err.Error())
-}
-
-func TestPowerOnServerError(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		ServerPowerOn(RESOURCEID).
-		Return(nil, WithResponse(500, WithBody(testutil.GenericBMCError)), nil)
-
-	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := errors.New(testutil.GenericBMCError.Message)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestPowerOnServerKeycloakFailure(test_framework *testing.T) {
-	PrepareBmcApiMockClient(test_framework).
-		ServerPowerOn(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := PowerOnServerCmd.RunE(PowerOnServerCmd, []string{RESOURCEID})
 
+	// Expected error
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
+
 	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
+	assert.EqualError(test_framework, expectedErr, err.Error())
 }

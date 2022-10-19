@@ -1,19 +1,17 @@
 package clusters
 
 import (
-	netHttp "net/http"
-
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"phoenixnap.com/pnapctl/common/client/rancher"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
 )
 
-const commandName string = "get clusters"
-
-var ID string
+func init() {
+	utils.SetupOutputFlag(GetClustersCmd)
+}
 
 var GetClustersCmd = &cobra.Command{
 	Use:          "cluster [CLUSTER_ID]",
@@ -34,39 +32,30 @@ pnapctl get clusters [--output <OUTPUT_TYPE>]
 # List a specific cluster.
 pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
-			ID = args[0]
-			return getClusters(ID)
+			return getClusterById(args[0])
 		}
-		return getClusters("")
+		return getClusters()
 	},
 }
 
-func getClusters(clusterID string) error {
-	var httpResponse *netHttp.Response
-	var err error
-	var cluster *ranchersdk.Cluster
-	var clusters []ranchersdk.Cluster
+func getClusters() error {
+	clusters, err := rancher.Client.ClustersGet()
 
-	if clusterID == "" {
-		clusters, httpResponse, err = rancher.Client.ClustersGet()
+	if err != nil {
+		return err
 	} else {
-		cluster, httpResponse, err = rancher.Client.ClusterGetById(clusterID)
-	}
-
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-	if *generatedError != nil {
-		return *generatedError
-	} else {
-		if clusterID == "" {
-			return printer.PrintClusterListResponse(clusters, commandName)
-		} else {
-			return printer.PrintClusterResponse(cluster, commandName)
-		}
+		return printer.PrintClusterListResponse(clusters)
 	}
 }
 
-func init() {
-	GetClustersCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+func getClusterById(clusterID string) error {
+	cluster, err := rancher.Client.ClusterGetById(clusterID)
+
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintClusterResponse(cluster)
+	}
 }

@@ -26,7 +26,7 @@ sku: "SKU_CODE"
 ### Options
 
 ```
-  -f, --filename string   File containing required information for creation
+  -f, --filename string   File containing required information for conversion
       --full              Shows all reservation details
   -h, --help              help for reservation
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")

@@ -5,14 +5,14 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintIpBlockResponse(ipBlock *ipapisdk.IpBlock, full bool, commandName string) error {
+func PrintIpBlockResponse(ipBlock *ipapisdk.IpBlock, full bool) error {
 	ipBlockToPrint := PrepareIpBlockForPrinting(*ipBlock, full)
-	return MainPrinter.PrintOutput(ipBlockToPrint, commandName)
+	return MainPrinter.PrintOutput(ipBlockToPrint)
 }
 
-func PrintIpBlockListResponse(ipBlocks []ipapisdk.IpBlock, full bool, commandName string) error {
+func PrintIpBlockListResponse(ipBlocks []ipapisdk.IpBlock, full bool) error {
 	ipBlockListToPrint := PrepareIpBlockListForPrinting(ipBlocks, full)
-	return MainPrinter.PrintOutput(ipBlockListToPrint, commandName)
+	return MainPrinter.PrintOutput(ipBlockListToPrint)
 }
 
 func PrepareIpBlockListForPrinting(ipBlocks []ipapisdk.IpBlock, full bool) []interface{} {

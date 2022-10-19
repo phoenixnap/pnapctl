@@ -2,12 +2,11 @@ package audit
 
 import (
 	"context"
-	"net/http"
 
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
-	"phoenixnap.com/pnapctl/common/models/queryparams/audit"
+	"phoenixnap.com/pnapctl/common/client"
 	configuration "phoenixnap.com/pnapctl/configs"
 )
 
@@ -15,7 +14,7 @@ var Client AuditSdkClient
 
 type AuditSdkClient interface {
 	// Events
-	EventsGet(queryParams audit.EventsGetQueryParams) ([]auditapisdk.Event, *http.Response, error)
+	EventsGet(from string, to string, limit int, order string, username string, verb string, uri string) ([]auditapisdk.Event, error)
 }
 
 type MainClient struct {
@@ -56,9 +55,30 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 }
 
 // Events APIs
-func (m MainClient) EventsGet(queryParams audit.EventsGetQueryParams) ([]auditapisdk.Event, *http.Response, error) {
+func (m MainClient) EventsGet(from string, to string, limit int, order string, username string, verb string, uri string) ([]auditapisdk.Event, error) {
 	request := m.EventsApiClient.EventsGet(context.Background())
-	request = *queryParams.AttachToRequest(request)
 
-	return request.Execute()
+	if date := client.ParseDate(from); date != nil {
+		request = request.From(*date)
+	}
+	if date := client.ParseDate(to); date != nil {
+		request = request.To(*date)
+	}
+	if !client.IsZeroValue(limit) {
+		request = request.Limit(int32(limit))
+	}
+	if !client.IsZeroValue(order) {
+		request = request.Order(order)
+	}
+	if !client.IsZeroValue(username) {
+		request = request.Username(username)
+	}
+	if !client.IsZeroValue(verb) {
+		request = request.Verb(verb)
+	}
+	if !client.IsZeroValue(uri) {
+		request = request.Uri(uri)
+	}
+
+	return client.HandleResponse(request.Execute())
 }

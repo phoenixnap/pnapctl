@@ -1,17 +1,22 @@
 package publicnetwork
 
 import (
-	"net/http"
-
-	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
-	"phoenixnap.com/pnapctl/common/models/queryparams/network"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-var commandName = "get public-network"
+var (
+	location string
+)
+
+func init() {
+	utils.SetupOutputFlag(GetPublicNetworksCmd)
+
+	GetPublicNetworksCmd.Flags().StringVar(&location, "location", "", "Filter by location")
+}
 
 var GetPublicNetworksCmd = &cobra.Command{
 	Use:          "public-network [PUBLIC_NETWORK_ID]",
@@ -31,49 +36,31 @@ pnapctl get public-networks [--location <LOCATION>] [--output <OUTPUT_TYPE>]
 
 # List all details of a specific public network.
 pnapctl get public-networks <PUBLIC_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
-	RunE: func(_ *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) > 0 {
-			return getPublicNetworks(&args[0])
+			return getPublicNetworkById(&args[0])
 		}
-		return getPublicNetworks(nil)
+		return getPublicNetworks()
 	},
 }
 
-func getPublicNetworks(id *string) error {
-	var httpResponse *http.Response
-	var err error
-	var publicNetwork *networkapi.PublicNetwork
-	var publicNetworks []networkapi.PublicNetwork
-
-	queryParams, err := network.NewPublicNetworksGetQueryParams(location)
+func getPublicNetworks() error {
+	publicNetworks, err := networks.Client.PublicNetworksGet(location)
 
 	if err != nil {
 		return err
-	}
-
-	if id == nil {
-		publicNetworks, httpResponse, err = networks.Client.PublicNetworksGet(*queryParams)
 	} else {
-		publicNetwork, httpResponse, err = networks.Client.PublicNetworkGetById(*id)
-	}
-
-	if generatedError := utils.CheckForErrors(httpResponse, err, commandName); *generatedError != nil {
-		return *generatedError
-	} else {
-		if id == nil {
-			return printer.PrintPublicNetworkListResponse(publicNetworks, commandName)
-		} else {
-			return printer.PrintPublicNetworkResponse(publicNetwork, commandName)
-		}
+		return printer.PrintPublicNetworkListResponse(publicNetworks)
 	}
 }
 
-var (
-	location string
-)
+func getPublicNetworkById(id *string) error {
+	publicNetwork, err := networks.Client.PublicNetworkGetById(*id)
 
-func init() {
-	utils.SetupOutputFlag(GetPublicNetworksCmd)
-
-	GetPublicNetworksCmd.Flags().StringVar(&location, "location", "", "Filter by location")
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintPublicNetworkResponse(publicNetwork)
+	}
 }

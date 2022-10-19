@@ -5,9 +5,9 @@ import (
 	"phoenixnap.com/pnapctl/common/models/tables"
 )
 
-func PrintEventListResponse(events []auditapisdk.Event, commandName string) error {
+func PrintEventListResponse(events []auditapisdk.Event) error {
 	eventListToPrint := PrepareEventListForPrinting(events)
-	return MainPrinter.PrintOutput(eventListToPrint, commandName)
+	return MainPrinter.PrintOutput(eventListToPrint)
 }
 
 func PrepareEventForPrinting(event auditapisdk.Event) interface{} {

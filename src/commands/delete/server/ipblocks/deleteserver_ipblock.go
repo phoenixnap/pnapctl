@@ -8,12 +8,15 @@ import (
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
-var commandName = "delete server-ip-block"
+func init() {
+	utils.SetupFilenameFlag(DeleteServerIpBlockCmd, &Filename, utils.DELETION)
+}
 
 // DeleteServerIpBlockCmd is the command for deleting a server ip block.
 var DeleteServerIpBlockCmd = &cobra.Command{
@@ -30,20 +33,23 @@ pnapctl delete server-ip-block <SERVER_ID> <IP_BLOCK_ID> --filename <FILE_PATH>
 # serveripblockdelete.yaml
 deleteIpBlocks: false`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename, commandName)
-		result, httpResponse, err := bmcapi.Client.ServerIpBlockDelete(args[0], args[1], *relinquishIpBlockRequest)
-		var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-		if *generatedError != nil {
-			return *generatedError
-		} else {
-			fmt.Println(result)
-			return nil
-		}
+		cmdname.SetCommandName(cmd)
+		return deleteIpBlockFromServer(args[0], args[1])
 	},
 }
 
-func init() {
-	DeleteServerIpBlockCmd.Flags().StringVarP(&Filename, "filename", "f", "", "File containing required information for ip block removal from server")
-	DeleteServerIpBlockCmd.MarkFlagRequired("filename")
+func deleteIpBlockFromServer(serverId, ipBlockId string) error {
+	relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename)
+
+	if err != nil {
+		return err
+	}
+
+	result, err := bmcapi.Client.ServerIpBlockDelete(serverId, ipBlockId, *relinquishIpBlockRequest)
+	if err != nil {
+		return err
+	} else {
+		fmt.Println(result)
+		return nil
+	}
 }

@@ -1,19 +1,19 @@
 package sshkeys
 
 import (
-	netHttp "net/http"
-
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
-const commandName string = "get ssh-keys"
-
-var ID string
 var Full bool
+
+func init() {
+	utils.SetupOutputFlag(GetSshKeysCmd)
+	utils.SetupFullFlag(GetSshKeysCmd, &Full, "ssh key")
+}
 
 var GetSshKeysCmd = &cobra.Command{
 	Use:          "ssh-key [SSH_KEY_ID]",
@@ -34,40 +34,30 @@ pnapctl get ssh-keys [--full] [--output <OUTPUT_TYPE>]
 # List a specific ssh-key.
 pnapctl get ssh-key <SSH_KEY_ID> [--full] [--output <OUTPUT_TYPE>]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		cmdname.SetCommandName(cmd)
 		if len(args) >= 1 {
-			ID = args[0]
-			return getSshKeys(ID)
+			return getSshKeyById(args[0])
 		}
-		return getSshKeys("")
+		return getSshKeys()
 	},
 }
 
-func getSshKeys(sshKeyId string) error {
-	var httpResponse *netHttp.Response
-	var err error
-	var sshKey *bmcapisdk.SshKey
-	var sshKeys []bmcapisdk.SshKey
+func getSshKeys() error {
+	sshKeys, err := bmcapi.Client.SshKeysGet()
 
-	if sshKeyId == "" {
-		sshKeys, httpResponse, err = bmcapi.Client.SshKeysGet()
+	if err != nil {
+		return err
 	} else {
-		sshKey, httpResponse, err = bmcapi.Client.SshKeyGetById(sshKeyId)
-	}
-
-	var generatedError = utils.CheckForErrors(httpResponse, err, commandName)
-
-	if *generatedError != nil {
-		return *generatedError
-	} else {
-		if sshKeyId == "" {
-			return printer.PrintSshKeyListResponse(sshKeys, Full, commandName)
-		} else {
-			return printer.PrintSshKeyResponse(sshKey, Full, commandName)
-		}
+		return printer.PrintSshKeyListResponse(sshKeys, Full)
 	}
 }
 
-func init() {
-	GetSshKeysCmd.PersistentFlags().BoolVar(&Full, "full", false, "Shows all ssh key details")
-	GetSshKeysCmd.PersistentFlags().StringVarP(&printer.OutputFormat, "output", "o", "table", "Define the output format. Possible values: table, json, yaml")
+func getSshKeyById(sshKeyId string) error {
+	sshKey, err := bmcapi.Client.SshKeyGetById(sshKeyId)
+
+	if err != nil {
+		return err
+	} else {
+		return printer.PrintSshKeyResponse(sshKey, Full)
+	}
 }

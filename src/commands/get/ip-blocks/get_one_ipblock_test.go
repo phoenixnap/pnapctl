@@ -19,10 +19,10 @@ func TestGetIpBlocksSuccess(test_framework *testing.T) {
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(&ipBlock, WithResponse(200, WithBody(ipBlock)), nil)
+		Return(&ipBlock, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tableIpBlock, "get ip-blocks").
+		PrintOutput(tableIpBlock).
 		Return(nil)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
@@ -31,41 +31,18 @@ func TestGetIpBlocksSuccess(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestGetIpBlocksNotFound(test_framework *testing.T) {
-	PrepareIPMockClient(test_framework).
-		IpBlocksGetById(RESOURCEID).
-		Return(nil, WithResponse(400, nil), nil)
-
-	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	expectedMessage := "Command 'get ip-blocks' has been performed, but something went wrong. Error code: 0201"
-	assert.Equal(test_framework, expectedMessage, err.Error())
-}
-
 func TestGetIpBlocksClientFailure(test_framework *testing.T) {
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.GenericFailedRequestError(err, "get ip-blocks", ctlerrors.ErrorSendingRequest)
+	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
 	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestGetIpBlocksKeycloakFailure(test_framework *testing.T) {
-	PrepareIPMockClient(test_framework).
-		IpBlocksGetById(RESOURCEID).
-		Return(nil, nil, testutil.TestKeycloakError)
-
-	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.Equal(test_framework, testutil.TestKeycloakError, err)
 }
 
 func TestGetIpBlocksPrinterFailure(test_framework *testing.T) {
@@ -74,10 +51,10 @@ func TestGetIpBlocksPrinterFailure(test_framework *testing.T) {
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGetById(RESOURCEID).
-		Return(&ipBlock, WithResponse(200, WithBody(tableIpBlock)), nil)
+		Return(&ipBlock, nil)
 
 	PrepareMockPrinter(test_framework).
-		PrintOutput(tableIpBlock, "get ip-blocks").
+		PrintOutput(tableIpBlock).
 		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
