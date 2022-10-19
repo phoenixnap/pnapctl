@@ -1,7 +1,6 @@
 package privatenetwork
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
@@ -23,9 +22,7 @@ func TestGetAllPrivateNetworksShortSuccess(test_framework *testing.T) {
 		PrivateNetworksGet("").
 		Return(privateNetworks, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkList).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, privateNetworkList)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
 
@@ -56,12 +53,10 @@ func TestGetAllPrivateNetworksPrinterFailure(test_framework *testing.T) {
 		PrivateNetworksGet("").
 		Return(privateNetworks, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkList).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, privateNetworkList)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

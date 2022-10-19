@@ -1,11 +1,9 @@
 package month_to_date
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
@@ -28,9 +26,7 @@ func TestGetAllRatedUsagesMonthToDate_FullTable(test_framework *testing.T) {
 		RatedUsageMonthToDateGet(getQueryParams()).
 		Return(responseList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(recordTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, recordTables)
 
 	err := GetRatedUsageMonthToDateCmd.RunE(GetRatedUsageMonthToDateCmd, []string{})
 
@@ -49,9 +45,7 @@ func TestGetAllRatedUsagesMonthToDate_ShortTable(test_framework *testing.T) {
 		RatedUsageMonthToDateGet(getQueryParams()).
 		Return(responseList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(recordTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, recordTables)
 
 	err := GetRatedUsageMonthToDateCmd.RunE(GetRatedUsageMonthToDateCmd, []string{})
 
@@ -80,12 +74,10 @@ func TestGetAllRatedUsagesMonthToDate_PrinterFailure(test_framework *testing.T) 
 		RatedUsageMonthToDateGet(getQueryParams()).
 		Return(responseList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(recordTables).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, recordTables)
 
 	err := GetRatedUsageMonthToDateCmd.RunE(GetRatedUsageMonthToDateCmd, []string{})
 
 	// AssertionsqueryParams
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

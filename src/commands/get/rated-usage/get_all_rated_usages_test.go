@@ -1,11 +1,9 @@
 package rated_usage
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
@@ -27,9 +25,7 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 		RatedUsageGet(getQueryParams()).
 		Return(responseList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(recordTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, recordTables)
 
 	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
 
@@ -47,9 +43,7 @@ func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 		RatedUsageGet(getQueryParams()).
 		Return(responseList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(recordTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, recordTables)
 
 	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
 
@@ -66,12 +60,10 @@ func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 		RatedUsageGet(getQueryParams()).
 		Return(responseList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(recordTables).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, recordTables)
 
 	err := GetRatedUsageCmd.RunE(GetRatedUsageCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

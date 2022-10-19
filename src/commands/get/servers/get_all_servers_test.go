@@ -1,7 +1,6 @@
 package servers
 
 import (
-	"errors"
 	"testing"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
@@ -23,9 +22,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 		ServersGet(tags).
 		Return(serverlist, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServers).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, shortServers)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
@@ -42,9 +39,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 		ServersGet(tags).
 		Return(serverlist, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(longServers).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, longServers)
 
 	// to display full output
 	Full = true
@@ -68,9 +63,7 @@ func TestFilteredServersLongSuccess(test_framework *testing.T) {
 		ServersGet(tags).
 		Return(serverlist, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(longServers).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, longServers)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
@@ -101,14 +94,12 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 		ServersGet(tags).
 		Return(serverlist, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServers).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, shortServers)
 
 	Full = false
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

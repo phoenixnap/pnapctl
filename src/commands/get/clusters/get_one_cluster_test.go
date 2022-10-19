@@ -1,7 +1,6 @@
 package clusters
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
@@ -21,9 +20,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 		ClusterGetById(RESOURCEID).
 		Return(&cluster, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, clusterTable)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
 
@@ -53,12 +50,10 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 		ClusterGetById(RESOURCEID).
 		Return(&cluster, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterTable).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, clusterTable)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

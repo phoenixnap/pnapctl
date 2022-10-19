@@ -1,7 +1,6 @@
 package ip_blocks
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
@@ -21,9 +20,7 @@ func TestGetIpBlocksSuccess(test_framework *testing.T) {
 		IpBlocksGetById(RESOURCEID).
 		Return(&ipBlock, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(tableIpBlock).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, tableIpBlock)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
 
@@ -53,12 +50,10 @@ func TestGetIpBlocksPrinterFailure(test_framework *testing.T) {
 		IpBlocksGetById(RESOURCEID).
 		Return(&ipBlock, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(tableIpBlock).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, tableIpBlock)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{RESOURCEID})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

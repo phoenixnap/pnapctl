@@ -1,7 +1,6 @@
 package storagenetworks
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
@@ -24,9 +23,7 @@ func TestGetAllStorageNetworksSuccess(test_framework *testing.T) {
 		NetworkStorageGet().
 		Return(networkStorageSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, networkStorageTables)
 
 	// Run command
 	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{})
@@ -61,13 +58,11 @@ func TestGetAllStorageNetworksPrinterFailure(test_framework *testing.T) {
 		NetworkStorageGet().
 		Return(networkStorageSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTables).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, networkStorageTables)
 
 	// Run command
 	err := GetStorageNetworksCmd.RunE(GetStorageNetworksCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

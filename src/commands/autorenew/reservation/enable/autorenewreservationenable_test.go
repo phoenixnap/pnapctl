@@ -19,9 +19,7 @@ func TestAutoRenewReservationEnableSuccess(test_framework *testing.T) {
 		ReservationEnableAutoRenew(RESOURCEID).
 		Return(&reservation, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(tables.ShortReservationTableFromSdk(reservation)).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, tables.ShortReservationTableFromSdk(reservation))
 
 	// Run command
 	err := AutoRenewEnableReservationCmd.RunE(AutoRenewEnableReservationCmd, []string{RESOURCEID})

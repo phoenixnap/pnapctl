@@ -1,12 +1,10 @@
 package ip_blocks
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
@@ -23,9 +21,7 @@ func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
 		IpBlocksGet(tags).
 		Return(ipBlockList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(IpBlockTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, IpBlockTables)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{})
 
@@ -52,12 +48,10 @@ func TestGetAllIpBlocksPrinterFailure(test_framework *testing.T) {
 		IpBlocksGet(tags).
 		Return(ipBlockList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(ipBlockTables).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, ipBlockTables)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

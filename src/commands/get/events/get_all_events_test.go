@@ -1,12 +1,10 @@
 package events
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
@@ -28,9 +26,7 @@ func TestGetAllEventsSuccess(test_framework *testing.T) {
 		EventsGet(getRequestParams()).
 		Return(eventList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(eventTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, eventTables)
 
 	err := GetEventsCmd.RunE(GetEventsCmd, []string{})
 
@@ -57,12 +53,10 @@ func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
 		EventsGet(getRequestParams()).
 		Return(eventList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(eventTables).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, eventTables)
 
 	err := GetEventsCmd.RunE(GetEventsCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

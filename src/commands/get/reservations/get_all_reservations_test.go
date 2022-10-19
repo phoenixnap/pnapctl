@@ -1,7 +1,6 @@
 package reservations
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
@@ -31,9 +30,7 @@ func TestGetAllReservationsShortSuccess(test_framework *testing.T) {
 		ReservationsGet(getQueryParams()).
 		Return(reservationList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(shortReservations).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, shortReservations)
 
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
 
@@ -54,9 +51,7 @@ func TestGetAllReservationsFullSuccess(test_framework *testing.T) {
 		ReservationsGet(getQueryParams()).
 		Return(reservationList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(reservationTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, reservationTables)
 
 	// to display full output
 	Full = true
@@ -95,14 +90,12 @@ func TestGetAllReservationsPrinterFailure(test_framework *testing.T) {
 		ReservationsGet(getQueryParams()).
 		Return(reservationList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(shortReservations).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, shortReservations)
 
 	Full = false
 
 	err := GetReservationsCmd.RunE(GetReservationsCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

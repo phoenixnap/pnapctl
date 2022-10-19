@@ -1,7 +1,6 @@
 package tags
 
 import (
-	"errors"
 	"testing"
 
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
@@ -21,9 +20,7 @@ func TestGetTagSuccess(test_framework *testing.T) {
 		TagGetById(RESOURCEID).
 		Return(&tag, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(tagTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, tagTable)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
 
@@ -53,12 +50,10 @@ func TestGetTagPrinterFailure(test_framework *testing.T) {
 		TagGetById(RESOURCEID).
 		Return(&tag, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(tagTable).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, tagTable)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{RESOURCEID})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

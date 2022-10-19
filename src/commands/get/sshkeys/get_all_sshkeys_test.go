@@ -1,12 +1,10 @@
 package sshkeys
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
@@ -23,9 +21,7 @@ func TestGetAllSshKeysSuccess(test_framework *testing.T) {
 		SshKeysGet().
 		Return(sshKeyList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, sshKeyTables)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
 
@@ -53,12 +49,10 @@ func TestGetAllSshKeysPrinterFailure(test_framework *testing.T) {
 		SshKeysGet().
 		Return(sshKeyList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTables).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, sshKeyTables)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

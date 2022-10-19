@@ -33,9 +33,7 @@ func TestCreateStorageNetworkSuccessYAML(test_framework *testing.T) {
 		NetworkStoragePost(gomock.Eq(networkStorageCreate)).
 		Return(&networkStorageSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, networkStorageTable)
 
 	// Run command
 	err := CreateStorageNetworkCmd.RunE(CreateStorageNetworkCmd, []string{})
@@ -62,9 +60,7 @@ func TestCreateStorageNetworkSuccessJSON(test_framework *testing.T) {
 		NetworkStoragePost(gomock.Eq(networkStorageCreate)).
 		Return(&networkStorageSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, networkStorageTable)
 
 	// Run command
 	err := CreateStorageNetworkCmd.RunE(CreateStorageNetworkCmd, []string{})

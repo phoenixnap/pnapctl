@@ -1,12 +1,10 @@
 package quotas
 
 import (
-	"errors"
 	"testing"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
@@ -23,9 +21,7 @@ func TestGetAllQuotasSuccess(test_framework *testing.T) {
 		QuotasGet().
 		Return(quotaList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(quotaTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, quotaTables)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
 
@@ -41,12 +37,10 @@ func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
 		QuotasGet().
 		Return(quotaList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(quotaTables).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, quotaTables)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

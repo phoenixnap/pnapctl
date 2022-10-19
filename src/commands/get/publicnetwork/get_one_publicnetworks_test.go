@@ -1,7 +1,6 @@
 package publicnetwork
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
@@ -21,9 +20,7 @@ func TestGetPublicNetworkSuccess(test_framework *testing.T) {
 		PublicNetworkGetById(RESOURCEID).
 		Return(&publicNetworkSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(publicNetworkTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, publicNetworkTable)
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})
 
@@ -53,12 +50,10 @@ func TestGetPublicNetworkPrinterFailure(test_framework *testing.T) {
 		PublicNetworkGetById(RESOURCEID).
 		Return(&publicNetworkSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(publicNetworkTable).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, publicNetworkTable)
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{RESOURCEID})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

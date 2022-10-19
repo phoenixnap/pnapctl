@@ -1,7 +1,6 @@
 package quotas
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
@@ -21,9 +20,7 @@ func TestGetQuotaSuccess(test_framework *testing.T) {
 		QuotaGetById(RESOURCEID).
 		Return(&quota, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(tableQuota).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, tableQuota)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
 
@@ -53,12 +50,10 @@ func TestGetQuotaPrinterFailure(test_framework *testing.T) {
 		QuotaGetById(RESOURCEID).
 		Return(&quota, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(tableQuota).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, tableQuota)
 
 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

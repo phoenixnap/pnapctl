@@ -33,9 +33,7 @@ func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
 		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
 		Return(&networkStorageSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, networkStorageTable)
 
 	// Run command
 	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
@@ -62,9 +60,7 @@ func TestPatchStorageNetworkSuccessJSON(test_framework *testing.T) {
 		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
 		Return(&networkStorageSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, networkStorageTable)
 
 	// Run command
 	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
