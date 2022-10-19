@@ -85,7 +85,7 @@ func TestCreateIpBlockFileNotFoundFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 
 }
 
@@ -107,7 +107,7 @@ func TestCreateIpBlockUnmarshallingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreateIpBlockFileReadingFailure(test_framework *testing.T) {
@@ -128,7 +128,7 @@ func TestCreateIpBlockFileReadingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreateIpBlockClientFailure(test_framework *testing.T) {
@@ -156,5 +156,5 @@ func TestCreateIpBlockClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

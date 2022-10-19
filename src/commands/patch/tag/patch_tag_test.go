@@ -75,7 +75,7 @@ func TestSubmitTagEditFileNotFoundFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
 
 	// assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 
 }
 
@@ -95,7 +95,7 @@ func TestSubmitTagEditUnmarshallingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
 
 	// assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestSubmitTagEditYAMLUnmarshallingFailure(test_framework *testing.T) {
@@ -133,7 +133,7 @@ func TestSubmitTagEditFileReadingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
 
 	// assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestSubmitTagEditClientFailure(test_framework *testing.T) {
@@ -157,5 +157,5 @@ func TestSubmitTagEditClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

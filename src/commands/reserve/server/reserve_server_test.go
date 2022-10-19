@@ -90,7 +90,7 @@ func TestReserveServerFileNotFoundFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 
 }
 
@@ -112,7 +112,7 @@ func TestReserveServerUnmarshallingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestReserveServerFileReadingFailure(test_framework *testing.T) {
@@ -133,7 +133,7 @@ func TestReserveServerFileReadingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestReserveServerClientFailure(test_framework *testing.T) {
@@ -161,5 +161,5 @@ func TestReserveServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

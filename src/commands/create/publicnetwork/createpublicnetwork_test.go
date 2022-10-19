@@ -87,7 +87,7 @@ func TestCreatePublicNetworkFileNotFoundFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.FileNotExistError(FILENAME)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreatePublicNetworkUnmarshallingFailure(test_framework *testing.T) {
@@ -108,7 +108,7 @@ func TestCreatePublicNetworkUnmarshallingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreatePublicNetworkFileReadingFailure(test_framework *testing.T) {
@@ -129,7 +129,7 @@ func TestCreatePublicNetworkFileReadingFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
@@ -157,5 +157,5 @@ func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
