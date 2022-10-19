@@ -445,7 +445,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Bandwidth(test_framework *te
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.BandwidthRecord")
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framework *testing.T) {
@@ -455,7 +455,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_OperatingSystem(test_framewo
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.OperatingSystemRecord")
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework *testing.T) {
@@ -465,7 +465,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_PublicSubnet(test_framework 
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.PublicSubnetRecord")
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testing.T) {
@@ -475,7 +475,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Server(test_framework *testi
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.ServerRecord")
 }
 
 func TestPrepareRatedUsageRecordForPrintingNonTable_Storage(test_framework *testing.T) {
@@ -485,17 +485,7 @@ func TestPrepareRatedUsageRecordForPrintingNonTable_Storage(test_framework *test
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
-}
-
-func TestPrepareRatedUsageRecordForPrintingNonTable_Short(test_framework *testing.T) {
-	OutputFormat = "json"
-	ratedUsage := generators.GenerateBandwidthRecordSdk()
-	prepared := PrepareRatedUsageForPrinting(ratedUsage, false)
-
-	outputType := fmt.Sprintf("%T", prepared)
-
-	assert.Equal(test_framework, outputType, "billingapi.RatedUsageGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.StorageRecord")
 }
 
 func TestPrepareRatedUsageRecordForPrintingTableFull(test_framework *testing.T) {
@@ -525,7 +515,7 @@ func TestPrepareProductForPrintingNonTable_BandwidthProduct(test_framework *test
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.ProductsGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.Product")
 }
 
 func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework *testing.T) {
@@ -535,7 +525,7 @@ func TestPrepareProductForPrintingNonTable_OperatingSystemProduct(test_framework
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.ProductsGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.Product")
 }
 
 func TestPrepareProductForPrintingNonTable_StorageProduct(test_framework *testing.T) {
@@ -545,7 +535,7 @@ func TestPrepareProductForPrintingNonTable_StorageProduct(test_framework *testin
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.ProductsGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.Product")
 }
 
 func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing.T) {
@@ -555,7 +545,7 @@ func TestPrepareProductForPrintingNonTable_ServerProduct(test_framework *testing
 
 	outputType := fmt.Sprintf("%T", prepared)
 
-	assert.Equal(test_framework, outputType, "billingapi.ProductsGet200ResponseInner")
+	assert.Equal(test_framework, outputType, "*billingapi.ServerProduct")
 }
 
 func TestPrepareProductForPrintingTableShort(test_framework *testing.T) {
