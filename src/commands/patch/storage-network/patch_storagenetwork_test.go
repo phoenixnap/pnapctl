@@ -82,19 +82,19 @@ func TestPatchStorageNetworkSuccessJSON(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestPatchStorageNetworkFileNotFoundFailure(test_framework *testing.T) {
+func TestPatchStorageNetworkFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
+	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -115,11 +115,7 @@ func TestPatchStorageNetworkUnmarshallingFailure(test_framework *testing.T) {
 	// Run command
 	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestPatchStorageNetworkFileReadingFailure(test_framework *testing.T) {

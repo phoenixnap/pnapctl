@@ -71,20 +71,20 @@ func TestCreateSshKeySuccessJSON(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestCreateSshKeyFileNotFoundFailure(test_framework *testing.T) {
+func TestCreateSshKeyFileProcessorFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := CreateSshKeyCmd.RunE(CreateSshKeyCmd, []string{})
 
 	// Expected command
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
+	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -105,11 +105,7 @@ func TestCreateSshKeyUnmarshallingFailure(test_framework *testing.T) {
 	// Run command
 	err := CreateSshKeyCmd.RunE(CreateSshKeyCmd, []string{})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestCreateSshKeyFileReadingFailure(test_framework *testing.T) {

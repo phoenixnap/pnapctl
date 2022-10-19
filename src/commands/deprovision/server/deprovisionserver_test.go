@@ -66,20 +66,20 @@ func TestDeprovisionServerSuccessJSON(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestDeprovisionServerFileNotFoundFailure(test_framework *testing.T) {
+func TestDeprovisionServerFileProcessorFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
 
 	// Expected command
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
+	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -99,11 +99,7 @@ func TestDeprovisionServerUnmarshallingFailure(test_framework *testing.T) {
 	// Run command
 	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestDeprovisionServerFileReadingFailure(test_framework *testing.T) {

@@ -60,19 +60,19 @@ func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestSubmitTagEditFileNotFoundFailure(test_framework *testing.T) {
+func TestSubmitTagEditFileProcessorFailure(test_framework *testing.T) {
 	// setup
 	Filename = FILENAME
 
 	// prepare mocks
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
+		Return(nil, testutil.TestError)
 
 	// execute
 	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
 
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
+	expectedErr := testutil.TestError
 
 	// assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())

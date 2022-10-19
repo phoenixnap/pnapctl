@@ -70,18 +70,18 @@ func TestAutoRenewReservationDisableSuccessJSON(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestAutoRenewReservationDisableFileNotFoundFailure(test_framework *testing.T) {
+func TestAutoRenewReservationDisableFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := AutoRenewDisableReservationCmd.RunE(AutoRenewDisableReservationCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
+	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -100,11 +100,7 @@ func TestAutoRenewReservationDisableUnmarshallingFailure(test_framework *testing
 	// Run command
 	err := AutoRenewDisableReservationCmd.RunE(AutoRenewDisableReservationCmd, []string{RESOURCEID})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestAutoRenewReservationDisableClientFailure(test_framework *testing.T) {

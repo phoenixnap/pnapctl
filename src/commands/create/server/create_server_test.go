@@ -74,20 +74,20 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
+func TestCreateServerFileProcessorFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Expected command
-	expectedErr := ctlerrors.FileNotExistError(FILENAME) // TODO remove this from tests. We should give plain text here, not compare it.
+	expectedErr := testutil.TestError // TODO remove this from tests. We should give plain text here, not compare it.
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -108,11 +108,7 @@ func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
 	// Run command
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestCreateServerFileReadingFailure(test_framework *testing.T) {

@@ -71,20 +71,20 @@ func TestCreatePublicNetworkIpBlockSuccessJSON(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestCreatePublicNetworkIpBlockFileNotFoundFailure(test_framework *testing.T) {
+func TestCreatePublicNetworkIpBlockFileProcessorFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
 	// Mocking
 	PrepareMockFileProcessor(test_framework).
 		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := CreatePublicNetworkIpBlockCmd.RunE(CreatePublicNetworkIpBlockCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
+	expectedErr := testutil.TestError
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -104,11 +104,7 @@ func TestCreatePublicNetworkIpBlockUnmarshallingFailure(test_framework *testing.
 	// Run command
 	err := CreatePublicNetworkIpBlockCmd.RunE(CreatePublicNetworkIpBlockCmd, []string{RESOURCEID})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, err, expectedErr.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestCreatePublicNetworkIpBlockFileReadingFailure(test_framework *testing.T) {
