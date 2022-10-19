@@ -16,7 +16,7 @@ import (
 
 func TestGetAllClustersShortSuccess(test_framework *testing.T) {
 	clusters := testutil.GenN(2, generators.Generate[ranchersolutionapi.Cluster])
-	clusterlist := iterutils.Map(clusters, tables.ClusterFromSdk)
+	clusterlist := iterutils.MapInterface(clusters, tables.ClusterFromSdk)
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
@@ -50,7 +50,7 @@ func TestGetAllClustersClientFailure(test_framework *testing.T) {
 
 func TestGetAllClustersPrinterFailure(test_framework *testing.T) {
 	clusters := testutil.GenN(2, generators.Generate[ranchersolutionapi.Cluster])
-	clusterlist := iterutils.Map(clusters, tables.ClusterFromSdk)
+	clusterlist := iterutils.MapInterface(clusters, tables.ClusterFromSdk)
 
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().

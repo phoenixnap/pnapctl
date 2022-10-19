@@ -20,7 +20,7 @@ func getQueryParams() (string, string, string, string) {
 
 func TestGetAllProducts_FullTable(test_framework *testing.T) {
 	responseList := generators.GenerateProductSdkList()
-	products := iterutils.Map(responseList, tables.ProductTableFromSdk)
+	products := iterutils.DerefInterface(iterutils.MapInterface(responseList, tables.ProductTableFromSdk))
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
@@ -51,7 +51,7 @@ func TestGetAllProducts_ClientFailure(test_framework *testing.T) {
 
 func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
 	responseList := generators.GenerateProductSdkList()
-	products := iterutils.Map(responseList, tables.ProductTableFromSdk)
+	products := iterutils.DerefInterface(iterutils.MapInterface(responseList, tables.ProductTableFromSdk))
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).

@@ -21,7 +21,7 @@ func getRequestParams() (string, string, int, string, string, string, string) {
 
 func TestGetAllEventsSuccess(test_framework *testing.T) {
 	eventList := testutil.GenN(2, generators.Generate[auditapi.Event])
-	eventTables := iterutils.Map(eventList, tables.ToEventTable)
+	eventTables := iterutils.MapInterface(eventList, tables.ToEventTable)
 
 	// Mocking
 	PrepareAuditMockClient(test_framework).
@@ -51,7 +51,7 @@ func TestGetAllEventsClientFailure(test_framework *testing.T) {
 
 func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
 	eventList := testutil.GenN(2, generators.Generate[auditapi.Event])
-	eventTables := iterutils.Map(eventList, tables.ToEventTable)
+	eventTables := iterutils.MapInterface(eventList, tables.ToEventTable)
 
 	PrepareAuditMockClient(test_framework).
 		EventsGet(getRequestParams()).

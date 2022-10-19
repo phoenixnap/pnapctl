@@ -16,7 +16,7 @@ import (
 
 func TestGetAllTagsSuccess(test_framework *testing.T) {
 	tags := testutil.GenN(1, generators.Generate[tagapi.Tag])
-	taglist := iterutils.Map(tags, tables.TagFromSdk)
+	taglist := iterutils.MapInterface(tags, tables.TagFromSdk)
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
@@ -50,7 +50,7 @@ func TestGetAllTagsClientFailure(test_framework *testing.T) {
 
 func TestGetAllTagsPrinterFailure(test_framework *testing.T) {
 	tags := testutil.GenN(1, generators.Generate[tagapi.Tag])
-	taglist := iterutils.Map(tags, tables.TagFromSdk)
+	taglist := iterutils.MapInterface(tags, tables.TagFromSdk)
 
 	PrepareTagMockClient(test_framework).
 		TagsGet("").

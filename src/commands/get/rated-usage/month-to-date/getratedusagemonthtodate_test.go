@@ -20,7 +20,7 @@ func getQueryParams() string {
 
 func TestGetAllRatedUsagesMonthToDate_FullTable(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
-	recordTables := iterutils.Map(responseList, tables.RatedUsageRecordTableFromSdk)
+	recordTables := iterutils.DerefInterface(iterutils.MapInterface(responseList, tables.RatedUsageRecordTableFromSdk))
 	Full = true
 
 	// Mocking
@@ -41,7 +41,7 @@ func TestGetAllRatedUsagesMonthToDate_FullTable(test_framework *testing.T) {
 // Currently the short table is an empty struct.
 func TestGetAllRatedUsagesMonthToDate_ShortTable(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
-	recordTables := iterutils.Map(responseList, tables.ShortRatedUsageRecordFromSdk)
+	recordTables := iterutils.DerefInterface(iterutils.MapInterface(responseList, tables.ShortRatedUsageRecordFromSdk))
 	Full = false
 
 	// Mocking
@@ -73,7 +73,7 @@ func TestGetAllRatedUsagesMonthToDate_ClientFailure(test_framework *testing.T) {
 
 func TestGetAllRatedUsagesMonthToDate_PrinterFailure(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
-	recordTables := iterutils.Map(responseList, tables.ShortRatedUsageRecordFromSdk)
+	recordTables := iterutils.DerefInterface(iterutils.MapInterface(responseList, tables.ShortRatedUsageRecordFromSdk))
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).

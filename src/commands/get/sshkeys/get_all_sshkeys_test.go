@@ -16,7 +16,7 @@ import (
 
 func TestGetAllSshKeysSuccess(test_framework *testing.T) {
 	sshKeyList := testutil.GenN(2, generators.Generate[bmcapi.SshKey])
-	sshKeyTables := iterutils.Map(sshKeyList, tables.ToSshKeyTable)
+	sshKeyTables := iterutils.MapInterface(sshKeyList, tables.ToSshKeyTable)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -47,7 +47,7 @@ func TestGetAllSshKeysClientFailure(test_framework *testing.T) {
 
 func TestGetAllSshKeysPrinterFailure(test_framework *testing.T) {
 	sshKeyList := testutil.GenN(2, generators.Generate[bmcapi.SshKey])
-	sshKeyTables := iterutils.Map(sshKeyList, tables.ToSshKeyTable)
+	sshKeyTables := iterutils.MapInterface(sshKeyList, tables.ToSshKeyTable)
 
 	PrepareBmcApiMockClient(test_framework).
 		SshKeysGet().

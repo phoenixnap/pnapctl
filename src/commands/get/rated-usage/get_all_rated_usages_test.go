@@ -19,7 +19,7 @@ func getQueryParams() (string, string, string) {
 
 func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
-	recordTables := iterutils.Map(responseList, tables.RatedUsageRecordTableFromSdk)
+	recordTables := iterutils.DerefInterface(iterutils.MapInterface(responseList, tables.RatedUsageRecordTableFromSdk))
 	Full = true
 
 	// Mocking
@@ -39,7 +39,7 @@ func TestGetAllRatedUsages_FullTable(test_framework *testing.T) {
 
 func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
-	recordTables := iterutils.Map(responseList, tables.ShortRatedUsageRecordFromSdk)
+	recordTables := iterutils.DerefInterface(iterutils.MapInterface(responseList, tables.ShortRatedUsageRecordFromSdk))
 	Full = false
 
 	// Mocking
@@ -59,7 +59,7 @@ func TestGetAllRatedUsages_ShortTable(test_framework *testing.T) {
 
 func TestGetAllRatedUsages_PrinterFailure(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
-	recordTables := iterutils.Map(responseList, tables.ShortRatedUsageRecordFromSdk)
+	recordTables := iterutils.DerefInterface(iterutils.MapInterface(responseList, tables.ShortRatedUsageRecordFromSdk))
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).

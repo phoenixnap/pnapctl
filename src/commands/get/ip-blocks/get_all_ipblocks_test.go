@@ -16,7 +16,7 @@ import (
 
 func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
 	ipBlockList := testutil.GenN(2, generators.Generate[ipapi.IpBlock])
-	IpBlockTables := iterutils.Map(ipBlockList, tables.ToShortIpBlockTable)
+	IpBlockTables := iterutils.MapInterface(ipBlockList, tables.ToShortIpBlockTable)
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
@@ -46,7 +46,7 @@ func TestGetAllIpBlocksClientFailure(test_framework *testing.T) {
 
 func TestGetAllIpBlocksPrinterFailure(test_framework *testing.T) {
 	ipBlockList := testutil.GenN(2, generators.Generate[ipapi.IpBlock])
-	ipBlockTables := iterutils.Map(ipBlockList, tables.ToShortIpBlockTable)
+	ipBlockTables := iterutils.MapInterface(ipBlockList, tables.ToShortIpBlockTable)
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGet(tags).

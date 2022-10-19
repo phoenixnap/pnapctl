@@ -16,7 +16,7 @@ import (
 
 func TestGetAllQuotasSuccess(test_framework *testing.T) {
 	quotaList := testutil.GenN(2, generators.Generate[bmcapisdk.Quota])
-	quotaTables := iterutils.Map(quotaList, tables.ToQuotaTable)
+	quotaTables := iterutils.MapInterface(quotaList, tables.ToQuotaTable)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -35,7 +35,7 @@ func TestGetAllQuotasSuccess(test_framework *testing.T) {
 
 func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
 	quotaList := testutil.GenN(2, generators.Generate[bmcapisdk.Quota])
-	quotaTables := iterutils.Map(quotaList, tables.ToQuotaTable)
+	quotaTables := iterutils.MapInterface(quotaList, tables.ToQuotaTable)
 
 	PrepareBmcApiMockClient(test_framework).
 		QuotasGet().

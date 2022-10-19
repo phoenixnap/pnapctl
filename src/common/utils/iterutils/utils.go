@@ -206,9 +206,9 @@ func DerefInterface(slice []interface{}) []interface{} {
 	return Map(slice, deref)
 }
 
-// Same as map, except it implicitly casts the output to an interface{}.
+// Same as Map, except it implicitly casts the output to an interface{}.
 //
-//	nums := []int{1, 2, 3, 4} // [&5, &5]
+//	nums := []int{1, 2, 3, 4}
 //	doubled := MapInterface(nums, func(n int) int {
 //		return n * 2
 //	})
