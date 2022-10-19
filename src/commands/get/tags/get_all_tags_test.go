@@ -9,18 +9,14 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllTagsSuccess(test_framework *testing.T) {
 	tags := testutil.GenN(1, generators.Generate[tagapi.Tag])
-
-	var taglist []interface{}
-
-	for _, x := range tags {
-		taglist = append(taglist, tables.TagFromSdk(x))
-	}
+	taglist := iterutils.Map(tags, tables.TagFromSdk)
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
@@ -54,12 +50,7 @@ func TestGetAllTagsClientFailure(test_framework *testing.T) {
 
 func TestGetAllTagsPrinterFailure(test_framework *testing.T) {
 	tags := testutil.GenN(1, generators.Generate[tagapi.Tag])
-
-	var taglist []interface{}
-
-	for _, x := range tags {
-		taglist = append(taglist, tables.TagFromSdk(x))
-	}
+	taglist := iterutils.Map(tags, tables.TagFromSdk)
 
 	PrepareTagMockClient(test_framework).
 		TagsGet("").

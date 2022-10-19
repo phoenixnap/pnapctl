@@ -9,18 +9,14 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllQuotasSuccess(test_framework *testing.T) {
 	quotaList := testutil.GenN(2, generators.Generate[bmcapisdk.Quota])
-
-	var quotaTables []interface{}
-
-	for _, quota := range quotaList {
-		quotaTables = append(quotaTables, tables.ToQuotaTable(quota))
-	}
+	quotaTables := iterutils.Map(quotaList, tables.ToQuotaTable)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -39,12 +35,7 @@ func TestGetAllQuotasSuccess(test_framework *testing.T) {
 
 func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
 	quotaList := testutil.GenN(2, generators.Generate[bmcapisdk.Quota])
-
-	var quotaTables []interface{}
-
-	for _, quota := range quotaList {
-		quotaTables = append(quotaTables, tables.ToQuotaTable(quota))
-	}
+	quotaTables := iterutils.Map(quotaList, tables.ToQuotaTable)
 
 	PrepareBmcApiMockClient(test_framework).
 		QuotasGet().

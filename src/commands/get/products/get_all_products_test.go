@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -19,12 +20,7 @@ func getQueryParams() (string, string, string, string) {
 
 func TestGetAllProducts_FullTable(test_framework *testing.T) {
 	responseList := generators.GenerateProductSdkList()
-
-	var products []interface{}
-
-	for _, product := range responseList {
-		products = append(products, *tables.ProductTableFromSdk(product))
-	}
+	products := iterutils.Map(responseList, tables.ProductTableFromSdk)
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
@@ -55,12 +51,7 @@ func TestGetAllProducts_ClientFailure(test_framework *testing.T) {
 
 func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
 	responseList := generators.GenerateProductSdkList()
-
-	var products []interface{}
-
-	for _, product := range responseList {
-		products = append(products, *tables.ProductTableFromSdk(product))
-	}
+	products := iterutils.Map(responseList, tables.ProductTableFromSdk)
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).

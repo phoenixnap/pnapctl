@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -20,12 +21,7 @@ func getRequestParams() (string, string, int, string, string, string, string) {
 
 func TestGetAllEventsSuccess(test_framework *testing.T) {
 	eventList := testutil.GenN(2, generators.Generate[auditapi.Event])
-
-	var eventTables []interface{}
-
-	for _, event := range eventList {
-		eventTables = append(eventTables, tables.ToEventTable(event))
-	}
+	eventTables := iterutils.Map(eventList, tables.ToEventTable)
 
 	// Mocking
 	PrepareAuditMockClient(test_framework).
@@ -55,12 +51,7 @@ func TestGetAllEventsClientFailure(test_framework *testing.T) {
 
 func TestGetAllEventsPrinterFailure(test_framework *testing.T) {
 	eventList := testutil.GenN(2, generators.Generate[auditapi.Event])
-
-	var eventTables []interface{}
-
-	for _, event := range eventList {
-		eventTables = append(eventTables, tables.ToEventTable(event))
-	}
+	eventTables := iterutils.Map(eventList, tables.ToEventTable)
 
 	PrepareAuditMockClient(test_framework).
 		EventsGet(getRequestParams()).

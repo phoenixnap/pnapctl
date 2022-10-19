@@ -9,18 +9,14 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllPrivateNetworksShortSuccess(test_framework *testing.T) {
 	privateNetworks := testutil.GenN(5, generators.Generate[networkapi.PrivateNetwork])
-
-	var privateNetworkList []interface{}
-
-	for _, x := range privateNetworks {
-		privateNetworkList = append(privateNetworkList, tables.PrivateNetworkFromSdk(x))
-	}
+	privateNetworkList := iterutils.Map(privateNetworks, tables.PrivateNetworkFromSdk)
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
@@ -54,12 +50,7 @@ func TestGetAllPrivateNetworksClientFailure(test_framework *testing.T) {
 
 func TestGetAllPrivateNetworksPrinterFailure(test_framework *testing.T) {
 	privateNetworks := testutil.GenN(5, generators.Generate[networkapi.PrivateNetwork])
-
-	var privateNetworkList []interface{}
-
-	for _, x := range privateNetworks {
-		privateNetworkList = append(privateNetworkList, tables.PrivateNetworkFromSdk(x))
-	}
+	privateNetworkList := iterutils.Map(privateNetworks, tables.PrivateNetworkFromSdk)
 
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").

@@ -9,18 +9,14 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllServersShortSuccess(test_framework *testing.T) {
 	serverlist := testutil.GenN(5, generators.Generate[bmcapisdk.Server])
-
-	var shortServers []interface{}
-
-	for _, x := range serverlist {
-		shortServers = append(shortServers, tables.ToShortServerTable(x))
-	}
+	shortServers := iterutils.Map(serverlist, tables.ToShortServerTable)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -39,12 +35,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 
 func TestGetAllServersLongSuccess(test_framework *testing.T) {
 	serverlist := testutil.GenN(5, generators.Generate[bmcapisdk.Server])
-
-	var longServers []interface{}
-
-	for _, x := range serverlist {
-		longServers = append(longServers, tables.ToLongServerTable(x))
-	}
+	longServers := iterutils.Map(serverlist, tables.ToLongServerTable)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -66,12 +57,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 
 func TestFilteredServersLongSuccess(test_framework *testing.T) {
 	serverlist := testutil.GenN(5, generators.Generate[bmcapisdk.Server])
-
-	var longServers []interface{}
-
-	for _, x := range serverlist {
-		longServers = append(longServers, tables.ToLongServerTable(x))
-	}
+	longServers := iterutils.Map(serverlist, tables.ToLongServerTable)
 
 	// to display full output
 	Full = true
@@ -109,12 +95,7 @@ func TestGetAllServersClientFailure(test_framework *testing.T) {
 
 func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 	serverlist := testutil.GenN(5, generators.Generate[bmcapisdk.Server])
-
-	var shortServers []interface{}
-
-	for _, x := range serverlist {
-		shortServers = append(shortServers, tables.ToShortServerTable(x))
-	}
+	shortServers := iterutils.Map(serverlist, tables.ToShortServerTable)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServersGet(tags).

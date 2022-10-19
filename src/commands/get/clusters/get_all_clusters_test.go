@@ -9,18 +9,14 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllClustersShortSuccess(test_framework *testing.T) {
 	clusters := testutil.GenN(2, generators.Generate[ranchersolutionapi.Cluster])
-
-	var clusterlist []interface{}
-
-	for _, x := range clusters {
-		clusterlist = append(clusterlist, tables.ClusterFromSdk(x))
-	}
+	clusterlist := iterutils.Map(clusters, tables.ClusterFromSdk)
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
@@ -54,12 +50,7 @@ func TestGetAllClustersClientFailure(test_framework *testing.T) {
 
 func TestGetAllClustersPrinterFailure(test_framework *testing.T) {
 	clusters := testutil.GenN(2, generators.Generate[ranchersolutionapi.Cluster])
-
-	var clusterlist []interface{}
-
-	for _, x := range clusters {
-		clusterlist = append(clusterlist, tables.ClusterFromSdk(x))
-	}
+	clusterlist := iterutils.Map(clusters, tables.ClusterFromSdk)
 
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().

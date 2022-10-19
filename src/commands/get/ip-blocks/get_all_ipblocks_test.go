@@ -9,18 +9,14 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
 	ipBlockList := testutil.GenN(2, generators.Generate[ipapi.IpBlock])
-
-	var IpBlockTables []interface{}
-
-	for _, ipBlock := range ipBlockList {
-		IpBlockTables = append(IpBlockTables, tables.ToShortIpBlockTable(ipBlock))
-	}
+	IpBlockTables := iterutils.Map(ipBlockList, tables.ToShortIpBlockTable)
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
@@ -50,12 +46,7 @@ func TestGetAllIpBlocksClientFailure(test_framework *testing.T) {
 
 func TestGetAllIpBlocksPrinterFailure(test_framework *testing.T) {
 	ipBlockList := testutil.GenN(2, generators.Generate[ipapi.IpBlock])
-
-	var ipBlockTables []interface{}
-
-	for _, ipBlock := range ipBlockList {
-		ipBlockTables = append(ipBlockTables, tables.ToShortIpBlockTable(ipBlock))
-	}
+	ipBlockTables := iterutils.Map(ipBlockList, tables.ToShortIpBlockTable)
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGet(tags).

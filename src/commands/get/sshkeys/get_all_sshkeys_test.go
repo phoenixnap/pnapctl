@@ -9,18 +9,14 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllSshKeysSuccess(test_framework *testing.T) {
 	sshKeyList := testutil.GenN(2, generators.Generate[bmcapi.SshKey])
-
-	var sshKeyTables []interface{}
-
-	for _, sshKey := range sshKeyList {
-		sshKeyTables = append(sshKeyTables, tables.ToSshKeyTable(sshKey))
-	}
+	sshKeyTables := iterutils.Map(sshKeyList, tables.ToSshKeyTable)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -51,12 +47,7 @@ func TestGetAllSshKeysClientFailure(test_framework *testing.T) {
 
 func TestGetAllSshKeysPrinterFailure(test_framework *testing.T) {
 	sshKeyList := testutil.GenN(2, generators.Generate[bmcapi.SshKey])
-
-	var sshKeyTables []interface{}
-
-	for _, sshKey := range sshKeyList {
-		sshKeyTables = append(sshKeyTables, tables.ToSshKeyTable(sshKey))
-	}
+	sshKeyTables := iterutils.Map(sshKeyList, tables.ToSshKeyTable)
 
 	PrepareBmcApiMockClient(test_framework).
 		SshKeysGet().

@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -19,13 +20,8 @@ func getQueryParams() string {
 
 func TestGetAllRatedUsagesMonthToDate_FullTable(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
+	recordTables := iterutils.Map(responseList, tables.RatedUsageRecordTableFromSdk)
 	Full = true
-
-	var recordTables []interface{}
-
-	for _, record := range responseList {
-		recordTables = append(recordTables, *tables.RatedUsageRecordTableFromSdk(record))
-	}
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
@@ -45,13 +41,8 @@ func TestGetAllRatedUsagesMonthToDate_FullTable(test_framework *testing.T) {
 // Currently the short table is an empty struct.
 func TestGetAllRatedUsagesMonthToDate_ShortTable(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
+	recordTables := iterutils.Map(responseList, tables.ShortRatedUsageRecordFromSdk)
 	Full = false
-
-	var recordTables []interface{}
-
-	for _, record := range responseList {
-		recordTables = append(recordTables, *tables.ShortRatedUsageRecordFromSdk(record))
-	}
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
@@ -82,11 +73,7 @@ func TestGetAllRatedUsagesMonthToDate_ClientFailure(test_framework *testing.T) {
 
 func TestGetAllRatedUsagesMonthToDate_PrinterFailure(test_framework *testing.T) {
 	responseList := generators.GenerateRatedUsageRecordSdkList()
-	var recordTables []interface{}
-
-	for _, record := range responseList {
-		recordTables = append(recordTables, *tables.ShortRatedUsageRecordFromSdk(record))
-	}
+	recordTables := iterutils.Map(responseList, tables.ShortRatedUsageRecordFromSdk)
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
