@@ -74,7 +74,6 @@ func TestPatchServerSuccessJSON(test_framework *testing.T) {
 }
 
 func TestPatchServerFileNotFoundFailure(test_framework *testing.T) {
-
 	// Setup
 	Filename = FILENAME
 

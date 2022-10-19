@@ -74,7 +74,6 @@ func TestReserveServerSuccessJSON(test_framework *testing.T) {
 }
 
 func TestReserveServerFileNotFoundFailure(test_framework *testing.T) {
-
 	// Setup
 	Filename = FILENAME
 

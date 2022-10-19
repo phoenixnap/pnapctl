@@ -74,7 +74,6 @@ func TestCreateServerPublicNetworkSuccessJSON(test_framework *testing.T) {
 }
 
 func TestCreateServerPublicNetworkFileNotFoundFailure(test_framework *testing.T) {
-
 	// Setup
 	Filename = FILENAME
 

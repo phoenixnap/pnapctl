@@ -98,7 +98,6 @@ func TestTagServerSuccessJSON(test_framework *testing.T) {
 }
 
 func TestTagServerFileNotFoundFailure(test_framework *testing.T) {
-
 	// Setup
 	Filename = FILENAME
 

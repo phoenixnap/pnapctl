@@ -71,7 +71,6 @@ func TestCreateTagSuccessJSON(test_framework *testing.T) {
 }
 
 func TestCreateTagFileNotFoundFailure(test_framework *testing.T) {
-
 	Filename = FILENAME
 
 	PrepareMockFileProcessor(test_framework).

@@ -14,7 +14,6 @@ import (
 )
 
 func TestGetServerShortSuccess(test_framework *testing.T) {
-
 	server := generators.Generate[bmcapisdk.Server]()
 	var shortServer = tables.ToShortServerTable(server)
 

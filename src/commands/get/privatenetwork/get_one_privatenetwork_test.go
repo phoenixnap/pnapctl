@@ -14,7 +14,6 @@ import (
 )
 
 func TestGetPrivateNetworkSuccess(test_framework *testing.T) {
-
 	privateNetwork := generators.Generate[networkapisdk.PrivateNetwork]()
 	var privateNetworkTable = tables.PrivateNetworkFromSdk(privateNetwork)
 

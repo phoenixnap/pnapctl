@@ -75,7 +75,6 @@ func TestCreateServerSuccessJSON(test_framework *testing.T) {
 }
 
 func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
-
 	// Setup
 	Filename = FILENAME
 
@@ -138,7 +137,6 @@ func TestCreateServerFileReadingFailure(test_framework *testing.T) {
 }
 
 func TestCreateServerClientFailure(test_framework *testing.T) {
-
 	// Setup
 	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 

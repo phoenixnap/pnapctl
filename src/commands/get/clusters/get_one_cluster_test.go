@@ -14,7 +14,6 @@ import (
 )
 
 func TestGetServerShortSuccess(test_framework *testing.T) {
-
 	cluster := generators.Generate[ranchersolutionapi.Cluster]()
 	var clusterTable = tables.ClusterFromSdk(cluster)
 

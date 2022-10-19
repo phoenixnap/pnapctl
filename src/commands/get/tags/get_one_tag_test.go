@@ -14,7 +14,6 @@ import (
 )
 
 func TestGetTagSuccess(test_framework *testing.T) {
-
 	tag := generators.Generate[tagapisdk.Tag]()
 	tagTable := tables.TagFromSdk(tag)
 

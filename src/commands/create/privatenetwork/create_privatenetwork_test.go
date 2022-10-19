@@ -71,7 +71,6 @@ func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
 }
 
 func TestCreatePrivateNetworkFileNotFoundFailure(test_framework *testing.T) {
-
 	Filename = FILENAME
 
 	PrepareMockFileProcessor(test_framework).

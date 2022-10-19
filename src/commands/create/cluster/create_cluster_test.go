@@ -71,7 +71,6 @@ func TestCreateClusterSuccessJSON(test_framework *testing.T) {
 }
 
 func TestCreateClusterFileNotFoundFailure(test_framework *testing.T) {
-
 	Filename = FILENAME
 
 	PrepareMockFileProcessor(test_framework).
