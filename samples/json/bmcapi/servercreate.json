@@ -12,7 +12,8 @@
         },
         "cloudInit": {
             "userData": "IyEvYmluL3NoCm1rZGlyIC9yb290L2Nsb3VkLWluaXQtc2NyaXB0LWV4ZWN1dGVk"
-        }
+        },
+        "installOsToRam": false
     },
     "description": "dev-test-server-desc"
 }
