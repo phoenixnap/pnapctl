@@ -18,7 +18,7 @@ func submitQuotaEditRequestSuccess(test_framework *testing.T, marshaller func(in
 	// setup
 	quotaEditLimitRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, quotaEditLimitRequest)
+	ExpectFromFileSuccess(test_framework, marshaller, quotaEditLimitRequest)
 
 	//prepare mocks
 	PrepareBmcApiMockClient(test_framework).

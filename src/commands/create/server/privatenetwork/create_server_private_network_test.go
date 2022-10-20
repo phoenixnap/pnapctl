@@ -22,7 +22,7 @@ func createServerPrivateNetworkSuccess(test_framework *testing.T, marshaller fun
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverPrivateNetwork)
+	ExpectFromFileSuccess(test_framework, marshaller, serverPrivateNetwork)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
