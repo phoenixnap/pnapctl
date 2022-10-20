@@ -1,10 +1,6 @@
 package mockhelp
 
 import (
-	"bytes"
-	"encoding/json"
-	"io"
-	"net/http"
 	"testing"
 
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -12,19 +8,6 @@ import (
 
 const FILENAME = "testfile.yaml"
 const RESOURCEID = "mock_id"
-
-func WithResponse(status int, body io.ReadCloser) *http.Response {
-	return &http.Response{
-		StatusCode: status,
-		Body:       body,
-	}
-}
-
-func WithBody(body interface{}) io.ReadCloser {
-	data, _ := json.Marshal(body)
-
-	return io.NopCloser(bytes.NewBuffer(data))
-}
 
 // File Processor Mocks
 func ExpectFromFileSuccess(t *testing.T, marshaller func(interface{}) ([]byte, error), item interface{}) {

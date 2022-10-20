@@ -15,14 +15,14 @@ import (
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
-func TestDeprovisionServerSuccessYAML(test_framework *testing.T) {
+func deprovisionServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// Mocking
 	result := "Server Deprovisioned"
 	requestBody := generators.Generate[bmcapisdk.RelinquishIpBlock]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, requestBody)
+	ExpectFromFileSuccess(test_framework, marshaller, requestBody)
 
 	PrepareBmcApiMockClient(test_framework).
 		ServerDeprovision(RESOURCEID, gomock.Eq(requestBody)).
@@ -35,24 +35,12 @@ func TestDeprovisionServerSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestDeprovisionServerSuccessYAML(test_framework *testing.T) {
+	deprovisionServerSuccess(test_framework, yaml.Marshal)
+}
+
 func TestDeprovisionServerSuccessJSON(test_framework *testing.T) {
-	// Mocking
-	result := "Server Deprovisioned"
-	requestBody := generators.Generate[bmcapisdk.RelinquishIpBlock]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, requestBody)
-
-	PrepareBmcApiMockClient(test_framework).
-		ServerDeprovision(RESOURCEID, gomock.Eq(requestBody)).
-		Return(result, nil)
-
-	// Run command
-	err := DeprovisionServerCmd.RunE(DeprovisionServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	deprovisionServerSuccess(test_framework, json.Marshal)
 }
 
 func TestDeprovisionServerFileProcessorFailure(test_framework *testing.T) {

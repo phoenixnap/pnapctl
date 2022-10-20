@@ -14,13 +14,13 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreateReservationSuccessYAML(test_framework *testing.T) {
+func createReservationSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	reservationCreate := generators.Generate[billingapi.ReservationRequest]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, reservationCreate)
+	ExpectFromFileSuccess(test_framework, marshaller, reservationCreate)
 
 	// What the server should return.
 	createdReservation := generators.Generate[billingapi.Reservation]()
@@ -37,27 +37,12 @@ func TestCreateReservationSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestCreateReservationSuccessYAML(test_framework *testing.T) {
+	createReservationSuccess(test_framework, yaml.Marshal)
+}
+
 func TestCreateReservationSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	reservationCreate := generators.Generate[billingapi.ReservationRequest]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, reservationCreate)
-
-	// What the server should return.
-	createdReservation := generators.Generate[billingapi.Reservation]()
-
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		ReservationsPost(gomock.Eq(reservationCreate)).
-		Return(&createdReservation, nil)
-
-	// Run command
-	err := CreateReservationCmd.RunE(CreateReservationCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createReservationSuccess(test_framework, json.Marshal)
 }
 
 func TestCreateReservationFileProcessorFailure(test_framework *testing.T) {

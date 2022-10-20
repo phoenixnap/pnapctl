@@ -17,13 +17,13 @@ import (
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
-func TestCreateServerSuccessYAML(test_framework *testing.T) {
+func createServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverCreate)
+	ExpectFromFileSuccess(test_framework, marshaller, serverCreate)
 
 	// What the server should return.
 	createdServer := generators.Generate[bmcapisdk.Server]()
@@ -40,27 +40,12 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestCreateServerSuccessYAML(test_framework *testing.T) {
+	createServerSuccess(test_framework, yaml.Marshal)
+}
+
 func TestCreateServerSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, serverCreate)
-
-	// What the server should return.
-	createdServer := generators.Generate[bmcapisdk.Server]()
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(serverCreate)).
-		Return(&createdServer, nil)
-
-	// Run command
-	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createServerSuccess(test_framework, json.Marshal)
 }
 
 func TestCreateServerFileProcessorFailure(test_framework *testing.T) {

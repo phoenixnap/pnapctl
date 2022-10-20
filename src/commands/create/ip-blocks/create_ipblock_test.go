@@ -14,12 +14,12 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreateIpBlockSuccessYAML(test_framework *testing.T) {
+func createIpBlockSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	ipBlockCreate := generators.Generate[ipapi.IpBlockCreate]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, ipBlockCreate)
+	ExpectFromFileSuccess(test_framework, marshaller, ipBlockCreate)
 
 	// What the server should return.
 	ipBlock := generators.Generate[ipapi.IpBlock]()
@@ -36,26 +36,12 @@ func TestCreateIpBlockSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestCreateIpBlockSuccessYAML(test_framework *testing.T) {
+	createIpBlockSuccess(test_framework, yaml.Marshal)
+}
+
 func TestCreateIpBlockSuccessJSON(test_framework *testing.T) {
-	ipBlockCreateCli := generators.Generate[ipapi.IpBlockCreate]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, ipBlockCreateCli)
-
-	// What the server should return.
-	ipBlock := generators.Generate[ipapi.IpBlock]()
-
-	// Mocking
-	PrepareIPMockClient(test_framework).
-		IpBlockPost(gomock.Eq(ipBlockCreateCli)).
-		Return(&ipBlock, nil)
-
-	// Run command
-	err := CreateIpBlockCmd.RunE(CreateIpBlockCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createIpBlockSuccess(test_framework, json.Marshal)
 }
 
 func TestCreateIpBlockFileProcessorFailure(test_framework *testing.T) {

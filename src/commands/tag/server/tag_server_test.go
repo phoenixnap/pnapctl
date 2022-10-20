@@ -16,13 +16,13 @@ import (
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
-func TestTagServerSuccessYAML(test_framework *testing.T) {
+func tagServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	tagAssignmentRequests := testutil.GenN(2, generators.Generate[bmcapisdk.TagAssignmentRequest])
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, tagAssignmentRequests)
+	ExpectFromFileSuccess(test_framework, marshaller, tagAssignmentRequests)
 
 	// What the server should return.
 	server := generators.Generate[bmcapisdk.Server]()
@@ -39,39 +39,25 @@ func TestTagServerSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestTagServerEmptyBodySuccessYAML(test_framework *testing.T) {
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, []bmcapisdk.TagAssignmentRequest{})
-
-	// What the server should return.
-	server := generators.Generate[bmcapisdk.Server]()
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerTag(RESOURCEID, []bmcapisdk.TagAssignmentRequest{}).
-		Return(&server, nil)
-
-	// Run command
-	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+func TestTagServerSuccessYAML(test_framework *testing.T) {
+	tagServerSuccess(test_framework, yaml.Marshal)
 }
 
 func TestTagServerSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	tagAssignmentRequests := testutil.GenN(2, generators.Generate[bmcapisdk.TagAssignmentRequest])
+	tagServerSuccess(test_framework, json.Marshal)
+}
 
+func TestTagServerSuccessEmptyBody(test_framework *testing.T) {
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, tagAssignmentRequests)
+	ExpectFromFileSuccess(test_framework, json.Marshal, nil)
 
 	// What the server should return.
 	server := generators.Generate[bmcapisdk.Server]()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
+		ServerTag(RESOURCEID, gomock.Eq([]bmcapisdk.TagAssignmentRequest{})).
 		Return(&server, nil)
 
 	// Run command

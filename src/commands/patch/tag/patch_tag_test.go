@@ -14,12 +14,12 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
+func submitTagEditSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// setup
 	tag := generators.Generate[tagapi.Tag]()
 	tagEdit := generators.Generate[tagapi.TagUpdate]()
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, tagEdit)
+	ExpectFromFileSuccess(test_framework, marshaller, tagEdit)
 
 	//prepare mocks
 	PrepareTagMockClient(test_framework).
@@ -32,22 +32,12 @@ func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestSubmitTagEditSuccessYAML(test_framework *testing.T) {
+	submitTagEditSuccess(test_framework, yaml.Marshal)
+}
+
 func TestSubmitTagEditSuccessJSON(test_framework *testing.T) {
-	//setup
-	tag := generators.Generate[tagapi.Tag]()
-	tagEdit := generators.Generate[tagapi.TagUpdate]()
-	ExpectFromFileSuccess(test_framework, json.Marshal, tagEdit)
-	Filename = FILENAME
-
-	//prepare mocks
-	PrepareTagMockClient(test_framework).
-		TagPatch(RESOURCEID, gomock.Eq(tagEdit)).
-		Return(&tag, nil)
-
-	err := PatchTagCmd.RunE(PatchTagCmd, []string{RESOURCEID})
-
-	// assertions
-	assert.NoError(test_framework, err)
+	submitTagEditSuccess(test_framework, json.Marshal)
 }
 
 func TestSubmitTagEditFileProcessorFailure(test_framework *testing.T) {

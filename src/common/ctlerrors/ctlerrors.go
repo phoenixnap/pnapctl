@@ -3,7 +3,7 @@ package ctlerrors
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -152,7 +152,7 @@ func HandleBMCError(response *http.Response) error {
 		return CreateCLIError(ExpectedBodyInErrorResponse, nil)
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 
 	if err != nil {
 		return CreateCLIError(ResponseBodyReadFailure, err)

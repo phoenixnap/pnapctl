@@ -15,14 +15,14 @@ import (
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
-func TestResetServerSuccessYAML(test_framework *testing.T) {
+func resetServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// Setup
 	serverReset := generators.Generate[bmcapisdk.ServerReset]()
 	resetResult := generators.Generate[bmcapisdk.ResetResult]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverReset)
+	ExpectFromFileSuccess(test_framework, marshaller, serverReset)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -36,25 +36,12 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestResetServerSuccessYAML(test_framework *testing.T) {
+	resetServerSuccess(test_framework, yaml.Marshal)
+}
+
 func TestResetServerSuccessJSON(test_framework *testing.T) {
-	// Setup
-	serverReset := generators.Generate[bmcapisdk.ServerReset]()
-	resetResult := generators.Generate[bmcapisdk.ResetResult]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, serverReset)
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerReset(RESOURCEID, serverReset).
-		Return(&resetResult, nil)
-
-	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	resetServerSuccess(test_framework, json.Marshal)
 }
 
 func TestResetServerSuccessNoFile(test_framework *testing.T) {

@@ -10,19 +10,18 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-
 	"sigs.k8s.io/yaml"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
-func TestReserveServerSuccessYAML(test_framework *testing.T) {
+func reserveServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	serverReserve := generators.Generate[bmcapisdk.ServerReserve]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverReserve)
+	ExpectFromFileSuccess(test_framework, marshaller, serverReserve)
 
 	// What the server should return.
 	server := generators.Generate[bmcapisdk.Server]()
@@ -39,27 +38,12 @@ func TestReserveServerSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestReserveServerSuccessYAML(test_framework *testing.T) {
+	reserveServerSuccess(test_framework, yaml.Marshal)
+}
+
 func TestReserveServerSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	serverReserve := generators.Generate[bmcapisdk.ServerReserve]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, serverReserve)
-
-	// What the server should return.
-	server := generators.Generate[bmcapisdk.Server]()
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerReserve(RESOURCEID, gomock.Eq(serverReserve)).
-		Return(&server, nil)
-
-	// Run command
-	err := ReserveServerCmd.RunE(ReserveServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	reserveServerSuccess(test_framework, json.Marshal)
 }
 
 func TestReserveServerFileProcessorFailure(test_framework *testing.T) {

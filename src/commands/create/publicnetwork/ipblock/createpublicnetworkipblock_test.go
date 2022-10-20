@@ -14,13 +14,13 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreatePublicNetworkIpBlockSuccessYAML(test_framework *testing.T) {
+func createPublicNetworkIpBlockSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, ipBlockCreate)
+	ExpectFromFileSuccess(test_framework, marshaller, ipBlockCreate)
 
 	// What the server should return.
 	createdIpBlock := generators.Generate[networkapi.PublicNetworkIpBlock]()
@@ -37,27 +37,12 @@ func TestCreatePublicNetworkIpBlockSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestCreatePublicNetworkIpBlockSuccessYAML(test_framework *testing.T) {
+	createPublicNetworkIpBlockSuccess(test_framework, yaml.Marshal)
+}
+
 func TestCreatePublicNetworkIpBlockSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, ipBlockCreate)
-
-	// What the server should return.
-	createdIpBlock := generators.Generate[networkapi.PublicNetworkIpBlock]()
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworkIpBlockPost(RESOURCEID, gomock.Eq(ipBlockCreate)).
-		Return(&createdIpBlock, nil)
-
-	// Run command
-	err := CreatePublicNetworkIpBlockCmd.RunE(CreatePublicNetworkIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createPublicNetworkIpBlockSuccess(test_framework, json.Marshal)
 }
 
 func TestCreatePublicNetworkIpBlockFileProcessorFailure(test_framework *testing.T) {

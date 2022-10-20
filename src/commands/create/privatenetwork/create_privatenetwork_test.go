@@ -14,13 +14,13 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
+func createPrivateNetworkSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, privateNetworkCreate)
+	ExpectFromFileSuccess(test_framework, marshaller, privateNetworkCreate)
 
 	// What the server should return.
 	createdPrivateNetwork := generators.Generate[networkapi.PrivateNetwork]()
@@ -37,27 +37,12 @@ func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestCreatePrivateNetworkSuccessYAML(test_framework *testing.T) {
+	createPrivateNetworkSuccess(test_framework, yaml.Marshal)
+}
+
 func TestCreatePrivateNetworkSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	privateNetworkCreate := generators.Generate[networkapi.PrivateNetworkCreate]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, privateNetworkCreate)
-
-	// What the server should return.
-	createdPrivateNetwork := generators.Generate[networkapi.PrivateNetwork]()
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
-		Return(&createdPrivateNetwork, nil)
-
-	// Run command
-	err := CreatePrivateNetworkCmd.RunE(CreatePrivateNetworkCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createPrivateNetworkSuccess(test_framework, json.Marshal)
 }
 
 func TestCreatePrivateNetworkFileProcessorFailure(test_framework *testing.T) {

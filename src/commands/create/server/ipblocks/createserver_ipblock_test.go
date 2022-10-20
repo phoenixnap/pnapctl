@@ -14,12 +14,12 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
+func createServerIpBlockSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverIpBlockSdk)
+	ExpectFromFileSuccess(test_framework, marshaller, serverIpBlockSdk)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -33,23 +33,12 @@ func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
+	createServerIpBlockSuccess(test_framework, yaml.Marshal)
+}
+
 func TestCreateServerIpBlockSuccessJSON(test_framework *testing.T) {
-	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, serverIpBlockSdk)
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(&serverIpBlockSdk, nil)
-
-	// Run command
-	err := CreateServerIpBlockCmd.RunE(CreateServerIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createServerIpBlockSuccess(test_framework, json.Marshal)
 }
 
 func TestCreateServerIpBlockFileProcessorFailure(test_framework *testing.T) {

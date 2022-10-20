@@ -14,13 +14,13 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreateClusterSuccessYAML(test_framework *testing.T) {
+func createClusterSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, clusterCreate)
+	ExpectFromFileSuccess(test_framework, marshaller, clusterCreate)
 
 	// What the server should return.
 	createdCluster := generators.Generate[ranchersolutionapi.Cluster]()
@@ -37,27 +37,12 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestCreateClusterSuccessYAML(test_framework *testing.T) {
+	createClusterSuccess(test_framework, yaml.Marshal)
+}
+
 func TestCreateClusterSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, clusterCreate)
-
-	// What the server should return.
-	createdCluster := generators.Generate[ranchersolutionapi.Cluster]()
-
-	// Mocking
-	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(&createdCluster, nil)
-
-	// Run command
-	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createClusterSuccess(test_framework, json.Marshal)
 }
 
 func TestCreateClusterFileProcessorFailure(test_framework *testing.T) {

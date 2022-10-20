@@ -7,21 +7,21 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"sigs.k8s.io/yaml"
 
 	"github.com/golang/mock/gomock"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/stretchr/testify/assert"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
-	"sigs.k8s.io/yaml"
 )
 
-func TestPatchIpBlockSuccessYAML(test_framework *testing.T) {
+func patchIpBlockSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	ipBlockPatchCli := generators.Generate[ipapi.IpBlockPatch]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, ipBlockPatchCli)
+	ExpectFromFileSuccess(test_framework, marshaller, ipBlockPatchCli)
 
 	// What the server should return.
 	ipBlock := generators.Generate[ipapi.IpBlock]()
@@ -38,26 +38,12 @@ func TestPatchIpBlockSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestPatchIpBlockSuccessYAML(test_framework *testing.T) {
+	patchIpBlockSuccess(test_framework, yaml.Marshal)
+}
+
 func TestPatchIpBlockSuccessJSON(test_framework *testing.T) {
-	ipBlockPatchCli := generators.Generate[ipapi.IpBlockPatch]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, ipBlockPatchCli)
-
-	// What the server should return.
-	ipBlock := generators.Generate[ipapi.IpBlock]()
-
-	// Mocking
-	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdPatch(RESOURCEID, gomock.Eq(ipBlockPatchCli)).
-		Return(&ipBlock, nil)
-
-	// Run command
-	err := PatchIpBlockCmd.RunE(PatchIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	patchIpBlockSuccess(test_framework, json.Marshal)
 }
 
 func TestPatchIpBlockFileProcessorFailure(test_framework *testing.T) {

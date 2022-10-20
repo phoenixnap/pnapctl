@@ -14,13 +14,13 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
+func createPublicNetworkSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, publicNetworkCreate)
+	ExpectFromFileSuccess(test_framework, marshaller, publicNetworkCreate)
 
 	// What the server should return.
 	createdPublicNetwork := generators.Generate[networkapi.PublicNetwork]()
@@ -37,27 +37,12 @@ func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
+	createPublicNetworkSuccess(test_framework, yaml.Marshal)
+}
+
 func TestCreatePublicNetworkSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, publicNetworkCreate)
-
-	// What the server should return.
-	createdPublicNetwork := generators.Generate[networkapi.PublicNetwork]()
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(&createdPublicNetwork, nil)
-
-	// Run command
-	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createPublicNetworkSuccess(test_framework, json.Marshal)
 }
 
 func TestCreatePublicNetworkFileProcessorFailure(test_framework *testing.T) {

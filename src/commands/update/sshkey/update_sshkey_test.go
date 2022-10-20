@@ -14,13 +14,13 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
+func updateSshKeySuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, sshKeyUpdate)
+	ExpectFromFileSuccess(test_framework, marshaller, sshKeyUpdate)
 
 	// What the server should return.
 	sshKey := generators.Generate[bmcapi.SshKey]()
@@ -37,27 +37,12 @@ func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestUpdateSshKeySuccessYAML(test_framework *testing.T) {
+	updateSshKeySuccess(test_framework, yaml.Marshal)
+}
+
 func TestUpdateSshKeySuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	sshKeyUpdate := generators.Generate[bmcapi.SshKeyUpdate]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, sshKeyUpdate)
-
-	// What the server should return.
-	sshKey := generators.Generate[bmcapi.SshKey]()
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		SshKeyPut(RESOURCEID, gomock.Eq(sshKeyUpdate)).
-		Return(&sshKey, nil)
-
-	// Run command
-	err := UpdateSshKeyCmd.RunE(UpdateSshKeyCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	updateSshKeySuccess(test_framework, json.Marshal)
 }
 
 func TestUpdateSshKeyFileProcessorFailure(test_framework *testing.T) {

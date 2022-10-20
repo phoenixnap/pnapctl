@@ -14,11 +14,11 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestAutoRenewReservationDisableSuccessYAML(test_framework *testing.T) {
+func autoRenewReservationDisableSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	autoRenewDisableRequest := generators.Generate[billingapi.ReservationAutoRenewDisableRequest]()
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, autoRenewDisableRequest)
+	ExpectFromFileSuccess(test_framework, marshaller, autoRenewDisableRequest)
 
 	// What the server should return.
 	createdReservation := generators.Generate[billingapi.Reservation]()
@@ -31,29 +31,16 @@ func TestAutoRenewReservationDisableSuccessYAML(test_framework *testing.T) {
 	// Run command
 	err := AutoRenewDisableReservationCmd.RunE(AutoRenewDisableReservationCmd, []string{RESOURCEID})
 
-	// Assertions
+	// Assertionsioutil
 	assert.NoError(test_framework, err)
 }
 
+func TestAutoRenewReservationDisableSuccessYAML(test_framework *testing.T) {
+	autoRenewReservationDisableSuccess(test_framework, yaml.Marshal)
+}
+
 func TestAutoRenewReservationDisableSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	autoRenewDisableRequest := generators.Generate[billingapi.ReservationAutoRenewDisableRequest]()
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, autoRenewDisableRequest)
-
-	// What the server should return.
-	createdReservation := generators.Generate[billingapi.Reservation]()
-
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest)).
-		Return(&createdReservation, nil)
-
-	// Run command
-	err := AutoRenewDisableReservationCmd.RunE(AutoRenewDisableReservationCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	autoRenewReservationDisableSuccess(test_framework, json.Marshal)
 }
 
 func TestAutoRenewReservationDisableFileProcessorFailure(test_framework *testing.T) {

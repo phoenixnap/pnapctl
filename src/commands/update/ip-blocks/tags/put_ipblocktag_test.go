@@ -16,12 +16,12 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
+func putIpBlockTagSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	ipBlockPutTagCli := testutil.GenN(3, generators.Generate[ipapi.TagAssignmentRequest])
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, ipBlockPutTagCli)
+	ExpectFromFileSuccess(test_framework, marshaller, ipBlockPutTagCli)
 
 	// What the server should return.
 	ipBlock := generators.Generate[ipapi.IpBlock]()
@@ -38,26 +38,12 @@ func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestPutIpBlockTagSuccessYAML(test_framework *testing.T) {
+	putIpBlockTagSuccess(test_framework, yaml.Marshal)
+}
+
 func TestPutIpBlockTagSuccessJSON(test_framework *testing.T) {
-	ipBlockPutTagCli := testutil.GenN(3, generators.Generate[ipapi.TagAssignmentRequest])
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, ipBlockPutTagCli)
-
-	// What the server should return.
-	ipBlock := generators.Generate[ipapi.IpBlock]()
-
-	// Mocking
-	PrepareIPMockClient(test_framework).
-		IpBlocksIpBlockIdTagsPut(RESOURCEID, gomock.Eq(ipBlockPutTagCli)).
-		Return(&ipBlock, nil)
-
-	// Run command
-	err := PutIpBlockTagCmd.RunE(PutIpBlockTagCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	putIpBlockTagSuccess(test_framework, json.Marshal)
 }
 
 func TestIpBlockPutTagFileProcessorFailure(test_framework *testing.T) {

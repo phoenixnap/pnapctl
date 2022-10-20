@@ -16,19 +16,13 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
-func TestCreateServerPublicNetworkSuccessYAML(test_framework *testing.T) {
+func createReservationSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	serverPublicNetwork := generators.Generate[bmcapisdk.ServerPublicNetwork]()
 
-	serverPublicNetworkModel := bmcapisdk.ServerPublicNetwork{
-		Id:                serverPublicNetwork.Id,
-		Ips:               serverPublicNetwork.Ips,
-		StatusDescription: serverPublicNetwork.StatusDescription,
-	}
-
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverPublicNetworkModel)
+	ExpectFromFileSuccess(test_framework, marshaller, serverPublicNetwork)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -42,24 +36,12 @@ func TestCreateServerPublicNetworkSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestCreateServerPublicNetworkSuccessYAML(test_framework *testing.T) {
+	createReservationSuccess(test_framework, yaml.Marshal)
+}
+
 func TestCreateServerPublicNetworkSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	serverPublicNetwork := generators.Generate[bmcapisdk.ServerPublicNetwork]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, serverPublicNetwork)
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
-		Return(&serverPublicNetwork, nil)
-
-	// Run command
-	err := CreateServerPublicNetworkCmd.RunE(CreateServerPublicNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createReservationSuccess(test_framework, json.Marshal)
 }
 
 func TestCreateServerPublicNetworkFileProcessorFailure(test_framework *testing.T) {

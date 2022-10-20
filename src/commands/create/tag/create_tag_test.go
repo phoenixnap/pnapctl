@@ -14,13 +14,13 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreateTagSuccessYAML(test_framework *testing.T) {
+func createTagSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	tagCreate := generators.Generate[tagapisdk.TagCreate]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, tagCreate)
+	ExpectFromFileSuccess(test_framework, marshaller, tagCreate)
 
 	// What the server should return.
 	createdTag := generators.Generate[tagapisdk.Tag]()
@@ -37,27 +37,12 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestCreateTagSuccessYAML(test_framework *testing.T) {
+	createTagSuccess(test_framework, yaml.Marshal)
+}
+
 func TestCreateTagSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	tagCreate := generators.Generate[tagapisdk.TagCreate]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, tagCreate)
-
-	// What the server should return.
-	createdTag := generators.Generate[tagapisdk.Tag]()
-
-	// Mocking
-	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(tagCreate)).
-		Return(&createdTag, nil)
-
-	// Run command
-	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createTagSuccess(test_framework, json.Marshal)
 }
 
 func TestCreateTagFileProcessorFailure(test_framework *testing.T) {

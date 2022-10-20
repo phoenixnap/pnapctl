@@ -15,12 +15,12 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
+func patchStorageNetworkSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
 
 	// Assumed contents of the file.
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, networkStoragePatch)
+	ExpectFromFileSuccess(test_framework, marshaller, networkStoragePatch)
 
 	Filename = FILENAME
 
@@ -42,31 +42,12 @@ func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
+	patchStorageNetworkSuccess(test_framework, yaml.Marshal)
+}
+
 func TestPatchStorageNetworkSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
-
-	// Assumed contents of the file.
-	ExpectFromFileSuccess(test_framework, json.Marshal, networkStoragePatch)
-
-	Filename = FILENAME
-
-	// What the networkStorageSdk should return.
-	networkStorageSdk := generators.Generate[networkstorageapi.StorageNetwork]()
-	networkStorageTable := tables.StorageNetworkTableFromSdk(networkStorageSdk)
-
-	// Mocking
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
-		Return(&networkStorageSdk, nil)
-
-	ExpectToPrintSuccess(test_framework, networkStorageTable)
-
-	// Run command
-	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	patchStorageNetworkSuccess(test_framework, json.Marshal)
 }
 
 func TestPatchStorageNetworkFileProcessorFailure(test_framework *testing.T) {

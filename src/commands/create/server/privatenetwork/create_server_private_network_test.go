@@ -16,20 +16,13 @@ import (
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
-func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
+func createServerPrivateNetworkSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
 
-	serverPrivateNetworkModel := bmcapisdk.ServerPrivateNetwork{
-		Id:                serverPrivateNetwork.Id,
-		Ips:               serverPrivateNetwork.Ips,
-		Dhcp:              serverPrivateNetwork.Dhcp,
-		StatusDescription: serverPrivateNetwork.StatusDescription,
-	}
-
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverPrivateNetworkModel)
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverPrivateNetwork)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
@@ -43,24 +36,12 @@ func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestCreateServerPrivateNetworkSuccessYAML(test_framework *testing.T) {
+	createServerPrivateNetworkSuccess(test_framework, yaml.Marshal)
+}
+
 func TestCreateServerPrivateNetworkSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, serverPrivateNetwork)
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
-		Return(&serverPrivateNetwork, nil)
-
-	// Run command
-	err := CreateServerPrivateNetworkCmd.RunE(CreateServerPrivateNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createServerPrivateNetworkSuccess(test_framework, json.Marshal)
 }
 
 func TestCreateServerPrivateNetworkFileProcessorFailure(test_framework *testing.T) {

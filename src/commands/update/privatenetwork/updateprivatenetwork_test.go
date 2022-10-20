@@ -14,13 +14,13 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestUpdatePrivateNetworkSuccessYAML(test_framework *testing.T) {
+func updatePrivateNetworkSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	privateNetworkUpdate := generators.Generate[networkapi.PrivateNetworkModify]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, privateNetworkUpdate)
+	ExpectFromFileSuccess(test_framework, marshaller, privateNetworkUpdate)
 
 	// What the server should return.
 	privateNetwork := generators.Generate[networkapi.PrivateNetwork]()
@@ -37,27 +37,12 @@ func TestUpdatePrivateNetworkSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestUpdatePrivateNetworkSuccessYAML(test_framework *testing.T) {
+	updatePrivateNetworkSuccess(test_framework, yaml.Marshal)
+}
+
 func TestUpdatePrivateNetworkSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	privateNetworkUpdate := generators.Generate[networkapi.PrivateNetworkModify]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, privateNetworkUpdate)
-
-	// What the server should return.
-	privateNetwork := generators.Generate[networkapi.PrivateNetwork]()
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PrivateNetworkPut(RESOURCEID, gomock.Eq(privateNetworkUpdate)).
-		Return(&privateNetwork, nil)
-
-	// Run command
-	err := UpdatePrivateNetworkCmd.RunE(UpdatePrivateNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	updatePrivateNetworkSuccess(test_framework, json.Marshal)
 }
 
 func TestUpdatePrivateNetworkFileProcessorFailure(test_framework *testing.T) {

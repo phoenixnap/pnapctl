@@ -14,14 +14,14 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestPatchPublicNetworkSuccessYAML(test_framework *testing.T) {
+func patchPublicNetworkSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	publicNetworkModifyCli := generators.Generate[networkapi.PublicNetworkModify]()
 	publicNetworkModifySdk := publicNetworkModifyCli
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, publicNetworkModifyCli)
+	ExpectFromFileSuccess(test_framework, marshaller, publicNetworkModifyCli)
 
 	// What the server should return.
 	publicNetwork := generators.Generate[networkapi.PublicNetwork]()
@@ -38,28 +38,12 @@ func TestPatchPublicNetworkSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestPatchPublicNetworkSuccessYAML(test_framework *testing.T) {
+	patchPublicNetworkSuccess(test_framework, yaml.Marshal)
+}
+
 func TestPatchPublicNetworkSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	publicNetworkModifyCli := generators.Generate[networkapi.PublicNetworkModify]()
-	publicNetworkModifySdk := publicNetworkModifyCli
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, publicNetworkModifySdk)
-
-	// What the server should return.
-	publicNetwork := generators.Generate[networkapi.PublicNetwork]()
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworkPatch(RESOURCEID, gomock.Eq(publicNetworkModifySdk)).
-		Return(&publicNetwork, nil)
-
-	// Run command
-	err := PatchPublicNetworkCmd.RunE(PatchPublicNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	patchPublicNetworkSuccess(test_framework, json.Marshal)
 }
 
 func TestPatchPublicNetworkFileProcessorFailure(test_framework *testing.T) {

@@ -14,7 +14,7 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
+func submitQuotaEditRequestSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// setup
 	quotaEditLimitRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
 	Filename = FILENAME
@@ -31,21 +31,12 @@ func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestSubmitQuotaEditRequestSuccessYAML(test_framework *testing.T) {
+	submitQuotaEditRequestSuccess(test_framework, yaml.Marshal)
+}
+
 func TestSubmitQuotaEditRequestSuccessJSON(test_framework *testing.T) {
-	//setup
-	quotaEditLimitRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
-	ExpectFromFileSuccess(test_framework, json.Marshal, quotaEditLimitRequest)
-	Filename = FILENAME
-
-	//prepare mocks
-	PrepareBmcApiMockClient(test_framework).
-		QuotaEditById(RESOURCEID, gomock.Eq(quotaEditLimitRequest)).
-		Return(nil)
-
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
-
-	// assertions
-	assert.NoError(test_framework, err)
+	submitQuotaEditRequestSuccess(test_framework, json.Marshal)
 }
 
 func TestSubmitQuotaEditRequestFileProcessorFailure(test_framework *testing.T) {
@@ -76,20 +67,6 @@ func TestSubmitQuotaEditRequestUnmarshallingFailure(test_framework *testing.T) {
 
 	// assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
-}
-
-func TestSubmitQuotaEditRequestYAMLUnmarshallingFailure(test_framework *testing.T) {
-	// setup
-	filecontents := []byte(`Limit: 45`)
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, filecontents)
-	Filename = FILENAME
-
-	err := RequestEditQuotaCmd.RunE(RequestEditQuotaCmd, []string{RESOURCEID})
-
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// assertions
-	assert.EqualError(test_framework, expectedErr, expectedErr.Error())
 }
 
 func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {

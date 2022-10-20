@@ -14,13 +14,13 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestConvertReservationSuccessYAML(test_framework *testing.T) {
+func convertReservationSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, yaml.Marshal, reservationConvert)
+	ExpectFromFileSuccess(test_framework, marshaller, reservationConvert)
 
 	// What the server should return.
 	createdReservation := generators.Generate[billingapi.Reservation]()
@@ -37,27 +37,12 @@ func TestConvertReservationSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestConvertReservationSuccessYAML(test_framework *testing.T) {
+	convertReservationSuccess(test_framework, yaml.Marshal)
+}
+
 func TestConvertReservationSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
-
-	// Assumed contents of the file.
-	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, json.Marshal, reservationConvert)
-
-	// What the server should return.
-	createdReservation := generators.Generate[billingapi.Reservation]()
-
-	// Mocking
-	PrepareBillingMockClient(test_framework).
-		ReservationConvert(RESOURCEID, gomock.Eq(reservationConvert)).
-		Return(&createdReservation, nil)
-
-	// Run command
-	err := ConvertReservationCmd.RunE(ConvertReservationCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	convertReservationSuccess(test_framework, json.Marshal)
 }
 
 func TestConvertReservationFileProcessorFailure(test_framework *testing.T) {
