@@ -12,7 +12,7 @@ func PrintPrivateNetworkResponse(network *networksdk.PrivateNetwork) error {
 }
 
 func PrintPrivateNetworkListResponse(networks []networksdk.PrivateNetwork) error {
-	networkListToPrint := PreparePrivateNetworkListForPrinting(networks)
+	networkListToPrint := iterutils.Map(networks, PreparePrivateNetworkForPrinting)
 	return MainPrinter.PrintOutput(networkListToPrint)
 }
 
@@ -25,16 +25,6 @@ func PreparePrivateNetworkForPrinting(network networksdk.PrivateNetwork) interfa
 	default:
 		return network
 	}
-}
-
-func PreparePrivateNetworkListForPrinting(networks []networksdk.PrivateNetwork) []interface{} {
-	var networkList []interface{}
-
-	for _, network := range networks {
-		networkList = append(networkList, PreparePrivateNetworkForPrinting(network))
-	}
-
-	return networkList
 }
 
 func PrintPublicNetworkResponse(network *networksdk.PublicNetwork) error {

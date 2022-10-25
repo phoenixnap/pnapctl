@@ -1,7 +1,6 @@
 package clusters
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
@@ -14,7 +13,6 @@ import (
 )
 
 func TestGetServerShortSuccess(test_framework *testing.T) {
-
 	cluster := generators.Generate[ranchersolutionapi.Cluster]()
 	var clusterTable = tables.ClusterFromSdk(cluster)
 
@@ -22,9 +20,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 		ClusterGetById(RESOURCEID).
 		Return(&cluster, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, clusterTable)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
 
@@ -43,7 +39,7 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
@@ -54,12 +50,10 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 		ClusterGetById(RESOURCEID).
 		Return(&cluster, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterTable).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, clusterTable)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{RESOURCEID})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

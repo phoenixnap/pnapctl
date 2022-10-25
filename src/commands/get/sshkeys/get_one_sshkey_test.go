@@ -1,7 +1,6 @@
 package sshkeys
 
 import (
-	"errors"
 	"testing"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
@@ -22,9 +21,7 @@ func TestGetSshKeyByIdFullSuccess(test_framework *testing.T) {
 		SshKeyGetById(RESOURCEID).
 		Return(&sshKey, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, sshKeyTable)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
 
@@ -41,9 +38,7 @@ func TestGetSshKeyByIdSuccess(test_framework *testing.T) {
 		SshKeyGetById(RESOURCEID).
 		Return(&sshKey, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, sshKeyTable)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
 
@@ -62,7 +57,7 @@ func TestGetSshKeyByIdClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestGetSshKeyByIdPrinterFailure(test_framework *testing.T) {
@@ -74,12 +69,10 @@ func TestGetSshKeyByIdPrinterFailure(test_framework *testing.T) {
 		SshKeyGetById(RESOURCEID).
 		Return(&sshKey, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTable).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, sshKeyTable)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{RESOURCEID})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

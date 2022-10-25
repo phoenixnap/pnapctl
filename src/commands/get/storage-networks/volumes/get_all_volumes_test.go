@@ -1,7 +1,6 @@
 package volumes
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
@@ -24,9 +23,7 @@ func TestGetAllVolumesSuccess(test_framework *testing.T) {
 		NetworkStorageGetVolumes(RESOURCEID).
 		Return(volumeSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(volumeTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, volumeTables)
 
 	// Run command
 	err := GetStorageNetworkVolumesCmd.RunE(GetStorageNetworkVolumesCmd, []string{RESOURCEID})
@@ -48,7 +45,7 @@ func TestGetAllVolumesClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestGetAllVolumesPrinterFailure(test_framework *testing.T) {
@@ -61,13 +58,11 @@ func TestGetAllVolumesPrinterFailure(test_framework *testing.T) {
 		NetworkStorageGetVolumes(RESOURCEID).
 		Return(volumeSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(volumeTables).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, volumeTables)
 
 	// Run command
 	err := GetStorageNetworkVolumesCmd.RunE(GetStorageNetworkVolumesCmd, []string{RESOURCEID})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

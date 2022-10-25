@@ -1,7 +1,6 @@
 package accountbillingconfiguration
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
@@ -23,9 +22,7 @@ func TestGetAccountBillingConfigurationSuccess(test_framework *testing.T) {
 		AccountBillingConfigurationGet().
 		Return(&configurationDetail, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(configurationDetailTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, configurationDetailTable)
 
 	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})
 
@@ -45,7 +42,7 @@ func TestGetAccountBillingConfigurationClientFailure(test_framework *testing.T) 
 	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestGetAccountBillingConfigurationPrinterFailure(test_framework *testing.T) {
@@ -58,12 +55,10 @@ func TestGetAccountBillingConfigurationPrinterFailure(test_framework *testing.T)
 		AccountBillingConfigurationGet().
 		Return(&configurationDetail, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(configurationDetailTable).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, configurationDetailTable)
 
 	err := GetAccountBillingConfigurationCmd.RunE(GetAccountBillingConfigurationCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

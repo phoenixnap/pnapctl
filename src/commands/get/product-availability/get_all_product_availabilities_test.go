@@ -1,7 +1,6 @@
 package productavailability
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
@@ -31,9 +30,7 @@ func TestGetAllProductAvailabilitiesSuccess(test_framework *testing.T) {
 		ProductAvailabilityGet(getQueryParams()).
 		Return(productAvailabilities, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(productAvailabilitiesTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, productAvailabilitiesTable)
 
 	err := GetProductAvailabilitiesCmd.RunE(GetProductAvailabilitiesCmd, []string{})
 
@@ -53,7 +50,7 @@ func TestGetAllProductAvailabilitiesClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestGetAllProductAvailabilitiesPrinterFailure(test_framework *testing.T) {
@@ -69,12 +66,10 @@ func TestGetAllProductAvailabilitiesPrinterFailure(test_framework *testing.T) {
 		ProductAvailabilityGet(getQueryParams()).
 		Return(productAvailabilities, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(productAvailabilitiesTable).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, productAvailabilitiesTable)
 
 	err := GetProductAvailabilitiesCmd.RunE(GetProductAvailabilitiesCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

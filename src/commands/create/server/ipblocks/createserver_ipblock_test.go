@@ -9,135 +9,63 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
+func createServerIpBlockSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverIpBlockSdk)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, marshaller, serverIpBlockSdk)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(&serverIpBlockSdk, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(&serverIpBlockSdk, nil)
 
 	// Run command
 	err := CreateServerIpBlockCmd.RunE(CreateServerIpBlockCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
+}
+
+func TestCreateServerIpBlockSuccessYAML(test_framework *testing.T) {
+	createServerIpBlockSuccess(test_framework, yaml.Marshal)
 }
 
 func TestCreateServerIpBlockSuccessJSON(test_framework *testing.T) {
-	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(&serverIpBlockSdk, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateServerIpBlockCmd.RunE(CreateServerIpBlockCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createServerIpBlockSuccess(test_framework, json.Marshal)
 }
 
-func TestCreateServerIpBlockFileNotFoundFailure(test_framework *testing.T) {
+func TestCreateServerIpBlockFileProcessorFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateServerIpBlockCmd.RunE(CreateServerIpBlockCmd, []string{RESOURCEID})
 
-	// Expected command
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
-
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 
 }
 
 func TestCreateServerIpBlockUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`Name: desc`)
-
 	Filename = FILENAME
 
 	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateServerIpBlockCmd.RunE(CreateServerIpBlockCmd, []string{RESOURCEID})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestCreateServerIpBlockFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		}).
-		Times(1)
-
-	// Run command
-	err := CreateServerIpBlockCmd.RunE(CreateServerIpBlockCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
@@ -145,22 +73,13 @@ func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
 	serverIpBlockSdk := generators.Generate[bmcapisdk.ServerIpBlock]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverIpBlockSdk)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, serverIpBlockSdk)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerIpBlockPost(RESOURCEID, gomock.Eq(serverIpBlockSdk)).
-		Return(nil, testutil.TestError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := CreateServerIpBlockCmd.RunE(CreateServerIpBlockCmd, []string{RESOURCEID})
@@ -169,5 +88,5 @@ func TestCreateServerIpBlockClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

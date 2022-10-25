@@ -61,7 +61,6 @@ type ServerIpBlockTable struct {
 }
 
 func ToShortServerTable(server bmcapisdk.Server) ShortServerTable {
-
 	return ShortServerTable{
 		ID:                 server.Id,
 		Status:             server.Status,
@@ -116,7 +115,6 @@ func ToServerPrivateNetworkTable(privateNetwork bmcapisdk.ServerPrivateNetwork) 
 }
 
 func ToServerPublicNetworkTable(publicNetwork bmcapisdk.ServerPublicNetwork) ServerPublicNetworkTable {
-
 	return ServerPublicNetworkTable{
 		Id:                publicNetwork.Id,
 		Ips:               publicNetwork.Ips,

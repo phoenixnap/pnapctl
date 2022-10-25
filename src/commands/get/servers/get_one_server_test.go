@@ -1,7 +1,6 @@
 package servers
 
 import (
-	"errors"
 	"testing"
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
@@ -14,7 +13,6 @@ import (
 )
 
 func TestGetServerShortSuccess(test_framework *testing.T) {
-
 	server := generators.Generate[bmcapisdk.Server]()
 	var shortServer = tables.ToShortServerTable(server)
 
@@ -22,9 +20,7 @@ func TestGetServerShortSuccess(test_framework *testing.T) {
 		ServerGetById(RESOURCEID).
 		Return(&server, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServer).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, shortServer)
 
 	Full = false
 	err := GetServersCmd.RunE(GetServersCmd, []string{RESOURCEID})
@@ -41,9 +37,7 @@ func TestGetServerLongSuccess(test_framework *testing.T) {
 		ServerGetById(RESOURCEID).
 		Return(&server, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(longServer).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, longServer)
 
 	Full = true
 	err := GetServersCmd.RunE(GetServersCmd, []string{RESOURCEID})
@@ -63,7 +57,7 @@ func TestGetServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestGetServerPrinterFailure(test_framework *testing.T) {
@@ -74,13 +68,11 @@ func TestGetServerPrinterFailure(test_framework *testing.T) {
 		ServerGetById(RESOURCEID).
 		Return(&server, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(shortServer).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, shortServer)
 
 	Full = false
 	err := GetServersCmd.RunE(GetServersCmd, []string{RESOURCEID})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

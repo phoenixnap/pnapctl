@@ -31,7 +31,6 @@ type IpBlockShort struct {
 }
 
 func ToIpBlockTable(ipBlock ipapisdk.IpBlock) IpBlock {
-
 	var tags []string
 
 	for _, tag := range ipBlock.Tags {
@@ -54,7 +53,6 @@ func ToIpBlockTable(ipBlock ipapisdk.IpBlock) IpBlock {
 }
 
 func ToShortIpBlockTable(ipBlock ipapisdk.IpBlock) IpBlockShort {
-
 	var tags []string
 
 	for _, tag := range ipBlock.Tags {

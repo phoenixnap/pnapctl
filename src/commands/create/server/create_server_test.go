@@ -10,7 +10,6 @@ import (
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -18,14 +17,13 @@ import (
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
-func TestCreateServerSuccessYAML(test_framework *testing.T) {
+func createServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, marshaller, serverCreate)
 
 	// What the server should return.
 	createdServer := generators.Generate[bmcapisdk.Server]()
@@ -33,147 +31,62 @@ func TestCreateServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
-		Return(&createdServer, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(&createdServer, nil)
 
 	// Run command
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
+}
+
+func TestCreateServerSuccessYAML(test_framework *testing.T) {
+	createServerSuccess(test_framework, yaml.Marshal)
 }
 
 func TestCreateServerSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverCreate)
-
-	Filename = FILENAME
-
-	// What the server should return.
-	createdServer := generators.Generate[bmcapisdk.Server]()
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(serverCreate)).
-		Return(&createdServer, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createServerSuccess(test_framework, json.Marshal)
 }
 
-func TestCreateServerFileNotFoundFailure(test_framework *testing.T) {
-
+func TestCreateServerFileProcessorFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
-	// Expected command
-	expectedErr := ctlerrors.FileNotExistError(FILENAME) // TODO remove this from tests. We should give plain text here, not compare it.
-
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 
 }
 
 func TestCreateServerUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
-
 	Filename = FILENAME
 
 	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestCreateServerFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		}).
-		Times(1)
-
-	// Run command
-	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestCreateServerClientFailure(test_framework *testing.T) {
-
 	// Setup
 	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, serverCreate)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServersPost(gomock.Eq(serverCreate)).
-		Return(nil, testutil.TestError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := CreateServerCmd.RunE(CreateServerCmd, []string{})
@@ -182,5 +95,5 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

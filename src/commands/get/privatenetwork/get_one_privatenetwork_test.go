@@ -1,7 +1,6 @@
 package privatenetwork
 
 import (
-	"errors"
 	"testing"
 
 	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
@@ -14,7 +13,6 @@ import (
 )
 
 func TestGetPrivateNetworkSuccess(test_framework *testing.T) {
-
 	privateNetwork := generators.Generate[networkapisdk.PrivateNetwork]()
 	var privateNetworkTable = tables.PrivateNetworkFromSdk(privateNetwork)
 
@@ -22,9 +20,7 @@ func TestGetPrivateNetworkSuccess(test_framework *testing.T) {
 		PrivateNetworkGetById(RESOURCEID).
 		Return(&privateNetwork, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, privateNetworkTable)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
 
@@ -43,7 +39,7 @@ func TestGetPrivateNetworkClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestGetPrivateNetworkPrinterFailure(test_framework *testing.T) {
@@ -54,12 +50,10 @@ func TestGetPrivateNetworkPrinterFailure(test_framework *testing.T) {
 		PrivateNetworkGetById(RESOURCEID).
 		Return(&privateNetwork, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkTable).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, privateNetworkTable)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{RESOURCEID})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

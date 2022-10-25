@@ -3,6 +3,7 @@ package printer
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func PrintQuotaResponse(quota *bmcapisdk.Quota) error {
@@ -11,18 +12,8 @@ func PrintQuotaResponse(quota *bmcapisdk.Quota) error {
 }
 
 func PrintQuotaListResponse(quotas []bmcapisdk.Quota) error {
-	quotaListToPrint := PrepareQuotaListForPrinting(quotas)
+	quotaListToPrint := iterutils.Map(quotas, PrepareQuotaForPrinting)
 	return MainPrinter.PrintOutput(quotaListToPrint)
-}
-
-func PrepareQuotaListForPrinting(quotas []bmcapisdk.Quota) []interface{} {
-	var quotaList []interface{}
-
-	for _, bmcQuota := range quotas {
-		quotaList = append(quotaList, PrepareQuotaForPrinting(bmcQuota))
-	}
-
-	return quotaList
 }
 
 func PrepareQuotaForPrinting(quota bmcapisdk.Quota) interface{} {

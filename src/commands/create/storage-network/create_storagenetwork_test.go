@@ -10,18 +10,17 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreateStorageNetworkSuccessYAML(test_framework *testing.T) {
+func createStorageNetworkSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	networkStorageCreate := generators.Generate[networkstorageapi.StorageNetworkCreate]()
 
 	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStorageCreate)
+	ExpectFromFileSuccess(test_framework, marshaller, networkStorageCreate)
 
 	Filename = FILENAME
 
@@ -30,116 +29,52 @@ func TestCreateStorageNetworkSuccessYAML(test_framework *testing.T) {
 	networkStorageTable := tables.StorageNetworkTableFromSdk(networkStorageSdk)
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(marshalled, nil)
-
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStoragePost(gomock.Eq(networkStorageCreate)).
 		Return(&networkStorageSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, networkStorageTable)
 
 	// Run command
 	err := CreateStorageNetworkCmd.RunE(CreateStorageNetworkCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
+}
+
+func TestCreateStorageNetworkSuccessYAML(test_framework *testing.T) {
+	createStorageNetworkSuccess(test_framework, yaml.Marshal)
 }
 
 func TestCreateStorageNetworkSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	networkStorageCreate := generators.Generate[networkstorageapi.StorageNetworkCreate]()
-
-	// Assumed contents of the file.
-	marshalled, _ := json.Marshal(networkStorageCreate)
-
-	Filename = FILENAME
-
-	// What the networkStorageSdk should return.
-	networkStorageSdk := generators.Generate[networkstorageapi.StorageNetwork]()
-	networkStorageTable := tables.StorageNetworkTableFromSdk(networkStorageSdk)
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(marshalled, nil)
-
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePost(gomock.Eq(networkStorageCreate)).
-		Return(&networkStorageSdk, nil)
-
-	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable).
-		Return(nil)
-
-	// Run command
-	err := CreateStorageNetworkCmd.RunE(CreateStorageNetworkCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createStorageNetworkSuccess(test_framework, json.Marshal)
 }
 
-func TestCreateStorageNetworkFileNotFoundFailure(test_framework *testing.T) {
+func TestCreateStorageNetworkFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateStorageNetworkCmd.RunE(CreateStorageNetworkCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
-
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreateStorageNetworkUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`Invalid`)
-
 	// Setup
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateStorageNetworkCmd.RunE(CreateStorageNetworkCmd, []string{})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestCreateStorageNetworkFileReadingFailure(test_framework *testing.T) {
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		})
-
-	// Run command
-	err := CreateStorageNetworkCmd.RunE(CreateStorageNetworkCmd, []string{})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestCreateStorageNetworkClientFailure(test_framework *testing.T) {
@@ -147,15 +82,11 @@ func TestCreateStorageNetworkClientFailure(test_framework *testing.T) {
 	networkStorageCreate := generators.Generate[networkstorageapi.StorageNetworkCreate]()
 
 	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStorageCreate)
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, networkStorageCreate)
 
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(marshalled, nil)
-
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStoragePost(gomock.Eq(networkStorageCreate)).
 		Return(nil, testutil.TestError)
@@ -167,5 +98,5 @@ func TestCreateStorageNetworkClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

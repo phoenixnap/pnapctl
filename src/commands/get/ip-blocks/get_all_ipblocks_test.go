@@ -1,35 +1,27 @@
 package ip_blocks
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllIpBlocksSuccess(test_framework *testing.T) {
 	ipBlockList := testutil.GenN(2, generators.Generate[ipapi.IpBlock])
-
-	var IpBlockTables []interface{}
-
-	for _, ipBlock := range ipBlockList {
-		IpBlockTables = append(IpBlockTables, tables.ToShortIpBlockTable(ipBlock))
-	}
+	IpBlockTables := iterutils.MapInterface(ipBlockList, tables.ToShortIpBlockTable)
 
 	// Mocking
 	PrepareIPMockClient(test_framework).
 		IpBlocksGet(tags).
 		Return(ipBlockList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(IpBlockTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, IpBlockTables)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{})
 
@@ -50,23 +42,16 @@ func TestGetAllIpBlocksClientFailure(test_framework *testing.T) {
 
 func TestGetAllIpBlocksPrinterFailure(test_framework *testing.T) {
 	ipBlockList := testutil.GenN(2, generators.Generate[ipapi.IpBlock])
-
-	var ipBlockTables []interface{}
-
-	for _, ipBlock := range ipBlockList {
-		ipBlockTables = append(ipBlockTables, tables.ToShortIpBlockTable(ipBlock))
-	}
+	ipBlockTables := iterutils.MapInterface(ipBlockList, tables.ToShortIpBlockTable)
 
 	PrepareIPMockClient(test_framework).
 		IpBlocksGet(tags).
 		Return(ipBlockList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(ipBlockTables).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, ipBlockTables)
 
 	err := GetIpBlockCmd.RunE(GetIpBlockCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

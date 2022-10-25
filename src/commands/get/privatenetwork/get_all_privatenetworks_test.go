@@ -1,7 +1,6 @@
 package privatenetwork
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
@@ -9,27 +8,21 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllPrivateNetworksShortSuccess(test_framework *testing.T) {
 	privateNetworks := testutil.GenN(5, generators.Generate[networkapi.PrivateNetwork])
-
-	var privateNetworkList []interface{}
-
-	for _, x := range privateNetworks {
-		privateNetworkList = append(privateNetworkList, tables.PrivateNetworkFromSdk(x))
-	}
+	privateNetworkList := iterutils.MapInterface(privateNetworks, tables.PrivateNetworkFromSdk)
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").
 		Return(privateNetworks, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkList).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, privateNetworkList)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
 
@@ -49,28 +42,21 @@ func TestGetAllPrivateNetworksClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestGetAllPrivateNetworksPrinterFailure(test_framework *testing.T) {
 	privateNetworks := testutil.GenN(5, generators.Generate[networkapi.PrivateNetwork])
-
-	var privateNetworkList []interface{}
-
-	for _, x := range privateNetworks {
-		privateNetworkList = append(privateNetworkList, tables.PrivateNetworkFromSdk(x))
-	}
+	privateNetworkList := iterutils.MapInterface(privateNetworks, tables.PrivateNetworkFromSdk)
 
 	PrepareNetworkMockClient(test_framework).
 		PrivateNetworksGet("").
 		Return(privateNetworks, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(privateNetworkList).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, privateNetworkList)
 
 	err := GetPrivateNetworksCmd.RunE(GetPrivateNetworksCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

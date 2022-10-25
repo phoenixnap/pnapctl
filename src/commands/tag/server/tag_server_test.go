@@ -8,7 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 
 	"sigs.k8s.io/yaml"
@@ -17,14 +16,13 @@ import (
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
-func TestTagServerSuccessYAML(test_framework *testing.T) {
+func tagServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	tagAssignmentRequests := testutil.GenN(2, generators.Generate[bmcapisdk.TagAssignmentRequest])
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(tagAssignmentRequests)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, marshaller, tagAssignmentRequests)
 
 	// What the server should return.
 	server := generators.Generate[bmcapisdk.Server]()
@@ -32,15 +30,7 @@ func TestTagServerSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(&server, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(&server, nil)
 
 	// Run command
 	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
@@ -49,58 +39,26 @@ func TestTagServerSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestTagServerEmptyBodySuccessYAML(test_framework *testing.T) {
-	filecontents := []byte(``)
-
-	Filename = FILENAME
-
-	// What the server should return.
-	server := generators.Generate[bmcapisdk.Server]()
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerTag(RESOURCEID, []bmcapisdk.TagAssignmentRequest{}).
-		Return(&server, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
-
-	// Run command
-	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+func TestTagServerSuccessYAML(test_framework *testing.T) {
+	tagServerSuccess(test_framework, yaml.Marshal)
 }
 
 func TestTagServerSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	tagAssignmentRequests := testutil.GenN(2, generators.Generate[bmcapisdk.TagAssignmentRequest])
+	tagServerSuccess(test_framework, json.Marshal)
+}
 
+func TestTagServerSuccessEmptyBody(test_framework *testing.T) {
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(tagAssignmentRequests)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, nil)
 
 	// What the server should return.
 	server := generators.Generate[bmcapisdk.Server]()
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(&server, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		ServerTag(RESOURCEID, gomock.Eq([]bmcapisdk.TagAssignmentRequest{})).
+		Return(&server, nil)
 
 	// Run command
 	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
@@ -109,74 +67,31 @@ func TestTagServerSuccessJSON(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestTagServerFileNotFoundFailure(test_framework *testing.T) {
-
+func TestTagServerFileProcessorFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
 
-	// Expected command
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
-
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 
 }
 
 func TestTagServerUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`Name: desc`)
-
 	Filename = FILENAME
 
 	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestTagServerFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		}).
-		Times(1)
-
-	// Run command
-	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestTagServerClientFailure(test_framework *testing.T) {
@@ -184,22 +99,13 @@ func TestTagServerClientFailure(test_framework *testing.T) {
 	tagAssignmentRequests := testutil.GenN(2, generators.Generate[bmcapisdk.TagAssignmentRequest])
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(tagAssignmentRequests)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, tagAssignmentRequests)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerTag(RESOURCEID, gomock.Eq(tagAssignmentRequests)).
-		Return(nil, testutil.TestError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := TagServerCmd.RunE(TagServerCmd, []string{RESOURCEID})
@@ -208,5 +114,5 @@ func TestTagServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

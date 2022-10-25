@@ -9,20 +9,18 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
+func createPublicNetworkSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, marshaller, publicNetworkCreate)
 
 	// What the server should return.
 	createdPublicNetwork := generators.Generate[networkapi.PublicNetwork]()
@@ -30,115 +28,48 @@ func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(&createdPublicNetwork, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(&createdPublicNetwork, nil)
 
 	// Run command
 	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
+}
+
+func TestCreatePublicNetworkSuccessYAML(test_framework *testing.T) {
+	createPublicNetworkSuccess(test_framework, yaml.Marshal)
 }
 
 func TestCreatePublicNetworkSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(publicNetworkCreate)
-
-	Filename = FILENAME
-
-	// What the server should return.
-	createdPublicNetwork := generators.Generate[networkapi.PublicNetwork]()
-
-	// Mocking
-	PrepareNetworkMockClient(test_framework).
-		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(&createdPublicNetwork, nil).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createPublicNetworkSuccess(test_framework, json.Marshal)
 }
 
-func TestCreatePublicNetworkFileNotFoundFailure(test_framework *testing.T) {
+func TestCreatePublicNetworkFileProcessorFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
-
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreatePublicNetworkUnmarshallingFailure(test_framework *testing.T) {
-	// Setup
-	filecontents := []byte(`invalid`)
-
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestCreatePublicNetworkFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		}).
-		Times(1)
-
-	// Run command
-	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
@@ -146,22 +77,13 @@ func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 	publicNetworkCreate := generators.Generate[networkapi.PublicNetworkCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(publicNetworkCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, publicNetworkCreate)
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		PublicNetworksPost(gomock.Eq(publicNetworkCreate)).
-		Return(nil, testutil.TestError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := CreatePublicNetworkCmd.RunE(CreatePublicNetworkCmd, []string{})
@@ -170,5 +92,5 @@ func TestCreatePublicNetworkClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

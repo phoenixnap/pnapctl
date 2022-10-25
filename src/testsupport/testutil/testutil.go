@@ -4,20 +4,11 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 // A generic test error.
 var TestError = errors.New("TEST ERROR")
-var TestKeycloakError = ctlerrors.CLIError{Message: "Failed to resolve provided credentials", Cause: TestError}
-
-// A fake Error response from the server.
-var GenericBMCError = ctlerrors.BMCError{
-	Message:          "Something went wrong!",
-	ValidationErrors: []string{},
-}
 
 // Utility struct used for the assertion pattern.
 //
@@ -95,13 +86,6 @@ func (a assertPairs[T, U]) Do(t *testing.T, asserter func(*testing.T, T, U)) {
 	for i := range a.expected {
 		asserter(t, a.expected[i], a.actual[i])
 	}
-}
-
-// Generic asserters
-
-// Used as shorthand to assert two things are equal.
-func AssertEqual[T any](t *testing.T, a, b T) {
-	assert.Equal(t, a, b)
 }
 
 type Stringlike interface {

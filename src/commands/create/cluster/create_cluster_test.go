@@ -14,14 +14,13 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreateClusterSuccessYAML(test_framework *testing.T) {
+func createClusterSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(clusterCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, marshaller, clusterCreate)
 
 	// What the server should return.
 	createdCluster := generators.Generate[ranchersolutionapi.Cluster]()
@@ -29,93 +28,45 @@ func TestCreateClusterSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(&createdCluster, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(&createdCluster, nil)
 
 	// Run command
 	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
+}
+
+func TestCreateClusterSuccessYAML(test_framework *testing.T) {
+	createClusterSuccess(test_framework, yaml.Marshal)
 }
 
 func TestCreateClusterSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(clusterCreate)
-
-	Filename = FILENAME
-
-	// What the server should return.
-	createdCluster := generators.Generate[ranchersolutionapi.Cluster]()
-
-	// Mocking
-	PrepareRancherMockClient(test_framework).
-		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(&createdCluster, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createClusterSuccess(test_framework, json.Marshal)
 }
 
-func TestCreateClusterFileNotFoundFailure(test_framework *testing.T) {
-
+func TestCreateClusterFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
-
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreateClusterUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
-
 	Filename = FILENAME
 
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestCreateClusterClientFailure(test_framework *testing.T) {
@@ -123,20 +74,13 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 	clusterCreate := generators.Generate[ranchersolutionapi.Cluster]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(clusterCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, clusterCreate)
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClusterPost(gomock.Eq(clusterCreate)).
-		Return(nil, testutil.TestError).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := CreateClusterCmd.RunE(CreateClusterCmd, []string{})
@@ -145,5 +89,5 @@ func TestCreateClusterClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

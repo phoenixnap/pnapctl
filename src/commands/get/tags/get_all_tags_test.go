@@ -1,7 +1,6 @@
 package tags
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
@@ -9,27 +8,21 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllTagsSuccess(test_framework *testing.T) {
 	tags := testutil.GenN(1, generators.Generate[tagapi.Tag])
-
-	var taglist []interface{}
-
-	for _, x := range tags {
-		taglist = append(taglist, tables.TagFromSdk(x))
-	}
+	taglist := iterutils.MapInterface(tags, tables.TagFromSdk)
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagsGet("").
 		Return(tags, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(taglist).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, taglist)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
 
@@ -49,28 +42,21 @@ func TestGetAllTagsClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestGetAllTagsPrinterFailure(test_framework *testing.T) {
 	tags := testutil.GenN(1, generators.Generate[tagapi.Tag])
-
-	var taglist []interface{}
-
-	for _, x := range tags {
-		taglist = append(taglist, tables.TagFromSdk(x))
-	}
+	taglist := iterutils.MapInterface(tags, tables.TagFromSdk)
 
 	PrepareTagMockClient(test_framework).
 		TagsGet("").
 		Return(tags, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(taglist).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, taglist)
 
 	err := GetTagsCmd.RunE(GetTagsCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

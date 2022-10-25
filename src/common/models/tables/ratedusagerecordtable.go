@@ -105,7 +105,6 @@ func parseCommonRatedUsage(sdk billingapisdk.RatedUsageGet200ResponseInner) *Rat
 
 func (table *RatedUsageRecordTable) attachUnique(sdk billingapisdk.RatedUsageGet200ResponseInner) {
 	switch table.ProductCategory {
-
 	case ratedusage.Bandwidth:
 		table.Metadata = map[string]interface{}{
 			EGRESS_GB:        sdk.BandwidthRecord.Metadata.EgressGb,

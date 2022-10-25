@@ -1,13 +1,12 @@
 package products
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
@@ -19,21 +18,14 @@ func getQueryParams() (string, string, string, string) {
 
 func TestGetAllProducts_FullTable(test_framework *testing.T) {
 	responseList := generators.GenerateProductSdkList()
-
-	var products []interface{}
-
-	for _, product := range responseList {
-		products = append(products, *tables.ProductTableFromSdk(product))
-	}
+	products := iterutils.DerefInterface(iterutils.MapInterface(responseList, tables.ProductTableFromSdk))
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ProductsGet(getQueryParams()).
 		Return(responseList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(products).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, products)
 
 	err := GetProductsCmd.RunE(GetProductsCmd, []string{})
 
@@ -55,24 +47,17 @@ func TestGetAllProducts_ClientFailure(test_framework *testing.T) {
 
 func TestGetAllProducts_PrinterFailure(test_framework *testing.T) {
 	responseList := generators.GenerateProductSdkList()
-
-	var products []interface{}
-
-	for _, product := range responseList {
-		products = append(products, *tables.ProductTableFromSdk(product))
-	}
+	products := iterutils.DerefInterface(iterutils.MapInterface(responseList, tables.ProductTableFromSdk))
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ProductsGet(getQueryParams()).
 		Return(responseList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(products).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, products)
 
 	err := GetProductsCmd.RunE(GetProductsCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

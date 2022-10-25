@@ -1,35 +1,27 @@
 package sshkeys
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/stretchr/testify/assert"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllSshKeysSuccess(test_framework *testing.T) {
 	sshKeyList := testutil.GenN(2, generators.Generate[bmcapi.SshKey])
-
-	var sshKeyTables []interface{}
-
-	for _, sshKey := range sshKeyList {
-		sshKeyTables = append(sshKeyTables, tables.ToSshKeyTable(sshKey))
-	}
+	sshKeyTables := iterutils.MapInterface(sshKeyList, tables.ToSshKeyTable)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		SshKeysGet().
 		Return(sshKeyList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, sshKeyTables)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
 
@@ -51,23 +43,16 @@ func TestGetAllSshKeysClientFailure(test_framework *testing.T) {
 
 func TestGetAllSshKeysPrinterFailure(test_framework *testing.T) {
 	sshKeyList := testutil.GenN(2, generators.Generate[bmcapi.SshKey])
-
-	var sshKeyTables []interface{}
-
-	for _, sshKey := range sshKeyList {
-		sshKeyTables = append(sshKeyTables, tables.ToSshKeyTable(sshKey))
-	}
+	sshKeyTables := iterutils.MapInterface(sshKeyList, tables.ToSshKeyTable)
 
 	PrepareBmcApiMockClient(test_framework).
 		SshKeysGet().
 		Return(sshKeyList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(sshKeyTables).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, sshKeyTables)
 
 	err := GetSshKeysCmd.RunE(GetSshKeysCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

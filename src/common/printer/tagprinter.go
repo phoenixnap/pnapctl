@@ -3,6 +3,7 @@ package printer
 import (
 	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func PrintTagResponse(tag *tagapisdk.Tag) error {
@@ -11,7 +12,7 @@ func PrintTagResponse(tag *tagapisdk.Tag) error {
 }
 
 func PrintTagListResponse(tags []tagapisdk.Tag) error {
-	tagListToPrint := PrepareTagListForPrinting(tags)
+	tagListToPrint := iterutils.Map(tags, PrepareTagForPrinting)
 	return MainPrinter.PrintOutput(tagListToPrint)
 }
 
@@ -24,14 +25,4 @@ func PrepareTagForPrinting(tag tagapisdk.Tag) interface{} {
 	default:
 		return tag
 	}
-}
-
-func PrepareTagListForPrinting(tags []tagapisdk.Tag) []interface{} {
-	var tagList []interface{}
-
-	for _, tag := range tags {
-		tagList = append(tagList, PrepareTagForPrinting(tag))
-	}
-
-	return tagList
 }

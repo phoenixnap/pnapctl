@@ -3,7 +3,6 @@ package fileprocessor
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"runtime"
@@ -27,7 +26,7 @@ type RealFileProcessor struct{}
 
 // ReadFile Reads a file and processes any errors that may happen.
 func (RealFileProcessor) ReadFile(filename string) ([]byte, error) {
-	file, err := ioutil.ReadFile(filename)
+	file, err := os.ReadFile(filename)
 
 	if err != nil {
 		if os.IsNotExist(err) {

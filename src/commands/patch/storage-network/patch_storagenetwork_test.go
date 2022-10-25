@@ -10,18 +10,17 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
 )
 
-func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
+func patchStorageNetworkSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
 
 	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStoragePatch)
+	ExpectFromFileSuccess(test_framework, marshaller, networkStoragePatch)
 
 	Filename = FILENAME
 
@@ -30,116 +29,52 @@ func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
 	networkStorageTable := tables.StorageNetworkTableFromSdk(networkStorageSdk)
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(marshalled, nil)
-
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
 		Return(&networkStorageSdk, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, networkStorageTable)
 
 	// Run command
 	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
+}
+
+func TestPatchStorageNetworkSuccessYAML(test_framework *testing.T) {
+	patchStorageNetworkSuccess(test_framework, yaml.Marshal)
 }
 
 func TestPatchStorageNetworkSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
-
-	// Assumed contents of the file.
-	marshalled, _ := json.Marshal(networkStoragePatch)
-
-	Filename = FILENAME
-
-	// What the networkStorageSdk should return.
-	networkStorageSdk := generators.Generate[networkstorageapi.StorageNetwork]()
-	networkStorageTable := tables.StorageNetworkTableFromSdk(networkStorageSdk)
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(marshalled, nil)
-
-	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
-		Return(&networkStorageSdk, nil)
-
-	PrepareMockPrinter(test_framework).
-		PrintOutput(networkStorageTable).
-		Return(nil)
-
-	// Run command
-	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	patchStorageNetworkSuccess(test_framework, json.Marshal)
 }
 
-func TestPatchStorageNetworkFileNotFoundFailure(test_framework *testing.T) {
+func TestPatchStorageNetworkFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."})
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
 
 	// Expected error
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
-
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestPatchStorageNetworkUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`Invalid`)
-
 	// Setup
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestPatchStorageNetworkFileReadingFailure(test_framework *testing.T) {
-	Filename = FILENAME
-
-	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		})
-
-	// Run command
-	err := PatchStorageNetworkCmd.RunE(PatchStorageNetworkCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
@@ -147,15 +82,11 @@ func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
 	networkStoragePatch := generators.Generate[networkstorageapi.StorageNetworkUpdate]()
 
 	// Assumed contents of the file.
-	marshalled, _ := yaml.Marshal(networkStoragePatch)
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, networkStoragePatch)
 
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(marshalled, nil)
-
 	PrepareNetworkStorageApiMockClient(test_framework).
 		NetworkStoragePatch(RESOURCEID, gomock.Eq(networkStoragePatch)).
 		Return(nil, testutil.TestError)
@@ -167,5 +98,5 @@ func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

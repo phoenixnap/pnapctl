@@ -7,7 +7,6 @@ import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
-	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
@@ -16,28 +15,19 @@ import (
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
-func TestResetServerSuccessYAML(test_framework *testing.T) {
+func resetServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// Setup
 	serverReset := generators.Generate[bmcapisdk.ServerReset]()
 	resetResult := generators.Generate[bmcapisdk.ResetResult]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(serverReset)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, marshaller, serverReset)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(RESOURCEID, serverReset).
-		Return(&resetResult, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(&resetResult, nil)
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
@@ -46,34 +36,12 @@ func TestResetServerSuccessYAML(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
+func TestResetServerSuccessYAML(test_framework *testing.T) {
+	resetServerSuccess(test_framework, yaml.Marshal)
+}
+
 func TestResetServerSuccessJSON(test_framework *testing.T) {
-	// Setup
-	serverReset := generators.Generate[bmcapisdk.ServerReset]()
-	resetResult := generators.Generate[bmcapisdk.ResetResult]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverReset)
-
-	Filename = FILENAME
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerReset(RESOURCEID, serverReset).
-		Return(&resetResult, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	resetServerSuccess(test_framework, json.Marshal)
 }
 
 func TestResetServerSuccessNoFile(test_framework *testing.T) {
@@ -85,8 +53,7 @@ func TestResetServerSuccessNoFile(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(RESOURCEID, bmcapisdk.ServerReset{}).
-		Return(&resetResult, nil).
-		Times(1)
+		Return(&resetResult, nil)
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
@@ -95,73 +62,31 @@ func TestResetServerSuccessNoFile(test_framework *testing.T) {
 	assert.NoError(test_framework, err)
 }
 
-func TestResetServerFileNotFoundFailure(test_framework *testing.T) {
+func TestResetServerFileProcessorFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
 	// Mocking
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
-	// Expected command
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
-
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestResetServerUnmarshallingFailure(test_framework *testing.T) {
 	// Invalid contents of the file
-	// filecontents := make([]byte, 10)
-	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
-
 	Filename = FILENAME
 
 	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
-}
-
-func TestResetServerFileReadingFailure(test_framework *testing.T) {
-	// Setup
-	Filename = FILENAME
-
-	// Mocking
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIError{
-			Message: "Command '" + cmdname.CommandName + "' has been performed, but something went wrong. Error code: 0503",
-		}).
-		Times(1)
-
-	// Run command
-	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
-
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.FileReading, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestResetServerClientFailure(test_framework *testing.T) {
@@ -169,22 +94,13 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	serverReset := generators.Generate[bmcapisdk.ServerReset]()
 
 	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(serverReset)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, json.Marshal, serverReset)
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
 		ServerReset(RESOURCEID, serverReset).
-		Return(nil, testutil.TestError).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := ResetServerCmd.RunE(ResetServerCmd, []string{RESOURCEID})
@@ -193,5 +109,5 @@ func TestResetServerClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

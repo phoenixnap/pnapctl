@@ -1,7 +1,6 @@
 package clusters
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
@@ -9,27 +8,21 @@ import (
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func TestGetAllClustersShortSuccess(test_framework *testing.T) {
 	clusters := testutil.GenN(2, generators.Generate[ranchersolutionapi.Cluster])
-
-	var clusterlist []interface{}
-
-	for _, x := range clusters {
-		clusterlist = append(clusterlist, tables.ClusterFromSdk(x))
-	}
+	clusterlist := iterutils.MapInterface(clusters, tables.ClusterFromSdk)
 
 	// Mocking
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
 		Return(clusters, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterlist).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, clusterlist)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
 
@@ -49,28 +42,21 @@ func TestGetAllClustersClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestGetAllClustersPrinterFailure(test_framework *testing.T) {
 	clusters := testutil.GenN(2, generators.Generate[ranchersolutionapi.Cluster])
-
-	var clusterlist []interface{}
-
-	for _, x := range clusters {
-		clusterlist = append(clusterlist, tables.ClusterFromSdk(x))
-	}
+	clusterlist := iterutils.MapInterface(clusters, tables.ClusterFromSdk)
 
 	PrepareRancherMockClient(test_framework).
 		ClustersGet().
 		Return(clusters, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(clusterlist).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, clusterlist)
 
 	err := GetClustersCmd.RunE(GetClustersCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

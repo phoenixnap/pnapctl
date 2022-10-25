@@ -14,14 +14,13 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func TestCreateTagSuccessYAML(test_framework *testing.T) {
+func createTagSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	tagCreate := generators.Generate[tagapisdk.TagCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(tagCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, marshaller, tagCreate)
 
 	// What the server should return.
 	createdTag := generators.Generate[tagapisdk.Tag]()
@@ -29,93 +28,45 @@ func TestCreateTagSuccessYAML(test_framework *testing.T) {
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
-		Return(&createdTag, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(&createdTag, nil)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
 
 	// Assertions
 	assert.NoError(test_framework, err)
+}
+
+func TestCreateTagSuccessYAML(test_framework *testing.T) {
+	createTagSuccess(test_framework, yaml.Marshal)
 }
 
 func TestCreateTagSuccessJSON(test_framework *testing.T) {
-	// What the client should receive.
-	tagCreate := generators.Generate[tagapisdk.TagCreate]()
-
-	// Assumed contents of the file.
-	jsonmarshal, _ := json.Marshal(tagCreate)
-
-	Filename = FILENAME
-
-	// What the server should return.
-	createdTag := generators.Generate[tagapisdk.Tag]()
-
-	// Mocking
-	PrepareTagMockClient(test_framework).
-		TagPost(gomock.Eq(tagCreate)).
-		Return(&createdTag, nil).
-		Times(1)
-
-	mockFileProcessor := PrepareMockFileProcessor(test_framework)
-
-	mockFileProcessor.
-		ReadFile(FILENAME).
-		Return(jsonmarshal, nil).
-		Times(1)
-
-	// Run command
-	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
-
-	// Assertions
-	assert.NoError(test_framework, err)
+	createTagSuccess(test_framework, json.Marshal)
 }
 
-func TestCreateTagFileNotFoundFailure(test_framework *testing.T) {
-
+func TestCreateTagFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(nil, ctlerrors.CLIValidationError{Message: "The file '" + FILENAME + "' does not exist."}).
-		Times(1)
+	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
 
 	// Expected error
-	expectedErr := ctlerrors.FileNotExistError(FILENAME)
-
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestCreateTagUnmarshallingFailure(test_framework *testing.T) {
-	// Invalid contents of the file
-	filecontents := []byte(`sshKeys ["1","2","3","4"]`)
-
 	Filename = FILENAME
 
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(filecontents, nil).
-		Times(1)
+	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
 
-	// Expected error
-	expectedErr := ctlerrors.CreateCLIError(ctlerrors.UnmarshallingInFileProcessor, err)
-
-	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestCreateTagClientFailure(test_framework *testing.T) {
@@ -123,20 +74,13 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 	tagCreate := generators.Generate[tagapisdk.TagCreate]()
 
 	// Assumed contents of the file.
-	yamlmarshal, _ := yaml.Marshal(tagCreate)
-
 	Filename = FILENAME
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, tagCreate)
 
 	// Mocking
 	PrepareTagMockClient(test_framework).
 		TagPost(gomock.Eq(tagCreate)).
-		Return(nil, testutil.TestError).
-		Times(1)
-
-	PrepareMockFileProcessor(test_framework).
-		ReadFile(FILENAME).
-		Return(yamlmarshal, nil).
-		Times(1)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := CreateTagCmd.RunE(CreateTagCmd, []string{})
@@ -145,5 +89,5 @@ func TestCreateTagClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

@@ -19,9 +19,7 @@ func TestAutoRenewReservationEnableSuccess(test_framework *testing.T) {
 		ReservationEnableAutoRenew(RESOURCEID).
 		Return(&reservation, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(tables.ShortReservationTableFromSdk(reservation)).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, tables.ShortReservationTableFromSdk(reservation))
 
 	// Run command
 	err := AutoRenewEnableReservationCmd.RunE(AutoRenewEnableReservationCmd, []string{RESOURCEID})
@@ -42,5 +40,5 @@ func TestAutoRenewReservationEnableClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

@@ -1,7 +1,6 @@
 package publicnetwork
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
@@ -28,9 +27,7 @@ func TestGetAllPublicNetworksSuccess(test_framework *testing.T) {
 		PublicNetworksGet(getQueryParams()).
 		Return(publicNetworkList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(publicNetworkTables).
-		Return(nil)
+	ExpectToPrintSuccess(test_framework, publicNetworkTables)
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{})
 
@@ -50,7 +47,7 @@ func TestGetAllPublicNetworksClientFailure(test_framework *testing.T) {
 	expectedErr := ctlerrors.GenericFailedRequestError(err, ctlerrors.ErrorSendingRequest)
 
 	// Assertions
-	assert.EqualError(test_framework, expectedErr, err.Error())
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
 func TestGetAllPublicNetworksPrinterFailure(test_framework *testing.T) {
@@ -62,12 +59,10 @@ func TestGetAllPublicNetworksPrinterFailure(test_framework *testing.T) {
 		PublicNetworksGet(getQueryParams()).
 		Return(publicNetworkList, nil)
 
-	PrepareMockPrinter(test_framework).
-		PrintOutput(publicNetworkTables).
-		Return(errors.New(ctlerrors.UnmarshallingInPrinter))
+	expectedErr := ExpectToPrintFailure(test_framework, publicNetworkTables)
 
 	err := GetPublicNetworksCmd.RunE(GetPublicNetworksCmd, []string{})
 
 	// Assertions
-	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInPrinter)
+	assert.EqualError(test_framework, err, expectedErr.Error())
 }

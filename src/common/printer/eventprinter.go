@@ -3,10 +3,11 @@ package printer
 import (
 	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
 	"phoenixnap.com/pnapctl/common/models/tables"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func PrintEventListResponse(events []auditapisdk.Event) error {
-	eventListToPrint := PrepareEventListForPrinting(events)
+	eventListToPrint := iterutils.Map(events, PrepareEventForPrinting)
 	return MainPrinter.PrintOutput(eventListToPrint)
 }
 
@@ -19,14 +20,4 @@ func PrepareEventForPrinting(event auditapisdk.Event) interface{} {
 	default:
 		return event
 	}
-}
-
-func PrepareEventListForPrinting(events []auditapisdk.Event) []interface{} {
-	var eventList []interface{}
-
-	for _, event := range events {
-		eventList = append(eventList, PrepareEventForPrinting(event))
-	}
-
-	return eventList
 }
