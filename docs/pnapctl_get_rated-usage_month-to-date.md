@@ -26,17 +26,17 @@ pnapctl get rated-usage month-to-date [flags]
 ### Options
 
 ```
-      --full   Shows all rated-usage details
-  -h, --help   help for month-to-date
+      --category string   The product category to filter by.
+      --full              Shows all rated-usage details
+  -h, --help              help for month-to-date
+  -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
 ```
 
 ### Options inherited from parent commands
 
 ```
-      --category string   The product category to filter by.
-      --config string     config file defaults to the environment variable "PNAPCTL_HOME" or "pnap.yaml" in the home directory.
-  -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
-  -v, --verbose           change log level from Warn (default) to Debug.
+      --config string   config file defaults to the environment variable "PNAPCTL_HOME" or "pnap.yaml" in the home directory.
+  -v, --verbose         change log level from Warn (default) to Debug.
 ```
 
 ### SEE ALSO

@@ -28,13 +28,13 @@ description: My custom server edit
 ```
   -f, --filename string   File containing required information for creation
   -h, --help              help for ip-block
+  -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
 ```
 
 ### Options inherited from parent commands
 
 ```
       --config string   config file defaults to the environment variable "PNAPCTL_HOME" or "pnap.yaml" in the home directory.
-  -o, --output string   Define the output format. Possible values: table, json, yaml (default "table")
   -v, --verbose         change log level from Warn (default) to Debug.
 ```
 
