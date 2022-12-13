@@ -11,7 +11,8 @@ import (
 )
 
 var (
-	Filename, storageNetworkID, volumeID string;
+	Filename, storageNetworkID, volumeID string
+	Full bool
 )
 
 func init() {
@@ -52,6 +53,6 @@ func patchStorageNetworkVolume() error {
 	if err != nil {
 		return err
 	} else {
-		return printer.PrintVolumeResponse(sdkResponse, true)
+		return printer.PrintVolumeResponse(sdkResponse, Full)
 	}
 }
