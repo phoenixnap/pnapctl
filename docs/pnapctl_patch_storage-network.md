@@ -6,7 +6,7 @@ Patch a storage network.
 
 Patch a storage network.
 	
-Requires a file (yaml or json) containing the information needed to patch the server.
+Requires a file (yaml or json) containing the information needed to patch the storage network.
 
 ```
 pnapctl patch storage-network [ID] [flags]
