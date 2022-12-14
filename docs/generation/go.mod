@@ -5,7 +5,7 @@ go 1.19
 replace phoenixnap.com/pnapctl => ../../src
 
 require (
-	github.com/spf13/cobra v1.5.0
+	github.com/spf13/cobra v1.6.1
 	phoenixnap.com/pnapctl v0.0.0
 )
 

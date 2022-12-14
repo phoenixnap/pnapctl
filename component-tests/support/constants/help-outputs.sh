@@ -8,7 +8,7 @@ Usage:
 
 Available Commands:
   auto-renew   Modify auto-renew for a resource.
-  completion   generate the autocompletion script for the specified shell
+  completion   Generate the autocompletion script for the specified shell
   convert      Convert a resource.
   create       Create a resource.
   delete       Delete a resource.
@@ -162,18 +162,17 @@ Global Flags:
 
 Use \"pnapctl patch [command] --help\" for more information about a command."
 
-outputHelpCompletion="
-Generate the autocompletion script for pnapctl for the specified shell.
+outputHelpCompletion="Generate the autocompletion script for pnapctl for the specified shell.
 See each sub-command's help for details on how to use the generated script.
 
 Usage:
   pnapctl completion [command]
 
 Available Commands:
-  bash        generate the autocompletion script for bash
-  fish        generate the autocompletion script for fish
-  powershell  generate the autocompletion script for powershell
-  zsh         generate the autocompletion script for zsh
+  bash        Generate the autocompletion script for bash
+  fish        Generate the autocompletion script for fish
+  powershell  Generate the autocompletion script for powershell
+  zsh         Generate the autocompletion script for zsh
 
 Flags:
   -h, --help   help for completion
