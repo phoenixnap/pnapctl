@@ -8,7 +8,6 @@ import (
 	"phoenixnap.com/pnapctl/commands/patch/publicnetwork"
 	"phoenixnap.com/pnapctl/commands/patch/server"
 	storagenetwork "phoenixnap.com/pnapctl/commands/patch/storage-network"
-	volume "phoenixnap.com/pnapctl/commands/patch/storage-network/volume"
 	"phoenixnap.com/pnapctl/commands/patch/tag"
 )
 
@@ -28,5 +27,4 @@ func init() {
 	PatchCmd.AddCommand(publicnetwork.PatchPublicNetworkCmd)
 	PatchCmd.AddCommand(ip_block.PatchIpBlockCmd)
 	PatchCmd.AddCommand(storagenetwork.PatchStorageNetworkCmd)
-	PatchCmd.AddCommand(volume.PatchStorageNetworkVolumeCmd)
 }

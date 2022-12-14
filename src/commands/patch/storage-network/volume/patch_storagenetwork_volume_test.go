@@ -46,7 +46,7 @@ func TestPatchStorageNetworkVolumeSuccessYAML(test_framework *testing.T) {
 	patchStorageNetworkVolumeSuccess(test_framework, yaml.Marshal)
 }
 
-func TestPatchStorageNetworkSuccessJSON(test_framework *testing.T) {
+func TestPatchStorageNetworkVolumeSuccessJSON(test_framework *testing.T) {
 	patchStorageNetworkVolumeSuccess(test_framework, json.Marshal)
 }
 

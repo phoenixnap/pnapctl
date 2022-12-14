@@ -41,4 +41,5 @@ description: "Description"
 ### SEE ALSO
 
 * [pnapctl patch](pnapctl_patch.md)	 - Modify a resource.
+* [pnapctl patch storage-network volume](pnapctl_patch_storage-network_volume.md)	 - Patch a storage network's volume details.
 

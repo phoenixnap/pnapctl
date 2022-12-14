@@ -21,7 +21,7 @@ func init() {
 }
 
 var PatchStorageNetworkVolumeCmd = &cobra.Command{
-	Use:          "storage-network-volume [storageNetworkID] [volumeID]",
+	Use:          "volume [storageNetworkID] [volumeID]",
 	Short:        "Patch a storage network's volume details.",
 	Args:         cobra.ExactArgs(2),
 	Aliases:      []string{"sn-v"},
@@ -30,7 +30,7 @@ var PatchStorageNetworkVolumeCmd = &cobra.Command{
 	
 Requires a file (yaml or json) containing the information needed to patch the storage network's volume.`,
 	Example: `# Patch a storage network's volume using the contents of storagenetworkvolumeupdate.yaml as request body.
-pnapctl patch storage-network-volume <storageNetworkID> <volumeID> --filename <FILE_PATH> [--output <OUTPUT_TYPE]
+pnapctl patch storage-network volume <storageNetworkID> <volumeID> --filename <FILE_PATH> [--output <OUTPUT_TYPE]
 
 # storagenetworkvolumeupdate.yaml
 capacityInGb: 2000`,

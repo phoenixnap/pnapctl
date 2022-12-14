@@ -93,21 +93,6 @@ func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageGetVolumeById(s
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStorageGetVolumeById", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStorageGetVolumeById), storageId, volumeId)
 }
 
-// NetworkStoragePatchVolumeById mocks base method.
-func (m *MockNetworkStorageSdkClient) NetworkStoragePatchVolumeById(storageId string, volumeId string, volumeUpdate networkstorageapi.VolumeUpdate) (*networkstorageapi.Volume, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NetworkStoragePatchVolumeById", storageId, volumeId, volumeUpdate)
-	ret0, _ := ret[0].(*networkstorageapi.Volume)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// NetworkStoragePatchVolumeById indicates an expected call of NetworkStoragePatchVolumeById.
-func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStoragePatchVolumeById(storageId string, volumeId string, volumeUpdate interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStoragePatchVolumeById", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStorageGetVolumeById), storageId, volumeId)
-}
-
 // NetworkStorageGetVolumes mocks base method.
 func (m *MockNetworkStorageSdkClient) NetworkStorageGetVolumes(storageId string) ([]networkstorageapi.Volume, error) {
 	m.ctrl.T.Helper()
@@ -136,6 +121,21 @@ func (m *MockNetworkStorageSdkClient) NetworkStoragePatch(storageId string, stor
 func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStoragePatch(storageId, storageUpdate interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStoragePatch", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStoragePatch), storageId, storageUpdate)
+}
+
+// NetworkStoragePatchVolumeById mocks base method.
+func (m *MockNetworkStorageSdkClient) NetworkStoragePatchVolumeById(storageId, volumeId string, volumeUpdate networkstorageapi.VolumeUpdate) (*networkstorageapi.Volume, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NetworkStoragePatchVolumeById", storageId, volumeId, volumeUpdate)
+	ret0, _ := ret[0].(*networkstorageapi.Volume)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// NetworkStoragePatchVolumeById indicates an expected call of NetworkStoragePatchVolumeById.
+func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStoragePatchVolumeById(storageId, volumeId, volumeUpdate interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStoragePatchVolumeById", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStoragePatchVolumeById), storageId, volumeId, volumeUpdate)
 }
 
 // NetworkStoragePost mocks base method.
