@@ -29,15 +29,15 @@ pnapctl get volume <ID> [--full] [--output <OUTPUT_TYPE>]
 ### Options
 
 ```
-      --full   Shows all volume details
-  -h, --help   help for volume
+      --full            Shows all volume details
+  -h, --help            help for volume
+  -o, --output string   Define the output format. Possible values: table, json, yaml (default "table")
 ```
 
 ### Options inherited from parent commands
 
 ```
       --config string   config file defaults to the environment variable "PNAPCTL_HOME" or "pnap.yaml" in the home directory.
-  -o, --output string   Define the output format. Possible values: table, json, yaml (default "table")
   -v, --verbose         change log level from Warn (default) to Debug.
 ```
 
