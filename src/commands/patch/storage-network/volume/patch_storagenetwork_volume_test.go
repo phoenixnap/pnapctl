@@ -1,9 +1,7 @@
 package storagenetwork
 
 import (
-	"encoding/json"
 	"testing"
-
 	"github.com/golang/mock/gomock"
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/stretchr/testify/assert"
@@ -11,7 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
-	//"phoenixnap.com/pnapctl/testsupport/testutil"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 	"sigs.k8s.io/yaml"
 )
 
@@ -42,14 +40,6 @@ func patchStorageNetworkVolumeSuccess(test_framework *testing.T, marshaller func
 	assert.NoError(test_framework, err)
 }
 
-func TestPatchStorageNetworkVolumeSuccessYAML(test_framework *testing.T) {
-	patchStorageNetworkVolumeSuccess(test_framework, yaml.Marshal)
-}
-
-func TestPatchStorageNetworkVolumeSuccessJSON(test_framework *testing.T) {
-	patchStorageNetworkVolumeSuccess(test_framework, json.Marshal)
-}
-
 func TestPatchStorageNetworkFileProcessorFailure(test_framework *testing.T) {
 	Filename = FILENAME
 
@@ -77,26 +67,26 @@ func TestPatchStorageNetworkVolumeUnmarshallingFailure(test_framework *testing.T
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
-// func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
-// 	// What the client should receive.
-// 	volumePatch := generators.Generate[networkstorageapi.VolumeUpdate]()
+func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
+	// What the client should receive.
+	volumePatch := generators.Generate[networkstorageapi.VolumeUpdate]()
 
-// 	// Assumed contents of the file.
-// 	ExpectFromFileSuccess(test_framework, yaml.Marshal, volumePatch)
+	// Assumed contents of the file.
+	ExpectFromFileSuccess(test_framework, yaml.Marshal, volumePatch)
 
-// 	Filename = FILENAME
+	Filename = FILENAME
 
-// 	// Mocking
-// 	PrepareNetworkStorageApiMockClient(test_framework).
-// 	NetworkStoragePatchVolumeById(RESOURCEID, RESOURCEID, gomock.Eq(volumePatch)).
-// 		Return(nil, testutil.TestError)
+	// Mocking
+	PrepareNetworkStorageApiMockClient(test_framework).
+	NetworkStoragePatchVolumeById(RESOURCEID, RESOURCEID, gomock.Eq(volumePatch)).
+		Return(nil, testutil.TestError)
 
-// 	// Run command
-// 	err := PatchStorageNetworkVolumeCmd.RunE(PatchStorageNetworkVolumeCmd, []string{RESOURCEID, RESOURCEID})
+	// Run command
+	err := PatchStorageNetworkVolumeCmd.RunE(PatchStorageNetworkVolumeCmd, []string{RESOURCEID, RESOURCEID})
 
-// 	// Expected error
-// 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
+	// Expected error
+	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)
 
-// 	// Assertions
-// 	assert.EqualError(test_framework, err, expectedErr.Error())
-// }
+	// Assertions
+	assert.EqualError(test_framework, err, expectedErr.Error())
+}
