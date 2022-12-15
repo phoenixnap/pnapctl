@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
+	volume "phoenixnap.com/pnapctl/commands/patch/storage-network/volume"
 )
 
 var (
@@ -17,6 +18,7 @@ var (
 func init() {
 	utils.SetupOutputFlag(PatchStorageNetworkCmd)
 	utils.SetupFilenameFlag(PatchStorageNetworkCmd, &Filename, utils.UPDATING)
+	PatchStorageNetworkCmd.AddCommand(volume.PatchStorageNetworkVolumeCmd)
 }
 
 var PatchStorageNetworkCmd = &cobra.Command{
@@ -27,7 +29,7 @@ var PatchStorageNetworkCmd = &cobra.Command{
 	SilenceUsage: true,
 	Long: `Patch a storage network.
 	
-Requires a file (yaml or json) containing the information needed to patch the server.`,
+Requires a file (yaml or json) containing the information needed to patch the storage network.`,
 	Example: `# Patch a storage network using the contents of storageNetworkPatch.yaml as request body.
 pnapctl patch storage-network <ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE]
 

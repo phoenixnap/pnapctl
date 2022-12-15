@@ -2,5 +2,6 @@
     "name": "Network From CLI (Json)",
     "description": "This network was created from the CLI using JSON",
     "location": "PHX",
-    "ipBlocks": []
+    "ipBlocks": [],
+    "vlanId": 10
 }

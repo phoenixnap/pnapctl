@@ -18,6 +18,7 @@ type ReservationTable struct {
 	Price               float32 `header:"Price"`
 	PriceUnit           string  `header:"Unit"`
 	AssignedResourceId  string  `header:"Assigned Resource ID"`
+	NextBillingDate     string  `header:"Next billing date for Reservation"`
 }
 
 type ShortReservationTable struct {
@@ -46,6 +47,7 @@ func ReservationTableFromSdk(sdk billingapi.Reservation) ReservationTable {
 		Price:               sdk.Price,
 		PriceUnit:           string(sdk.PriceUnit),
 		AssignedResourceId:  DerefString(sdk.AssignedResourceId),
+		NextBillingDate:     DerefString(sdk.NextBillingDate),
 	}
 }
 

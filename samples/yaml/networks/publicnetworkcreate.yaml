@@ -2,3 +2,4 @@ name: Network From CLI (Yaml)
 description: This network was created from the CLI using YAML
 location: PHX
 ipBlocks: []
+vlanId: 10
