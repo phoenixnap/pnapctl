@@ -16,6 +16,10 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
+func getQueryParams() (bool) {
+	return force
+}
+
 func createReservationSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	serverPublicNetwork := generators.Generate[bmcapisdk.ServerPublicNetwork]()
@@ -26,7 +30,7 @@ func createReservationSuccess(test_framework *testing.T, marshaller func(interfa
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
+		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork), force).
 		Return(&serverPublicNetwork, nil)
 
 	// Run command
@@ -81,7 +85,7 @@ func TestCreateServerPublicNetworkClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork)).
+		ServerPublicNetworkPost(RESOURCEID, gomock.Eq(serverPublicNetwork), force).
 		Return(nil, testutil.TestError)
 
 	// Run command

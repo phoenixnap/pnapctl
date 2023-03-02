@@ -16,6 +16,10 @@ import (
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
+func getQueryParams() (bool) {
+	return force
+}
+
 func createServerPrivateNetworkSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	serverPrivateNetwork := generators.Generate[bmcapisdk.ServerPrivateNetwork]()
@@ -26,7 +30,7 @@ func createServerPrivateNetworkSuccess(test_framework *testing.T, marshaller fun
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork), force).
 		Return(&serverPrivateNetwork, nil)
 
 	// Run command
@@ -81,7 +85,7 @@ func TestCreateServerPrivateNetworkClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork)).
+		ServerPrivateNetworkPost(RESOURCEID, gomock.Eq(serverPrivateNetwork), force).
 		Return(nil, testutil.TestError)
 
 	// Run command

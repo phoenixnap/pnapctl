@@ -14,7 +14,7 @@ var Client BmcApiSdkClient
 
 type BmcApiSdkClient interface {
 	//Servers
-	ServersPost(serverCreate bmcapisdk.ServerCreate) (*bmcapisdk.Server, error)
+	ServersPost(serverCreate bmcapisdk.ServerCreate, force bool) (*bmcapisdk.Server, error)
 	ServersGet([]string) ([]bmcapisdk.Server, error)
 	ServerGetById(serverId string) (*bmcapisdk.Server, error)
 	ServerDelete(serverId string) (*bmcapisdk.DeleteResult, error)
@@ -27,9 +27,9 @@ type BmcApiSdkClient interface {
 	ServerPatch(serverId string, serverPatch bmcapisdk.ServerPatch) (*bmcapisdk.Server, error)
 	ServerTag(serverId string, tagAssignmentRequests []bmcapisdk.TagAssignmentRequest) (*bmcapisdk.Server, error)
 	ServerDeprovision(serverId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, error)
-	ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (*bmcapisdk.ServerPrivateNetwork, error)
+	ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork, force bool) (*bmcapisdk.ServerPrivateNetwork, error)
 	ServerPrivateNetworkDelete(serverId string, networkId string) (string, error)
-	ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapisdk.ServerPublicNetwork) (*bmcapisdk.ServerPublicNetwork, error)
+	ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapisdk.ServerPublicNetwork, force bool) (*bmcapisdk.ServerPublicNetwork, error)
 	ServerPublicNetworkDelete(serverId string, networkId string) (string, error)
 	ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (*bmcapisdk.ServerIpBlock, error)
 	ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, error)
@@ -90,8 +90,8 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 }
 
 // Servers APIs
-func (m MainClient) ServersPost(serverCreate bmcapisdk.ServerCreate) (*bmcapisdk.Server, error) {
-	return client.HandleResponse(m.ServersApiClient.ServersPost(context.Background()).ServerCreate(serverCreate).Execute())
+func (m MainClient) ServersPost(serverCreate bmcapisdk.ServerCreate, force bool) (*bmcapisdk.Server, error) {
+	return client.HandleResponse(m.ServersApiClient.ServersPost(context.Background()).ServerCreate(serverCreate).Force(force).Execute())
 }
 
 func (m MainClient) ServersGet(tags []string) ([]bmcapisdk.Server, error) {
@@ -142,16 +142,16 @@ func (m MainClient) ServerDeprovision(serverId string, relinquishIpBlock bmcapis
 	return client.HandleResponse(m.ServersApiClient.ServersServerIdActionsDeprovisionPost(context.Background(), serverId).RelinquishIpBlock(relinquishIpBlock).Execute())
 }
 
-func (m MainClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork) (*bmcapisdk.ServerPrivateNetwork, error) {
-	return client.HandleResponse(m.ServersApiClient.ServersServerIdPrivateNetworksPost(context.Background(), serverId).ServerPrivateNetwork(serverPrivateNetwork).Execute())
+func (m MainClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork, force bool) (*bmcapisdk.ServerPrivateNetwork, error) {
+	return client.HandleResponse(m.ServersApiClient.ServersServerIdPrivateNetworksPost(context.Background(), serverId).ServerPrivateNetwork(serverPrivateNetwork).Force(force).Execute())
 }
 
 func (m MainClient) ServerPrivateNetworkDelete(serverId string, networkId string) (string, error) {
 	return client.HandleResponse(m.ServersApiClient.DeletePrivateNetwork(context.Background(), serverId, networkId).Execute())
 }
 
-func (m MainClient) ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapisdk.ServerPublicNetwork) (*bmcapisdk.ServerPublicNetwork, error) {
-	return client.HandleResponse(m.ServersApiClient.ServersServerIdPublicNetworksPost(context.Background(), serverId).ServerPublicNetwork(serverPublicNetwork).Execute())
+func (m MainClient) ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapisdk.ServerPublicNetwork, force bool) (*bmcapisdk.ServerPublicNetwork, error) {
+	return client.HandleResponse(m.ServersApiClient.ServersServerIdPublicNetworksPost(context.Background(), serverId).ServerPublicNetwork(serverPublicNetwork).Force(force).Execute())
 }
 
 func (m MainClient) ServerPublicNetworkDelete(serverId string, networkId string) (string, error) {
