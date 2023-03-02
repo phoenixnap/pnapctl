@@ -138,18 +138,18 @@ func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkGetById(networkId inter
 }
 
 // PublicNetworkIpBlockDelete mocks base method.
-func (m *MockNetworkSdkClient) PublicNetworkIpBlockDelete(networkId, ipBlockId string) (string, error) {
+func (m *MockNetworkSdkClient) PublicNetworkIpBlockDelete(networkId, ipBlockId string, force bool) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PublicNetworkIpBlockDelete", networkId, ipBlockId)
+	ret := m.ctrl.Call(m, "PublicNetworkIpBlockDelete", networkId, ipBlockId, force)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // PublicNetworkIpBlockDelete indicates an expected call of PublicNetworkIpBlockDelete.
-func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkIpBlockDelete(networkId, ipBlockId interface{}) *gomock.Call {
+func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkIpBlockDelete(networkId, ipBlockId, force interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PublicNetworkIpBlockDelete", reflect.TypeOf((*MockNetworkSdkClient)(nil).PublicNetworkIpBlockDelete), networkId, ipBlockId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PublicNetworkIpBlockDelete", reflect.TypeOf((*MockNetworkSdkClient)(nil).PublicNetworkIpBlockDelete), networkId, ipBlockId, force)
 }
 
 // PublicNetworkIpBlockPost mocks base method.

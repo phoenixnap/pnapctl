@@ -6,7 +6,18 @@ import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
+	"phoenixnap.com/pnapctl/common/utils"
 )
+
+var (
+	force bool
+)
+
+func init() {
+	utils.SetupOutputFlag(DeletePublicNetworkIpBlockCmd)
+
+	DeletePublicNetworkIpBlockCmd.Flags().BoolVar(&force, "force", false, "Controlling advanced features availability. Currently applicable for networking. It is advised to use with caution since it might lead to unhealthy setups. Defaults to false.")
+}
 
 var DeletePublicNetworkIpBlockCmd = &cobra.Command{
 	Use:          "ip-block [ID]",
@@ -15,7 +26,7 @@ var DeletePublicNetworkIpBlockCmd = &cobra.Command{
 	SilenceUsage: true,
 	Long:         `Delete an ip-block on a public network.`,
 	Example: `# Delete an ip-block on a public network.
-pnapctl delete public-network ip-block <NETWORK_ID> <IP_BLOCK_ID> [--output <OUTPUT_TYPE>]`,
+pnapctl delete public-network ip-block <NETWORK_ID> <IP_BLOCK_ID> [--output <OUTPUT_TYPE>] 	[--force=false] `,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cmdname.SetCommandName(cmd)
 		return deleteIpBlockFromPublicNetwork(args[0], args[1])
@@ -23,7 +34,7 @@ pnapctl delete public-network ip-block <NETWORK_ID> <IP_BLOCK_ID> [--output <OUT
 }
 
 func deleteIpBlockFromPublicNetwork(networkId, ipBlockId string) error {
-	message, err := networks.Client.PublicNetworkIpBlockDelete(networkId, ipBlockId)
+	message, err := networks.Client.PublicNetworkIpBlockDelete(networkId, ipBlockId, force)
 
 	if err != nil {
 		return err

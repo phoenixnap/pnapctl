@@ -9,12 +9,16 @@ import (
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
+func getQueryParams() (bool) {
+	return force
+}
+
 var deleteResult = "result"
 
 func TestDeletePublicNetworkIpBlockSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworkIpBlockDelete(RESOURCEID, RESOURCEID).
+		PublicNetworkIpBlockDelete(RESOURCEID, RESOURCEID, force).
 		Return(deleteResult, nil)
 
 	// Run command
@@ -27,7 +31,7 @@ func TestDeletePublicNetworkIpBlockSuccess(test_framework *testing.T) {
 func TestDeletePublicNetworkIpBlockClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PublicNetworkIpBlockDelete(RESOURCEID, RESOURCEID).
+		PublicNetworkIpBlockDelete(RESOURCEID, RESOURCEID, force).
 		Return("", testutil.TestError)
 
 	// Run command
