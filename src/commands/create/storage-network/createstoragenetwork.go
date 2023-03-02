@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
+	volume "phoenixnap.com/pnapctl/commands/create/storage-network/volume"
 )
 
 var (
@@ -16,6 +17,7 @@ var (
 
 func init() {
 	utils.SetupFilenameFlag(CreateStorageNetworkCmd, &Filename, utils.CREATION)
+	CreateStorageNetworkCmd.AddCommand(volume.CreateStorageNetworkVolumeCmd)
 }
 
 var CreateStorageNetworkCmd = &cobra.Command{

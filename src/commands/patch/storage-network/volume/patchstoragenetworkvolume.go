@@ -33,7 +33,10 @@ Requires a file (yaml or json) containing the information needed to patch the st
 pnapctl patch storage-network volume <storageNetworkID> <volumeID> --filename <FILE_PATH> [--output <OUTPUT_TYPE]
 
 # storagenetworkvolumeupdate.yaml
-capacityInGb: 2000`,
+name: name
+description:description
+capacityInGb: 2000
+pathSuffix: /pathSuffix`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cmdname.SetCommandName(cmd)
 		storageNetworkID = args[0]

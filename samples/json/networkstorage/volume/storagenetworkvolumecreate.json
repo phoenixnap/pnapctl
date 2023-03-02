@@ -1,0 +1,6 @@
+{
+    "name": "name",
+    "description": "description",
+    "capacityInGb": 2000,
+    "pathSuffix": "/pathSuffix"
+}

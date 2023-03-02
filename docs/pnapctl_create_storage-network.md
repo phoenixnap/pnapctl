@@ -46,4 +46,5 @@ volumes:
 ### SEE ALSO
 
 * [pnapctl create](pnapctl_create.md)	 - Create a resource.
+* [pnapctl create storage-network volume](pnapctl_create_storage-network_volume.md)	 - Create a storage network's volume.
 

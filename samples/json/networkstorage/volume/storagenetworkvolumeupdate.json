@@ -1,3 +1,6 @@
 {
-    "capacityInGb": 2000
+    "name": "cli-name",
+    "description": "cli-description",
+    "capacityInGb": 3000,
+    "pathSuffix": "/cli-path-suffix"
 }
