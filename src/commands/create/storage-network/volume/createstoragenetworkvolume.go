@@ -17,7 +17,7 @@ var (
 
 func init() {
 	utils.SetupOutputFlag(CreateStorageNetworkVolumeCmd)
-	utils.SetupFilenameFlag(CreateStorageNetworkVolumeCmd, &Filename, utils.UPDATING)
+	utils.SetupFilenameFlag(CreateStorageNetworkVolumeCmd, &Filename, utils.CREATION)
 }
 
 var CreateStorageNetworkVolumeCmd = &cobra.Command{

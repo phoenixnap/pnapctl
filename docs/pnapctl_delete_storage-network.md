@@ -32,4 +32,5 @@ pnapctl delete storage-network <ID>
 ### SEE ALSO
 
 * [pnapctl delete](pnapctl_delete.md)	 - Delete a resource.
+* [pnapctl delete storage-network volume](pnapctl_delete_storage-network_volume.md)	 - Delete a storage network's volume.
 
