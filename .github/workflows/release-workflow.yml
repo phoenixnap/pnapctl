@@ -92,6 +92,8 @@ jobs:
     runs-on: ubuntu-latest
     container: golang:1.19
     steps:
+      - name: Update git config
+        run: git config --global --add safe.directory '*'
       - name: Install zip
         run: apt-get update && apt-get install -y zip
       - name: Checkout the repo
