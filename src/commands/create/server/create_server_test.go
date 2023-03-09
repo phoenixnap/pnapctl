@@ -17,6 +17,10 @@ import (
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
+func getQueryParams() (bool) {
+	return force
+}
+
 func createServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	serverCreate := generators.Generate[bmcapisdk.ServerCreate]()
@@ -30,7 +34,7 @@ func createServerSuccess(test_framework *testing.T, marshaller func(interface{})
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(serverCreate)).
+		ServersPost(gomock.Eq(serverCreate), force).
 		Return(&createdServer, nil)
 
 	// Run command
@@ -85,7 +89,7 @@ func TestCreateServerClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersPost(gomock.Eq(serverCreate)).
+		ServersPost(gomock.Eq(serverCreate), force).
 		Return(nil, testutil.TestError)
 
 	// Run command

@@ -16,7 +16,7 @@ pnapctl create server-private-network SERVER_ID [flags]
 
 ```
 # Add a server to a private network as defined in serverCreatePrivateNetwork.yaml
-pnapctl create server-private-network <SERVER_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
+pnapctl create server-private-network <SERVER_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>] [--force=false]
 
 # serverCreatePrivateNetwork.yaml
 id: 5ff5cc9bc1acf144d9106233
@@ -32,6 +32,7 @@ statusDescription: in-progress
 
 ```
   -f, --filename string   File containing required information for creation
+      --force             Controlling advanced features availability. Currently applicable for networking. It is advised to use with caution since it might lead to unhealthy setups. Defaults to false.
   -h, --help              help for server-private-network
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
 ```

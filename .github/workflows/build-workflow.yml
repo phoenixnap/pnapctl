@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     container: golang:1.19
     steps:
+      - name: Update git config
+        run: git config --global --add safe.directory '*'
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Go Cache
@@ -58,6 +60,8 @@ jobs:
     runs-on: ubuntu-latest
     container: golang:1.19
     steps:
+      - name: Update git config
+        run: git config --global --add safe.directory '*'
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Install node

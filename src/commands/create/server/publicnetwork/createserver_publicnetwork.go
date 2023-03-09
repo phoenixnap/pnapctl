@@ -11,11 +11,16 @@ import (
 )
 
 // Filename is the filename from which to retrieve the request body
-var Filename string
+var (
+	Filename string
+	force bool
+)
 
 func init() {
 	utils.SetupOutputFlag(CreateServerPublicNetworkCmd)
 	utils.SetupFilenameFlag(CreateServerPublicNetworkCmd, &Filename, utils.CREATION)
+
+	CreateServerPublicNetworkCmd.Flags().BoolVar(&force, "force", false, "Controlling advanced features availability. Currently applicable for networking. It is advised to use with caution since it might lead to unhealthy setups. Defaults to false.")
 }
 
 var CreateServerPublicNetworkCmd = &cobra.Command{
@@ -27,7 +32,7 @@ var CreateServerPublicNetworkCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to create the server public network.`,
 	Example: `# Add a server to a public network as defined in serverCreatePublicNetwork.yaml
-pnapctl create server-public-network <SERVER_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
+pnapctl create server-public-network <SERVER_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>] [--force=false]
 
 # serverCreatePublicNetwork.yaml
 id: 6322c9ec9da56569d0ca4add
@@ -51,7 +56,7 @@ func createPublicNetworkForServer(id string) error {
 	}
 
 	// Create the server private network
-	response, err := bmcapi.Client.ServerPublicNetworkPost(id, *serverPublicNetwork)
+	response, err := bmcapi.Client.ServerPublicNetworkPost(id, *serverPublicNetwork, force)
 
 	if err != nil {
 		return err

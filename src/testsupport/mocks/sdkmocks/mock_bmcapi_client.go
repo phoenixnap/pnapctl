@@ -214,18 +214,18 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkDelete(serverId, 
 }
 
 // ServerPrivateNetworkPost mocks base method.
-func (m *MockBmcApiSdkClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapi.ServerPrivateNetwork) (*bmcapi.ServerPrivateNetwork, error) {
+func (m *MockBmcApiSdkClient) ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapi.ServerPrivateNetwork, force bool) (*bmcapi.ServerPrivateNetwork, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerPrivateNetworkPost", serverId, serverPrivateNetwork)
+	ret := m.ctrl.Call(m, "ServerPrivateNetworkPost", serverId, serverPrivateNetwork, force)
 	ret0, _ := ret[0].(*bmcapi.ServerPrivateNetwork)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ServerPrivateNetworkPost indicates an expected call of ServerPrivateNetworkPost.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkPost(serverId, serverPrivateNetwork interface{}) *gomock.Call {
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkPost(serverId, serverPrivateNetwork, force interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkPost), serverId, serverPrivateNetwork)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkPost), serverId, serverPrivateNetwork, force)
 }
 
 // ServerPublicNetworkDelete mocks base method.
@@ -244,18 +244,18 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerPublicNetworkDelete(serverId, n
 }
 
 // ServerPublicNetworkPost mocks base method.
-func (m *MockBmcApiSdkClient) ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapi.ServerPublicNetwork) (*bmcapi.ServerPublicNetwork, error) {
+func (m *MockBmcApiSdkClient) ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapi.ServerPublicNetwork, force bool) (*bmcapi.ServerPublicNetwork, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerPublicNetworkPost", serverId, serverPublicNetwork)
+	ret := m.ctrl.Call(m, "ServerPublicNetworkPost", serverId, serverPublicNetwork, force)
 	ret0, _ := ret[0].(*bmcapi.ServerPublicNetwork)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ServerPublicNetworkPost indicates an expected call of ServerPublicNetworkPost.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerPublicNetworkPost(serverId, serverPublicNetwork interface{}) *gomock.Call {
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPublicNetworkPost(serverId, serverPublicNetwork, force interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPublicNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPublicNetworkPost), serverId, serverPublicNetwork)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPublicNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPublicNetworkPost), serverId, serverPublicNetwork, force)
 }
 
 // ServerReboot mocks base method.
@@ -349,18 +349,18 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServersGet(arg0 interface{}) *gomock.
 }
 
 // ServersPost mocks base method.
-func (m *MockBmcApiSdkClient) ServersPost(serverCreate bmcapi.ServerCreate) (*bmcapi.Server, error) {
+func (m *MockBmcApiSdkClient) ServersPost(serverCreate bmcapi.ServerCreate, force bool) (*bmcapi.Server, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServersPost", serverCreate)
+	ret := m.ctrl.Call(m, "ServersPost", serverCreate, force)
 	ret0, _ := ret[0].(*bmcapi.Server)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ServersPost indicates an expected call of ServersPost.
-func (mr *MockBmcApiSdkClientMockRecorder) ServersPost(serverCreate interface{}) *gomock.Call {
+func (mr *MockBmcApiSdkClientMockRecorder) ServersPost(serverCreate, force interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersPost), serverCreate)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersPost), serverCreate, force)
 }
 
 // SshKeyDelete mocks base method.

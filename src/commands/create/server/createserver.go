@@ -11,7 +11,10 @@ import (
 )
 
 // Filename is the filename from which to retrieve the request body
-var Filename string
+var (
+	Filename string
+	force bool
+)
 
 var Full bool
 
@@ -19,6 +22,8 @@ func init() {
 	utils.SetupOutputFlag(CreateServerCmd)
 	utils.SetupFullFlag(CreateServerCmd, &Full, "server")
 	utils.SetupFilenameFlag(CreateServerCmd, &Filename, utils.CREATION)
+	
+	CreateServerCmd.Flags().BoolVar(&force, "force", false, "Controlling advanced features availability. Currently applicable for networking. It is advised to use with caution since it might lead to unhealthy setups. Defaults to false.")
 }
 
 // CreateServerCmd is the command for creating a server.
@@ -32,7 +37,7 @@ var CreateServerCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to create the server.`,
 	Example: `# Create a new server as described in serverCreate.yaml
-pnapctl create server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
+pnapctl create server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>] [--force=false]
 
 # serverCreate.yaml
 hostname: "new-server"
@@ -57,7 +62,7 @@ func createServer() error {
 	}
 
 	// Create the server
-	response, err := bmcapi.Client.ServersPost(*serverCreate)
+	response, err := bmcapi.Client.ServersPost(*serverCreate, force)
 	if err != nil {
 		return err
 	} else {

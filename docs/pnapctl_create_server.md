@@ -16,7 +16,7 @@ pnapctl create server [flags]
 
 ```
 # Create a new server as described in serverCreate.yaml
-pnapctl create server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
+pnapctl create server --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>] [--force=false]
 
 # serverCreate.yaml
 hostname: "new-server"
@@ -33,6 +33,7 @@ sshKeys:
 
 ```
   -f, --filename string   File containing required information for creation
+      --force             Controlling advanced features availability. Currently applicable for networking. It is advised to use with caution since it might lead to unhealthy setups. Defaults to false.
       --full              Shows all server details
   -h, --help              help for server
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")

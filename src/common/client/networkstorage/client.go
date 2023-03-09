@@ -21,6 +21,8 @@ type NetworkStorageSdkClient interface {
 	NetworkStorageGetVolumes(storageId string) ([]networkstoragesdk.Volume, error)
 	NetworkStorageGetVolumeById(storageId string, volumeId string) (*networkstoragesdk.Volume, error)
 	NetworkStoragePatchVolumeById(storageId string, volumeId string, volumeUpdate networkstoragesdk.VolumeUpdate) (*networkstoragesdk.Volume, error)
+	NetworkStoragePostVolume(storageId string, volumeUpdate networkstoragesdk.VolumeCreate) (*networkstoragesdk.Volume, error)
+	NetworkStorageDeleteVolume(storageId string, volumeId string) error
 }
 
 type MainClient struct {
@@ -91,4 +93,12 @@ func (m MainClient) NetworkStorageGetVolumeById(storageId string, volumeId strin
 
 func (m MainClient) NetworkStoragePatchVolumeById(storageId string, volumeId string, volumeUpdate networkstoragesdk.VolumeUpdate) (*networkstoragesdk.Volume, error) {
 	return client.HandleResponse(m.StorageNetworksApiClient.StorageNetworksStorageNetworkIdVolumesVolumeIdPatch(context.Background(), storageId, volumeId).VolumeUpdate(volumeUpdate).Execute())
+}
+
+func (m MainClient) NetworkStoragePostVolume(storageId string, volumeCreate networkstoragesdk.VolumeCreate) (*networkstoragesdk.Volume, error) {
+	return client.HandleResponse(m.StorageNetworksApiClient.StorageNetworksStorageNetworkIdVolumesPost(context.Background(), storageId).VolumeCreate(volumeCreate).Execute())
+}
+
+func (m MainClient) NetworkStorageDeleteVolume(storageId string, volumeId string) error {
+	return client.HandleResponseWithoutBody(m.StorageNetworksApiClient.StorageNetworksStorageNetworkIdVolumesVolumeIdDelete(context.Background(), storageId, volumeId).Execute())
 }

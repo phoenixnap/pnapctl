@@ -48,6 +48,20 @@ func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageDelete(storageI
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStorageDelete", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStorageDelete), storageId)
 }
 
+// NetworkStorageDeleteVolume mocks base method.
+func (m *MockNetworkStorageSdkClient) NetworkStorageDeleteVolume(storageId, volumeId string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NetworkStorageDeleteVolume", storageId, volumeId)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// NetworkStorageDeleteVolume indicates an expected call of NetworkStorageDeleteVolume.
+func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageDeleteVolume(storageId, volumeId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStorageDeleteVolume", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStorageDeleteVolume), storageId, volumeId)
+}
+
 // NetworkStorageGet mocks base method.
 func (m *MockNetworkStorageSdkClient) NetworkStorageGet() ([]networkstorageapi.StorageNetwork, error) {
 	m.ctrl.T.Helper()
@@ -151,4 +165,19 @@ func (m *MockNetworkStorageSdkClient) NetworkStoragePost(storageCreate networkst
 func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStoragePost(storageCreate interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStoragePost", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStoragePost), storageCreate)
+}
+
+// NetworkStoragePostVolume mocks base method.
+func (m *MockNetworkStorageSdkClient) NetworkStoragePostVolume(storageId string, volumeUpdate networkstorageapi.VolumeCreate) (*networkstorageapi.Volume, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NetworkStoragePostVolume", storageId, volumeUpdate)
+	ret0, _ := ret[0].(*networkstorageapi.Volume)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// NetworkStoragePostVolume indicates an expected call of NetworkStoragePostVolume.
+func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStoragePostVolume(storageId, volumeUpdate interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStoragePostVolume", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStoragePostVolume), storageId, volumeUpdate)
 }

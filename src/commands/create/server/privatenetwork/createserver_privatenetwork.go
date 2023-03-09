@@ -11,11 +11,16 @@ import (
 )
 
 // Filename is the filename from which to retrieve the request body
-var Filename string
+var (
+	Filename string
+	force bool
+)
 
 func init() {
 	utils.SetupOutputFlag(CreateServerPrivateNetworkCmd)
 	utils.SetupFilenameFlag(CreateServerPrivateNetworkCmd, &Filename, utils.CREATION)
+
+	CreateServerPrivateNetworkCmd.Flags().BoolVar(&force, "force", false, "Controlling advanced features availability. Currently applicable for networking. It is advised to use with caution since it might lead to unhealthy setups. Defaults to false.")
 }
 
 // CreateServerPrivateNetworkCmd is the command for creating a server.
@@ -28,7 +33,7 @@ var CreateServerPrivateNetworkCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to create the server private network.`,
 	Example: `# Add a server to a private network as defined in serverCreatePrivateNetwork.yaml
-pnapctl create server-private-network <SERVER_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
+pnapctl create server-private-network <SERVER_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>] [--force=false]
 
 # serverCreatePrivateNetwork.yaml
 id: 5ff5cc9bc1acf144d9106233
@@ -53,7 +58,7 @@ func createPrivateNetworkForServer(id string) error {
 	}
 
 	// Create the server private network
-	response, err := bmcapi.Client.ServerPrivateNetworkPost(id, *serverPrivateNetwork)
+	response, err := bmcapi.Client.ServerPrivateNetworkPost(id, *serverPrivateNetwork, force)
 
 	if err != nil {
 		return err

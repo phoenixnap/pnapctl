@@ -4,11 +4,16 @@ import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
+	volume "phoenixnap.com/pnapctl/commands/delete/storage-network/volume"
 )
 
 var (
 	ID string
 )
+
+func init() {
+	DeleteStorageNetworkCmd.AddCommand(volume.DeleteStorageNetworkVolumeCmd)
+}
 
 var DeleteStorageNetworkCmd = &cobra.Command{
 	Use:          "storage-network [ID]",
