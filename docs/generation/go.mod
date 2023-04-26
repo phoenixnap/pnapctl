@@ -24,14 +24,14 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
-	github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.4 // indirect
-	github.com/phoenixnap/go-sdk-bmc/billingapi v1.3.0 // indirect
-	github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.2.0 // indirect
-	github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.3 // indirect
-	github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.2.0 // indirect
-	github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.2.0 // indirect
-	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.3 // indirect
-	github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.3 // indirect
+	github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.5 // indirect
+	github.com/phoenixnap/go-sdk-bmc/billingapi v1.3.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.3.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.4 // indirect
+	github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.3.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.3.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.4 // indirect
+	github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.4 // indirect
 	github.com/rivo/uniseg v0.3.4 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
