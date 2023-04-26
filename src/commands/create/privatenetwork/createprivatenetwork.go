@@ -13,9 +13,12 @@ import (
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
+var Force bool
+
 func init() {
 	utils.SetupOutputFlag(CreatePrivateNetworkCmd)
 	utils.SetupFilenameFlag(CreatePrivateNetworkCmd, &Filename, utils.CREATION)
+	CreatePrivateNetworkCmd.PersistentFlags().BoolVar(&Force, "force", false, "Controls availability for advanced features. Use with caution as it may lead to unhealthy setups.")
 }
 
 // CreatePrivateNetworkCmd is the command for creating a private-network.
@@ -50,7 +53,7 @@ func createPrivateNetwork() error {
 	}
 
 	// Create the private network
-	response, err := networks.Client.PrivateNetworksPost(*privateNetworkCreate)
+	response, err := networks.Client.PrivateNetworksPost(*privateNetworkCreate, Force)
 
 	if err != nil {
 		return err

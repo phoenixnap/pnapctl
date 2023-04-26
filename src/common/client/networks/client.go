@@ -16,7 +16,7 @@ type NetworkSdkClient interface {
 	// Private Networks
 	PrivateNetworksGet(location string) ([]networkapisdk.PrivateNetwork, error)
 	PrivateNetworkGetById(networkId string) (*networkapisdk.PrivateNetwork, error)
-	PrivateNetworksPost(privateNetworkCreate networkapisdk.PrivateNetworkCreate) (*networkapisdk.PrivateNetwork, error)
+	PrivateNetworksPost(privateNetworkCreate networkapisdk.PrivateNetworkCreate, force bool) (*networkapisdk.PrivateNetwork, error)
 	PrivateNetworkPut(networkId string, privateNetworkUpdate networkapisdk.PrivateNetworkModify) (*networkapisdk.PrivateNetwork, error)
 	PrivateNetworkDelete(networkId string) error
 
@@ -83,8 +83,8 @@ func (m MainClient) PrivateNetworkGetById(networkId string) (*networkapisdk.Priv
 	return client.HandleResponse(m.PrivateNetworksClient.PrivateNetworksNetworkIdGet(context.Background(), networkId).Execute())
 }
 
-func (m MainClient) PrivateNetworksPost(privateNetworkCreate networkapisdk.PrivateNetworkCreate) (*networkapisdk.PrivateNetwork, error) {
-	return client.HandleResponse(m.PrivateNetworksClient.PrivateNetworksPost(context.Background()).PrivateNetworkCreate(privateNetworkCreate).Execute())
+func (m MainClient) PrivateNetworksPost(privateNetworkCreate networkapisdk.PrivateNetworkCreate, force bool) (*networkapisdk.PrivateNetwork, error) {
+	return client.HandleResponse(m.PrivateNetworksClient.PrivateNetworksPost(context.Background()).PrivateNetworkCreate(privateNetworkCreate).Force(force).Execute())
 }
 
 func (m MainClient) PrivateNetworkPut(networkId string, privateNetworkUpdate networkapisdk.PrivateNetworkModify) (*networkapisdk.PrivateNetwork, error) {

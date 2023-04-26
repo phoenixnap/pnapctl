@@ -30,6 +30,7 @@ cidr: 10.0.0.0/24
 
 ```
   -f, --filename string   File containing required information for creation
+      --force             Controls availability for advanced features. Use with caution as it may lead to unhealthy setups.
   -h, --help              help for private-network
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
 ```

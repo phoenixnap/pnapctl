@@ -27,7 +27,7 @@ func createPrivateNetworkSuccess(test_framework *testing.T, marshaller func(inte
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
+		PrivateNetworksPost(gomock.Eq(privateNetworkCreate), gomock.Eq(false)).
 		Return(&createdPrivateNetwork, nil)
 
 	// Run command
@@ -79,7 +79,7 @@ func TestCreatePrivateNetworkClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
-		PrivateNetworksPost(gomock.Eq(privateNetworkCreate)).
+		PrivateNetworksPost(gomock.Eq(privateNetworkCreate), gomock.Eq(false)).
 		Return(nil, testutil.TestError)
 
 	// Run command
