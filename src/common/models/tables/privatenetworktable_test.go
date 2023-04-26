@@ -30,6 +30,6 @@ func assertPrivateNetworksEqual(test_framework *testing.T, network networksdk.Pr
 	assert.Equal(test_framework, network.Type, table.Type)
 	assert.Equal(test_framework, network.Location, table.Location)
 	assert.Equal(test_framework, network.LocationDefault, table.LocationDefault)
-	assert.Equal(test_framework, network.Cidr, table.Cidr)
+	assert.Equal(test_framework, DerefString(network.Cidr), table.Cidr)
 	assert.Equal(test_framework, servers, table.Servers)
 }
