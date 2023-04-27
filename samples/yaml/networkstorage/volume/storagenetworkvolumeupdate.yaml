@@ -1,7 +1,7 @@
-name: CLIVOL
-description: A volume updated from the CLI
-capacityInGb: 3000
-pathSuffix: /shared-docs
+name: name
+description: description
+capacityInGb: 2000
+pathSuffix: /pathSuffix
 permissions:
   nfs:
     readWrite: null

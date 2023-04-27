@@ -29,8 +29,10 @@ type BmcApiSdkClient interface {
 	ServerDeprovision(serverId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, error)
 	ServerPrivateNetworkPost(serverId string, serverPrivateNetwork bmcapisdk.ServerPrivateNetwork, force bool) (*bmcapisdk.ServerPrivateNetwork, error)
 	ServerPrivateNetworkDelete(serverId string, networkId string) (string, error)
+	ServerPrivateNetworkPatch(serverId string, networkId string, serverNetworkUpdate bmcapisdk.ServerNetworkUpdate) (*bmcapisdk.ServerPrivateNetwork, error)
 	ServerPublicNetworkPost(serverId string, serverPublicNetwork bmcapisdk.ServerPublicNetwork, force bool) (*bmcapisdk.ServerPublicNetwork, error)
 	ServerPublicNetworkDelete(serverId string, networkId string) (string, error)
+	ServerPublicNetworkPatch(serverId string, networkId string, serverNetworkUpdate bmcapisdk.ServerNetworkUpdate) (*bmcapisdk.ServerPublicNetwork, error)
 	ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (*bmcapisdk.ServerIpBlock, error)
 	ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, error)
 

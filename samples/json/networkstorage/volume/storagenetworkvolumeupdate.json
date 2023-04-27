@@ -1,8 +1,8 @@
 {
-    "name": "CLIVOL",
-    "description": "A volume updated using the CLI",
-    "capacityInGb": 4000,
-    "pathSuffix": "/shared-docs",
+    "name": "name",
+    "description": "description",
+    "capacityInGb": 2000,
+    "pathSuffix": "/pathSuffix",
     "permissions": {
         "nfs": {
             "readOnly": null,
