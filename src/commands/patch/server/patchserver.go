@@ -3,6 +3,8 @@ package server
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	privatenetwork "phoenixnap.com/pnapctl/commands/patch/server/private-network"
+	publicnetwork "phoenixnap.com/pnapctl/commands/patch/server/public-network"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -19,6 +21,9 @@ func init() {
 	utils.SetupOutputFlag(PatchServerCmd)
 	utils.SetupFullFlag(PatchServerCmd, &Full, "server")
 	utils.SetupFilenameFlag(PatchServerCmd, &Filename, utils.UPDATING)
+
+	PatchServerCmd.AddCommand(privatenetwork.PatchServerPrivateNetworkCmd)
+	PatchServerCmd.AddCommand(publicnetwork.PatchServerPublicNetworkCmd)
 }
 
 // PatchServerCmd is the command for patching a server.

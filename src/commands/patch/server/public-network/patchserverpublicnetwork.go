@@ -13,9 +13,12 @@ import (
 // Filename is the filename from which to retrieve the request body
 var Filename string
 
+var force bool
+
 func init() {
 	utils.SetupOutputFlag(PatchServerPublicNetworkCmd)
 	utils.SetupFilenameFlag(PatchServerPublicNetworkCmd, &Filename, utils.UPDATING)
+	PatchServerPublicNetworkCmd.PersistentFlags().BoolVar(&force, "force", false, "Controlling advanced features availability. Currently applicable for networking. It is advised to use with caution since it might lead to unhealthy setups. Defaults to false.")
 }
 
 var PatchServerPublicNetworkCmd = &cobra.Command{
@@ -44,7 +47,7 @@ func patchServerPublicNetwork(serverId string, networkId string) error {
 		return err
 	}
 
-	serverPublicNetworkResponse, err := bmcapi.Client.ServerPublicNetworkPatch(serverId, networkId, *patchRequest)
+	serverPublicNetworkResponse, err := bmcapi.Client.ServerPublicNetworkPatch(serverId, networkId, *patchRequest, force)
 	if err != nil {
 		return err
 	} else {

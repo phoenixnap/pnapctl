@@ -42,4 +42,6 @@ description: My custom server edit
 ### SEE ALSO
 
 * [pnapctl patch](pnapctl_patch.md)	 - Modify a resource.
+* [pnapctl patch server private-network](pnapctl_patch_server_private-network.md)	 - Patch a server's private network.
+* [pnapctl patch server public-network](pnapctl_patch_server_public-network.md)	 - Patch a server's public network.
 

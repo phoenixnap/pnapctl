@@ -214,18 +214,18 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkDelete(serverId, 
 }
 
 // ServerPrivateNetworkPatch mocks base method.
-func (m *MockBmcApiSdkClient) ServerPrivateNetworkPatch(serverId, networkId string, serverNetworkUpdate bmcapi.ServerNetworkUpdate) (*bmcapi.ServerPrivateNetwork, error) {
+func (m *MockBmcApiSdkClient) ServerPrivateNetworkPatch(serverId, networkId string, serverNetworkUpdate bmcapi.ServerNetworkUpdate, force bool) (*bmcapi.ServerPrivateNetwork, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerPrivateNetworkPatch", serverId, networkId, serverNetworkUpdate)
+	ret := m.ctrl.Call(m, "ServerPrivateNetworkPatch", serverId, networkId, serverNetworkUpdate, force)
 	ret0, _ := ret[0].(*bmcapi.ServerPrivateNetwork)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ServerPrivateNetworkPatch indicates an expected call of ServerPrivateNetworkPatch.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkPatch(serverId, networkId, serverNetworkUpdate interface{}) *gomock.Call {
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkPatch(serverId, networkId, serverNetworkUpdate, force interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkPatch", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkPatch), serverId, networkId, serverNetworkUpdate)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkPatch", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkPatch), serverId, networkId, serverNetworkUpdate, force)
 }
 
 // ServerPrivateNetworkPost mocks base method.
@@ -259,18 +259,18 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerPublicNetworkDelete(serverId, n
 }
 
 // ServerPublicNetworkPatch mocks base method.
-func (m *MockBmcApiSdkClient) ServerPublicNetworkPatch(serverId, networkId string, serverNetworkUpdate bmcapi.ServerNetworkUpdate) (*bmcapi.ServerPublicNetwork, error) {
+func (m *MockBmcApiSdkClient) ServerPublicNetworkPatch(serverId, networkId string, serverNetworkUpdate bmcapi.ServerNetworkUpdate, force bool) (*bmcapi.ServerPublicNetwork, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServerPublicNetworkPatch", serverId, networkId, serverNetworkUpdate)
+	ret := m.ctrl.Call(m, "ServerPublicNetworkPatch", serverId, networkId, serverNetworkUpdate, force)
 	ret0, _ := ret[0].(*bmcapi.ServerPublicNetwork)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ServerPublicNetworkPatch indicates an expected call of ServerPublicNetworkPatch.
-func (mr *MockBmcApiSdkClientMockRecorder) ServerPublicNetworkPatch(serverId, networkId, serverNetworkUpdate interface{}) *gomock.Call {
+func (mr *MockBmcApiSdkClientMockRecorder) ServerPublicNetworkPatch(serverId, networkId, serverNetworkUpdate, force interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPublicNetworkPatch", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPublicNetworkPatch), serverId, networkId, serverNetworkUpdate)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPublicNetworkPatch", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPublicNetworkPatch), serverId, networkId, serverNetworkUpdate, force)
 }
 
 // ServerPublicNetworkPost mocks base method.
