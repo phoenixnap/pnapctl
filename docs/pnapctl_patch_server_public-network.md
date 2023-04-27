@@ -16,7 +16,7 @@ pnapctl patch server public-network SERVER_ID NETWORK_ID [flags]
 
 ```
 # Patch a server using the contents of serverPublicNetworkPatch.yaml as the request body.
-pnapctl patch server public-network <SERVER_ID> <NETWORK_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
+pnapctl patch server public-network <SERVER_ID> <NETWORK_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>] [--force]
 
 # serverPublicNetworkPatch.yaml
 ips:

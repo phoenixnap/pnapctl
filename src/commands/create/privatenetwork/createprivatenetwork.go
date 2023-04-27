@@ -18,7 +18,7 @@ var Force bool
 func init() {
 	utils.SetupOutputFlag(CreatePrivateNetworkCmd)
 	utils.SetupFilenameFlag(CreatePrivateNetworkCmd, &Filename, utils.CREATION)
-	CreatePrivateNetworkCmd.PersistentFlags().BoolVar(&Force, "force", false, "Controls availability for advanced features. Use with caution as it may lead to unhealthy setups.")
+	CreatePrivateNetworkCmd.PersistentFlags().BoolVar(&Force, "force", false, "Controlling advanced features availability. Currently applicable for networking. It is advised to use with caution since it might lead to unhealthy setups. Defaults to false.")
 }
 
 // CreatePrivateNetworkCmd is the command for creating a private-network.
@@ -31,7 +31,7 @@ var CreatePrivateNetworkCmd = &cobra.Command{
 
 Requires a file (yaml or json) containing the information needed to create the private network.`,
 	Example: `# Create a new private network as per privateNetworkCreate.yaml
-pnapctl create private-network --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
+pnapctl create private-network --filename <FILE_PATH> [--output <OUTPUT_TYPE>] [--force]
 
 # privateNetworkCreate.yaml
 name: Example CLI Network,

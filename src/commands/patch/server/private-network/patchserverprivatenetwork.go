@@ -30,7 +30,7 @@ var PatchServerPrivateNetworkCmd = &cobra.Command{
 	
 Requires a file (yaml or json) containing the information needed to patch the server.`,
 	Example: `# Patch a server using the contents of serverPrivateNetworkPatch.yaml as the request body.
-pnapctl patch server private-network <SERVER_ID> <NETWORK_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
+pnapctl patch server private-network <SERVER_ID> <NETWORK_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>] [--force]
 
 # serverPrivateNetworkPatch.yaml
 ips:

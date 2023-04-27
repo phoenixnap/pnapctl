@@ -16,7 +16,7 @@ pnapctl create private-network [flags]
 
 ```
 # Create a new private network as per privateNetworkCreate.yaml
-pnapctl create private-network --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
+pnapctl create private-network --filename <FILE_PATH> [--output <OUTPUT_TYPE>] [--force]
 
 # privateNetworkCreate.yaml
 name: Example CLI Network,
@@ -30,7 +30,7 @@ cidr: 10.0.0.0/24
 
 ```
   -f, --filename string   File containing required information for creation
-      --force             Controls availability for advanced features. Use with caution as it may lead to unhealthy setups.
+      --force             Controlling advanced features availability. Currently applicable for networking. It is advised to use with caution since it might lead to unhealthy setups. Defaults to false.
   -h, --help              help for private-network
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
 ```
