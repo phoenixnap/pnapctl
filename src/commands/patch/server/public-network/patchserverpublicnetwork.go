@@ -33,8 +33,8 @@ Requires a file (yaml or json) containing the information needed to patch the se
 pnapctl patch server public-network <SERVER_ID> <NETWORK_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # serverPublicNetworkPatch.yaml
-hostname: patched-server
-description: My custom server edit`,
+ips:
+  - "10.0.0.0"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cmdname.SetCommandName(cmd)
 		return patchServerPublicNetwork(args[0], args[1])

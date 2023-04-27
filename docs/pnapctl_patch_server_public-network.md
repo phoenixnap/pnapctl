@@ -19,8 +19,8 @@ pnapctl patch server public-network SERVER_ID NETWORK_ID [flags]
 pnapctl patch server public-network <SERVER_ID> <NETWORK_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # serverPublicNetworkPatch.yaml
-hostname: patched-server
-description: My custom server edit
+ips:
+  - "10.0.0.0"
 ```
 
 ### Options
