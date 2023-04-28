@@ -94,18 +94,18 @@ func (mr *MockNetworkSdkClientMockRecorder) PrivateNetworksGet(location interfac
 }
 
 // PrivateNetworksPost mocks base method.
-func (m *MockNetworkSdkClient) PrivateNetworksPost(privateNetworkCreate networkapi.PrivateNetworkCreate) (*networkapi.PrivateNetwork, error) {
+func (m *MockNetworkSdkClient) PrivateNetworksPost(privateNetworkCreate networkapi.PrivateNetworkCreate, force bool) (*networkapi.PrivateNetwork, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PrivateNetworksPost", privateNetworkCreate)
+	ret := m.ctrl.Call(m, "PrivateNetworksPost", privateNetworkCreate, force)
 	ret0, _ := ret[0].(*networkapi.PrivateNetwork)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // PrivateNetworksPost indicates an expected call of PrivateNetworksPost.
-func (mr *MockNetworkSdkClientMockRecorder) PrivateNetworksPost(privateNetworkCreate interface{}) *gomock.Call {
+func (mr *MockNetworkSdkClientMockRecorder) PrivateNetworksPost(privateNetworkCreate, force interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PrivateNetworksPost", reflect.TypeOf((*MockNetworkSdkClient)(nil).PrivateNetworksPost), privateNetworkCreate)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PrivateNetworksPost", reflect.TypeOf((*MockNetworkSdkClient)(nil).PrivateNetworksPost), privateNetworkCreate, force)
 }
 
 // PublicNetworkDelete mocks base method.

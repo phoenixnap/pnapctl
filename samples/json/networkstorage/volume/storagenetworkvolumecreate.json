@@ -2,5 +2,14 @@
     "name": "name",
     "description": "description",
     "capacityInGb": 2000,
-    "pathSuffix": "/pathSuffix"
+    "pathSuffix": "/pathSuffix",
+    "permissions": {
+        "nfs": {
+            "readOnly": null,
+            "readWrite": null,
+            "rootSquash": null,
+            "noSquash": null,
+            "allSquash": null
+        }
+    }
 }

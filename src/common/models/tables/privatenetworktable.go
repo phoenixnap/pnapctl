@@ -32,7 +32,7 @@ func PrivateNetworkFromSdk(network networksdk.PrivateNetwork) PrivateNetworkTabl
 		Type:            network.Type,
 		Location:        network.Location,
 		LocationDefault: network.LocationDefault,
-		Cidr:            network.Cidr,
+		Cidr:            DerefString(network.Cidr),
 		Servers:         servers,
 	}
 }

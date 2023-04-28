@@ -2,3 +2,11 @@ name: name
 description: description
 capacityInGb: 2000
 pathSuffix: /pathSuffix
+permissions:
+  nfs:
+    readWrite: null
+    readOnly: null
+    rootSquash: null
+    noSquash: null
+    allSquash:
+      - "10.0.0.0"

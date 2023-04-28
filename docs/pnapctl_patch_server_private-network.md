@@ -1,35 +1,32 @@
-## pnapctl create private-network
+## pnapctl patch server private-network
 
-Create a new private network.
+Patch a server's private network.
 
 ### Synopsis
 
-Create a new private-network.
-
-Requires a file (yaml or json) containing the information needed to create the private network.
+Patch a server's private network.
+	
+Requires a file (yaml or json) containing the information needed to patch the server.
 
 ```
-pnapctl create private-network [flags]
+pnapctl patch server private-network SERVER_ID NETWORK_ID [flags]
 ```
 
 ### Examples
 
 ```
-# Create a new private network as per privateNetworkCreate.yaml
-pnapctl create private-network --filename <FILE_PATH> [--output <OUTPUT_TYPE>] [--force]
+# Patch a server using the contents of serverPrivateNetworkPatch.yaml as the request body.
+pnapctl patch server private-network <SERVER_ID> <NETWORK_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>] [--force]
 
-# privateNetworkCreate.yaml
-name: Example CLI Network,
-location: PHX,
-locationDefault: false,
-description: Example CLI Network,
-cidr: 10.0.0.0/24
+# serverPrivateNetworkPatch.yaml
+ips:
+  - "10.0.0.0"
 ```
 
 ### Options
 
 ```
-  -f, --filename string   File containing required information for creation
+  -f, --filename string   File containing required information for updating
       --force             Controlling advanced features availability. Currently applicable for networking. It is advised to use with caution since it might lead to unhealthy setups. Defaults to false.
   -h, --help              help for private-network
   -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
@@ -44,5 +41,5 @@ cidr: 10.0.0.0/24
 
 ### SEE ALSO
 
-* [pnapctl create](pnapctl_create.md)	 - Create a resource.
+* [pnapctl patch server](pnapctl_patch_server.md)	 - Patch a server.
 
