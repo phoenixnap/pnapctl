@@ -10,6 +10,7 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/locationapi"
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
@@ -462,6 +463,22 @@ func TestPrepareVolumeForPrintingNonTable(test_framework *testing.T) {
 	prepared := PrepareVolumeForPrinting(networkStorage, true)
 
 	testutil.AssertIsType[networkstorageapi.Volume](test_framework, prepared)
+}
+
+func TestPrepareLocationForPrintingTable(test_framework *testing.T) {
+	OutputFormat = "table"
+	location := generators.Generate[locationapi.Location]()
+	prepared := PrepareLocationForPrinting(location)
+
+	testutil.AssertIsType[tables.Location](test_framework, prepared)
+}
+
+func TestPrepareLocationForPrintingNonTable(test_framework *testing.T) {
+	OutputFormat = "json"
+	location := generators.Generate[locationapi.Location]()
+	prepared := PrepareLocationForPrinting(location)
+
+	testutil.AssertIsType[locationapi.Location](test_framework, prepared)
 }
 
 func ExamplePrintOutputTableFormatEmpty() {

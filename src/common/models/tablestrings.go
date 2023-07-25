@@ -80,6 +80,11 @@ var NetworkConfigurationToTableString = toTableString(func(sdk bmcapi.NetworkCon
 	}
 })
 
+var StorageConfigurationToTableString = toTableString(func(sdk bmcapi.StorageConfiguration) string {
+	return fmt.Sprintf("Raid: %s\nSize: %d",
+		*sdk.RootPartition.Raid, sdk.RootPartition.Size)
+})
+
 // ipapi
 var TagAssignmentToTableString = toTableString(func(sdk ipapi.TagAssignment) string {
 	return fmt.Sprintf("ID: %s\nName: %s\nValue: %s\nIsBillingTag: %t\nCreated By: %s",
@@ -154,6 +159,10 @@ var NfsPermissionsToTableString = toTableString(func(sdk networkstorageapi.NfsPe
 		fmt.Sprintf("NoSquash: %v", sdk.NoSquash),
 		fmt.Sprintf("AllSquash: %v", sdk.AllSquash),
 	}, "\n")
+})
+
+var StorageNetworkTagAssignmentToTableString = toTableString(func(sdk networkstorageapi.TagAssignment) string {
+	return fmt.Sprintf("%v: %v", sdk.Name, sdk.Value)
 })
 
 // locationapi

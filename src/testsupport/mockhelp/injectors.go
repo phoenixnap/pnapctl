@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/client/ip"
+	"phoenixnap.com/pnapctl/common/client/locations"
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/client/rancher"
@@ -103,6 +104,15 @@ func PrepareTagMockClient(test_framework *testing.T) *sdkmocks.MockTagSdkClientM
 	mockClient := sdkmocks.NewMockTagSdkClient(ctrl)
 
 	tags.Client = mockClient
+
+	return mockClient.EXPECT()
+}
+
+func PrepareLocationMockClient(test_framework *testing.T) *sdkmocks.MockLocationSdkClientMockRecorder {
+	ctrl := gomock.NewController(test_framework)
+	mockClient := sdkmocks.NewMockLocationSdkClient(ctrl)
+
+	locations.Client = mockClient
 
 	return mockClient.EXPECT()
 }

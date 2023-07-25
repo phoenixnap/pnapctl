@@ -10,11 +10,14 @@ import (
 
 var (
 	Full bool
+	Tags []string
 )
 
 func init() {
 	utils.SetupOutputFlag(GetStorageNetworkVolumesCmd)
 	utils.SetupFullFlag(GetStorageNetworkVolumesCmd, &Full, "volume")
+
+	GetStorageNetworkVolumesCmd.PersistentFlags().StringArrayVar(&Tags, "tag", []string{}, "Tags to filter by.")
 }
 
 var GetStorageNetworkVolumesCmd = &cobra.Command{
@@ -45,7 +48,7 @@ pnapctl get volume <ID> [--full] [--output <OUTPUT_TYPE>]`,
 }
 
 func getVolumes(storageId string) error {
-	volumes, err := networkstorage.Client.NetworkStorageGetVolumes(storageId)
+	volumes, err := networkstorage.Client.NetworkStorageGetVolumes(storageId, Tags)
 
 	if err != nil {
 		return err
