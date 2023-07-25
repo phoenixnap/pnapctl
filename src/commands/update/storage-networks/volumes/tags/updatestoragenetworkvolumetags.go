@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
 
@@ -15,7 +16,8 @@ var (
 )
 
 func init() {
-
+	utils.SetupOutputFlag(UpdateStorageNetworkVolumeTagsCmd)
+	utils.SetupFilenameFlag(UpdateStorageNetworkVolumeTagsCmd, &Filename, utils.UPDATING)
 }
 
 var UpdateStorageNetworkVolumeTagsCmd = &cobra.Command{

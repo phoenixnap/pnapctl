@@ -24,7 +24,9 @@ pnapctl update storage-network volume tags <STORAGE_NETWORK_ID> <VOLUME_ID> --fi
 ### Options
 
 ```
-  -h, --help   help for tags
+  -f, --filename string   File containing required information for updating
+  -h, --help              help for tags
+  -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
 ```
 
 ### Options inherited from parent commands
