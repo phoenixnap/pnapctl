@@ -45,6 +45,7 @@ Available Commands:
   cluster                       Retrieve one or all clusters.
   event                         Retrieve all events relating to your account.
   ip-block                      Retrieve one or all ip-blocks for your account.
+  location                      Retrieves all locations.
   private-network               Retrieve one or all private networks.
   product                       Retrieves all products.
   product-availabilities        Retrieve product availabilities
@@ -338,6 +339,7 @@ Available Commands:
   ip-block        Update an ip-block.
   private-network Update a private network.
   ssh-key         Update an ssh-key.
+  storage-network Update a storage network.
 
 Flags:
   -h, --help   help for update

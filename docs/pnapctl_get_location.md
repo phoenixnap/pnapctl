@@ -1,6 +1,6 @@
 ## pnapctl get location
 
-Retrieves all locations
+Retrieves all locations.
 
 ### Synopsis
 

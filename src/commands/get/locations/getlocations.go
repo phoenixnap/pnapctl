@@ -22,7 +22,7 @@ func init() {
 
 var GetLocationsCmd = &cobra.Command{
 	Use:          "location",
-	Short:        "Retrieves all locations",
+	Short:        "Retrieves all locations.",
 	Aliases:      []string{"locations"},
 	SilenceUsage: true,
 	Long: `Retrieve all locations.
