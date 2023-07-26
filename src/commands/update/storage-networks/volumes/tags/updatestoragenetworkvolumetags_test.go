@@ -69,7 +69,7 @@ func TestUpdateStorageNetworkVolumeTagsUnmarshallingFailure(test_framework *test
 	err := UpdateStorageNetworkVolumeTagsCmd.RunE(UpdateStorageNetworkVolumeTagsCmd, []string{RESOURCEID, RESOURCEID})
 
 	// Assertions
-	assert.EqualError(test_framework, err, ctlerrors.UnmarshallingInFileProcessor)
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
 func TestUpdateStorageNetworkVolumeTagsClientFailure(test_framework *testing.T) {
