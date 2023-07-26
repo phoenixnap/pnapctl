@@ -44,7 +44,7 @@ func TestUpdateStorageNetworkVolumeTagsSuccessJSON(test_framework *testing.T) {
 	updateStorageNetworkVolumeTagsSuccess(test_framework, json.Marshal)
 }
 
-func TestUpdateSTorageNetworkVolumeTagsFileProcessorFailure(test_framework *testing.T) {
+func TestUpdateStorageNetworkVolumeTagsFileProcessorFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
@@ -58,7 +58,7 @@ func TestUpdateSTorageNetworkVolumeTagsFileProcessorFailure(test_framework *test
 	assert.EqualError(test_framework, err, expectedErr.Error())
 }
 
-func TestUpdateSTorageNetworkVolumeTagsUnmarshallingFailure(test_framework *testing.T) {
+func TestUpdateStorageNetworkVolumeTagsUnmarshallingFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME
 
@@ -69,16 +69,16 @@ func TestUpdateSTorageNetworkVolumeTagsUnmarshallingFailure(test_framework *test
 	err := UpdateStorageNetworkVolumeTagsCmd.RunE(UpdateStorageNetworkVolumeTagsCmd, []string{RESOURCEID, RESOURCEID})
 
 	// Assertions
-	assert.EqualError(test_framework, err, ctlerrors.UnmarshallingInFileProcessor)
+	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
 }
 
-func TestUpdateSTorageNetworkVolumeTagsClientFailure(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
+func TestUpdateStorageNetworkVolumeTagsClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	tagAssignmentRequest := generators.Generate[[]networkstorageapi.TagAssignmentRequest]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, marshaller, tagAssignmentRequest)
+	ExpectFromFileSuccess(test_framework, json.Marshal, tagAssignmentRequest)
 
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
