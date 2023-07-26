@@ -18,11 +18,12 @@ type NetworkStorageSdkClient interface {
 	NetworkStorageGetById(storageId string) (*networkstoragesdk.StorageNetwork, error)
 	NetworkStoragePatch(storageId string, storageUpdate networkstoragesdk.StorageNetworkUpdate) (*networkstoragesdk.StorageNetwork, error)
 	NetworkStorageDelete(storageId string) error
-	NetworkStorageGetVolumes(storageId string) ([]networkstoragesdk.Volume, error)
+	NetworkStorageGetVolumes(storageId string, tags []string) ([]networkstoragesdk.Volume, error)
 	NetworkStorageGetVolumeById(storageId string, volumeId string) (*networkstoragesdk.Volume, error)
 	NetworkStoragePatchVolumeById(storageId string, volumeId string, volumeUpdate networkstoragesdk.VolumeUpdate) (*networkstoragesdk.Volume, error)
 	NetworkStoragePostVolume(storageId string, volumeUpdate networkstoragesdk.VolumeCreate) (*networkstoragesdk.Volume, error)
 	NetworkStorageDeleteVolume(storageId string, volumeId string) error
+	NetworkStorageVolumePutTags(storageId string, volumeId string, tags []networkstoragesdk.TagAssignmentRequest) (*networkstoragesdk.Volume, error)
 }
 
 type MainClient struct {
@@ -83,8 +84,8 @@ func (m MainClient) NetworkStorageDelete(storageId string) error {
 	return client.HandleResponseWithoutBody(m.StorageNetworksApiClient.StorageNetworksIdDelete(context.Background(), storageId).Execute())
 }
 
-func (m MainClient) NetworkStorageGetVolumes(storageId string) ([]networkstoragesdk.Volume, error) {
-	return client.HandleResponse(m.StorageNetworksApiClient.StorageNetworksStorageNetworkIdVolumesGet(context.Background(), storageId).Execute())
+func (m MainClient) NetworkStorageGetVolumes(storageId string, tags []string) ([]networkstoragesdk.Volume, error) {
+	return client.HandleResponse(m.StorageNetworksApiClient.StorageNetworksStorageNetworkIdVolumesGet(context.Background(), storageId).Tag(tags).Execute())
 }
 
 func (m MainClient) NetworkStorageGetVolumeById(storageId string, volumeId string) (*networkstoragesdk.Volume, error) {
@@ -101,4 +102,8 @@ func (m MainClient) NetworkStoragePostVolume(storageId string, volumeCreate netw
 
 func (m MainClient) NetworkStorageDeleteVolume(storageId string, volumeId string) error {
 	return client.HandleResponseWithoutBody(m.StorageNetworksApiClient.StorageNetworksStorageNetworkIdVolumesVolumeIdDelete(context.Background(), storageId, volumeId).Execute())
+}
+
+func (m MainClient) NetworkStorageVolumePutTags(storageId string, volumeId string, tags []networkstoragesdk.TagAssignmentRequest) (*networkstoragesdk.Volume, error) {
+	return client.HandleResponse(m.StorageNetworksApiClient.StorageNetworksStorageNetworkIdVolumesVolumeIdTagsPut(context.Background(), storageId, volumeId).TagAssignmentRequest(tags).Execute())
 }

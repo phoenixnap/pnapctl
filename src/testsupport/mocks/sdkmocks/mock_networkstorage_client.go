@@ -108,18 +108,18 @@ func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageGetVolumeById(s
 }
 
 // NetworkStorageGetVolumes mocks base method.
-func (m *MockNetworkStorageSdkClient) NetworkStorageGetVolumes(storageId string) ([]networkstorageapi.Volume, error) {
+func (m *MockNetworkStorageSdkClient) NetworkStorageGetVolumes(storageId string, tags []string) ([]networkstorageapi.Volume, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NetworkStorageGetVolumes", storageId)
+	ret := m.ctrl.Call(m, "NetworkStorageGetVolumes", storageId, tags)
 	ret0, _ := ret[0].([]networkstorageapi.Volume)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // NetworkStorageGetVolumes indicates an expected call of NetworkStorageGetVolumes.
-func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageGetVolumes(storageId interface{}) *gomock.Call {
+func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageGetVolumes(storageId, tags interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStorageGetVolumes", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStorageGetVolumes), storageId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStorageGetVolumes", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStorageGetVolumes), storageId, tags)
 }
 
 // NetworkStoragePatch mocks base method.
@@ -180,4 +180,19 @@ func (m *MockNetworkStorageSdkClient) NetworkStoragePostVolume(storageId string,
 func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStoragePostVolume(storageId, volumeUpdate interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStoragePostVolume", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStoragePostVolume), storageId, volumeUpdate)
+}
+
+// NetworkStorageVolumePutTags mocks base method.
+func (m *MockNetworkStorageSdkClient) NetworkStorageVolumePutTags(storageId, volumeId string, tags []networkstorageapi.TagAssignmentRequest) (*networkstorageapi.Volume, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NetworkStorageVolumePutTags", storageId, volumeId, tags)
+	ret0, _ := ret[0].(*networkstorageapi.Volume)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// NetworkStorageVolumePutTags indicates an expected call of NetworkStorageVolumePutTags.
+func (mr *MockNetworkStorageSdkClientMockRecorder) NetworkStorageVolumePutTags(storageId, volumeId, tags interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkStorageVolumePutTags", reflect.TypeOf((*MockNetworkStorageSdkClient)(nil).NetworkStorageVolumePutTags), storageId, volumeId, tags)
 }

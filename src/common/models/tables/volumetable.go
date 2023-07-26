@@ -3,19 +3,21 @@ package tables
 import (
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"phoenixnap.com/pnapctl/common/models"
+	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 type VolumeTable struct {
-	Id           string `header:"Id"`
-	Name         string `header:"Name"`
-	Description  string `header:"Description"`
-	Path         string `header:"Path"`
-	PathSuffix   string `header:"Path Suffix"`
-	CapacityInGb string `header:"Capacity In Gb"`
-	Protocol     string `header:"Protocol"`
-	Status       string `header:"Status"`
-	CreatedOn    string `header:"Created On"`
-	Permissions  string `header:"Permissions"`
+	Id           string   `header:"Id"`
+	Name         string   `header:"Name"`
+	Description  string   `header:"Description"`
+	Path         string   `header:"Path"`
+	PathSuffix   string   `header:"Path Suffix"`
+	CapacityInGb string   `header:"Capacity In Gb"`
+	Protocol     string   `header:"Protocol"`
+	Status       string   `header:"Status"`
+	CreatedOn    string   `header:"Created On"`
+	Permissions  string   `header:"Permissions"`
+	Tags         []string `header:"Tags"`
 }
 
 type ShortVolumeTable struct {
@@ -37,6 +39,7 @@ func VolumeTableFromSdk(sdk networkstorageapi.Volume) VolumeTable {
 		Status:       DerefString(sdk.Status),
 		CreatedOn:    DerefTimeAsString(sdk.CreatedOn),
 		Permissions:  models.PermissionsToTableString(sdk.Permissions),
+		Tags:         iterutils.MapRef(sdk.Tags, models.StorageNetworkTagAssignmentToTableString),
 	}
 }
 

@@ -29,9 +29,10 @@ pnapctl get volume <ID> [--full] [--output <OUTPUT_TYPE>]
 ### Options
 
 ```
-      --full            Shows all volume details
-  -h, --help            help for volume
-  -o, --output string   Define the output format. Possible values: table, json, yaml (default "table")
+      --full              Shows all volume details
+  -h, --help              help for volume
+  -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
+      --tag stringArray   Tags to filter by.
 ```
 
 ### Options inherited from parent commands

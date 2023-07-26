@@ -30,6 +30,7 @@ pnapctl get [flags]
 * [pnapctl get cluster](pnapctl_get_cluster.md)	 - Retrieve one or all clusters.
 * [pnapctl get event](pnapctl_get_event.md)	 - Retrieve all events relating to your account.
 * [pnapctl get ip-block](pnapctl_get_ip-block.md)	 - Retrieve one or all ip-blocks for your account.
+* [pnapctl get location](pnapctl_get_location.md)	 - Retrieves all locations.
 * [pnapctl get private-network](pnapctl_get_private-network.md)	 - Retrieve one or all private networks.
 * [pnapctl get product](pnapctl_get_product.md)	 - Retrieves all products.
 * [pnapctl get product-availabilities](pnapctl_get_product-availabilities.md)	 - Retrieve product availabilities

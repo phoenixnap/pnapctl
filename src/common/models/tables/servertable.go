@@ -31,6 +31,7 @@ type LongServerTable struct {
 	ProvisionedOn        string   `header:"Provisioned On"`
 	OsConfiguration      string   `header:"Os Configuration"`
 	NetworkConfiguration string   `header:"Network Configuration"`
+	StorageConfiguration string   `header:"Storage Configuration"`
 }
 
 type ShortServerTable struct {
@@ -97,6 +98,7 @@ func ToLongServerTable(server bmcapisdk.Server) LongServerTable {
 		ProvisionedOn:        DerefTimeAsString(server.ProvisionedOn),
 		OsConfiguration:      models.OsConfigurationToTableString(server.OsConfiguration),
 		NetworkConfiguration: models.NetworkConfigurationToTableString(&server.NetworkConfiguration),
+		StorageConfiguration: models.StorageConfigurationToTableString(&server.StorageConfiguration),
 	}
 }
 

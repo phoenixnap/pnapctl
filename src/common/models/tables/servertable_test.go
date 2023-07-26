@@ -72,6 +72,7 @@ func assertLongServersEqual(test_framework *testing.T, server bmcapisdk.Server, 
 	assert.Equal(test_framework, DerefTimeAsString(server.ProvisionedOn), longServerTable.ProvisionedOn)
 	assert.Equal(test_framework, models.OsConfigurationToTableString(server.OsConfiguration), longServerTable.OsConfiguration)
 	assert.Equal(test_framework, models.NetworkConfigurationToTableString(&server.NetworkConfiguration), longServerTable.NetworkConfiguration)
+	assert.Equal(test_framework, models.StorageConfigurationToTableString(&server.StorageConfiguration), longServerTable.StorageConfiguration)
 }
 
 func assertServerPrivateNetworksEqual(test_framework *testing.T, privateNetwork bmcapisdk.ServerPrivateNetwork, table ServerPrivateNetworkTable) {

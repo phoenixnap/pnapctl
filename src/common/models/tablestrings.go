@@ -8,6 +8,7 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/locationapi"
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
@@ -77,6 +78,11 @@ var NetworkConfigurationToTableString = toTableString(func(sdk bmcapi.NetworkCon
 	} else {
 		return "Private"
 	}
+})
+
+var StorageConfigurationToTableString = toTableString(func(sdk bmcapi.StorageConfiguration) string {
+	return fmt.Sprintf("Raid: %s\nSize: %d",
+		*sdk.RootPartition.Raid, sdk.RootPartition.Size)
 })
 
 // ipapi
@@ -152,5 +158,17 @@ var NfsPermissionsToTableString = toTableString(func(sdk networkstorageapi.NfsPe
 		fmt.Sprintf("RootSquash: %v", sdk.RootSquash),
 		fmt.Sprintf("NoSquash: %v", sdk.NoSquash),
 		fmt.Sprintf("AllSquash: %v", sdk.AllSquash),
+	}, "\n")
+})
+
+var StorageNetworkTagAssignmentToTableString = toTableString(func(sdk networkstorageapi.TagAssignment) string {
+	return fmt.Sprintf("%v: %v", sdk.Name, sdk.Value)
+})
+
+// locationapi
+var ProductCategoryToTableString = toTableString(func(sdk locationapi.ProductCategory) string {
+	return strings.Join([]string{
+		fmt.Sprintf("Product: %v", sdk.ProductCategory),
+		fmt.Sprintf("Description: %v", sdk.ProductCategoryDescription),
 	}, "\n")
 })

@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnapctl/commands/get/clusters"
 	"phoenixnap.com/pnapctl/commands/get/events"
 	ip_blocks "phoenixnap.com/pnapctl/commands/get/ip-blocks"
+	"phoenixnap.com/pnapctl/commands/get/locations"
 	"phoenixnap.com/pnapctl/commands/get/privatenetwork"
 	product_availability "phoenixnap.com/pnapctl/commands/get/product-availability"
 	"phoenixnap.com/pnapctl/commands/get/products"
@@ -47,4 +48,5 @@ func init() {
 	GetCmd.AddCommand(product_availability.GetProductAvailabilitiesCmd)
 	GetCmd.AddCommand(account_billing_configuration.GetAccountBillingConfigurationCmd)
 	GetCmd.AddCommand(storagenetworks.GetStorageNetworksCmd)
+	GetCmd.AddCommand(locations.GetLocationsCmd)
 }

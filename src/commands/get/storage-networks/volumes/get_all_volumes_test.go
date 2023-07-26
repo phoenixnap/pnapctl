@@ -20,7 +20,7 @@ func TestGetAllVolumesSuccess(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageGetVolumes(RESOURCEID).
+		NetworkStorageGetVolumes(RESOURCEID, Tags).
 		Return(volumeSdk, nil)
 
 	ExpectToPrintSuccess(test_framework, volumeTables)
@@ -35,7 +35,7 @@ func TestGetAllVolumesSuccess(test_framework *testing.T) {
 func TestGetAllVolumesClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageGetVolumes(RESOURCEID).
+		NetworkStorageGetVolumes(RESOURCEID, Tags).
 		Return(nil, testutil.TestError)
 
 	// Run command
@@ -55,7 +55,7 @@ func TestGetAllVolumesPrinterFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageGetVolumes(RESOURCEID).
+		NetworkStorageGetVolumes(RESOURCEID, Tags).
 		Return(volumeSdk, nil)
 
 	expectedErr := ExpectToPrintFailure(test_framework, volumeTables)
