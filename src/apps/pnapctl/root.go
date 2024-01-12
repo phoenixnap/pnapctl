@@ -93,7 +93,7 @@ func init() {
 	RootCmd.AddCommand(convert.ConvertCmd)
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
-	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Info (default) to Debug.")
+	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Warn (default) to Debug.")
 
 	cobra.OnInitialize(initConfig, loggerConfig)
 }
@@ -192,8 +192,8 @@ func loggerConfig() {
 	logger := zerolog.New(output).With().Timestamp().Caller().Logger()
 	log.Logger = logger
 
-	// Default level is Info
-	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	// Default level is Warn
+	zerolog.SetGlobalLevel(zerolog.WarnLevel)
 
 	// If verbose flag is provided set the global level to Debug
 	if verbose {

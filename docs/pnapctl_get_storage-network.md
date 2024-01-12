@@ -37,7 +37,7 @@ pnapctl get storage-network <ID> [--output <OUTPUT_TYPE>]
 
 ```
       --config string   config file defaults to the environment variable "PNAPCTL_HOME" or "pnap.yaml" in the home directory.
-  -v, --verbose         change log level from Info (default) to Debug.
+  -v, --verbose         change log level from Warn (default) to Debug.
 ```
 
 ### SEE ALSO

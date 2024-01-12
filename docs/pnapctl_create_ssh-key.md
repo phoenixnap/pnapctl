@@ -37,7 +37,7 @@ key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyVGaw1PuEl98f4/7Kq3O9ZIvDw2OFOSXAFVq
 
 ```
       --config string   config file defaults to the environment variable "PNAPCTL_HOME" or "pnap.yaml" in the home directory.
-  -v, --verbose         change log level from Info (default) to Debug.
+  -v, --verbose         change log level from Warn (default) to Debug.
 ```
 
 ### SEE ALSO
