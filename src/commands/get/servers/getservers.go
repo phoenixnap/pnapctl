@@ -6,6 +6,7 @@ import (
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
+    "github.com/rs/zerolog/log"
 )
 
 var Full bool
@@ -49,8 +50,10 @@ func getServers() error {
 	servers, err := bmcapi.Client.ServersGet(tags)
 
 	if err != nil {
+		log.Error().Err(err)
 		return err
 	} else {
+		log.Info().Msg("Retrieving list of servers")
 		return printer.PrintServerListResponse(servers, Full)
 	}
 }
@@ -61,6 +64,7 @@ func getServersById(serverID string) error {
 	if err != nil {
 		return err
 	} else {
+		log.Info().Msgf("Retrieving server with [ID] %s", serverID)
 		return printer.PrintServerResponse(server, Full)
 	}
 }

@@ -20,7 +20,7 @@ pnapctl convert [flags]
 
 ```
       --config string   config file defaults to the environment variable "PNAPCTL_HOME" or "pnap.yaml" in the home directory.
-  -v, --verbose         change log level from Warn (default) to Debug.
+  -v, --verbose         change log level from Info (default) to Debug.
 ```
 
 ### SEE ALSO
