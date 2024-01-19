@@ -3,6 +3,8 @@ package quotas
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -38,6 +40,8 @@ reason: My current limit is not enough.`,
 }
 
 func requestToEditQuota(id string) error {
+	log.Info().Msgf("Requesting Quota modification request with ID [%s].", id)
+
 	quotaEditRequest, err := models.CreateRequestFromFile[bmcapisdk.QuotaEditLimitRequest](Filename)
 	if err != nil {
 		return err

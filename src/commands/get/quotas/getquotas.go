@@ -2,6 +2,8 @@ package quotas
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -40,6 +42,8 @@ pnapctl get quota <QUOTA_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getQuotas() error {
+	log.Info().Msg("Retrieving list of Quotas...")
+
 	quotas, err := bmcapi.Client.QuotasGet()
 
 	if err != nil {
@@ -50,6 +54,8 @@ func getQuotas() error {
 }
 
 func getQuotaById(quotaId string) error {
+	log.Info().Msgf("Retrieving Quota with ID [%s].", quotaId)
+
 	quota, err := bmcapi.Client.QuotaGetById(quotaId)
 
 	if err != nil {

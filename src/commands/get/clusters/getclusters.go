@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
 )
 
 func init() {
@@ -41,6 +42,8 @@ pnapctl get cluster <CLUSTER_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getClusters() error {
+	log.Info().Msg("Retrieving list of Clusters...")
+
 	clusters, err := rancher.Client.ClustersGet()
 
 	if err != nil {
@@ -51,6 +54,8 @@ func getClusters() error {
 }
 
 func getClusterById(clusterID string) error {
+	log.Info().Msgf("Retrieving Cluster with ID [%s].", clusterID)
+
 	cluster, err := rancher.Client.ClusterGetById(clusterID)
 
 	if err != nil {

@@ -3,6 +3,8 @@ package cluster
 import (
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/rancher"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -41,6 +43,8 @@ nodePools:
 }
 
 func createCluster() error {
+	log.Info().Msg("Creating new cluster...")
+
 	cluster, err := models.CreateRequestFromFile[ranchersolutionapi.Cluster](Filename)
 
 	if err != nil {

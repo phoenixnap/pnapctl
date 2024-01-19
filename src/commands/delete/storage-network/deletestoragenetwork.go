@@ -2,6 +2,8 @@ package storagenetwork
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	volume "phoenixnap.com/pnapctl/commands/delete/storage-network/volume"
@@ -30,5 +32,7 @@ var DeleteStorageNetworkCmd = &cobra.Command{
 }
 
 func deleteStorageNetwork() error {
+	log.Info().Msgf("Deleting Storage Network with ID [%s].", ID)
+
 	return networkstorage.Client.NetworkStorageDelete(ID)
 }

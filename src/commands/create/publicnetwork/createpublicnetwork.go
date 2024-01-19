@@ -3,6 +3,8 @@ package publicnetwork
 import (
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/commands/create/publicnetwork/ipblock"
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/models"
@@ -43,6 +45,8 @@ description: My custom server edit`,
 }
 
 func createPublicNetwork() error {
+	log.Info().Msg("Creating new Public Network...")
+
 	publicNetworkCreate, err := models.CreateRequestFromFile[networkapi.PublicNetworkCreate](Filename)
 
 	if err != nil {

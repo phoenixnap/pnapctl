@@ -8,6 +8,7 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -54,6 +55,8 @@ pnapctl get rated-usages --from=2020/10 --to=2021/11 [--category <CATEGORY>] [--
 }
 
 func getRatedUsage() error {
+	log.Info().Msg("Retrieving all rated-usages for the given time period...")
+
 	ratedUsageRecords, err := billing.Client.RatedUsageGet(FromYearMonth, ToYearMonth, ProductCategory)
 
 	if err != nil {

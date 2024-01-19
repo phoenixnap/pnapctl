@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
@@ -30,6 +32,8 @@ pnapctl delete server-public-network <SERVER_ID> <PUBLIC_NETWORK_ID>
 }
 
 func deletePublicNetworkFromServer(serverId, publicNetworkId string) error {
+	log.Info().Msgf("Removing Server with ID [%s] from Public Network with ID [%s].", serverId, publicNetworkId)
+
 	result, err := bmcapi.Client.ServerPublicNetworkDelete(serverId, publicNetworkId)
 	if err != nil {
 		return err

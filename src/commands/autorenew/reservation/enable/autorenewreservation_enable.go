@@ -2,6 +2,8 @@ package enable
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -33,6 +35,8 @@ pnapctl auto-renew reservation enable <RESERVATION_ID>`,
 }
 
 func enableAutoRenewForReservation(id string) error {
+	log.Info().Msgf("Enabling auto renewal for Reservation with ID [%s].", id)
+
 	response, err := billing.Client.ReservationEnableAutoRenew(id)
 
 	if err != nil {

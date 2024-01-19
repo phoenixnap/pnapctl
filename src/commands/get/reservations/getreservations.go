@@ -2,6 +2,8 @@ package reservations
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -43,6 +45,8 @@ pnapctl get reservation <RESERVATION_ID> [--full] [--output=<OUTPUT_TYPE>]`,
 }
 
 func getReservations() error {
+	log.Info().Msg("Retrieving list of Reservations...")
+
 	reservations, err := billing.Client.ReservationsGet(productCategory)
 
 	if err != nil {
@@ -53,6 +57,8 @@ func getReservations() error {
 }
 
 func getReservationById(reservationId string) error {
+	log.Info().Msgf("Retrieving Reservation with ID [%s].", reservationId)
+
 	reservation, err := billing.Client.ReservationGetById(reservationId)
 
 	if err != nil {

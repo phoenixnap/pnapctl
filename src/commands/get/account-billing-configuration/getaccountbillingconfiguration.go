@@ -2,6 +2,8 @@ package accountbillingconfiguration
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -28,11 +30,14 @@ pnapctl get account-billing-configuration [--output=<OUTPUT_TYPE>]`,
 }
 
 func getAccountBillingConfiguration() error {
+	log.Info().Msg("Retrieving account billing configuration...")
+
 	configurationDetails, err := billing.Client.AccountBillingConfigurationGet()
 
 	if err != nil {
 		return err
 	} else {
+		log.Info().Msg("Retrieving configuration details...")
 		return printer.PrintConfigurationDetailsResponse(configurationDetails)
 	}
 }

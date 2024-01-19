@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
@@ -22,6 +24,8 @@ var DeleteSshKeyCmd = &cobra.Command{
 }
 
 func deleteSshKey(id string) error {
+	log.Info().Msgf("Deleting Ssh Key with ID [%s].", id)
+
 	result, err := bmcapi.Client.SshKeyDelete(id)
 	if err != nil {
 		return err

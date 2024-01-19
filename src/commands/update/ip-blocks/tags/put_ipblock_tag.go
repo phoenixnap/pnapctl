@@ -3,6 +3,8 @@ package ip_blocks
 import (
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/ip"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -44,6 +46,8 @@ pnapctl update ip-block tag <IP_BLOCK_ID> --filename <FILE_PATH> [--output <OUTP
 }
 
 func updateTagsOnIpBlock(id string) error {
+	log.Info().Msgf("Updating tags for Ip Block with ID [%s].", id)
+
 	ipBlockPutTag, err := models.CreateRequestFromFile[[]ipapi.TagAssignmentRequest](Filename)
 
 	if err != nil {

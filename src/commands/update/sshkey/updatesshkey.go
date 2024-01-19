@@ -3,6 +3,8 @@ package sshkey
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -43,6 +45,8 @@ name: default ssh key`,
 }
 
 func updateSshKey(id string) error {
+	log.Info().Msgf("Updating Ssh Key with ID [%s].", id)
+
 	sshKeyUpdate, err := models.CreateRequestFromFile[bmcapisdk.SshKeyUpdate](Filename)
 
 	if err != nil {

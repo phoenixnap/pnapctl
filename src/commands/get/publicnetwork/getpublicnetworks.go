@@ -2,6 +2,8 @@ package publicnetwork
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -46,6 +48,8 @@ pnapctl get public-networks <PUBLIC_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getPublicNetworks() error {
+	log.Info().Msg("Retrieving list of Public Networks...")
+
 	publicNetworks, err := networks.Client.PublicNetworksGet(location)
 
 	if err != nil {
@@ -56,6 +60,8 @@ func getPublicNetworks() error {
 }
 
 func getPublicNetworkById(id *string) error {
+	log.Info().Msgf("Retrieving Public Network with ID [%s].", *id)
+
 	publicNetwork, err := networks.Client.PublicNetworkGetById(*id)
 
 	if err != nil {

@@ -2,6 +2,8 @@ package productavailability
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -51,6 +53,8 @@ pnapctl get product-availabilities
 }
 
 func getProductAvailabilities() error {
+	log.Info().Msg("Retrieving list of product availabilities...")
+
 	products, err := billing.Client.ProductAvailabilityGet(productCategory, productCode, showOnlyMinQuantityAvailable, location, solution, minQuantity)
 
 	if err != nil {

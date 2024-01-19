@@ -3,6 +3,8 @@ package server
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	privatenetwork "phoenixnap.com/pnapctl/commands/patch/server/private-network"
 	publicnetwork "phoenixnap.com/pnapctl/commands/patch/server/public-network"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
@@ -49,6 +51,8 @@ description: My custom server edit`,
 }
 
 func patchServer(id string) error {
+	log.Info().Msgf("Patching Server with ID [%s].", id)
+
 	patchRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerPatch](Filename)
 	if err != nil {
 		return err

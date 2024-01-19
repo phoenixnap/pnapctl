@@ -3,6 +3,7 @@ package ipblocks
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
 
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
@@ -41,6 +42,8 @@ vlanId: 11`,
 }
 
 func createIpBlockForServer(id string) error {
+	log.Info().Msgf("Creating new Ip Block for Server with ID [%s].", id)
+
 	serverIpBlock, err := models.CreateRequestFromFile[bmcapisdk.ServerIpBlock](Filename)
 
 	if err != nil {

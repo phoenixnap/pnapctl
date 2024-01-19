@@ -3,6 +3,8 @@ package ipblock
 import (
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/ip"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -41,6 +43,8 @@ Requires a file (yaml or json) containing the information needed to update the i
 }
 
 func patchIpBlock(id string) error {
+	log.Info().Msgf("Patching Ip Block with ID [%s].", id)
+
 	ipBlockPatch, err := models.CreateRequestFromFile[ipapi.IpBlockPatch](Filename)
 
 	if err != nil {

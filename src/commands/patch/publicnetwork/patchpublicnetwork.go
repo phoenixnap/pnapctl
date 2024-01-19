@@ -3,6 +3,8 @@ package publicnetwork
 import (
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -40,6 +42,8 @@ description: My custom server edit`,
 }
 
 func patchPublicNetwork(id string) error {
+	log.Info().Msgf("Patching Public Network with ID [%s].", id)
+
 	publicNetworkPatch, err := models.CreateRequestFromFile[networkapi.PublicNetworkModify](Filename)
 
 	if err != nil {

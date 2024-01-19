@@ -3,6 +3,8 @@ package tags
 import (
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -39,6 +41,8 @@ pnapctl update storage-network volume tags <STORAGE_NETWORK_ID> <VOLUME_ID> --fi
 }
 
 func updateStorageNetworkVolumeTags(storageNetworkId, volumeId string) error {
+	log.Info().Msgf("Updating tags for Volume with ID [%s].", volumeId)
+
 	storageNetworkVolumeTagsUpdate, err := models.CreateRequestFromFile[[]networkstorageapi.TagAssignmentRequest](Filename)
 
 	if err != nil {

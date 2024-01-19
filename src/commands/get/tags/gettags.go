@@ -7,6 +7,7 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
 )
 
 var Name string
@@ -45,6 +46,8 @@ pnapctl get tag <TAG_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getTags() error {
+	log.Info().Msg("Retrieving list of Tags")
+
 	tags, err := tagclient.Client.TagsGet(Name)
 
 	if err != nil {
@@ -55,6 +58,8 @@ func getTags() error {
 }
 
 func getTagById(tagID string) error {
+	log.Info().Msgf("Retrieving Tag with ID [%s].", tagID)
+
 	tag, err := tagclient.Client.TagGetById(tagID)
 
 	if err != nil {

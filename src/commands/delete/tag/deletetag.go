@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/tags"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
@@ -22,6 +24,8 @@ var DeleteTagCmd = &cobra.Command{
 }
 
 func deleteTag(id string) error {
+	log.Info().Msgf("Deleting Tag with ID [%s].", id)
+
 	result, err := tags.Client.TagDelete(id)
 	if err != nil {
 		return err

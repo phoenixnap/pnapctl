@@ -3,10 +3,11 @@ package ip_blocks
 import (
 	"phoenixnap.com/pnapctl/common/client/ip"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
-
-	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
+
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 )
 
 var tags []string
@@ -46,6 +47,8 @@ pnapctl get ip-block <IP_BLOCK_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getIpBlocks() error {
+	log.Info().Msg("Retrieving list of Ip Blocks...")
+
 	ipBlocks, err := ip.Client.IpBlocksGet(tags)
 
 	if err != nil {
@@ -56,6 +59,8 @@ func getIpBlocks() error {
 }
 
 func getIpBlockById(ipBlockId string) error {
+	log.Info().Msgf("Retrieving Ip Block with ID [%s].", ipBlockId)
+
 	ipBlock, err := ip.Client.IpBlocksGetById(ipBlockId)
 
 	if err != nil {

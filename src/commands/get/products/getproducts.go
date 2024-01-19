@@ -2,6 +2,8 @@ package products
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -41,6 +43,8 @@ By default, the data is printed in table format.`,
 }
 
 func getProducts() error {
+	log.Info().Msg("Retrieving list of Products...")
+
 	products, err := billing.Client.ProductsGet(ProductCode, ProductCategory, SkuCode, Location)
 
 	if err != nil {

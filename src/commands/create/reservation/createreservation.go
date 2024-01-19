@@ -3,6 +3,8 @@ package reservation
 import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -42,6 +44,8 @@ sku: "skuCode"`,
 }
 
 func createReservation() error {
+	log.Info().Msg("Creating new Reservation...")
+
 	reservationCreate, err := models.CreateRequestFromFile[billingapi.ReservationRequest](Filename)
 
 	if err != nil {

@@ -9,6 +9,7 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
 )
 
 // Filename is the filename from which to retrieve the request body
@@ -44,6 +45,8 @@ pricingModel: ONE_MONTH_RESERVATION`,
 }
 
 func reserveServer(id string) error {
+	log.Info().Msgf("Reserving Server with ID [%s].", id)
+
 	reserveRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerReserve](Filename)
 
 	if err != nil {

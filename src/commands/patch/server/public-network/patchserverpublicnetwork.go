@@ -3,6 +3,8 @@ package publicnetwork
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -42,6 +44,8 @@ ips:
 }
 
 func patchServerPublicNetwork(serverId string, networkId string) error {
+	log.Info().Msgf("Patching Public Network with ID [%s] for Server with ID [%s].", networkId, serverId)
+
 	patchRequest, err := models.CreateRequestFromFile[bmcapisdk.ServerNetworkUpdate](Filename)
 	if err != nil {
 		return err

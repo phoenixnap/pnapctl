@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
@@ -23,6 +25,8 @@ var RebootCmd = &cobra.Command{
 }
 
 func rebootServer(id string) error {
+	log.Info().Msgf("Rebooting Server with ID [%s].", id)
+
 	result, err := bmcapi.Client.ServerReboot(id)
 	if err != nil {
 		return err

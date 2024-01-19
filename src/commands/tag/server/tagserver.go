@@ -3,6 +3,8 @@ package server
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -56,6 +58,8 @@ func performTagRequest(serverId string, tagRequests []bmcapisdk.TagAssignmentReq
 }
 
 func tagServer(id string) error {
+	log.Info().Msgf("Tagging Server with ID [%s].", id)
+
 	tagRequests, err := models.CreateRequestFromFile[[]bmcapisdk.TagAssignmentRequest](Filename)
 	if err != nil {
 		return err
