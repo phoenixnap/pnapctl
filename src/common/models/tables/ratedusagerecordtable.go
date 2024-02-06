@@ -3,7 +3,7 @@ package tables
 import (
 	"time"
 
-	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
+	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/oneof/ratedusage"
 )

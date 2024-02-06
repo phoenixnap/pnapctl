@@ -1,9 +1,9 @@
 package disable
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"github.com/spf13/cobra"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/models"
