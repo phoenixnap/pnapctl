@@ -2,6 +2,7 @@ package privatenetwork
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
 
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
@@ -21,5 +22,7 @@ var DeletePrivateNetworkCmd = &cobra.Command{
 }
 
 func deletePrivateNetwork(id string) error {
+	log.Info().Msgf("Removing Private Network with ID [%s].", id)
+
 	return networks.Client.PrivateNetworkDelete(id)
 }

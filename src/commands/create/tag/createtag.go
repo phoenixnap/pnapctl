@@ -3,6 +3,8 @@ package tag
 import (
 	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/tags"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -42,6 +44,8 @@ isBillingTag: false
 }
 
 func createTag() error {
+	log.Info().Msg("Creating new Tag...")
+
 	tagCreate, err := models.CreateRequestFromFile[tagapi.TagCreate](Filename)
 
 	if err != nil {

@@ -2,6 +2,8 @@ package month_to_date
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -40,6 +42,8 @@ Every record corresponds to a charge. All dates & times are in UTC.`,
 }
 
 func getRatedUsageMonthToDate() error {
+	log.Info().Msg("Retrieving all rated-usages for the current calendar month...")
+
 	ratedUsageRecords, err := billing.Client.RatedUsageMonthToDateGet(ProductCategory)
 
 	if err != nil {

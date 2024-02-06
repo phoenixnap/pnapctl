@@ -3,6 +3,8 @@ package tag
 import (
 	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/tags"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -41,6 +43,8 @@ isBillingTag: false`,
 }
 
 func patchTag(id string) error {
+	log.Info().Msgf("Patching Tag with ID [%s].", id)
+
 	tagEdit, err := models.CreateRequestFromFile[tagapi.TagUpdate](Filename)
 	if err != nil {
 		return err

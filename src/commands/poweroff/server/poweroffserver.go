@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
@@ -23,6 +25,8 @@ var PowerOffServerCmd = &cobra.Command{
 }
 
 func powerOffServer(id string) error {
+	log.Info().Msgf("Powering off Server with ID [%s].", id)
+
 	result, err := bmcapi.Client.ServerPowerOff(id)
 	if err != nil {
 		return err

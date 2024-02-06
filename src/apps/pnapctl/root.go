@@ -3,6 +3,8 @@ package commands
 import (
 	"fmt"
 	"os"
+	"strings"
+	"time"
 
 	autorenew "phoenixnap.com/pnapctl/commands/autorenew"
 	"phoenixnap.com/pnapctl/commands/convert"
@@ -13,7 +15,8 @@ import (
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 
 	"github.com/mitchellh/go-homedir"
-	"github.com/sirupsen/logrus"
+    "github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 
 	"github.com/spf13/cobra"
@@ -92,7 +95,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Warn (default) to Debug.")
 
-	cobra.OnInitialize(initConfig, setLoggingLevel)
+	cobra.OnInitialize(initConfig, loggerConfig)
 }
 
 func initConfig() {
@@ -177,8 +180,23 @@ func initConfig() {
 	}
 }
 
-func setLoggingLevel() {
+func loggerConfig() {
+
+	// Customize the logger output
+	output := zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339}
+	output.FormatLevel = func(i interface{}) string {
+		return strings.ToUpper(fmt.Sprintf("[%s]", i))
+	}
+
+	// Create a new logger instance with the configured output
+	logger := zerolog.New(output).With().Timestamp().Caller().Logger()
+	log.Logger = logger
+
+	// Default level is Warn
+	zerolog.SetGlobalLevel(zerolog.WarnLevel)
+
+	// If verbose flag is provided set the global level to Debug
 	if verbose {
-		logrus.SetLevel(logrus.DebugLevel)
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	}
 }

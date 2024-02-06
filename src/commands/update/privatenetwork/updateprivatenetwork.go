@@ -3,6 +3,8 @@ package privatenetwork
 import (
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -41,6 +43,8 @@ locationDefault: true`,
 }
 
 func updatePrivateNetwork(id string) error {
+	log.Info().Msgf("Updating Private Network with ID [%s].", id)
+
 	privateNetworkUpdate, err := models.CreateRequestFromFile[networkapi.PrivateNetworkModify](Filename)
 
 	if err != nil {

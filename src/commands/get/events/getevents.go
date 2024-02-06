@@ -2,6 +2,8 @@ package events
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/audit"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -47,6 +49,7 @@ pnapctl get events [--from <FROM>] [--to <TO>] [--limit <LIMIT>] [--order <ORDER
 }
 
 func getEvents() error {
+	log.Info().Msg("Retrieving list of events related to the account...")
 	events, err := audit.Client.EventsGet(From, To, Limit, Order, Username, Verb, Uri)
 
 	if err != nil {

@@ -3,6 +3,8 @@ package ip_blocks
 import (
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/ip"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -43,6 +45,8 @@ location: PHX`,
 }
 
 func createIpBlock() error {
+	log.Info().Msg("Creating new Ip Block...")
+
 	ipBlockCreate, err := models.CreateRequestFromFile[ipapi.IpBlockCreate](Filename)
 
 	if err != nil {

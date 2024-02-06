@@ -3,6 +3,8 @@ package privatenetwork
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -51,6 +53,8 @@ statusDescription: in-progress
 }
 
 func createPrivateNetworkForServer(id string) error {
+	log.Info().Msgf("Creating new Private Network for Server with ID [%s].", id)
+
 	serverPrivateNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPrivateNetwork](Filename)
 
 	if err != nil {

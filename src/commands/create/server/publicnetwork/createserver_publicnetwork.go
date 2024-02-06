@@ -3,6 +3,8 @@ package publicnetwork
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -49,6 +51,8 @@ statusDescription: in-progress
 }
 
 func createPublicNetworkForServer(id string) error {
+	log.Info().Msgf("Creating new Public Network for Server with ID [%s].", id)
+
 	serverPublicNetwork, err := models.CreateRequestFromFile[bmcapisdk.ServerPublicNetwork](Filename)
 
 	if err != nil {

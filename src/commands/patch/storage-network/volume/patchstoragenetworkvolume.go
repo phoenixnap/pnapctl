@@ -3,6 +3,8 @@ package storagenetwork
 import (
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -46,6 +48,8 @@ pathSuffix: /pathSuffix`,
 }
 
 func patchStorageNetworkVolume() error {
+	log.Info().Msgf("Patching Volume with ID [%s] for Storage Network with ID [%s].", volumeID, storageNetworkID)
+
 	request, err := models.CreateRequestFromFile[networkstorageapi.VolumeUpdate](Filename)
 	if err != nil {
 		return err

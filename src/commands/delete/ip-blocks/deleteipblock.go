@@ -3,6 +3,7 @@ package ip_blocks
 import (
 	"fmt"
 
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/ip"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
@@ -22,6 +23,8 @@ var DeleteIpBlockCmd = &cobra.Command{
 }
 
 func deleteIpBlock(id string) error {
+	log.Info().Msgf("Deleting Ip Block with ID [%s].", id)
+
 	result, err := ip.Client.IpBlocksIpBlockIdDelete(id)
 	if err != nil {
 		return err

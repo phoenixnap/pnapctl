@@ -9,6 +9,7 @@ import (
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
 )
 
 // Filename is the filename from which to retrieve the request body
@@ -46,6 +47,8 @@ sshKeyIds:
 }
 
 func resetServer(id string) error {
+	log.Info().Msgf("Reseting Server with ID [%s].", id)
+
 	var request *bmcapisdk.ServerReset = &bmcapisdk.ServerReset{}
 	var err error
 

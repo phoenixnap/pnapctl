@@ -3,6 +3,8 @@ package disable
 import (
 	"github.com/phoenixnap/go-sdk-bmc/billingapi"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -42,6 +44,8 @@ autoRenewDisableReasons: "disable reason"`,
 }
 
 func disableAutoRenewForReservation(id string) error {
+	log.Info().Msgf("Disabling auto renewal for Reservation with ID [%s].", id)
+
 	request, err := models.CreateRequestFromFile[billingapi.ReservationAutoRenewDisableRequest](Filename)
 	if err != nil {
 		return err

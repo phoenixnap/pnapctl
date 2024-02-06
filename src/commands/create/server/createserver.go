@@ -3,6 +3,8 @@ package server
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+	
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -55,6 +57,8 @@ sshKeys:
 }
 
 func createServer() error {
+	log.Info().Msg("Creating new Server...")
+
 	serverCreate, err := models.CreateRequestFromFile[bmcapisdk.ServerCreate](Filename)
 
 	if err != nil {

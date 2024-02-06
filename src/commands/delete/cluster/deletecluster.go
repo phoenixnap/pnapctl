@@ -3,6 +3,7 @@ package cluster
 import (
 	"fmt"
 
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/rancher"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
@@ -22,6 +23,8 @@ var DeleteClusterCmd = &cobra.Command{
 }
 
 func deleteCluster(id string) error {
+	log.Info().Msgf("Deleting Cluster with ID [%s].", id)
+
 	result, err := rancher.Client.ClusterDelete(id)
 	if err != nil {
 		return err

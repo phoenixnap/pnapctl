@@ -2,6 +2,8 @@ package storagenetworks
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/commands/get/storage-networks/volumes"
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -42,6 +44,8 @@ pnapctl get storage-network <ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getStorageNetworks() error {
+	log.Info().Msg("Retrieving list of Storage Networks...")
+
 	storagenetworks, err := networkstorage.Client.NetworkStorageGet()
 
 	if err != nil {
@@ -52,6 +56,8 @@ func getStorageNetworks() error {
 }
 
 func getStorageNetworksById(id string) error {
+	log.Info().Msgf("Retrieving Storage Network with ID [%s].", id)
+
 	storagenetwork, err := networkstorage.Client.NetworkStorageGetById(id)
 
 	if err != nil {

@@ -2,6 +2,8 @@ package locations
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/locations"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -37,6 +39,8 @@ By default, the data is printed in table format.`,
 }
 
 func getLocations() error {
+	log.Info().Msg("Retrieving list of locations...")
+	
 	locations, err := locations.Client.LocationsGet(Location, ProductCategory)
 
 	if err != nil {

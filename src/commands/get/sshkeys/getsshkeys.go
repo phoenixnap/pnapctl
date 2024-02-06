@@ -2,6 +2,8 @@ package sshkeys
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -43,6 +45,8 @@ pnapctl get ssh-key <SSH_KEY_ID> [--full] [--output <OUTPUT_TYPE>]`,
 }
 
 func getSshKeys() error {
+	log.Info().Msg("Retrieving list of Ssh Keys...")
+
 	sshKeys, err := bmcapi.Client.SshKeysGet()
 
 	if err != nil {
@@ -53,6 +57,8 @@ func getSshKeys() error {
 }
 
 func getSshKeyById(sshKeyId string) error {
+	log.Info().Msgf("Retrieving Ssh Key with ID [%s].", sshKeyId)
+
 	sshKey, err := bmcapi.Client.SshKeyGetById(sshKeyId)
 
 	if err != nil {

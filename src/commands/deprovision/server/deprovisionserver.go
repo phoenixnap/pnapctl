@@ -5,6 +5,8 @@ import (
 
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -39,6 +41,8 @@ deleteIpBlocks: false`,
 }
 
 func deprovisionServer(id string) error {
+	log.Info().Msgf("Deprovisioning Server with ID [%s].", id)
+
 	relinquishIpBlockRequest, err := models.CreateRequestFromFile[bmcapisdk.RelinquishIpBlock](Filename)
 	if err != nil {
 		return err

@@ -3,7 +3,9 @@ package ipblock
 import (
 	"fmt"
 
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -34,6 +36,8 @@ pnapctl delete public-network ip-block <NETWORK_ID> <IP_BLOCK_ID> [--output <OUT
 }
 
 func deleteIpBlockFromPublicNetwork(networkId, ipBlockId string) error {
+	log.Info().Msgf("Removing Ip Block with ID [%s] in Public Network with ID [%s].", ipBlockId, networkId)
+
 	message, err := networks.Client.PublicNetworkIpBlockDelete(networkId, ipBlockId, force)
 
 	if err != nil {

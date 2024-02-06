@@ -2,6 +2,8 @@ package privatenetwork
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -43,6 +45,8 @@ pnapctl get private-networks <PRIVATE_NETWORK_ID> [--output <OUTPUT_TYPE>]`,
 }
 
 func getPrivateNetworks() error {
+	log.Info().Msg("Retrieving list of Private Networks...")
+
 	privateNetworks, err := networks.Client.PrivateNetworksGet(location)
 
 	if err != nil {
@@ -53,6 +57,8 @@ func getPrivateNetworks() error {
 }
 
 func getPrivateNetworkById(privateNetworkID string) error {
+	log.Info().Msgf("Retrieving Private Network with ID [%s].", privateNetworkID)
+
 	privateNetwork, err := networks.Client.PrivateNetworkGetById(privateNetworkID)
 
 	if err != nil {

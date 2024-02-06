@@ -3,6 +3,8 @@ package storagenetwork
 import (
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -45,6 +47,8 @@ pathSuffix: /pathSuffix`,
 }
 
 func createStorageNetworkVolume() error {
+	log.Info().Msgf("Creating new Volume for Storage Network with ID [%s].", storageNetworkID)
+
 	request, err := models.CreateRequestFromFile[networkstorageapi.VolumeCreate](Filename)
 	if err != nil {
 		return err

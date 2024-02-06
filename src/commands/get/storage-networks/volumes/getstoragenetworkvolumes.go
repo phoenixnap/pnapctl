@@ -2,6 +2,8 @@ package volumes
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
+
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
@@ -48,6 +50,8 @@ pnapctl get volume <ID> [--full] [--output <OUTPUT_TYPE>]`,
 }
 
 func getVolumes(storageId string) error {
+	log.Info().Msgf("Retrieving list of Volumes for Storage Network with ID [%s].", storageId)
+
 	volumes, err := networkstorage.Client.NetworkStorageGetVolumes(storageId, Tags)
 
 	if err != nil {
@@ -58,6 +62,8 @@ func getVolumes(storageId string) error {
 }
 
 func getVolumeById(storageId, volumeId string) error {
+	log.Info().Msgf("Retrieving Volume with ID [%s] for Storage Network with ID [%s].", volumeId, storageId)
+
 	volume, err := networkstorage.Client.NetworkStorageGetVolumeById(storageId, volumeId)
 
 	if err != nil {

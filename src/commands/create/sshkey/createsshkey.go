@@ -3,6 +3,7 @@ package sshkey
 import (
 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/spf13/cobra"
+	"github.com/rs/zerolog/log"
 
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
@@ -45,6 +46,8 @@ key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyVGaw1PuEl98f4/7Kq3O9ZIvDw2OFOSXAFVq
 }
 
 func createSshKey() error {
+	log.Info().Msg("Creating new Ssh Key...")
+
 	sshKeyCreate, err := models.CreateRequestFromFile[bmcapisdk.SshKeyCreate](Filename)
 
 	if err != nil {
