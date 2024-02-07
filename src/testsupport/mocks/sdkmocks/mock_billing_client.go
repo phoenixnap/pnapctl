@@ -5,6 +5,7 @@
 package sdkmocks
 
 import (
+	"fmt"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -135,6 +136,7 @@ func (m *MockBillingSdkClient) ReservationDisableAutoRenew(id string, request bi
 
 // ReservationDisableAutoRenew indicates an expected call of ReservationDisableAutoRenew.
 func (mr *MockBillingSdkClientMockRecorder) ReservationDisableAutoRenew(id, request interface{}) *gomock.Call {
+	fmt.Printf("in mock: %v\n", request)
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReservationDisableAutoRenew", reflect.TypeOf((*MockBillingSdkClient)(nil).ReservationDisableAutoRenew), id, request)
 }

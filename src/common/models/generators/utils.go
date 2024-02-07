@@ -2,11 +2,12 @@ package generators
 
 import (
 	"github.com/go-faker/faker/v4"
+	"github.com/go-faker/faker/v4/pkg/options"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
-func Generate[T any]() (t T) {
-	faker.FakeData(&t)
+func Generate[T any](opt ...options.OptionFunc) (t T) {
+	faker.FakeData(&t, opt...)
 	return
 }
 
