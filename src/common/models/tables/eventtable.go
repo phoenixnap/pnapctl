@@ -1,7 +1,7 @@
 package tables
 
 import (
-	auditsdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
+	auditsdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v3"
 	"phoenixnap.com/pnapctl/common/models"
 )
 

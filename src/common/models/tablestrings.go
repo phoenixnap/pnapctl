@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/auditapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"

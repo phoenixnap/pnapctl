@@ -25,8 +25,8 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.6 // indirect
-	github.com/phoenixnap/go-sdk-bmc/billingapi/v2 v2.0.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/auditapi/v3 v3.0.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/billingapi/v2 v2.0.1 // indirect
 	github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.4.0 // indirect
 	github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.5 // indirect
 	github.com/phoenixnap/go-sdk-bmc/locationapi v1.0.0 // indirect

@@ -8,8 +8,8 @@ require (
 	github.com/influxdata/influxdb v1.11.4
 	github.com/landoop/tableprinter v0.0.0-20201125135848-89e81fc956e7
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.6
-	github.com/phoenixnap/go-sdk-bmc/billingapi/v2 v2.0.0
+	github.com/phoenixnap/go-sdk-bmc/auditapi/v3 v3.0.1
+	github.com/phoenixnap/go-sdk-bmc/billingapi/v2 v2.0.1
 	github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.4.0
 	github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.5
 	github.com/phoenixnap/go-sdk-bmc/locationapi v1.0.0

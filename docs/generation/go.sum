@@ -53,10 +53,12 @@ github.com/mitchellh/mapstructure v1.5.0 h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyua
 github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
 github.com/pelletier/go-toml/v2 v2.1.1 h1:LWAJwfNvjQZCFIDKWYQaM62NcYeYViCmWIwmOStowAI=
 github.com/pelletier/go-toml/v2 v2.1.1/go.mod h1:tJU2Z3ZkXwnxa4DPO899bsyIoywizdUvyaeZurnPPDc=
-github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.6 h1:PncmobXGiwSOWqqEUzPDvy3Jsu7stwA3BMDofiKPU8A=
-github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.6/go.mod h1:9oH0AwfDV2y8g+ED4LB+4llQAuelJvWpR2uvxhSXmGs=
+github.com/phoenixnap/go-sdk-bmc/auditapi/v3 v3.0.0-20240206131702-b39ea4cd07fa h1:/umRQZJ2seJMxC0ZSM1/WkmAIbhfkUgN0bfMLiyFq7k=
+github.com/phoenixnap/go-sdk-bmc/auditapi/v3 v3.0.0-20240206131702-b39ea4cd07fa/go.mod h1:8390KvXPZE8veGsPvzU4LrTC+v4nDSPX50svCOXp30s=
+github.com/phoenixnap/go-sdk-bmc/auditapi/v3 v3.0.1/go.mod h1:8390KvXPZE8veGsPvzU4LrTC+v4nDSPX50svCOXp30s=
 github.com/phoenixnap/go-sdk-bmc/billingapi/v2 v2.0.0 h1:gvAi3p4zhhTVXXozNCyiP+78tqm5qrJn9MltmcgzRgA=
 github.com/phoenixnap/go-sdk-bmc/billingapi/v2 v2.0.0/go.mod h1:ipcDJ5/E9OSTpCRRzx3rQlnYRLlCDbLOBBFbJ9/xTgE=
+github.com/phoenixnap/go-sdk-bmc/billingapi/v2 v2.0.1/go.mod h1:ipcDJ5/E9OSTpCRRzx3rQlnYRLlCDbLOBBFbJ9/xTgE=
 github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.4.0 h1:0Pv+J8vEI7kF5QUigi8scChzhs+MUXPWAZ/edO9Kgqg=
 github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.4.0/go.mod h1:EB1RQ+yhFslZ+rNMnAbi7DyOqca1UJkvAgxnytLRiNY=
 github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.5 h1:6iHlPAQDs+0qE3F0smG+OS6nfpQGk2L3dYvhI0Mk3JQ=

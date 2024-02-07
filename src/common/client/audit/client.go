@@ -2,8 +2,7 @@ package audit
 
 import (
 	"context"
-
-	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v3"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -18,7 +17,7 @@ type AuditSdkClient interface {
 }
 
 type MainClient struct {
-	EventsApiClient auditapisdk.EventsApi
+	EventsApiClient auditapisdk.EventsAPI
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) AuditSdkClient {
@@ -51,7 +50,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	api_client := auditapisdk.NewAPIClient(auditAPIconfiguration)
 
 	return MainClient{
-		EventsApiClient: api_client.EventsApi,
+		EventsApiClient: api_client.EventsAPI,
 	}
 }
 
