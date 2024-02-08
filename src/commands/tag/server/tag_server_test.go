@@ -12,13 +12,14 @@ import (
 
 	"sigs.k8s.io/yaml"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 )
 
 func tagServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
-	tagAssignmentRequests := testutil.GenN(2, generators.Generate[bmcapisdk.TagAssignmentRequest])
+	tagAssignmentRequests := testutil.GenN(1, generators.Generate[bmcapisdk.TagAssignmentRequest])
+	tagAssignmentRequests[0].AdditionalProperties = map[string]interface{}{}
 
 	// Assumed contents of the file.
 	Filename = FILENAME
@@ -96,7 +97,8 @@ func TestTagServerUnmarshallingFailure(test_framework *testing.T) {
 
 func TestTagServerClientFailure(test_framework *testing.T) {
 	// Setup
-	tagAssignmentRequests := testutil.GenN(2, generators.Generate[bmcapisdk.TagAssignmentRequest])
+	tagAssignmentRequests := testutil.GenN(1, generators.Generate[bmcapisdk.TagAssignmentRequest])
+	tagAssignmentRequests[0].AdditionalProperties = map[string]interface{}{}
 
 	// Assumed contents of the file.
 	Filename = FILENAME

@@ -7,8 +7,17 @@ import (
 )
 
 func Generate[T any]() (t T) {
-	ignoreAdditionalProperties := options.WithFieldsToIgnore("AdditionalProperties")
-	faker.FakeData(&t, ignoreAdditionalProperties)
+	// using WithIgnoreFields sets AdditionalProperties to nil which causes tests
+	// tests to break, as upon unmarshalling it instead becomes an empty map.
+	//
+	// so instead, we use a custom provider to auto-set this property as empty.
+	emptyAdditionalProperties := options.WithCustomFieldProvider(
+		"AdditionalProperties",
+		func() (interface{}, error) {
+			return map[string]interface{}{}, nil
+		})
+
+	faker.FakeData(&t, emptyAdditionalProperties)
 	return
 }
 

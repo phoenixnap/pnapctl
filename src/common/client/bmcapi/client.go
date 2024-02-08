@@ -3,7 +3,7 @@ package bmcapi
 import (
 	"context"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -50,9 +50,9 @@ type BmcApiSdkClient interface {
 }
 
 type MainClient struct {
-	ServersApiClient bmcapisdk.ServersApi
-	SshKeysApiClient bmcapisdk.SSHKeysApi
-	QuotaApiClient   bmcapisdk.QuotasApi
+	ServersApiClient bmcapisdk.ServersAPI
+	SshKeysApiClient bmcapisdk.SSHKeysAPI
+	QuotaApiClient   bmcapisdk.QuotasAPI
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) BmcApiSdkClient {
@@ -85,9 +85,9 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	api_client := bmcapisdk.NewAPIClient(bmcAPIconfiguration)
 
 	return MainClient{
-		ServersApiClient: api_client.ServersApi,
-		SshKeysApiClient: api_client.SSHKeysApi,
-		QuotaApiClient:   api_client.QuotasApi,
+		ServersApiClient: api_client.ServersAPI,
+		SshKeysApiClient: api_client.SSHKeysAPI,
+		QuotaApiClient:   api_client.QuotasAPI,
 	}
 }
 

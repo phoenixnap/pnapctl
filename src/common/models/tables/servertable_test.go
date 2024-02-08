@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
@@ -52,7 +52,7 @@ func assertLongServersEqual(test_framework *testing.T, server bmcapisdk.Server, 
 	assert.Equal(test_framework, server.Status, longServerTable.Status)
 	assert.Equal(test_framework, server.Hostname, longServerTable.Hostname)
 	assert.Equal(test_framework, DerefString(server.Description), longServerTable.Description)
-	assert.Equal(test_framework, server.Os, longServerTable.Os)
+	assert.Equal(test_framework, DerefString(server.Os), longServerTable.Os)
 	assert.Equal(test_framework, server.Type, longServerTable.Type)
 	assert.Equal(test_framework, server.Location, longServerTable.Location)
 	assert.Equal(test_framework, server.Cpu, longServerTable.Cpu)

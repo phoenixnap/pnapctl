@@ -17,7 +17,6 @@ import (
 func convertReservationSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
-	reservationConvert.AdditionalProperties = map[string]interface{}{}
 
 	// Assumed contents of the file.
 	Filename = FILENAME
@@ -73,7 +72,6 @@ func TestConvertReservationUnmarshallingFailure(test_framework *testing.T) {
 func TestConvertReservationClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
-	reservationConvert.AdditionalProperties = map[string]interface{}{}
 
 	// Assumed contents of the file.
 	Filename = FILENAME

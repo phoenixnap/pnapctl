@@ -1,9 +1,9 @@
 package server
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
-	"github.com/spf13/cobra"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 
 	privatenetwork "phoenixnap.com/pnapctl/commands/patch/server/private-network"
 	publicnetwork "phoenixnap.com/pnapctl/commands/patch/server/public-network"

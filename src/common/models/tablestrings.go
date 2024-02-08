@@ -6,7 +6,7 @@ import (
 
 	"github.com/phoenixnap/go-sdk-bmc/auditapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
-	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
 	"github.com/phoenixnap/go-sdk-bmc/locationapi"
 	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"

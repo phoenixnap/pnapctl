@@ -1,7 +1,7 @@
 package tables
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
@@ -78,7 +78,7 @@ func ToLongServerTable(server bmcapisdk.Server) LongServerTable {
 		Status:               server.Status,
 		Hostname:             server.Hostname,
 		Description:          DerefString(server.Description),
-		Os:                   server.Os,
+		Os:                   DerefString(server.Os),
 		Type:                 server.Type,
 		Location:             server.Location,
 		Cpu:                  server.Cpu,

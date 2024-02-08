@@ -17,7 +17,6 @@ import (
 func autoRenewReservationDisableSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	autoRenewDisableRequest := generators.Generate[billingapi.ReservationAutoRenewDisableRequest]()
-	autoRenewDisableRequest.AdditionalProperties = map[string]interface{}{}
 
 	Filename = FILENAME
 	ExpectFromFileSuccess(test_framework, marshaller, autoRenewDisableRequest)
@@ -72,7 +71,6 @@ func TestAutoRenewReservationDisableUnmarshallingFailure(test_framework *testing
 func TestAutoRenewReservationDisableClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	autoRenewDisableRequest := generators.Generate[billingapi.ReservationAutoRenewDisableRequest]()
-	autoRenewDisableRequest.AdditionalProperties = map[string]interface{}{}
 
 	// Assumed contents of the file.
 	Filename = FILENAME
