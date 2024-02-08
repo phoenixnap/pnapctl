@@ -15,10 +15,10 @@ require (
 	github.com/phoenixnap/go-sdk-bmc/locationapi v1.0.0
 	github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.3.1
 	github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.4.0
+	github.com/phoenixnap/go-sdk-bmc/paymentsapi v1.0.1
 	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.5
 	github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.5
 	github.com/rs/zerolog v1.31.0
-	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.8.4
