@@ -22,7 +22,7 @@ func init() {
 
 	GetTransactionsCmd.PersistentFlags().IntVar(&Limit, "limit", 0, "A 'from' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'")
 	GetTransactionsCmd.PersistentFlags().IntVar(&Offset, "offset", 0, "A 'to' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'")
-	GetTransactionsCmd.PersistentFlags().StringVar(&SortDirection, "sortDirection", 0, "Limit the number of records returned.")
+	GetTransactionsCmd.PersistentFlags().StringVar(&SortDirection, "sortDirection", "", "Limit the number of records returned.")
 	GetTransactionsCmd.PersistentFlags().StringVar(&SortField, "sortField", "", "Ordering of the event's time. Must be 'ASC' or 'DESC'")
 	GetTransactionsCmd.PersistentFlags().StringVar(&From, "from", "", "The username that did the actions.")
 	GetTransactionsCmd.PersistentFlags().StringVar(&To, "to", "", "The HTTP verb corresponding to the action. Must be 'POST', 'PUT', 'PATCH', 'DELETE'")
