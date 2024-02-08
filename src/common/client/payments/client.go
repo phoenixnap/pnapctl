@@ -14,8 +14,8 @@ var Client PaymentApiSdkClient
 
 type PaymentApiSdkClient interface {
 	//Transactions
-	TransactionsGet() (*paymentsapisdk.PaginatedTransactions, error)
-	TransactionGetById(quotaId string) (*paymentsapisdk.Transaction, error)
+	TransactionsGet(limit int, offset int, sortDirection string, sortField string, from string, to string) (*paymentsapisdk.PaginatedTransactions, error)
+	TransactionGetById(transactionId string) (*paymentsapisdk.Transaction, error)
 }
 
 type MainClient struct {
@@ -57,7 +57,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 }
 
 // Transaction APIs
-func (m MainClient) TransactionsGet() (*paymentsapisdk.PaginatedTransactions, error) {
+func (m MainClient) TransactionsGet(limit int, offset int, sortDirection string, sortField string, from string, to string) (*paymentsapisdk.PaginatedTransactions, error) {
 	return client.HandleResponse(m.TransactionApiClient.TransactionsGet(context.Background()).Execute())
 }
 
