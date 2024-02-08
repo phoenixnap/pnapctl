@@ -17,6 +17,7 @@ import (
 func createReservationSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	reservationCreate := generators.Generate[billingapi.ReservationRequest]()
+	reservationCreate.AdditionalProperties = map[string]interface{}{}
 
 	// Assumed contents of the file.
 	Filename = FILENAME
@@ -72,6 +73,7 @@ func TestCreateReservationUnmarshallingFailure(test_framework *testing.T) {
 func TestCreateReservationClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	reservationCreate := generators.Generate[billingapi.ReservationRequest]()
+	reservationCreate.AdditionalProperties = map[string]interface{}{}
 
 	// Assumed contents of the file.
 	Filename = FILENAME

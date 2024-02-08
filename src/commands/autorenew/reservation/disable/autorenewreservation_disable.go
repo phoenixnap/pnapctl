@@ -2,6 +2,7 @@ package disable
 
 import (
 	"fmt"
+
 	"github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -48,7 +49,7 @@ func disableAutoRenewForReservation(id string) error {
 	log.Info().Msgf("Disabling auto renewal for Reservation with ID [%s].", id)
 
 	request, err := models.CreateRequestFromFile[billingapi.ReservationAutoRenewDisableRequest](Filename)
-	fmt.Printf("Request obj: %v\n", request)
+
 	if err != nil {
 		return err
 	}

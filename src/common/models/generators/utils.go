@@ -6,7 +6,13 @@ import (
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
-func Generate[T any](opt ...options.OptionFunc) (t T) {
+func Generate[T any]() (t T) {
+	ignoreAdditionalProperties := options.WithFieldsToIgnore("AdditionalProperties")
+	faker.FakeData(&t, ignoreAdditionalProperties)
+	return
+}
+
+func GenerateWithOpts[T any](opt ...options.OptionFunc) (t T) {
 	faker.FakeData(&t, opt...)
 	return
 }

@@ -2,3 +2,6 @@
 bin/
 build/
 out/
+
+# VS code files
+*.code-workspace

@@ -2,8 +2,6 @@ package disable
 
 import (
 	"encoding/json"
-	"fmt"
-	"github.com/go-faker/faker/v4/pkg/options"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -18,27 +16,23 @@ import (
 
 func autoRenewReservationDisableSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
-	autoRenewDisableRequest := generators.Generate[billingapi.ReservationAutoRenewDisableRequest](options.WithFieldsToIgnore("AdditionalProperties"))
-	fmt.Printf("AutoRenewDisableReason 1: %v\n", autoRenewDisableRequest)
+	autoRenewDisableRequest := generators.Generate[billingapi.ReservationAutoRenewDisableRequest]()
+	autoRenewDisableRequest.AdditionalProperties = map[string]interface{}{}
+
 	Filename = FILENAME
 	ExpectFromFileSuccess(test_framework, marshaller, autoRenewDisableRequest)
-	fmt.Printf("AutoRenewDisableReason 2: %v\n", autoRenewDisableRequest)
 
 	// What the server should return.
-	createdReservation := generators.Generate[billingapi.Reservation](options.WithFieldsToIgnore("AdditionalProperties"))
-	fmt.Printf("AutoRenewDisableReason 3: %v\n", autoRenewDisableRequest)
-	fmt.Printf("Response generator: %+v\n", createdReservation)
+	createdReservation := generators.Generate[billingapi.Reservation]()
 
 	// Mocking
 	PrepareBillingMockClient(test_framework).
 		ReservationDisableAutoRenew(RESOURCEID, gomock.Eq(autoRenewDisableRequest)).
 		Return(&createdReservation, nil)
 
-	fmt.Printf("AutoRenewDisableReason 4: %v\n", autoRenewDisableRequest)
 	// Run command
 	err := AutoRenewDisableReservationCmd.RunE(AutoRenewDisableReservationCmd, []string{RESOURCEID})
 
-	fmt.Printf("AutoRenewDisableReason 5: %v\n", autoRenewDisableRequest)
 	// Assertionsioutil
 	assert.NoError(test_framework, err)
 }
@@ -78,6 +72,7 @@ func TestAutoRenewReservationDisableUnmarshallingFailure(test_framework *testing
 func TestAutoRenewReservationDisableClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	autoRenewDisableRequest := generators.Generate[billingapi.ReservationAutoRenewDisableRequest]()
+	autoRenewDisableRequest.AdditionalProperties = map[string]interface{}{}
 
 	// Assumed contents of the file.
 	Filename = FILENAME
