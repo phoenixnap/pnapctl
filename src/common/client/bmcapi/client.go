@@ -35,6 +35,7 @@ type BmcApiSdkClient interface {
 	ServerPublicNetworkPatch(serverId string, networkId string, serverNetworkUpdate bmcapisdk.ServerNetworkUpdate, force bool) (*bmcapisdk.ServerPublicNetwork, error)
 	ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (*bmcapisdk.ServerIpBlock, error)
 	ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, error)
+	ServerProvision(serverId string, serverProvision bmcapisdk.ServerProvision) (*bmcapisdk.Server, error)
 
 	//Ssh Keys
 	SshKeyPost(sshkeyCreate bmcapisdk.SshKeyCreate) (*bmcapisdk.SshKey, error)
@@ -174,6 +175,10 @@ func (m MainClient) ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.S
 
 func (m MainClient) ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, error) {
 	return client.HandleResponse(m.ServersApiClient.ServersServerIdIpBlocksIpBlockIdDelete(context.Background(), serverId, ipBlockId).RelinquishIpBlock(relinquishIpBlock).Execute())
+}
+
+func (m MainClient) ServerProvision(serverId string, serverProvision bmcapisdk.ServerProvision) (*bmcapisdk.Server, error) {
+	return client.HandleResponse(m.ServersApiClient.ServersServerIdActionsProvisionPost(context.Background(), serverId).ServerProvision(serverProvision).Execute())
 }
 
 // SSH Key APIs
