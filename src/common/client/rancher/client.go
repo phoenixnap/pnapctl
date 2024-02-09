@@ -3,7 +3,7 @@ package rancher
 import (
 	"context"
 
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
+	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v3"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -20,7 +20,7 @@ type RancherSdkClient interface {
 }
 
 type MainClient struct {
-	RancherSdkClient ranchersdk.ClustersApi
+	RancherSdkClient ranchersdk.ClustersAPI
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) RancherSdkClient {
@@ -53,7 +53,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	api_client := ranchersdk.NewAPIClient(rancherConfiguration)
 
 	return MainClient{
-		RancherSdkClient: api_client.ClustersApi,
+		RancherSdkClient: api_client.ClustersAPI,
 	}
 }
 

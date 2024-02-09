@@ -1,7 +1,7 @@
 package tables
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )

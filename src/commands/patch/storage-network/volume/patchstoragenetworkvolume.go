@@ -1,9 +1,9 @@
 package storagenetwork
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
-	"github.com/spf13/cobra"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/models"
@@ -14,7 +14,7 @@ import (
 
 var (
 	Filename, storageNetworkID, volumeID string
-	Full bool
+	Full                                 bool
 )
 
 func init() {

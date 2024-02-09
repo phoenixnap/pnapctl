@@ -10,7 +10,7 @@ import (
 	"sigs.k8s.io/yaml"
 
 	"github.com/golang/mock/gomock"
-	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v3"
 	"github.com/stretchr/testify/assert"
 
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"

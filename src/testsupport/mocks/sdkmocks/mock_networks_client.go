@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	networkapi "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
+	networkapi "github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
 )
 
 // MockNetworkSdkClient is a mock of NetworkSdkClient interface.

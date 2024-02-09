@@ -1,16 +1,16 @@
 package storagenetwork
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
-	"github.com/spf13/cobra"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 
+	volume "phoenixnap.com/pnapctl/commands/patch/storage-network/volume"
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
-	volume "phoenixnap.com/pnapctl/commands/patch/storage-network/volume"
 )
 
 var (

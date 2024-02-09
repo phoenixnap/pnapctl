@@ -1,7 +1,7 @@
 package printer
 
 import (
-	locationapisdk "github.com/phoenixnap/go-sdk-bmc/locationapi"
+	locationapisdk "github.com/phoenixnap/go-sdk-bmc/locationapi/v2"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )

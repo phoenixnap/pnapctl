@@ -1,7 +1,7 @@
 package tables
 
 import (
-	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
+	ranchersdk "github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v3"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )

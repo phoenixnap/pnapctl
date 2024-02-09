@@ -3,7 +3,7 @@ package locations
 import (
 	"context"
 
-	locationapisdk "github.com/phoenixnap/go-sdk-bmc/locationapi"
+	locationapisdk "github.com/phoenixnap/go-sdk-bmc/locationapi/v2"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -18,7 +18,7 @@ type LocationSdkClient interface {
 }
 
 type MainClient struct {
-	LocationsApiClient locationapisdk.LocationsApi
+	LocationsApiClient locationapisdk.LocationsAPI
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) LocationSdkClient {
@@ -51,7 +51,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	api_client := locationapisdk.NewAPIClient(billingAPIconfiguration)
 
 	return MainClient{
-		LocationsApiClient: api_client.LocationsApi,
+		LocationsApiClient: api_client.LocationsAPI,
 	}
 }
 

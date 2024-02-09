@@ -3,7 +3,7 @@ package networkstorage
 import (
 	"context"
 
-	networkstoragesdk "github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
+	networkstoragesdk "github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -27,7 +27,7 @@ type NetworkStorageSdkClient interface {
 }
 
 type MainClient struct {
-	StorageNetworksApiClient networkstoragesdk.StorageNetworksApi
+	StorageNetworksApiClient networkstoragesdk.StorageNetworksAPI
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) MainClient {
@@ -60,7 +60,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	api_client := networkstoragesdk.NewAPIClient(networkstorageAPIconfiguration)
 
 	return MainClient{
-		StorageNetworksApiClient: api_client.StorageNetworksApi,
+		StorageNetworksApiClient: api_client.StorageNetworksAPI,
 	}
 }
 
