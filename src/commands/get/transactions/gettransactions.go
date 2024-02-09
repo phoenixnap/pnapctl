@@ -21,9 +21,9 @@ func init() {
 	utils.SetupOutputFlag(GetTransactionsCmd)
 
 	GetTransactionsCmd.PersistentFlags().IntVar(&Limit, "limit", 0, "Limit the number of records returned.")
-	GetTransactionsCmd.PersistentFlags().IntVar(&Offset, "offset", 0, "...")
+	GetTransactionsCmd.PersistentFlags().IntVar(&Offset, "offset", 0, "The number of items to skip in the results.")
 	GetTransactionsCmd.PersistentFlags().StringVar(&SortDirection, "sortDirection", "", "Ordering of the event's time. Must be 'ASC' or 'DESC'")
-	GetTransactionsCmd.PersistentFlags().StringVar(&SortField, "sortField", "", "...")
+	GetTransactionsCmd.PersistentFlags().StringVar(&SortField, "sortField", "", "If a sortField is requested, pagination will be done after sorting. Default sorting is by date.")
 	GetTransactionsCmd.PersistentFlags().StringVar(&From, "from", "", "A 'from' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'")
 	GetTransactionsCmd.PersistentFlags().StringVar(&To, "to", "", "A 'to' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'")
 }
