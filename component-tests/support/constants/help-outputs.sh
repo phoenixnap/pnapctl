@@ -57,6 +57,7 @@ Available Commands:
   ssh-key                       Retrieve one or all ssh-keys for your account.
   storage-network               Retrieve one or all storage networks.
   tag                           Retrieve one or all tags.
+  transaction                   Retrieve one or all transactions for your account.
 
 Flags:
   -h, --help   help for get
