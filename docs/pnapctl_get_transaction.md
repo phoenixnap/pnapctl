@@ -34,10 +34,10 @@ pnapctl get transactions <TRANSACTION_ID> [--output <OUTPUT_TYPE>]
       --from string            A 'from' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'
   -h, --help                   help for transaction
       --limit int              Limit the number of records returned.
-      --offset int             ...
+      --offset int             The number of items to skip in the results.
   -o, --output string          Define the output format. Possible values: table, json, yaml (default "table")
       --sortDirection string   Ordering of the event's time. Must be 'ASC' or 'DESC'
-      --sortField string       ...
+      --sortField string       If a sortField is requested, pagination will be done after sorting. Default sorting is by date.
       --to string              A 'to' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'
 ```
 
