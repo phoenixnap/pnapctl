@@ -40,7 +40,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
 		TokenURL:     tokenUrl,
-		Scopes:       []string{"bmc", "bmc.read"},
+		Scopes:       []string{"audit.read"},
 	}
 
 	auditAPIconfiguration.HTTPClient = config.Client(context.Background())
