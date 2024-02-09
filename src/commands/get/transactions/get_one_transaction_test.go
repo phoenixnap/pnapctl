@@ -1,32 +1,28 @@
 package transactions
 
-// import (
-// 	"testing"
+import (
+	"testing"
 
-// 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
-// 	"github.com/stretchr/testify/assert"
-// 	"phoenixnap.com/pnapctl/common/ctlerrors"
-// 	"phoenixnap.com/pnapctl/common/models/generators"
-// 	"phoenixnap.com/pnapctl/common/models/tables"
-// 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
-// 	"phoenixnap.com/pnapctl/testsupport/testutil"
-// )
+	"github.com/phoenixnap/go-sdk-bmc/paymentsapi"
+	"github.com/stretchr/testify/assert"
+	"phoenixnap.com/pnapctl/common/models/generators"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+)
 
-// func TestGetQuotaSuccess(test_framework *testing.T) {
-// 	quota := generators.Generate[bmcapi.Quota]()
-// 	tableQuota := tables.ToQuotaTable(quota)
+func TestGetTransactionSuccess(test_framework *testing.T) {
+	transaction := generators.Generate[paymentsapi.Transaction]()
 
-// 	PrepareBmcApiMockClient(test_framework).
-// 		QuotaGetById(RESOURCEID).
-// 		Return(&quota, nil)
+	PreparePaymentsApiMockClient(test_framework).
+		TransactionGetById(RESOURCEID).
+		Return(&transaction, nil)
 
-// 	ExpectToPrintSuccess(test_framework, tableQuota)
+	ExpectToPrintSuccess(test_framework, &transaction)
 
-// 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{RESOURCEID})
+	err := GetTransactionsCmd.RunE(GetTransactionsCmd, []string{RESOURCEID})
 
-// 	// Assertions
-// 	assert.NoError(test_framework, err)
-// }
+	// Assertions
+	assert.NoError(test_framework, err)
+}
 
 // func TestGetQuotaClientFailure(test_framework *testing.T) {
 // 	PrepareBmcApiMockClient(test_framework).

@@ -31,14 +31,14 @@ pnapctl get transactions <TRANSACTION_ID> [--output <OUTPUT_TYPE>]
 ### Options
 
 ```
-      --from string            The username that did the actions.
+      --from string            A 'from' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'
   -h, --help                   help for transaction
-      --limit int              A 'from' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'
-      --offset int             A 'to' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'
+      --limit int              Limit the number of records returned.
+      --offset int             ...
   -o, --output string          Define the output format. Possible values: table, json, yaml (default "table")
-      --sortDirection string   Limit the number of records returned.
-      --sortField string       Ordering of the event's time. Must be 'ASC' or 'DESC'
-      --to string              The HTTP verb corresponding to the action. Must be 'POST', 'PUT', 'PATCH', 'DELETE'
+      --sortDirection string   Ordering of the event's time. Must be 'ASC' or 'DESC'
+      --sortField string       ...
+      --to string              A 'to' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'
 ```
 
 ### Options inherited from parent commands

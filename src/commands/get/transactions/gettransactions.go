@@ -20,12 +20,12 @@ var To string
 func init() {
 	utils.SetupOutputFlag(GetTransactionsCmd)
 
-	GetTransactionsCmd.PersistentFlags().IntVar(&Limit, "limit", 0, "A 'from' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'")
-	GetTransactionsCmd.PersistentFlags().IntVar(&Offset, "offset", 0, "A 'to' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'")
-	GetTransactionsCmd.PersistentFlags().StringVar(&SortDirection, "sortDirection", "", "Limit the number of records returned.")
-	GetTransactionsCmd.PersistentFlags().StringVar(&SortField, "sortField", "", "Ordering of the event's time. Must be 'ASC' or 'DESC'")
-	GetTransactionsCmd.PersistentFlags().StringVar(&From, "from", "", "The username that did the actions.")
-	GetTransactionsCmd.PersistentFlags().StringVar(&To, "to", "", "The HTTP verb corresponding to the action. Must be 'POST', 'PUT', 'PATCH', 'DELETE'")
+	GetTransactionsCmd.PersistentFlags().IntVar(&Limit, "limit", 0, "Limit the number of records returned.")
+	GetTransactionsCmd.PersistentFlags().IntVar(&Offset, "offset", 0, "...")
+	GetTransactionsCmd.PersistentFlags().StringVar(&SortDirection, "sortDirection", "", "Ordering of the event's time. Must be 'ASC' or 'DESC'")
+	GetTransactionsCmd.PersistentFlags().StringVar(&SortField, "sortField", "", "...")
+	GetTransactionsCmd.PersistentFlags().StringVar(&From, "from", "", "A 'from' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'")
+	GetTransactionsCmd.PersistentFlags().StringVar(&To, "to", "", "A 'to' filter. Needs to be in the following format: '2021-04-27T16:24:57.123Z'")
 }
 
 var GetTransactionsCmd = &cobra.Command{

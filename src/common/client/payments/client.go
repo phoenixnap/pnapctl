@@ -1,4 +1,4 @@
-package bmcapi
+package payments
 
 import (
 	"context"
@@ -58,7 +58,28 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 
 // Transaction APIs
 func (m MainClient) TransactionsGet(limit int, offset int, sortDirection string, sortField string, from string, to string) (*paymentsapisdk.PaginatedTransactions, error) {
-	return client.HandleResponse(m.TransactionApiClient.TransactionsGet(context.Background()).Execute())
+	request := m.TransactionApiClient.TransactionsGet(context.Background())
+
+	if !client.IsZeroValue(limit) {
+		request = request.Limit(int32(limit))
+	}
+	if !client.IsZeroValue(offset) {
+		request = request.Offset(int32(offset))
+	}
+	if !client.IsZeroValue(sortDirection) {
+		request = request.SortDirection(sortDirection)
+	}
+	if !client.IsZeroValue(sortField) {
+		request = request.SortField(sortField)
+	}
+	if date := client.ParseDate(from); date != nil {
+		request = request.From(*date)
+	}
+	if date := client.ParseDate(to); date != nil {
+		request = request.To(*date)
+	}
+
+	return client.HandleResponse(request.Execute())
 }
 
 func (m MainClient) TransactionGetById(transactionId string) (*paymentsapisdk.Transaction, error) {
