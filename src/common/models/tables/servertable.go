@@ -32,6 +32,8 @@ type LongServerTable struct {
 	OsConfiguration      string   `header:"Os Configuration"`
 	NetworkConfiguration string   `header:"Network Configuration"`
 	StorageConfiguration string   `header:"Storage Configuration"`
+	SupersededBy         string   `header:"Superseded By"`
+	Supersedes           string   `header:"Supersedes"`
 }
 
 type ShortServerTable struct {
@@ -99,6 +101,8 @@ func ToLongServerTable(server bmcapisdk.Server) LongServerTable {
 		OsConfiguration:      models.OsConfigurationToTableString(server.OsConfiguration),
 		NetworkConfiguration: models.NetworkConfigurationToTableString(&server.NetworkConfiguration),
 		StorageConfiguration: models.StorageConfigurationToTableString(&server.StorageConfiguration),
+		SupersededBy:         DerefString(server.SupersededBy),
+		Supersedes:           DerefString(server.Supersedes),
 	}
 }
 

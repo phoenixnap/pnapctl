@@ -73,6 +73,8 @@ func assertLongServersEqual(test_framework *testing.T, server bmcapisdk.Server, 
 	assert.Equal(test_framework, models.OsConfigurationToTableString(server.OsConfiguration), longServerTable.OsConfiguration)
 	assert.Equal(test_framework, models.NetworkConfigurationToTableString(&server.NetworkConfiguration), longServerTable.NetworkConfiguration)
 	assert.Equal(test_framework, models.StorageConfigurationToTableString(&server.StorageConfiguration), longServerTable.StorageConfiguration)
+	assert.Equal(test_framework, DerefString(server.SupersededBy), longServerTable.SupersededBy)
+	assert.Equal(test_framework, DerefString(server.Supersedes), longServerTable.Supersedes)
 }
 
 func assertServerPrivateNetworksEqual(test_framework *testing.T, privateNetwork bmcapisdk.ServerPrivateNetwork, table ServerPrivateNetworkTable) {
