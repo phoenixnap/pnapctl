@@ -109,11 +109,11 @@ var NodePoolToTableString = toTableString(func(sdk ranchersolutionapi.NodePool) 
 	return fmt.Sprintf("%s - %d nodes", processNil(sdk.Name), processNil(sdk.NodeCount))
 })
 
-var ClusterConfigurationToTableString = toTableString(func(sdk ranchersolutionapi.ClusterConfiguration) string {
+var ClusterConfigurationToTableString = toTableString(func(sdk ranchersolutionapi.RancherClusterConfig) string {
 	return fmt.Sprintf("Token: %s, Domain: %s", processNil(sdk.Token), processNil(sdk.ClusterDomain))
 })
 
-var ClusterMetadataToTableString = toTableString(func(sdk ranchersolutionapi.ClusterMetadata) string {
+var ClusterMetadataToTableString = toTableString(func(sdk ranchersolutionapi.RancherServerMetadata) string {
 	var username, password, url string
 	if sdk.Username != nil {
 		username = "User: " + *sdk.Username + "\n"
