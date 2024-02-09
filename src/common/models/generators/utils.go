@@ -8,7 +8,7 @@ import (
 
 func Generate[T any]() (t T) {
 	// using WithIgnoreFields sets AdditionalProperties to nil which causes tests
-	// tests to break, as upon unmarshalling it instead becomes an empty map.
+	// to break, as upon unmarshalling it instead becomes an empty map.
 	//
 	// so instead, we use a custom provider to auto-set this property as empty.
 	emptyAdditionalProperties := options.WithCustomFieldProvider(
