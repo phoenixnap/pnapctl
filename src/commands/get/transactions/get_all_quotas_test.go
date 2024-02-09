@@ -1,46 +1,45 @@
 package transactions
 
-// import (
-// 	"testing"
+import (
+	"testing"
 
-// 	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
-// 	"github.com/stretchr/testify/assert"
-// 	"phoenixnap.com/pnapctl/common/models/generators"
-// 	"phoenixnap.com/pnapctl/common/models/tables"
-// 	"phoenixnap.com/pnapctl/common/utils/iterutils"
-// 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
-// 	"phoenixnap.com/pnapctl/testsupport/testutil"
-// )
+	paymentsSdk "github.com/phoenixnap/go-sdk-bmc/paymentsapi"
+	"github.com/stretchr/testify/assert"
+	"phoenixnap.com/pnapctl/common/models/generators"
+	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+)
 
-// func TestGetAllQuotasSuccess(test_framework *testing.T) {
-// 	quotaList := testutil.GenN(2, generators.Generate[bmcapisdk.Quota])
-// 	quotaTables := iterutils.MapInterface(quotaList, tables.ToQuotaTable)
+func getRequestParams() (int, int, string, string, string, string) {
+	return Limit, Offset, SortDirection, SortField, From, To
+}
 
-// 	// Mocking
-// 	PrepareBmcApiMockClient(test_framework).
-// 		QuotasGet().
-// 		Return(quotaList, nil)
+func TestGetAllTransactionsSuccess(test_framework *testing.T) {
+	paginatedTransactions := generators.Generate[paymentsSdk.PaginatedTransactions]()
 
-// 	ExpectToPrintSuccess(test_framework, quotaTables)
+	// Mocking
+	PreparePaymentsApiMockClient(test_framework).
+		TransactionsGet(getRequestParams()).
+		Return(&paginatedTransactions, nil)
 
-// 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
+	ExpectToPrintSuccess(test_framework, &paginatedTransactions)
 
-// 	// Assertions
-// 	assert.NoError(test_framework, err)
-// }
+	err := GetTransactionsCmd.RunE(GetTransactionsCmd, []string{})
 
-// func TestGetAllQuotasPrinterFailure(test_framework *testing.T) {
-// 	quotaList := testutil.GenN(2, generators.Generate[bmcapisdk.Quota])
-// 	quotaTables := iterutils.MapInterface(quotaList, tables.ToQuotaTable)
+	// Assertions
+	assert.NoError(test_framework, err)
+}
 
-// 	PrepareBmcApiMockClient(test_framework).
-// 		QuotasGet().
-// 		Return(quotaList, nil)
+func TestGetAllTransactionsPrinterFailure(test_framework *testing.T) {
+	paginatedTransactions := generators.Generate[paymentsSdk.PaginatedTransactions]()
 
-// 	expectedErr := ExpectToPrintFailure(test_framework, quotaTables)
+	PreparePaymentsApiMockClient(test_framework).
+		TransactionsGet(getRequestParams()).
+		Return(&paginatedTransactions, nil)
 
-// 	err := GetQuotasCmd.RunE(GetQuotasCmd, []string{})
+	expectedErr := ExpectToPrintFailure(test_framework, &paginatedTransactions)
 
-// 	// Assertions
-// 	assert.EqualError(test_framework, err, expectedErr.Error())
-// }
+	err := GetTransactionsCmd.RunE(GetTransactionsCmd, []string{})
+
+	// Assertions
+	assert.EqualError(test_framework, err, expectedErr.Error())
+}
