@@ -5,3 +5,6 @@ out/
 
 # VS code files
 *.code-workspace
+
+#Jetbrains IDE files
+.idea
