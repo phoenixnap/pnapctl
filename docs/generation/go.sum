@@ -60,6 +60,8 @@ github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.3.1 h1:HFRYgoCTBvYu6j0smwK+0QB
 github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.3.1/go.mod h1:zkZLpUrrpt8XdQZnrLus+UhapP6dlbeGGtGTkmgUJts=
 github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.4.0 h1:C47dgp+VUCUds1wWfTHo/uxNcuqlFYzPByamiG/NyXw=
 github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.4.0/go.mod h1:IV5yA1XAOYNlO1esYGX4jLmbrKOjQ0jbXv5lRl2V18Q=
+github.com/phoenixnap/go-sdk-bmc/paymentsapi v1.0.1 h1:1l33Tmf2T/KlhtF9z8Eowv+QY+7XH6XcjsjOGF1s15A=
+github.com/phoenixnap/go-sdk-bmc/paymentsapi v1.0.1/go.mod h1:ZplGK88bXlz04t2O/nUrjej/3rDw4kCNmAkifrKUL4A=
 github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.5 h1:rQKWPjb1J4F7FegeoV03seuPrGEJtbPyOeYFc5vgWKs=
 github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.5/go.mod h1://8OW8iHrlF1kWpwcigZ0fFZpgit4t9I4cemZhonq40=
 github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.5 h1:qsLlQncNX2bfJBYyM9wQl+CAyD2YbyMCzrhZD5dSB7A=
@@ -80,8 +82,6 @@ github.com/sagikazarmark/locafero v0.4.0 h1:HApY1R9zGo4DBgr7dqsTH/JJxLTTsOt7u6ke
 github.com/sagikazarmark/locafero v0.4.0/go.mod h1:Pe1W6UlPYUk/+wc/6KFhbORCfqzgYEpgQ3O5fPuL3H4=
 github.com/sagikazarmark/slog-shim v0.1.0 h1:diDBnUNK9N/354PgrxMywXnAwEr1QZcOr6gto+ugjYE=
 github.com/sagikazarmark/slog-shim v0.1.0/go.mod h1:SrcSrq8aKtyuqEI1uvTDTK1arOWRIczQRv+GVI1AkeQ=
-github.com/sirupsen/logrus v1.9.3 h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=
-github.com/sirupsen/logrus v1.9.3/go.mod h1:naHLuLoDiP4jHNo9R0sCBMtWGeIprob74mVsIT4qYEQ=
 github.com/sourcegraph/conc v0.3.0 h1:OQTbbt6P72L20UqAkXXuLOj79LfEanQ+YQFNpLA9ySo=
 github.com/sourcegraph/conc v0.3.0/go.mod h1:Sdozi7LEKbFPqYX2/J+iBAM6HpqSLTASQIKqDmF7Mt0=
 github.com/spf13/afero v1.11.0 h1:WJQKhtpdm3v2IzqG8VMqrr6Rf3UYpEF239Jy9wNepM8=
@@ -97,7 +97,6 @@ github.com/spf13/viper v1.18.2/go.mod h1:EKmWIqdnk5lOcmR72yw6hS+8OPYcwD0jteitLMV
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
-github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
@@ -123,7 +122,6 @@ golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a/go.mod h1:STP8DvDyc/dI5b8T5h
 golang.org/x/sys v0.0.0-20201119102817-f84b799fce68/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
