@@ -2,11 +2,23 @@ package generators
 
 import (
 	"github.com/go-faker/faker/v4"
+	"github.com/go-faker/faker/v4/pkg/options"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
 func Generate[T any]() (t T) {
-	faker.FakeData(&t)
+
+	// using WithIgnoreFields sets AdditionalProperties to nil which causes tests
+	// tests to break, as upon unmarshalling it instead becomes an empty map.
+	//
+	// so instead, we use a custom provider to auto-set this property as empty.
+	emptyAdditionalProperties := options.WithCustomFieldProvider(
+		"AdditionalProperties",
+		func() (interface{}, error) {
+			return map[string]interface{}{}, nil
+		})
+
+	faker.FakeData(&t, emptyAdditionalProperties)
 	return
 }
 

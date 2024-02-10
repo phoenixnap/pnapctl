@@ -43,4 +43,5 @@ pnapctl get [flags]
 * [pnapctl get ssh-key](pnapctl_get_ssh-key.md)	 - Retrieve one or all ssh-keys for your account.
 * [pnapctl get storage-network](pnapctl_get_storage-network.md)	 - Retrieve one or all storage networks.
 * [pnapctl get tag](pnapctl_get_tag.md)	 - Retrieve one or all tags.
+* [pnapctl get transaction](pnapctl_get_transaction.md)	 - Retrieve one or all transactions for your account.
 

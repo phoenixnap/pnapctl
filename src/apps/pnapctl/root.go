@@ -13,9 +13,10 @@ import (
 	"phoenixnap.com/pnapctl/common/client/ip"
 	"phoenixnap.com/pnapctl/common/client/locations"
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
+	"phoenixnap.com/pnapctl/common/client/payments"
 
 	"github.com/mitchellh/go-homedir"
-    "github.com/rs/zerolog"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 
@@ -170,6 +171,7 @@ func initConfig() {
 		customNetworkStorageHostname := viper.GetString("networkStorageHostname")
 		customLocationHostname := viper.GetString("locationHostname")
 		customInvoicingHostname := viper.GetString("invoicingHostname")
+		customPaymentsHostname := viper.GetString("paymentsHostname")
 		customTokenUrl := viper.GetString("tokenURL")
 
 		bmcapi.Client = bmcapi.NewMainClient(clientId, clientSecret, customBmcApiHostname, customTokenUrl)
@@ -182,6 +184,7 @@ func initConfig() {
 		networkstorage.Client = networkstorage.NewMainClient(clientId, clientSecret, customNetworkStorageHostname, customTokenUrl)
 		locations.Client = locations.NewMainClient(clientId, clientSecret, customLocationHostname, customTokenUrl)
 		invoicing.Client = invoicing.NewMainClient(clientId, clientSecret, customInvoicingHostname, customTokenUrl)
+		payments.Client = payments.NewMainClient(clientId, clientSecret, customPaymentsHostname, customTokenUrl)
 	}
 }
 

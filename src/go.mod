@@ -16,6 +16,7 @@ require (
 	github.com/phoenixnap/go-sdk-bmc/locationapi v1.0.0
 	github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.3.1
 	github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.4.0
+	github.com/phoenixnap/go-sdk-bmc/paymentsapi v1.0.1
 	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.5
 	github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.5
 	github.com/rs/zerolog v1.31.0
