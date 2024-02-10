@@ -28,6 +28,7 @@ require (
 	github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.6 // indirect
 	github.com/phoenixnap/go-sdk-bmc/billingapi v1.3.2 // indirect
 	github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.4.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/invoicingapi v1.0.1 // indirect
 	github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.5 // indirect
 	github.com/phoenixnap/go-sdk-bmc/locationapi v1.0.0 // indirect
 	github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.3.1 // indirect
@@ -39,7 +40,6 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
-	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect

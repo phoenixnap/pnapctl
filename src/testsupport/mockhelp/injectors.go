@@ -13,6 +13,7 @@ import (
 	"phoenixnap.com/pnapctl/common/client/networkstorage"
 	"phoenixnap.com/pnapctl/common/client/rancher"
 	"phoenixnap.com/pnapctl/common/client/tags"
+	"phoenixnap.com/pnapctl/common/client/invoicing"
 	"phoenixnap.com/pnapctl/common/fileprocessor"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/testsupport/mocks"
@@ -113,6 +114,15 @@ func PrepareLocationMockClient(test_framework *testing.T) *sdkmocks.MockLocation
 	mockClient := sdkmocks.NewMockLocationSdkClient(ctrl)
 
 	locations.Client = mockClient
+
+	return mockClient.EXPECT()
+}
+
+func PrepareInvoicingMockClient(test_framework *testing.T) *sdkmocks.MockInvoicingSdkClientMockRecorder {
+	ctrl := gomock.NewController(test_framework)
+	mockClient := sdkmocks.NewMockInvoicingSdkClient(ctrl)
+
+	invoicing.Client = mockClient
 
 	return mockClient.EXPECT()
 }

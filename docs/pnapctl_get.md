@@ -29,6 +29,7 @@ pnapctl get [flags]
 * [pnapctl get account-billing-configuration](pnapctl_get_account-billing-configuration.md)	 - Retrieve your account billing configuration
 * [pnapctl get cluster](pnapctl_get_cluster.md)	 - Retrieve one or all clusters.
 * [pnapctl get event](pnapctl_get_event.md)	 - Retrieve all events relating to your account.
+* [pnapctl get invoice](pnapctl_get_invoice.md)	 - Retrieve one or all invoices for your account.
 * [pnapctl get ip-block](pnapctl_get_ip-block.md)	 - Retrieve one or all ip-blocks for your account.
 * [pnapctl get location](pnapctl_get_location.md)	 - Retrieves all locations.
 * [pnapctl get private-network](pnapctl_get_private-network.md)	 - Retrieve one or all private networks.

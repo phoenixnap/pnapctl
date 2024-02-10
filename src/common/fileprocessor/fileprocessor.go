@@ -10,6 +10,7 @@ import (
 
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"sigs.k8s.io/yaml"
+	"github.com/rs/zerolog/log"
 )
 
 // MainFileProcessor is the main instance of FileProcessor that is used by the main code.
@@ -19,6 +20,7 @@ var MainFileProcessor FileProcessor = RealFileProcessor{}
 // FileProcessor operates on files, including I/O.
 type FileProcessor interface {
 	ReadFile(filename string) ([]byte, error)
+	SaveFile(filename string, file *os.File) (error)
 }
 
 // RealFileProcessor is an implementation of FileProcessor to be used by the main code.
@@ -39,9 +41,49 @@ func (RealFileProcessor) ReadFile(filename string) ([]byte, error) {
 	return file, nil
 }
 
+func (RealFileProcessor) SaveFile(filename string, file *os.File) error {
+
+	// Get the file information number of bytes
+	fileInfo, err := file.Stat()
+	if err != nil {
+		return err
+	}
+
+	// Prepare the byte array to store the content
+	data := make([]byte, fileInfo.Size())
+
+	// Read the content of the file to byte array
+	_, err = file.Read(data)
+	if err != nil {
+		return err
+	}
+
+	// Open the file with write-only permission and create it if it doesn't exist
+	file, err = os.Create(filename)
+	if err != nil {
+		return err
+	}
+	// Close the file when function is completed
+	defer file.Close()
+
+	// Write the content to the file
+	_, err = file.Write(data)
+	if err != nil {
+		return err
+	}
+
+	log.Info().Msgf("File '%s' downloaded successfully.\n", filename)
+	return nil
+}
+
 // ReadFile is a shortcut function to using `MainFileProcessor` all the time.
 func ReadFile(filename string) ([]byte, error) {
 	return MainFileProcessor.ReadFile(filename)
+}
+
+// SaveFile is a shortcut function to using `MainFileProcessor` all the time.
+func SaveFile(filename string, file *os.File) (error) {
+	return MainFileProcessor.SaveFile(filename, file)
 }
 
 // unmarshal unmarshals a byte array into an object.

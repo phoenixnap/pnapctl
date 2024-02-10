@@ -11,6 +11,7 @@ require (
 	github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.6
 	github.com/phoenixnap/go-sdk-bmc/billingapi v1.3.2
 	github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.4.0
+	github.com/phoenixnap/go-sdk-bmc/invoicingapi v1.0.1
 	github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.5
 	github.com/phoenixnap/go-sdk-bmc/locationapi v1.0.0
 	github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.3.1
@@ -18,7 +19,6 @@ require (
 	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.5
 	github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.5
 	github.com/rs/zerolog v1.31.0
-	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.8.4

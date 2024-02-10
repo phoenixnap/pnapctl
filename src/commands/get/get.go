@@ -20,6 +20,7 @@ import (
 	"phoenixnap.com/pnapctl/commands/get/sshkeys"
 	storagenetworks "phoenixnap.com/pnapctl/commands/get/storage-networks"
 	"phoenixnap.com/pnapctl/commands/get/tags"
+	"phoenixnap.com/pnapctl/commands/get/invoicing"
 )
 
 var GetCmd = &cobra.Command{
@@ -49,4 +50,5 @@ func init() {
 	GetCmd.AddCommand(account_billing_configuration.GetAccountBillingConfigurationCmd)
 	GetCmd.AddCommand(storagenetworks.GetStorageNetworksCmd)
 	GetCmd.AddCommand(locations.GetLocationsCmd)
+	GetCmd.AddCommand(invoicing.GetInvoicingCmd)
 }
