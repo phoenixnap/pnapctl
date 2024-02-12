@@ -13,7 +13,7 @@ Available Commands:
   create       Create a resource.
   delete       Delete a resource.
   deprovision  Deprovision a resource.
-  donwload     Download an invoice.
+  download     Download an invoice.
   get          Display one or many resources.
   help         Help about any command
   patch        Modify a resource.
