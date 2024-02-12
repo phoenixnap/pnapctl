@@ -26,6 +26,7 @@ Available Commands:
   tag          Tag a resource.
   update       Update a resource.
   version      Print version
+  donwload     Download an Invoice.
 
 Flags:
       --config string   config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.
@@ -58,6 +59,7 @@ Available Commands:
   storage-network               Retrieve one or all storage networks.
   tag                           Retrieve one or all tags.
   transaction                   Retrieve one or all transactions for your account.
+  invoice                       Retrieve one or all invoices for your account.
 
 Flags:
   -h, --help   help for get
@@ -344,6 +346,25 @@ Available Commands:
 
 Flags:
   -h, --help   help for update
+
+Global Flags:
+      --config string   config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.
+  -v, --verbose         change log level from Warn (default) to Debug.
+
+Use \"pnapctl update [command] --help\" for more information about a command."
+
+outputHelpDownload="Download an invoice.
+
+Usage:
+  pnapctl download [flags]
+  pnapctl download [command]
+
+Available Commands:
+  invoice         Download an invoice.
+
+Flags:
+  -h, --help         help for download
+  -d, --destination  destination for the downloaded invoice
 
 Global Flags:
       --config string   config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.
