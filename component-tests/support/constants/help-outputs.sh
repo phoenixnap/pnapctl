@@ -45,6 +45,7 @@ Available Commands:
   account-billing-configuration Retrieve your account billing configuration
   cluster                       Retrieve one or all clusters.
   event                         Retrieve all events relating to your account.
+  invoice                       Retrieve one or all invoices for your account.
   ip-block                      Retrieve one or all ip-blocks for your account.
   location                      Retrieves all locations.
   private-network               Retrieve one or all private networks.
@@ -59,7 +60,6 @@ Available Commands:
   storage-network               Retrieve one or all storage networks.
   tag                           Retrieve one or all tags.
   transaction                   Retrieve one or all transactions for your account.
-  invoice                       Retrieve one or all invoices for your account.
 
 Flags:
   -h, --help   help for get
