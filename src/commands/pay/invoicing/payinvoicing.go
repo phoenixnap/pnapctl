@@ -1,4 +1,5 @@
 package invoicing
+// SDK is failing to parse the response because API returns empty string instead of empty object. Commented because it is currenlty being investigated.
 
 // import (
 // 	"fmt"

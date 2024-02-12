@@ -97,6 +97,8 @@ func (m MainClient) InvoicesInvoiceIdGeneratePdfPost(invoiceId string) (*os.File
 	return client.HandleResponse(m.InvoicingApiClient.InvoicesInvoiceIdGeneratePdfPost(context.Background(), invoiceId).Execute())
 }
 
+// SDK is failing to parse the response because API returns empty string instead of empty object. Commented because it is currenlty being investigated.
+
 // func (m MainClient) InvoicesInvoiceIdPayPost(invoiceId string) (map[string]interface{}, error) {
 // 	return client.HandleResponse(m.InvoicingApiClient.InvoicesInvoiceIdPayPost(context.Background(), invoiceId).Execute())
 // }

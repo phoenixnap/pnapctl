@@ -32,5 +32,5 @@ pnapctl download invoice <INVOICE_ID>
 
 ### SEE ALSO
 
-* [pnapctl download](pnapctl_download.md)	 - Download an invoice.
+* [pnapctl download](pnapctl_download.md)	 - Download a resource.
 

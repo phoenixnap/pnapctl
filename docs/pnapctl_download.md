@@ -1,10 +1,10 @@
 ## pnapctl download
 
-Download an invoice.
+Download a resource.
 
 ### Synopsis
 
-Download an invoice.
+Download a resource.
 
 ```
 pnapctl download [flags]

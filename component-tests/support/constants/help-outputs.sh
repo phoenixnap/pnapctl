@@ -13,7 +13,7 @@ Available Commands:
   create       Create a resource.
   delete       Delete a resource.
   deprovision  Deprovision a resource.
-  download     Download an invoice.
+  download     Download a resource.
   get          Display one or many resources.
   help         Help about any command
   patch        Modify a resource.
@@ -353,14 +353,14 @@ Global Flags:
 
 Use \"pnapctl update [command] --help\" for more information about a command."
 
-outputHelpDownload="Download an invoice.
+outputHelpDownload="Download a resource.
 
 Usage:
   pnapctl download [flags]
   pnapctl download [command]
 
 Available Commands:
-  invoice         Download an invoice.
+  invoice         Download a resource.
 
 Flags:
   -h, --help         help for download

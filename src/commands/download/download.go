@@ -9,8 +9,8 @@ import (
 
 var DownloadCmd = &cobra.Command{
 	Use:   "download",
-	Short: "Download an invoice.",
-	Long:  `Download an invoice.`,
+	Short: "Download a resource.",
+	Long:  `Download a resource.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 		os.Exit(0)

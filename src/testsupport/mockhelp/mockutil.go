@@ -28,6 +28,14 @@ func ExpectSaveFileSuccess(t *testing.T, file *os.File) {
 		Return(nil)
 }
 
+func ExpectSaveFileFailure(t *testing.T, file *os.File) error {
+	PrepareMockFileProcessor(t).
+		SaveFile(INVOICENAME, file).
+		Return(testutil.TestError)
+
+	return testutil.TestError
+}
+
 func ExpectFromFileFailure(t *testing.T) error {
 	PrepareMockFileProcessor(t).
 		ReadFile(FILENAME).
