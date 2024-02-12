@@ -7,7 +7,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/rs/zerolog/log"
 
-	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 	"phoenixnap.com/pnapctl/common/fileprocessor"
 
@@ -17,7 +16,7 @@ import (
 var Destination string
 
 func init() {
-	utils.SetupDestinationFlag(DownloadInvoiceCmd, &Destination, utils.DOWNLOAD)
+	DownloadInvoiceCmd.PersistentFlags().StringVarP(&Destination, "destination", "d", "./invoice.pdf", "Set the destination for downloading the invoice.")
 }
 
 var DownloadInvoiceCmd = &cobra.Command{
@@ -41,7 +40,7 @@ func downloadInvoice(id string) error {
 	if err != nil {
 		return err
 	} else {
-		fileprocessor.SaveFile(Destination, result)
-		return nil
+		res := fileprocessor.SaveFile(Destination, result)
+		return res
 	}
 }

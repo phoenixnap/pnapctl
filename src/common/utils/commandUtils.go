@@ -26,14 +26,9 @@ const (
 	DELETION    Action = "deletion"
 	DEPROVISION Action = "deprovisioning"
 	SUBMISSION  Action = "submission"
-	DOWNLOAD    Action = "downloading"
 )
 
 func SetupFilenameFlag(cmd *cobra.Command, filename *string, action Action) {
 	cmd.Flags().StringVarP(filename, "filename", "f", "", "File containing required information for "+string(action))
 	cmd.MarkFlagRequired("filename")
-}
-
-func SetupDestinationFlag(cmd *cobra.Command, destination *string, action Action) {
-	cmd.Flags().StringVarP(destination, "destination", "d", "./invoice.pdf", "Set the destination for "+string(action)+" the invoice.")
 }
