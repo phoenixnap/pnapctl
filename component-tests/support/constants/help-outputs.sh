@@ -13,6 +13,7 @@ Available Commands:
   create       Create a resource.
   delete       Delete a resource.
   deprovision  Deprovision a resource.
+  donwload     Download an Invoice.
   get          Display one or many resources.
   help         Help about any command
   patch        Modify a resource.
@@ -26,7 +27,6 @@ Available Commands:
   tag          Tag a resource.
   update       Update a resource.
   version      Print version
-  donwload     Download an Invoice.
 
 Flags:
       --config string   config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.
