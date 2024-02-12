@@ -97,7 +97,6 @@ func TestTagServerUnmarshallingFailure(test_framework *testing.T) {
 func TestTagServerClientFailure(test_framework *testing.T) {
 	// Setup
 	tagAssignmentRequests := testutil.GenN(1, generators.Generate[bmcapisdk.TagAssignmentRequest])
-	tagAssignmentRequests[0].AdditionalProperties = map[string]interface{}{}
 
 	// Assumed contents of the file.
 	Filename = FILENAME
