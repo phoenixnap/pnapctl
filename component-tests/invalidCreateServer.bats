@@ -52,7 +52,7 @@ runCommandWithYamlFile="$runCommand --filename $yamlFile"
 }
 
 @test "Run server provision command with invalid credentials" {
-    echo { } >> $jsonFile
+    echo {  "hostname": "my-server-1",  "location": "PHX",  "os": "ubuntu/bionic",  "type": "s1.c1.small"} >> $jsonFile
     echo "clientId: <CLIENT_ID>
 clientSecret: <CLIENT_SECRET>" >> $configFile
     
