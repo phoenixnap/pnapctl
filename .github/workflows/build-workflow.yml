@@ -46,6 +46,8 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
+      - name: Fix dubious ownership issue
+        run: git config --global --add safe.directory /__w/pnapctl/pnapctl
       - name: Run tests
         run: make test-coverage
       - name: Upload Unit Test Results
