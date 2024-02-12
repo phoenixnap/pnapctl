@@ -44,7 +44,6 @@ func updateStorageNetworkVolumeTags(storageNetworkId, volumeId string) error {
 	log.Info().Msgf("Updating tags for Volume with ID [%s].", volumeId)
 
 	storageNetworkVolumeTagsUpdate, err := models.CreateRequestFromFile[[]networkstorageapi.TagAssignmentRequest](Filename)
-
 	if err != nil {
 		return err
 	}

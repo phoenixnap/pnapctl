@@ -19,7 +19,6 @@ import (
 func tagServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	tagAssignmentRequests := testutil.GenN(1, generators.Generate[bmcapisdk.TagAssignmentRequest])
-	tagAssignmentRequests[0].AdditionalProperties = map[string]interface{}{}
 
 	// Assumed contents of the file.
 	Filename = FILENAME

@@ -1,6 +1,8 @@
 package models
 
-import files "phoenixnap.com/pnapctl/common/fileprocessor"
+import (
+	files "phoenixnap.com/pnapctl/common/fileprocessor"
+)
 
 func CreateRequestFromFile[T any](filename string) (*T, error) {
 	files.ExpandPath(&filename)
