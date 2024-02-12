@@ -18,8 +18,8 @@ pnapctl get invoice [INVOICE_ID] [flags]
 
 ```
 
-# List all invoices in.
-pnapctl get invoices [--number <NUMBER>] [--status <STATUS>] [--sentOnFrom <SENT_ON_FROM>] [--sentOnTO <SENT_ON_TO>] [--limit <LIMIT>] [--offset <OFFSET>] [--sortField <SORT_FIELD>] [--SortDirection <SORT_DIRECTION>] [--output <OUTPUT_TYPE>]
+# List all invoices.
+pnapctl get invoices [--number <NUMBER>] [--status <STATUS>] [--sentOnFrom <SENT_ON_FROM>] [--sentOnTo <SENT_ON_TO>] [--limit <LIMIT>] [--offset <OFFSET>] [--sortField <SORT_FIELD>] [--sortDirection <SORT_DIRECTION>] [--output <OUTPUT_TYPE>]
 
 # List a specific invoice.
 pnapctl get invoice <INVOICE_ID> [--output <OUTPUT_TYPE>]
