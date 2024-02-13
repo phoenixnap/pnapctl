@@ -17,7 +17,7 @@ type InvoicingSdkClient interface {
 	InvoicesGet(number string, status string, sentOnFrom string, sentOnTo string, limit int, offset int, sortField string, sortDirection string) (*invoicingapisdk.PaginatedInvoices, error)
 	InvoicesInvoiceIdGet(invoiceId string) (*invoicingapisdk.Invoice, error)
 	InvoicesInvoiceIdGeneratePdfPost(invoiceId string) (*os.File, error)
-	// InvoicesInvoiceIdPayPost(invoiceId string) (map[string]interface{}, error)
+	InvoicesInvoiceIdPayPost(invoiceId string) (map[string]interface{}, error)
 }
 
 type MainClient struct {
@@ -97,8 +97,6 @@ func (m MainClient) InvoicesInvoiceIdGeneratePdfPost(invoiceId string) (*os.File
 	return client.HandleResponse(m.InvoicingApiClient.InvoicesInvoiceIdGeneratePdfPost(context.Background(), invoiceId).Execute())
 }
 
-// SDK is failing to parse the response because API returns empty string instead of empty object. Commented because it is currenlty being investigated.
-
-// func (m MainClient) InvoicesInvoiceIdPayPost(invoiceId string) (map[string]interface{}, error) {
-// 	return client.HandleResponse(m.InvoicingApiClient.InvoicesInvoiceIdPayPost(context.Background(), invoiceId).Execute())
-// }
+func (m MainClient) InvoicesInvoiceIdPayPost(invoiceId string) (map[string]interface{}, error) {
+	return client.HandleResponse(m.InvoicingApiClient.InvoicesInvoiceIdPayPost(context.Background(), invoiceId).Execute())
+}

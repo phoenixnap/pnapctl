@@ -30,6 +30,7 @@ pnapctl [flags]
 * [pnapctl download](pnapctl_download.md)	 - Download a resource.
 * [pnapctl get](pnapctl_get.md)	 - Display one or many resources.
 * [pnapctl patch](pnapctl_patch.md)	 - Modify a resource.
+* [pnapctl pay](pnapctl_pay.md)	 - Pay a resource.
 * [pnapctl power-off](pnapctl_power-off.md)	 - Perform a hard shutdown on the resource.
 * [pnapctl power-on](pnapctl_power-on.md)	 - Power on a resource.
 * [pnapctl reboot](pnapctl_reboot.md)	 - Perform a soft reboot on a resource.
