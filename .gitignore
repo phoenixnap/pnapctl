@@ -2,6 +2,7 @@
 bin/
 build/
 out/
+*.pdf
 
 # VS code files
 *.code-workspace

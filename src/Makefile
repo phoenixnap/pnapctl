@@ -88,7 +88,7 @@ generate-mock-util: $(MOCKGEN) ; $(info $(M) generating mock util $(UTIL)...) @ 
 	$Q $(MOCKGEN) --source=common/$(UTIL)/$(UTIL).go --destination=testsupport/mocks/mock_$(UTIL).go --package=mocks
 
 # All items to generate mocks for
-gen-clients = bmcapi audit ip networks rancher tags billing networkstorage locations payments
+gen-clients = bmcapi audit ip networks rancher tags billing networkstorage locations payments invoicing
 gen-utils = printer fileprocessor
 gen-all = $(gen-clients) $(gen-utils)
 

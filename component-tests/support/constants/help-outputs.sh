@@ -13,6 +13,7 @@ Available Commands:
   create       Create a resource.
   delete       Delete a resource.
   deprovision  Deprovision a resource.
+  download     Download a resource.
   get          Display one or many resources.
   help         Help about any command
   patch        Modify a resource.
@@ -44,6 +45,7 @@ Available Commands:
   account-billing-configuration Retrieve your account billing configuration
   cluster                       Retrieve one or all clusters.
   event                         Retrieve all events relating to your account.
+  invoice                       Retrieve one or all invoices for your account.
   ip-block                      Retrieve one or all ip-blocks for your account.
   location                      Retrieves all locations.
   private-network               Retrieve one or all private networks.
@@ -344,6 +346,25 @@ Available Commands:
 
 Flags:
   -h, --help   help for update
+
+Global Flags:
+      --config string   config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.
+  -v, --verbose         change log level from Warn (default) to Debug.
+
+Use \"pnapctl update [command] --help\" for more information about a command."
+
+outputHelpDownload="Download a resource.
+
+Usage:
+  pnapctl download [flags]
+  pnapctl download [command]
+
+Available Commands:
+  invoice         Download a resource.
+
+Flags:
+  -h, --help         help for download
+  -d, --destination  destination for the downloaded invoice
 
 Global Flags:
       --config string   config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.

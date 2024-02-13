@@ -5,6 +5,7 @@
 package mocks
 
 import (
+	os "os"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
@@ -46,4 +47,18 @@ func (m *MockFileProcessor) ReadFile(filename string) ([]byte, error) {
 func (mr *MockFileProcessorMockRecorder) ReadFile(filename interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadFile", reflect.TypeOf((*MockFileProcessor)(nil).ReadFile), filename)
+}
+
+// SaveFile mocks base method.
+func (m *MockFileProcessor) SaveFile(filename string, file *os.File) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SaveFile", filename, file)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SaveFile indicates an expected call of SaveFile.
+func (mr *MockFileProcessorMockRecorder) SaveFile(filename, file interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveFile", reflect.TypeOf((*MockFileProcessor)(nil).SaveFile), filename, file)
 }

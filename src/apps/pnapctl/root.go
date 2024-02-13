@@ -35,11 +35,13 @@ import (
 	"phoenixnap.com/pnapctl/commands/tag"
 	"phoenixnap.com/pnapctl/commands/update"
 	"phoenixnap.com/pnapctl/commands/version"
+	"phoenixnap.com/pnapctl/commands/download"
 	"phoenixnap.com/pnapctl/common/client/audit"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/client/rancher"
 	"phoenixnap.com/pnapctl/common/client/tags"
+	"phoenixnap.com/pnapctl/common/client/invoicing"
 	"phoenixnap.com/pnapctl/common/fileprocessor"
 	configuration "phoenixnap.com/pnapctl/configs"
 )
@@ -92,6 +94,7 @@ func init() {
 	RootCmd.AddCommand(tag.TagCmd)
 	RootCmd.AddCommand(autorenew.AutoRenewCmd)
 	RootCmd.AddCommand(convert.ConvertCmd)
+	RootCmd.AddCommand(download.DownloadCmd)
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Warn (default) to Debug.")
@@ -167,6 +170,7 @@ func initConfig() {
 		customBillingHostname := viper.GetString("billingHostname")
 		customNetworkStorageHostname := viper.GetString("networkStorageHostname")
 		customLocationHostname := viper.GetString("locationHostname")
+		customInvoicingHostname := viper.GetString("invoicingHostname")
 		customPaymentsHostname := viper.GetString("paymentsHostname")
 		customTokenUrl := viper.GetString("tokenURL")
 
@@ -179,6 +183,7 @@ func initConfig() {
 		billing.Client = billing.NewMainClient(clientId, clientSecret, customBillingHostname, customTokenUrl)
 		networkstorage.Client = networkstorage.NewMainClient(clientId, clientSecret, customNetworkStorageHostname, customTokenUrl)
 		locations.Client = locations.NewMainClient(clientId, clientSecret, customLocationHostname, customTokenUrl)
+		invoicing.Client = invoicing.NewMainClient(clientId, clientSecret, customInvoicingHostname, customTokenUrl)
 		payments.Client = payments.NewMainClient(clientId, clientSecret, customPaymentsHostname, customTokenUrl)
 	}
 }
