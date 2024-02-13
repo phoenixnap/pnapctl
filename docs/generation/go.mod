@@ -28,6 +28,7 @@ require (
 	github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.6 // indirect
 	github.com/phoenixnap/go-sdk-bmc/billingapi v1.3.2 // indirect
 	github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.4.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/invoicingapi v1.0.1 // indirect
 	github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.5 // indirect
 	github.com/phoenixnap/go-sdk-bmc/locationapi v1.0.0 // indirect
 	github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.3.1 // indirect

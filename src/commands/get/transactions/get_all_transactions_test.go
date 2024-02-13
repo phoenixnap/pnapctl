@@ -7,6 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
+	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
 func getRequestParams() (int, int, string, string, string, string) {
@@ -27,6 +28,17 @@ func TestGetAllTransactionsSuccess(test_framework *testing.T) {
 
 	// Assertions
 	assert.NoError(test_framework, err)
+}
+
+func TestGetAllTransactionsClientFailure(test_framework *testing.T) {
+	PreparePaymentsApiMockClient(test_framework).
+		TransactionsGet(getRequestParams()).
+		Return(nil, testutil.TestError)
+
+	err := GetTransactionsCmd.RunE(GetTransactionsCmd, []string{})
+
+	// Assertions
+	assert.Equal(test_framework, testutil.TestError, err)
 }
 
 func TestGetAllTransactionsPrinterFailure(test_framework *testing.T) {

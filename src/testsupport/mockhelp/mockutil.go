@@ -2,10 +2,12 @@ package mockhelp
 
 import (
 	"testing"
+	"os"
 
 	"phoenixnap.com/pnapctl/testsupport/testutil"
 )
 
+const INVOICENAME = "./invoice.pdf"
 const FILENAME = "testfile.yaml"
 const RESOURCEID = "mock_id"
 
@@ -16,6 +18,22 @@ func ExpectFromFileSuccess(t *testing.T, marshaller func(interface{}) ([]byte, e
 	PrepareMockFileProcessor(t).
 		ReadFile(FILENAME).
 		Return(marshalled, nil)
+}
+
+// Mock Saving a File
+func ExpectSaveFileSuccess(t *testing.T, file *os.File) {
+	
+	PrepareMockFileProcessor(t).
+		SaveFile(INVOICENAME, file).
+		Return(nil)
+}
+
+func ExpectSaveFileFailure(t *testing.T, file *os.File) error {
+	PrepareMockFileProcessor(t).
+		SaveFile(INVOICENAME, file).
+		Return(testutil.TestError)
+
+	return testutil.TestError
 }
 
 func ExpectFromFileFailure(t *testing.T) error {
