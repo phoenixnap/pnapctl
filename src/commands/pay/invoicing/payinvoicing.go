@@ -13,8 +13,7 @@ var ID string
 
 
 func init() {
-	PayInvoiceCmd.PersistentFlags().StringVar(&ID, "id", "", "Id of the invoice")
-
+	PayInvoiceCmd.PersistentFlags().StringVar(&ID, "id", "", "The unique resource identifier of the Invoice.")
 }
 
 var PayInvoiceCmd = &cobra.Command{
