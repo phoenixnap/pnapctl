@@ -39,6 +39,7 @@ func payInvoice(id string) error {
 		return err
 	} else {
 		fmt.Println(result)
+		log.Info().Msgf("Payed Invoice with ID [%s].", id)
 		return nil
 	}
 }
