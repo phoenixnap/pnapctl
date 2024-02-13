@@ -44,23 +44,6 @@ func TestProvisionServerSuccessJSON(test_framework *testing.T) {
 	provisionServerSuccess(test_framework, json.Marshal)
 }
 
-func TestProvisionServerSuccessNoFile(test_framework *testing.T) {
-	result := generators.Generate[bmcapisdk.Server]()
-
-	Filename = ""
-
-	// Mocking
-	PrepareBmcApiMockClient(test_framework).
-		ServerProvision(RESOURCEID, bmcapisdk.ServerProvision{}).
-		Return(&result, nil)
-
-	// Run command
-	err := ProvisionServerCmd.RunE(ProvisionServerCmd, []string{RESOURCEID})
-
-	// Assertions
-	assert.NoError(test_framework, err)
-}
-
 func TestProvisionServerFileProcessorFailure(test_framework *testing.T) {
 	// Setup
 	Filename = FILENAME

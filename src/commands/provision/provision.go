@@ -3,6 +3,7 @@ package provision
 import (
 	"github.com/spf13/cobra"
 	"os"
+	"phoenixnap.com/pnapctl/commands/provision/server"
 )
 
 var ProvisionCmd = &cobra.Command{
@@ -16,5 +17,5 @@ var ProvisionCmd = &cobra.Command{
 }
 
 func init() {
-	ProvisionCmd.AddCommand()
+	ProvisionCmd.AddCommand(server.ProvisionServerCmd)
 }

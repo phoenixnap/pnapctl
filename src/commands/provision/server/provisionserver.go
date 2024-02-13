@@ -75,11 +75,9 @@ func provisionServer(id string) error {
 	var request *bmcapisdk.ServerProvision = &bmcapisdk.ServerProvision{}
 	var err error
 
-	if Filename != "" {
-		request, err = models.CreateRequestFromFile[bmcapisdk.ServerProvision](Filename)
-		if err != nil {
-			return err
-		}
+	request, err = models.CreateRequestFromFile[bmcapisdk.ServerProvision](Filename)
+	if err != nil {
+		return err
 	}
 
 	result, err := bmcapi.Client.ServerProvision(id, *request)
