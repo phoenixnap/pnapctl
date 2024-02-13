@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 
@@ -18,6 +18,7 @@ import (
 func resetServerSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// Setup
 	serverReset := generators.Generate[bmcapisdk.ServerReset]()
+
 	resetResult := generators.Generate[bmcapisdk.ResetResult]()
 
 	// Assumed contents of the file.

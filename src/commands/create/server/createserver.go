@@ -1,10 +1,10 @@
 package server
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
-	"github.com/spf13/cobra"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"github.com/rs/zerolog/log"
-	
+	"github.com/spf13/cobra"
+
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
@@ -15,7 +15,7 @@ import (
 // Filename is the filename from which to retrieve the request body
 var (
 	Filename string
-	force bool
+	force    bool
 )
 
 var Full bool
@@ -24,7 +24,7 @@ func init() {
 	utils.SetupOutputFlag(CreateServerCmd)
 	utils.SetupFullFlag(CreateServerCmd, &Full, "server")
 	utils.SetupFilenameFlag(CreateServerCmd, &Filename, utils.CREATION)
-	
+
 	CreateServerCmd.Flags().BoolVar(&force, "force", false, "Controlling advanced features availability. Currently applicable for networking. It is advised to use with caution since it might lead to unhealthy setups. Defaults to false.")
 }
 

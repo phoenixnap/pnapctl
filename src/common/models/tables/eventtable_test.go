@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
-	auditsdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
+	auditsdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v3"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
 )

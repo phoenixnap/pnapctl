@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/phoenixnap/go-sdk-bmc/billingapi"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -17,6 +17,7 @@ import (
 func autoRenewReservationDisableSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	autoRenewDisableRequest := generators.Generate[billingapi.ReservationAutoRenewDisableRequest]()
+
 	Filename = FILENAME
 	ExpectFromFileSuccess(test_framework, marshaller, autoRenewDisableRequest)
 

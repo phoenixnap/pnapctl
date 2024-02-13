@@ -3,7 +3,7 @@ package ip
 import (
 	"context"
 
-	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
+	ipapisdk "github.com/phoenixnap/go-sdk-bmc/ipapi/v3"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -23,7 +23,7 @@ type IpSdkClient interface {
 }
 
 type MainClient struct {
-	IpBlocksApiClient ipapisdk.IPBlocksApi
+	IpBlocksApiClient ipapisdk.IPBlocksAPI
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) IpSdkClient {
@@ -56,7 +56,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	api_client := ipapisdk.NewAPIClient(ipAPIconfiguration)
 
 	return MainClient{
-		IpBlocksApiClient: api_client.IPBlocksApi,
+		IpBlocksApiClient: api_client.IPBlocksAPI,
 	}
 }
 

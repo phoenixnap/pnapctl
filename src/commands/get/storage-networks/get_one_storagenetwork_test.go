@@ -3,7 +3,7 @@ package storagenetworks
 import (
 	"testing"
 
-	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"

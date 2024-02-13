@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	bmcapi "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	bmcapi "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 )
 
 // MockBmcApiSdkClient is a mock of BmcApiSdkClient interface.
@@ -241,6 +241,21 @@ func (m *MockBmcApiSdkClient) ServerPrivateNetworkPost(serverId string, serverPr
 func (mr *MockBmcApiSdkClientMockRecorder) ServerPrivateNetworkPost(serverId, serverPrivateNetwork, force interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerPrivateNetworkPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerPrivateNetworkPost), serverId, serverPrivateNetwork, force)
+}
+
+// ServerProvision mocks base method.
+func (m *MockBmcApiSdkClient) ServerProvision(serverId string, serverProvision bmcapi.ServerProvision) (*bmcapi.Server, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerProvision", serverId, serverProvision)
+	ret0, _ := ret[0].(*bmcapi.Server)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ServerProvision indicates an expected call of ServerProvision.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerProvision(serverId, serverProvision interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerProvision", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerProvision), serverId, serverProvision)
 }
 
 // ServerPublicNetworkDelete mocks base method.

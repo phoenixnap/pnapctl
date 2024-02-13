@@ -3,7 +3,7 @@ package bmcapi
 import (
 	"context"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -35,6 +35,7 @@ type BmcApiSdkClient interface {
 	ServerPublicNetworkPatch(serverId string, networkId string, serverNetworkUpdate bmcapisdk.ServerNetworkUpdate, force bool) (*bmcapisdk.ServerPublicNetwork, error)
 	ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (*bmcapisdk.ServerIpBlock, error)
 	ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, error)
+	ServerProvision(serverId string, serverProvision bmcapisdk.ServerProvision) (*bmcapisdk.Server, error)
 
 	//Ssh Keys
 	SshKeyPost(sshkeyCreate bmcapisdk.SshKeyCreate) (*bmcapisdk.SshKey, error)
@@ -50,9 +51,9 @@ type BmcApiSdkClient interface {
 }
 
 type MainClient struct {
-	ServersApiClient bmcapisdk.ServersApi
-	SshKeysApiClient bmcapisdk.SSHKeysApi
-	QuotaApiClient   bmcapisdk.QuotasApi
+	ServersApiClient bmcapisdk.ServersAPI
+	SshKeysApiClient bmcapisdk.SSHKeysAPI
+	QuotaApiClient   bmcapisdk.QuotasAPI
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) BmcApiSdkClient {
@@ -85,9 +86,9 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	api_client := bmcapisdk.NewAPIClient(bmcAPIconfiguration)
 
 	return MainClient{
-		ServersApiClient: api_client.ServersApi,
-		SshKeysApiClient: api_client.SSHKeysApi,
-		QuotaApiClient:   api_client.QuotasApi,
+		ServersApiClient: api_client.ServersAPI,
+		SshKeysApiClient: api_client.SSHKeysAPI,
+		QuotaApiClient:   api_client.QuotasAPI,
 	}
 }
 
@@ -174,6 +175,10 @@ func (m MainClient) ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.S
 
 func (m MainClient) ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, error) {
 	return client.HandleResponse(m.ServersApiClient.ServersServerIdIpBlocksIpBlockIdDelete(context.Background(), serverId, ipBlockId).RelinquishIpBlock(relinquishIpBlock).Execute())
+}
+
+func (m MainClient) ServerProvision(serverId string, serverProvision bmcapisdk.ServerProvision) (*bmcapisdk.Server, error) {
+	return client.HandleResponse(m.ServersApiClient.ServersServerIdActionsProvisionPost(context.Background(), serverId).ServerProvision(serverProvision).Execute())
 }
 
 // SSH Key APIs

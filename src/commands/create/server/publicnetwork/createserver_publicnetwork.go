@@ -1,9 +1,9 @@
 package publicnetwork
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
-	"github.com/spf13/cobra"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
@@ -15,7 +15,7 @@ import (
 // Filename is the filename from which to retrieve the request body
 var (
 	Filename string
-	force bool
+	force    bool
 )
 
 func init() {

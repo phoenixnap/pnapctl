@@ -1,7 +1,7 @@
 package printer
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )

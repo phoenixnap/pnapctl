@@ -1,7 +1,7 @@
 package tables
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
@@ -32,6 +32,8 @@ type LongServerTable struct {
 	OsConfiguration      string   `header:"Os Configuration"`
 	NetworkConfiguration string   `header:"Network Configuration"`
 	StorageConfiguration string   `header:"Storage Configuration"`
+	SupersededBy         string   `header:"Superseded By"`
+	Supersedes           string   `header:"Supersedes"`
 }
 
 type ShortServerTable struct {
@@ -78,7 +80,7 @@ func ToLongServerTable(server bmcapisdk.Server) LongServerTable {
 		Status:               server.Status,
 		Hostname:             server.Hostname,
 		Description:          DerefString(server.Description),
-		Os:                   server.Os,
+		Os:                   DerefString(server.Os),
 		Type:                 server.Type,
 		Location:             server.Location,
 		Cpu:                  server.Cpu,
@@ -99,6 +101,8 @@ func ToLongServerTable(server bmcapisdk.Server) LongServerTable {
 		OsConfiguration:      models.OsConfigurationToTableString(server.OsConfiguration),
 		NetworkConfiguration: models.NetworkConfigurationToTableString(&server.NetworkConfiguration),
 		StorageConfiguration: models.StorageConfigurationToTableString(&server.StorageConfiguration),
+		SupersededBy:         DerefString(server.SupersededBy),
+		Supersedes:           DerefString(server.Supersedes),
 	}
 }
 

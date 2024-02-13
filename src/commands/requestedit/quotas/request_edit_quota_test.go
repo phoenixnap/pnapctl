@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -17,6 +17,7 @@ import (
 func submitQuotaEditRequestSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// setup
 	quotaEditLimitRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
+
 	Filename = FILENAME
 	ExpectFromFileSuccess(test_framework, marshaller, quotaEditLimitRequest)
 
@@ -72,6 +73,7 @@ func TestSubmitQuotaEditRequestUnmarshallingFailure(test_framework *testing.T) {
 func TestSubmitQuotaEditClientFailure(test_framework *testing.T) {
 	// setup
 	editQuotaRequest := generators.Generate[bmcapi.QuotaEditLimitRequest]()
+
 	ExpectFromFileSuccess(test_framework, yaml.Marshal, editQuotaRequest)
 	Filename = FILENAME
 

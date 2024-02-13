@@ -3,7 +3,7 @@ package locations
 import (
 	"testing"
 
-	"github.com/phoenixnap/go-sdk-bmc/locationapi"
+	"github.com/phoenixnap/go-sdk-bmc/locationapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/models/tables"

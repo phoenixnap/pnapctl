@@ -3,7 +3,7 @@ package networks
 import (
 	"context"
 
-	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
+	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -30,8 +30,8 @@ type NetworkSdkClient interface {
 }
 
 type MainClient struct {
-	PrivateNetworksClient networkapisdk.PrivateNetworksApi
-	PublicNetworksClient  networkapisdk.PublicNetworksApi
+	PrivateNetworksClient networkapisdk.PrivateNetworksAPI
+	PublicNetworksClient  networkapisdk.PublicNetworksAPI
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) NetworkSdkClient {
@@ -64,8 +64,8 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	api_client := networkapisdk.NewAPIClient(networksAPIconfiguration)
 
 	return MainClient{
-		PrivateNetworksClient: api_client.PrivateNetworksApi,
-		PublicNetworksClient:  api_client.PublicNetworksApi,
+		PrivateNetworksClient: api_client.PrivateNetworksAPI,
+		PublicNetworksClient:  api_client.PublicNetworksAPI,
 	}
 }
 

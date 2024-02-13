@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
-	"github.com/phoenixnap/go-sdk-bmc/billingapi"
-	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
-	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
-	"github.com/phoenixnap/go-sdk-bmc/locationapi"
-	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
-	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
-	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/auditapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/locationapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
 )
 
@@ -109,11 +109,11 @@ var NodePoolToTableString = toTableString(func(sdk ranchersolutionapi.NodePool) 
 	return fmt.Sprintf("%s - %d nodes", processNil(sdk.Name), processNil(sdk.NodeCount))
 })
 
-var ClusterConfigurationToTableString = toTableString(func(sdk ranchersolutionapi.ClusterConfiguration) string {
+var ClusterConfigurationToTableString = toTableString(func(sdk ranchersolutionapi.RancherClusterConfig) string {
 	return fmt.Sprintf("Token: %s, Domain: %s", processNil(sdk.Token), processNil(sdk.ClusterDomain))
 })
 
-var ClusterMetadataToTableString = toTableString(func(sdk ranchersolutionapi.ClusterMetadata) string {
+var ClusterMetadataToTableString = toTableString(func(sdk ranchersolutionapi.RancherServerMetadata) string {
 	var username, password, url string
 	if sdk.Username != nil {
 		username = "User: " + *sdk.Username + "\n"

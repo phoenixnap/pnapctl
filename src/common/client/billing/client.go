@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi"
+	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -30,10 +30,10 @@ type BillingSdkClient interface {
 }
 
 type MainClient struct {
-	RatedUsageApiClient            billingapisdk.RatedUsageApi
-	ProductsApiClient              billingapisdk.ProductsApi
-	ReservationApiClient           billingapisdk.ReservationsApi
-	BillingConfigurationsApiClient billingapisdk.BillingConfigurationsApi
+	RatedUsageApiClient            billingapisdk.RatedUsageAPI
+	ProductsApiClient              billingapisdk.ProductsAPI
+	ReservationApiClient           billingapisdk.ReservationsAPI
+	BillingConfigurationsApiClient billingapisdk.BillingConfigurationsAPI
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) BillingSdkClient {
@@ -66,10 +66,10 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	api_client := billingapisdk.NewAPIClient(billingAPIconfiguration)
 
 	return MainClient{
-		RatedUsageApiClient:            api_client.RatedUsageApi,
-		ProductsApiClient:              api_client.ProductsApi,
-		ReservationApiClient:           api_client.ReservationsApi,
-		BillingConfigurationsApiClient: api_client.BillingConfigurationsApi,
+		RatedUsageApiClient:            api_client.RatedUsageAPI,
+		ProductsApiClient:              api_client.ProductsAPI,
+		ReservationApiClient:           api_client.ReservationsAPI,
+		BillingConfigurationsApiClient: api_client.BillingConfigurationsAPI,
 	}
 }
 

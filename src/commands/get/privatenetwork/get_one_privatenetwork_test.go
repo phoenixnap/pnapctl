@@ -3,7 +3,7 @@ package privatenetwork
 import (
 	"testing"
 
-	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
+	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"

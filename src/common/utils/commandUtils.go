@@ -26,6 +26,7 @@ const (
 	DELETION    Action = "deletion"
 	DEPROVISION Action = "deprovisioning"
 	SUBMISSION  Action = "submission"
+	PROVISION   Action = "provisioning"
 )
 
 func SetupFilenameFlag(cmd *cobra.Command, filename *string, action Action) {

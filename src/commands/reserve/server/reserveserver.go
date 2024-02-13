@@ -1,15 +1,15 @@
 package server
 
 import (
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 
-	"github.com/spf13/cobra"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 )
 
 // Filename is the filename from which to retrieve the request body

@@ -1,6 +1,6 @@
 module docs
 
-go 1.19
+go 1.21
 
 replace phoenixnap.com/pnapctl => ../../src
 
@@ -25,19 +25,19 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/auditapi/v2 v2.0.6 // indirect
-	github.com/phoenixnap/go-sdk-bmc/billingapi v1.3.2 // indirect
-	github.com/phoenixnap/go-sdk-bmc/bmcapi/v2 v2.4.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/auditapi/v3 v3.0.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/billingapi/v2 v2.0.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/bmcapi/v3 v3.0.1 // indirect
 	github.com/phoenixnap/go-sdk-bmc/invoicingapi v1.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/ipapi/v2 v2.0.5 // indirect
-	github.com/phoenixnap/go-sdk-bmc/locationapi v1.0.0 // indirect
-	github.com/phoenixnap/go-sdk-bmc/networkapi/v2 v2.3.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/networkstorageapi v1.4.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/ipapi/v3 v3.0.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/locationapi/v2 v2.0.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/networkapi/v3 v3.0.1 // indirect
+	github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2 v2.0.1 // indirect
 	github.com/phoenixnap/go-sdk-bmc/paymentsapi v1.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v2 v2.0.5 // indirect
+	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v3 v3.0.1 // indirect
 	github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.5 // indirect
-	github.com/rivo/uniseg v0.4.4 // indirect
-	github.com/rs/zerolog v1.31.0 // indirect
+	github.com/rivo/uniseg v0.4.6 // indirect
+	github.com/rs/zerolog v1.32.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
@@ -48,7 +48,7 @@ require (
 	github.com/spf13/viper v1.18.2 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/exp v0.0.0-20240110193028-0dcbfd608b1e // indirect
+	golang.org/x/exp v0.0.0-20240205201215-2c58cdc269a3 // indirect
 	golang.org/x/oauth2 v0.16.0 // indirect
 	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect

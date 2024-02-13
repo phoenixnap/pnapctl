@@ -1,14 +1,13 @@
 package invoicing
 
 import (
-	"testing"
 	"os"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"phoenixnap.com/pnapctl/common/ctlerrors"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
-	"phoenixnap.com/pnapctl/common/ctlerrors"
-	"github.com/rs/zerolog/log"
 )
 
 func TestDownloadInvoiceSuccess(test_framework *testing.T) {
@@ -18,8 +17,8 @@ func TestDownloadInvoiceSuccess(test_framework *testing.T) {
 	ExpectSaveFileSuccess(test_framework, &file)
 
 	PrepareInvoicingMockClient(test_framework).
-	InvoicesInvoiceIdGeneratePdfPost(RESOURCEID).
-	Return(&file, nil)
+		InvoicesInvoiceIdGeneratePdfPost(RESOURCEID).
+		Return(&file, nil)
 
 	// Run command
 	err := DownloadInvoiceCmd.RunE(DownloadInvoiceCmd, []string{RESOURCEID})
@@ -34,8 +33,8 @@ func TestDownloadInvoiceFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareInvoicingMockClient(test_framework).
-	InvoicesInvoiceIdGeneratePdfPost(RESOURCEID).
-	Return(&file, nil)
+		InvoicesInvoiceIdGeneratePdfPost(RESOURCEID).
+		Return(&file, nil)
 
 	// Mocking
 	expectedErr := ExpectSaveFileFailure(test_framework, &file)
@@ -51,8 +50,8 @@ func TestDownloadInvoiceClientFail(test_framework *testing.T) {
 
 	// Mocking
 	PrepareInvoicingMockClient(test_framework).
-	InvoicesInvoiceIdGeneratePdfPost(RESOURCEID).
-	Return(nil, testutil.TestError)
+		InvoicesInvoiceIdGeneratePdfPost(RESOURCEID).
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := DownloadInvoiceCmd.RunE(DownloadInvoiceCmd, []string{RESOURCEID})

@@ -1,7 +1,7 @@
 package printer
 
 import (
-	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v2"
+	auditapisdk "github.com/phoenixnap/go-sdk-bmc/auditapi/v3"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )

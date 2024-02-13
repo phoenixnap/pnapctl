@@ -3,7 +3,7 @@ package tables
 import (
 	"testing"
 
-	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v3"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models/generators"
 )

@@ -3,9 +3,9 @@ package ipblocks
 import (
 	"fmt"
 
-	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
-	"github.com/spf13/cobra"
+	bmcapisdk "github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/models"

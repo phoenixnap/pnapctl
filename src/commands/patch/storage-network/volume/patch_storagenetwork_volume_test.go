@@ -2,8 +2,9 @@ package storagenetwork
 
 import (
 	"testing"
+
 	"github.com/golang/mock/gomock"
-	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -78,7 +79,7 @@ func TestPatchStorageNetworkClientFailure(test_framework *testing.T) {
 
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
-	NetworkStoragePatchVolumeById(RESOURCEID, RESOURCEID, gomock.Eq(volumePatch)).
+		NetworkStoragePatchVolumeById(RESOURCEID, RESOURCEID, gomock.Eq(volumePatch)).
 		Return(nil, testutil.TestError)
 
 	// Run command

@@ -1,7 +1,7 @@
 package printer
 
 import (
-	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
+	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )

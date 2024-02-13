@@ -1,9 +1,8 @@
 package products
 
 import (
-	"github.com/spf13/cobra"
 	"github.com/rs/zerolog/log"
-
+	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"

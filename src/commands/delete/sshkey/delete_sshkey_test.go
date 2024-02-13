@@ -3,7 +3,7 @@ package sshkey
 import (
 	"testing"
 
-	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"

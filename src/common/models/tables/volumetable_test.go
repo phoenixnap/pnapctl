@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
-	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
 )
@@ -33,6 +33,7 @@ func assertVolumesEqual(test_framework *testing.T, sdkVolume networkstorageapi.V
 	assert.Equal(test_framework, DerefString(sdkVolume.Protocol), tblVolume.Protocol)
 	assert.Equal(test_framework, DerefString(sdkVolume.Status), tblVolume.Status)
 	assert.Equal(test_framework, DerefTimeAsString(sdkVolume.CreatedOn), tblVolume.CreatedOn)
+	assert.Equal(test_framework, DerefTimeAsString(sdkVolume.DeleteRequestedOn), tblVolume.DeleteRequestedOn)
 	assert.Equal(test_framework, models.PermissionsToTableString(sdkVolume.Permissions), tblVolume.Permissions)
 }
 

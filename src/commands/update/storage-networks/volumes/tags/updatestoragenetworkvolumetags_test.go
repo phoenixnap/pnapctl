@@ -4,29 +4,29 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v2"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	. "phoenixnap.com/pnapctl/testsupport/mockhelp"
 	"phoenixnap.com/pnapctl/testsupport/testutil"
+	"sigs.k8s.io/yaml"
 )
 
 func updateStorageNetworkVolumeTagsSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
-	tagAssignmentRequest := generators.Generate[[]networkstorageapi.TagAssignmentRequest]()
+	tagAssignmentRequests := testutil.GenN(1, generators.Generate[networkstorageapi.TagAssignmentRequest])
 
 	// Assumed contents of the file.
 	Filename = FILENAME
-	ExpectFromFileSuccess(test_framework, marshaller, tagAssignmentRequest)
+	ExpectFromFileSuccess(test_framework, marshaller, tagAssignmentRequests)
 
 	// What the server should return.
 	volume := generators.Generate[networkstorageapi.Volume]()
 
 	// Mocking
 	PrepareNetworkStorageApiMockClient(test_framework).
-		NetworkStorageVolumePutTags(RESOURCEID, RESOURCEID, tagAssignmentRequest).
+		NetworkStorageVolumePutTags(RESOURCEID, RESOURCEID, tagAssignmentRequests).
 		Return(&volume, nil)
 
 	// Run command

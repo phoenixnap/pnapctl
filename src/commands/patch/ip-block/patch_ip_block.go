@@ -1,9 +1,9 @@
 package ipblock
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
-	"github.com/spf13/cobra"
+	"github.com/phoenixnap/go-sdk-bmc/ipapi/v3"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnapctl/common/client/ip"
 	"phoenixnap.com/pnapctl/common/models"

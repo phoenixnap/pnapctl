@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	ipapi "github.com/phoenixnap/go-sdk-bmc/ipapi/v2"
+	ipapi "github.com/phoenixnap/go-sdk-bmc/ipapi/v3"
 )
 
 // MockIpSdkClient is a mock of IpSdkClient interface.

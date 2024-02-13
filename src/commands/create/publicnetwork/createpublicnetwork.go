@@ -1,9 +1,9 @@
 package publicnetwork
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/networkapi/v2"
-	"github.com/spf13/cobra"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnapctl/commands/create/publicnetwork/ipblock"
 	"phoenixnap.com/pnapctl/common/client/networks"
