@@ -17,6 +17,7 @@ Available Commands:
   get          Display one or many resources.
   help         Help about any command
   patch        Modify a resource.
+  pay          Pay a resource.
   power-off    Perform a hard shutdown on the resource.
   power-on     Power on a resource.
   reboot       Perform a soft reboot on a resource.
@@ -365,6 +366,24 @@ Available Commands:
 Flags:
   -h, --help         help for download
   -d, --destination  destination for the downloaded invoice
+
+Global Flags:
+      --config string   config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.
+  -v, --verbose         change log level from Warn (default) to Debug.
+
+Use \"pnapctl update [command] --help\" for more information about a command."
+
+outputHelpPay="Pay a resource.
+
+Usage:
+  pnapctl pay [flags]
+  pnapctl pay [command]
+
+Available Commands:
+  invoice         Pay a resource.
+
+Flags:
+  -h, --help         help for download
 
 Global Flags:
       --config string   config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.

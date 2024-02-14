@@ -24,6 +24,7 @@ import (
 	"phoenixnap.com/pnapctl/commands/create"
 	"phoenixnap.com/pnapctl/commands/delete"
 	"phoenixnap.com/pnapctl/commands/get"
+	"phoenixnap.com/pnapctl/commands/pay"
 	"phoenixnap.com/pnapctl/commands/patch"
 	"phoenixnap.com/pnapctl/commands/poweroff"
 	"phoenixnap.com/pnapctl/commands/poweron"
@@ -95,6 +96,7 @@ func init() {
 	RootCmd.AddCommand(autorenew.AutoRenewCmd)
 	RootCmd.AddCommand(convert.ConvertCmd)
 	RootCmd.AddCommand(download.DownloadCmd)
+	RootCmd.AddCommand(pay.PayCmd)
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Warn (default) to Debug.")
