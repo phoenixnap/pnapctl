@@ -25,17 +25,17 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/auditapi/v3 v3.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/billingapi/v2 v2.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/bmcapi/v3 v3.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/invoicingapi v1.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/ipapi/v3 v3.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/locationapi/v2 v2.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/networkapi/v3 v3.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2 v2.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/paymentsapi v1.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v3 v3.0.1 // indirect
-	github.com/phoenixnap/go-sdk-bmc/tagapi/v2 v2.0.5 // indirect
+	github.com/phoenixnap/go-sdk-bmc/auditapi/v3 v3.0.2 // indirect
+	github.com/phoenixnap/go-sdk-bmc/billingapi/v3 v3.0.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/bmcapi/v3 v3.1.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/invoicingapi v1.0.2 // indirect
+	github.com/phoenixnap/go-sdk-bmc/ipapi/v3 v3.0.2 // indirect
+	github.com/phoenixnap/go-sdk-bmc/locationapi/v3 v3.0.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/networkapi/v3 v3.0.2 // indirect
+	github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v3 v3.0.0 // indirect
+	github.com/phoenixnap/go-sdk-bmc/paymentsapi v1.0.2 // indirect
+	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v3 v3.0.2 // indirect
+	github.com/phoenixnap/go-sdk-bmc/tagapi/v3 v3.0.2 // indirect
 	github.com/rivo/uniseg v0.4.6 // indirect
 	github.com/rs/zerolog v1.32.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect

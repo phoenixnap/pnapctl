@@ -1,7 +1,7 @@
 package tags
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v3"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 

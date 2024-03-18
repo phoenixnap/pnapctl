@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	networkstorageapi "github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
+	networkstorageapi "github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v3"
 )
 
 // MockNetworkStorageSdkClient is a mock of NetworkStorageSdkClient interface.

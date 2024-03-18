@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	billingapi "github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
+	billingapi "github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
 )
 
 // MockBillingSdkClient is a mock of BillingSdkClient interface.

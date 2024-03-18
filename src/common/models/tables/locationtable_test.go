@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
-	"github.com/phoenixnap/go-sdk-bmc/locationapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/locationapi/v3"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"

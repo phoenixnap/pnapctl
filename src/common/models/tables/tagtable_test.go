@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/influxdata/influxdb/pkg/testing/assert"
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v3"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"

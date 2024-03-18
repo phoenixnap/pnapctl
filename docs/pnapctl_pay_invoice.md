@@ -20,7 +20,7 @@ pnapctl pay invoice <INVOICE_ID>
 
 ```
   -h, --help        help for invoice
-      --id string   Id of the invoice
+      --id string   The unique resource identifier of the Invoice.
 ```
 
 ### Options inherited from parent commands

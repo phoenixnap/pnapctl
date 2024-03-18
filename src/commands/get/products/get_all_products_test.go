@@ -18,6 +18,7 @@ func getQueryParams() (string, string, string, string) {
 
 func TestGetAllProducts_FullTable(test_framework *testing.T) {
 	responseList := generators.GenerateProductSdkList()
+
 	products := iterutils.DerefInterface(iterutils.MapInterface(responseList, tables.ProductTableFromSdk))
 
 	// Mocking

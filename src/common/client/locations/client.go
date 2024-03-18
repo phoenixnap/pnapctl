@@ -3,7 +3,7 @@ package locations
 import (
 	"context"
 
-	locationapisdk "github.com/phoenixnap/go-sdk-bmc/locationapi/v2"
+	locationapisdk "github.com/phoenixnap/go-sdk-bmc/locationapi/v3"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"

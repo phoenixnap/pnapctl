@@ -3,7 +3,7 @@ package tables
 import (
 	"testing"
 
-	"github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"

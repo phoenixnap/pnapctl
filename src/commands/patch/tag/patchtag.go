@@ -1,9 +1,9 @@
 package tag
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
-	"github.com/spf13/cobra"
+	"github.com/phoenixnap/go-sdk-bmc/tagapi/v3"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
 
 	"phoenixnap.com/pnapctl/common/client/tags"
 	"phoenixnap.com/pnapctl/common/models"
