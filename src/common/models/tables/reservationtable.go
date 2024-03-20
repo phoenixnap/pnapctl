@@ -1,6 +1,6 @@
 package tables
 
-import "github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
+import "github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
 
 type ReservationTable struct {
 	Id                  string  `header:"ID"`
@@ -34,7 +34,7 @@ func ReservationTableFromSdk(sdk billingapi.Reservation) ReservationTable {
 	return ReservationTable{
 		Id:                  sdk.Id,
 		ProductCode:         sdk.ProductCode,
-		ProductCategory:     sdk.ProductCategory,
+		ProductCategory:     string(sdk.ProductCategory),
 		Location:            string(sdk.Location),
 		ReservationModel:    string(sdk.ReservationModel),
 		InitialInvoiceModel: DerefString(sdk.InitialInvoiceModel),
@@ -55,7 +55,7 @@ func ShortReservationTableFromSdk(sdk billingapi.Reservation) ShortReservationTa
 	return ShortReservationTable{
 		Id:              sdk.Id,
 		ProductCode:     sdk.ProductCode,
-		ProductCategory: sdk.ProductCategory,
+		ProductCategory: string(sdk.ProductCategory),
 		Location:        string(sdk.Location),
 		Price:           sdk.Price,
 		PriceUnit:       string(sdk.PriceUnit),

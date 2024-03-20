@@ -119,7 +119,7 @@ $(TEST_TARGETS): test
 check test tests: ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
 	$Q $(GO) test -vet=off -timeout $(TIMEOUT)s $(ARGS) $(TESTPKGS)
 test-tparse: $(TPARSE) ; $(info $(M) running $(NAME:%=% )tests...) @
-	$Q $(GO) test -vet=off -timeout $(TIMEOUT)s -json -cover $(TESTPKGS) | $(TPARSE) -all 
+	$Q $(GO) test -vet=off -timeout $(TIMEOUT)s -json -cover $(TESTPKGS) | $(TPARSE) -all
 
 .PHONY: test-coverage test-coverage-tools test-coverage-show
 test-coverage-show: ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests

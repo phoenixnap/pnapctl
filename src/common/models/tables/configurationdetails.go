@@ -1,7 +1,7 @@
 package tables
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
 	"phoenixnap.com/pnapctl/common/models"
 )
 

@@ -1,7 +1,7 @@
 package printer
 
 import (
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v3"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )

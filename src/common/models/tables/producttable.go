@@ -1,7 +1,7 @@
 package tables
 
 import (
-	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
+	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/oneof/product"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"

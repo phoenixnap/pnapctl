@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	tagapi "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
+	tagapi "github.com/phoenixnap/go-sdk-bmc/tagapi/v3"
 )
 
 // MockTagSdkClient is a mock of TagSdkClient interface.

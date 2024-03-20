@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
+	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -32,6 +32,7 @@ type BillingSdkClient interface {
 type MainClient struct {
 	RatedUsageApiClient            billingapisdk.RatedUsageAPI
 	ProductsApiClient              billingapisdk.ProductsAPI
+	ProductAvailabilityApiClient   billingapisdk.ProductAvailabilityAPI
 	ReservationApiClient           billingapisdk.ReservationsAPI
 	BillingConfigurationsApiClient billingapisdk.BillingConfigurationsAPI
 }
@@ -68,6 +69,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	return MainClient{
 		RatedUsageApiClient:            api_client.RatedUsageAPI,
 		ProductsApiClient:              api_client.ProductsAPI,
+		ProductAvailabilityApiClient:   api_client.ProductAvailabilityAPI,
 		ReservationApiClient:           api_client.ReservationsAPI,
 		BillingConfigurationsApiClient: api_client.BillingConfigurationsAPI,
 	}
@@ -126,7 +128,7 @@ func (m MainClient) ReservationsGet(productCategory string) ([]billingapisdk.Res
 	request := m.ReservationApiClient.ReservationsGet(context.Background())
 
 	if !client.IsZeroValue(productCategory) {
-		if enum, err := billingapisdk.NewProductCategoryEnumFromValue(productCategory); err == nil && enum != nil {
+		if enum, err := billingapisdk.NewReservationProductCategoryEnumFromValue(productCategory); err == nil && enum != nil {
 			request = request.ProductCategory(*enum)
 		} else {
 			fmt.Printf("Product category passed (%s) isn't valid %v. Ignoring...\n", productCategory, billingapisdk.AllowedProductCategoryEnumEnumValues)
@@ -161,7 +163,7 @@ func (m MainClient) AccountBillingConfigurationGet() (*billingapisdk.Configurati
 }
 
 func (m MainClient) ProductAvailabilityGet(productCategory []string, productCode []string, showOnlyMinQuantityAvailable bool, location []string, solution []string, minQuantity float32) ([]billingapisdk.ProductAvailability, error) {
-	request := m.ProductsApiClient.ProductAvailabilityGet(context.Background())
+	request := m.ProductAvailabilityApiClient.ProductAvailabilityGet(context.Background())
 
 	if len(productCategory) != 0 {
 		request = request.ProductCategory(productCategory)

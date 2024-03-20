@@ -3,7 +3,7 @@ package tags
 import (
 	"context"
 
-	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v2"
+	tagapisdk "github.com/phoenixnap/go-sdk-bmc/tagapi/v3"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -21,7 +21,7 @@ type TagSdkClient interface {
 }
 
 type MainClient struct {
-	TagSdkClient tagapisdk.TagsApi
+	TagSdkClient tagapisdk.TagsAPI
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) TagSdkClient {
@@ -54,7 +54,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	api_client := tagapisdk.NewAPIClient(tagConfiguration)
 
 	return MainClient{
-		TagSdkClient: api_client.TagsApi,
+		TagSdkClient: api_client.TagsAPI,
 	}
 }
 

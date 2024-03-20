@@ -3,7 +3,7 @@ package networkstorage
 import (
 	"context"
 
-	networkstoragesdk "github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
+	networkstoragesdk "github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v3"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"

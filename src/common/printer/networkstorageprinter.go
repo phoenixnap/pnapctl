@@ -1,7 +1,7 @@
 package printer
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v3"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )

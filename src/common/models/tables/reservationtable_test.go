@@ -3,7 +3,7 @@ package tables
 import (
 	"testing"
 
-	"github.com/phoenixnap/go-sdk-bmc/billingapi/v2"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models/generators"
 )
@@ -18,7 +18,7 @@ func TestReservationTableFromSdk_NotNil(t *testing.T) {
 func assertReservationTablesEqual(t *testing.T, sdk billingapi.Reservation, tbl ReservationTable) {
 	assert.Equal(t, sdk.Id, tbl.Id)
 	assert.Equal(t, sdk.ProductCode, tbl.ProductCode)
-	assert.Equal(t, sdk.ProductCategory, tbl.ProductCategory)
+	assert.Equal(t, string(sdk.ProductCategory), tbl.ProductCategory)
 	assert.Equal(t, string(sdk.Location), tbl.Location)
 	assert.Equal(t, string(sdk.ReservationModel), tbl.ReservationModel)
 	assert.Equal(t, string(*sdk.InitialInvoiceModel), tbl.InitialInvoiceModel)
