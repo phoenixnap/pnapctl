@@ -31,7 +31,7 @@ require (
 	github.com/phoenixnap/go-sdk-bmc/invoicingapi v1.0.2 // indirect
 	github.com/phoenixnap/go-sdk-bmc/ipapi/v3 v3.0.2 // indirect
 	github.com/phoenixnap/go-sdk-bmc/locationapi/v3 v3.0.0 // indirect
-	github.com/phoenixnap/go-sdk-bmc/networkapi/v3 v3.0.2 // indirect
+	github.com/phoenixnap/go-sdk-bmc/networkapi/v4 v3.0.2 // indirect
 	github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v3 v3.0.0 // indirect
 	github.com/phoenixnap/go-sdk-bmc/paymentsapi v1.0.2 // indirect
 	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v3 v3.0.2 // indirect

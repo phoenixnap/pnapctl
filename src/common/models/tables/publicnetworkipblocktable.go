@@ -1,6 +1,6 @@
 package tables
 
-import "github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
+import "github.com/phoenixnap/go-sdk-bmc/networkapi/v4"
 
 type PublicNetworkIpBlockTable struct {
 	Id string `header:"ID"`

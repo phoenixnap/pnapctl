@@ -5,8 +5,10 @@ import (
 
 	"github.com/spf13/cobra"
 	account_billing_configuration "phoenixnap.com/pnapctl/commands/get/account-billing-configuration"
+	"phoenixnap.com/pnapctl/commands/get/bgppeergroup"
 	"phoenixnap.com/pnapctl/commands/get/clusters"
 	"phoenixnap.com/pnapctl/commands/get/events"
+	"phoenixnap.com/pnapctl/commands/get/invoicing"
 	ip_blocks "phoenixnap.com/pnapctl/commands/get/ip-blocks"
 	"phoenixnap.com/pnapctl/commands/get/locations"
 	"phoenixnap.com/pnapctl/commands/get/privatenetwork"
@@ -20,7 +22,6 @@ import (
 	"phoenixnap.com/pnapctl/commands/get/sshkeys"
 	storagenetworks "phoenixnap.com/pnapctl/commands/get/storage-networks"
 	"phoenixnap.com/pnapctl/commands/get/tags"
-	"phoenixnap.com/pnapctl/commands/get/invoicing"
 	"phoenixnap.com/pnapctl/commands/get/transactions"
 )
 
@@ -43,6 +44,7 @@ func init() {
 	GetCmd.AddCommand(sshkeys.GetSshKeysCmd)
 	GetCmd.AddCommand(privatenetwork.GetPrivateNetworksCmd)
 	GetCmd.AddCommand(publicnetwork.GetPublicNetworksCmd)
+	GetCmd.AddCommand(bgppeergroup.GetBgpPeerGroupsCmd)
 	GetCmd.AddCommand(ip_blocks.GetIpBlockCmd)
 	GetCmd.AddCommand(rated_usage.GetRatedUsageCmd)
 	GetCmd.AddCommand(products.GetProductsCmd)

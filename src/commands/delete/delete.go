@@ -3,6 +3,7 @@ package delete
 import (
 	"os"
 
+	"phoenixnap.com/pnapctl/commands/delete/bgppeergroup"
 	ip_blocks "phoenixnap.com/pnapctl/commands/delete/ip-blocks"
 	"phoenixnap.com/pnapctl/commands/delete/publicnetwork"
 	storagenetwork "phoenixnap.com/pnapctl/commands/delete/storage-network"
@@ -39,6 +40,7 @@ func init() {
 	DeleteCmd.AddCommand(sshkey.DeleteSshKeyCmd)
 	DeleteCmd.AddCommand(privatenetwork.DeletePrivateNetworkCmd)
 	DeleteCmd.AddCommand(publicnetwork.DeletePublicNetworkCmd)
+	DeleteCmd.AddCommand(bgppeergroup.DeleteBgpPeerGroupCmd)
 	DeleteCmd.AddCommand(ip_blocks.DeleteIpBlockCmd)
 	DeleteCmd.AddCommand(storagenetwork.DeleteStorageNetworkCmd)
 }

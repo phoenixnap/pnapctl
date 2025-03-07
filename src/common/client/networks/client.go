@@ -3,7 +3,7 @@ package networks
 import (
 	"context"
 
-	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
+	networkapisdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v4"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -25,13 +25,20 @@ type NetworkSdkClient interface {
 	PublicNetworksPost(publicNetworkCreate networkapisdk.PublicNetworkCreate) (*networkapisdk.PublicNetwork, error)
 	PublicNetworkDelete(networkId string) error
 	PublicNetworkPatch(networkId string, publicNetworkPatch networkapisdk.PublicNetworkModify) (*networkapisdk.PublicNetwork, error)
-	PublicNetworkIpBlockPost(networkId string, idBlockCreate networkapisdk.PublicNetworkIpBlock) (*networkapisdk.PublicNetworkIpBlock, error)
+	PublicNetworkIpBlockPost(networkId string, idBlockCreate networkapisdk.PublicNetworkIpBlockCreate) (*networkapisdk.PublicNetworkIpBlock, error)
 	PublicNetworkIpBlockDelete(networkId string, ipBlockId string, force bool) (string, error)
+
+	BgpPeerGroupsGet(location string) ([]networkapisdk.BgpPeerGroup, error)
+	BgpPeerGroupsPost(bgpPeerGroupCreate networkapisdk.BgpPeerGroupCreate) (*networkapisdk.BgpPeerGroup, error)
+	BgpPeerGroupGetById(bgpPeerGroupId string) (*networkapisdk.BgpPeerGroup, error)
+	BgpPeerGroupPatchById(bgpPeerGroupId string, bgpPeerGroupPatch networkapisdk.BgpPeerGroupPatch) (*networkapisdk.BgpPeerGroup, error)
+	BgpPeerGroupDeleteById(bgpPeerGroupId string) (*networkapisdk.BgpPeerGroup, error)
 }
 
 type MainClient struct {
 	PrivateNetworksClient networkapisdk.PrivateNetworksAPI
 	PublicNetworksClient  networkapisdk.PublicNetworksAPI
+	BgpPeerGroupsClient   networkapisdk.BGPPeerGroupsAPI
 }
 
 func NewMainClient(clientId string, clientSecret string, customUrl string, customTokenURL string) NetworkSdkClient {
@@ -121,10 +128,36 @@ func (m MainClient) PublicNetworkPatch(networkId string, publicNetworkPatch netw
 	return client.HandleResponse(m.PublicNetworksClient.PublicNetworksNetworkIdPatch(context.Background(), networkId).PublicNetworkModify(publicNetworkPatch).Execute())
 }
 
-func (m MainClient) PublicNetworkIpBlockPost(networkId string, idBlockCreate networkapisdk.PublicNetworkIpBlock) (*networkapisdk.PublicNetworkIpBlock, error) {
-	return client.HandleResponse(m.PublicNetworksClient.PublicNetworksNetworkIdIpBlocksPost(context.Background(), networkId).PublicNetworkIpBlock(idBlockCreate).Execute())
+func (m MainClient) PublicNetworkIpBlockPost(networkId string, idBlockCreate networkapisdk.PublicNetworkIpBlockCreate) (*networkapisdk.PublicNetworkIpBlock, error) {
+	return client.HandleResponse(m.PublicNetworksClient.PublicNetworksNetworkIdIpBlocksPost(context.Background(), networkId).PublicNetworkIpBlockCreate(idBlockCreate).Execute())
 }
 
 func (m MainClient) PublicNetworkIpBlockDelete(networkId string, ipBlockId string, force bool) (string, error) {
 	return client.HandleResponse(m.PublicNetworksClient.PublicNetworksNetworkIdIpBlocksIpBlockIdDelete(context.Background(), networkId, ipBlockId).Force(force).Execute())
+}
+
+func (m MainClient) BgpPeerGroupsGet(location string) ([]networkapisdk.BgpPeerGroup, error) {
+	request := m.BgpPeerGroupsClient.BgpPeerGroupsGet(context.Background())
+
+	if !client.IsZeroValue(location) {
+		request.Location(location)
+	}
+
+	return client.HandleResponse(request.Execute())
+}
+
+func (m MainClient) BgpPeerGroupsPost(bgpPeerGroupCreate networkapisdk.BgpPeerGroupCreate) (*networkapisdk.BgpPeerGroup, error) {
+	return client.HandleResponse(m.BgpPeerGroupsClient.BgpPeerGroupsPost(context.Background()).BgpPeerGroupCreate(bgpPeerGroupCreate).Execute())
+}
+
+func (m MainClient) BgpPeerGroupGetById(bgpPeerGroupId string) (*networkapisdk.BgpPeerGroup, error) {
+	return client.HandleResponse(m.BgpPeerGroupsClient.BgpPeerGroupsPeerGroupIdGet(context.Background(), bgpPeerGroupId).Execute())
+}
+
+func (m MainClient) BgpPeerGroupPatchById(bgpPeerGroupId string, bgpPeerGroupPatch networkapisdk.BgpPeerGroupPatch) (*networkapisdk.BgpPeerGroup, error) {
+	return client.HandleResponse(m.BgpPeerGroupsClient.BgpPeerGroupsPeerGroupIdPatch(context.Background(), bgpPeerGroupId).BgpPeerGroupPatch(bgpPeerGroupPatch).Execute())
+}
+
+func (m MainClient) BgpPeerGroupDeleteById(bgpPeerGroupId string) (*networkapisdk.BgpPeerGroup, error) {
+	return client.HandleResponse(m.BgpPeerGroupsClient.BgpPeerGroupsPeerGroupIdDelete(context.Background(), bgpPeerGroupId).Execute())
 }

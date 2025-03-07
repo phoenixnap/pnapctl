@@ -1,7 +1,7 @@
 package printer
 
 import (
-	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
+	networksdk "github.com/phoenixnap/go-sdk-bmc/networkapi/v4"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
@@ -66,5 +66,26 @@ func PreparePublicNetworkIpBlockForPrinting(ipBlock networksdk.PublicNetworkIpBl
 		return tables.PublicNetworkIpBlockTableFromSdk(ipBlock)
 	default:
 		return ipBlock
+	}
+}
+
+func PrintBgpPeerGroupResponse(bgpPeerGroup *networksdk.BgpPeerGroup) error {
+	bgpPeerGroupToPrint := PrepareBgpPeerGroupForPrinting(*bgpPeerGroup)
+	return MainPrinter.PrintOutput(bgpPeerGroupToPrint)
+}
+
+func PrintBgpPeerGroupListResponse(bgpPeerGroups []networksdk.BgpPeerGroup) error {
+	bgpPeerGroupsToPrint := iterutils.Map(bgpPeerGroups, PrepareBgpPeerGroupForPrinting)
+	return MainPrinter.PrintOutput(bgpPeerGroupsToPrint)
+}
+
+func PrepareBgpPeerGroupForPrinting(bgpPeerGroup networksdk.BgpPeerGroup) interface{} {
+	table := OutputIsTable()
+
+	switch {
+	case table:
+		return tables.BgpPeerGroupTableFromSdk(bgpPeerGroup)
+	default:
+		return bgpPeerGroup
 	}
 }

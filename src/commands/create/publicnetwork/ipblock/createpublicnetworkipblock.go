@@ -1,7 +1,7 @@
 package ipblock
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v4"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
@@ -44,7 +44,7 @@ description: My custom server edit`,
 func createPublicNetworkIpBlock(id string) error {
 	log.Info().Msgf("Creating new Ip Block on Public Network with ID [%s].", id)
 
-	ipBlock, err := models.CreateRequestFromFile[networkapi.PublicNetworkIpBlock](Filename)
+	ipBlock, err := models.CreateRequestFromFile[networkapi.PublicNetworkIpBlockCreate](Filename)
 
 	if err != nil {
 		return err

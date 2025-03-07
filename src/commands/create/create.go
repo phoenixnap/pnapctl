@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"phoenixnap.com/pnapctl/commands/create/bgppeergroup"
 	"phoenixnap.com/pnapctl/commands/create/cluster"
 	ip_blocks "phoenixnap.com/pnapctl/commands/create/ip-blocks"
 	"phoenixnap.com/pnapctl/commands/create/privatenetwork"
@@ -38,6 +39,7 @@ func init() {
 	CreateCmd.AddCommand(sshkey.CreateSshKeyCmd)
 	CreateCmd.AddCommand(privatenetwork.CreatePrivateNetworkCmd)
 	CreateCmd.AddCommand(publicnetwork.CreatePublicNetworkCmd)
+	CreateCmd.AddCommand(bgppeergroup.CreateBgpPeerGroupCmd)
 	CreateCmd.AddCommand(ip_blocks.CreateIpBlockCmd)
 	CreateCmd.AddCommand(reservation.CreateReservationCmd)
 	CreateCmd.AddCommand(storagenetwork.CreateStorageNetworkCmd)

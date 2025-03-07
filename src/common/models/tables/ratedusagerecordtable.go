@@ -85,7 +85,7 @@ func parseCommonRatedUsage(sdk billingapisdk.RatedUsageGet200ResponseInner) *Rat
 
 	return &RatedUsageRecordTable{
 		Id:                   ratedUsage.Id,
-		ProductCategory:      ratedUsage.ProductCategory,
+		ProductCategory:      string(ratedUsage.ProductCategory),
 		ProductCode:          ratedUsage.ProductCode,
 		Location:             ratedUsage.Location,
 		YearMonth:            DerefString(ratedUsage.YearMonth),

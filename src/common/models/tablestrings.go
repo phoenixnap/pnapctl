@@ -9,7 +9,7 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/locationapi/v3"
-	"github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v4"
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/tagapi/v3"
@@ -102,6 +102,14 @@ var PublicNetworkIpBlockToTableString = toTableString(func(sdk networkapi.Public
 
 var PrivateNetworkServerToTableString = toTableString(func(sdk networkapi.PrivateNetworkServer) string {
 	return fmt.Sprintf("ID: %s\nIps: %v\n", sdk.Id, sdk.Ips)
+})
+
+var BgpIpv4PrefixToTableString = toTableString(func(sdk networkapi.BgpIPv4Prefix) string {
+	return fmt.Sprintf("IPv4 Allocation Id: %s\nCidr: %s\nStatus: %s\nIn Use: %s", sdk.Ipv4AllocationId, sdk.Cidr, sdk.Status, sdk.InUse)
+})
+
+var AsnDetailsToTableString = toTableString(func(sdk networkapi.AsnDetails) string {
+	return fmt.Sprintf("Asn: %s\n, Verification Status: %s\nVerification Reason: %s", sdk.Asn, sdk.VerificationStatus, processNil(sdk.VerificationReason))
 })
 
 // ranchersolutionapi
