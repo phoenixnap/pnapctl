@@ -19,8 +19,8 @@ func TestBgpPeerGroupFromSdk(test_framework *testing.T) {
 
 func assertBgpPeerGroupsEqual(test_framework *testing.T, bgpPeerGroup networkapi.BgpPeerGroup, table BgpPeerGroupTable) {
 	assert.Equal(test_framework, bgpPeerGroup.Id, table.Id)
-	assert.Equal(test_framework, bgpPeerGroup.Status, table.Id)
-	assert.Equal(test_framework, bgpPeerGroup.Location, table.Id)
+	assert.Equal(test_framework, bgpPeerGroup.Status, table.Status)
+	assert.Equal(test_framework, bgpPeerGroup.Location, table.Location)
 	assert.Equal(test_framework, iterutils.MapRef(bgpPeerGroup.Ipv4Prefixes, models.BgpIpv4PrefixToTableString), table.Ipv4Prefixes)
 	assert.Equal(test_framework, models.AsnDetailsToTableString(&bgpPeerGroup.TargetAsnDetails), table.TargetAsnDetails)
 	assert.Equal(test_framework, models.AsnDetailsToTableString(bgpPeerGroup.ActiveAsnDetails), table.ActiveAsnDetails)
@@ -31,6 +31,6 @@ func assertBgpPeerGroupsEqual(test_framework *testing.T, bgpPeerGroup networkapi
 	assert.Equal(test_framework, bgpPeerGroup.PeeringLoopbacksV4, table.PeeringLoopbacksV4)
 	assert.Equal(test_framework, bgpPeerGroup.KeepAliveTimerSeconds, table.KeepAliveTimerSeconds)
 	assert.Equal(test_framework, bgpPeerGroup.HoldTimerSeconds, table.HoldTimerSeconds)
-	assert.Equal(test_framework, bgpPeerGroup.CreatedOn, table.CreatedOn)
-	assert.Equal(test_framework, bgpPeerGroup.LastUpdatedOn, table.LastUpdatedOn)
+	assert.Equal(test_framework, DerefString(bgpPeerGroup.CreatedOn), table.CreatedOn)
+	assert.Equal(test_framework, DerefString(bgpPeerGroup.LastUpdatedOn), table.LastUpdatedOn)
 }

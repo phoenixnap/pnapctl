@@ -48,7 +48,7 @@ func TestRatedUsageRecordFromStorageSdk(test_framework *testing.T) {
 // Full assertions
 func assertFullBandwidthRecordsEqual(test_framework *testing.T, bandwidthRecord billingapi.BandwidthRecord, cliOneOf RatedUsageRecordTable) {
 	assert.Equal(test_framework, bandwidthRecord.Id, cliOneOf.Id)
-	assert.Equal(test_framework, bandwidthRecord.ProductCategory, string(cliOneOf.ProductCategory))
+	assert.Equal(test_framework, string(bandwidthRecord.ProductCategory), cliOneOf.ProductCategory)
 	assert.Equal(test_framework, bandwidthRecord.ProductCode, cliOneOf.ProductCode)
 	assert.Equal(test_framework, bandwidthRecord.Location, cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(bandwidthRecord.YearMonth), cliOneOf.YearMonth)
@@ -72,7 +72,7 @@ func assertFullBandwidthRecordsEqual(test_framework *testing.T, bandwidthRecord 
 
 func assertFullOperatingSystemRecordsEqual(test_framework *testing.T, operatingSystemRecord billingapi.OperatingSystemRecord, cliOneOf RatedUsageRecordTable) {
 	assert.Equal(test_framework, operatingSystemRecord.Id, cliOneOf.Id)
-	assert.Equal(test_framework, operatingSystemRecord.ProductCategory, string(cliOneOf.ProductCategory))
+	assert.Equal(test_framework, string(operatingSystemRecord.ProductCategory), cliOneOf.ProductCategory)
 	assert.Equal(test_framework, operatingSystemRecord.ProductCode, cliOneOf.ProductCode)
 	assert.Equal(test_framework, operatingSystemRecord.Location, cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(operatingSystemRecord.YearMonth), cliOneOf.YearMonth)
@@ -94,7 +94,7 @@ func assertFullOperatingSystemRecordsEqual(test_framework *testing.T, operatingS
 
 func assertFullPublicSubnetRecordsEqual(test_framework *testing.T, publicSubnetRecord billingapi.PublicSubnetRecord, cliOneOf RatedUsageRecordTable) {
 	assert.Equal(test_framework, publicSubnetRecord.Id, cliOneOf.Id)
-	assert.Equal(test_framework, publicSubnetRecord.ProductCategory, string(cliOneOf.ProductCategory))
+	assert.Equal(test_framework, string(publicSubnetRecord.ProductCategory), cliOneOf.ProductCategory)
 	assert.Equal(test_framework, publicSubnetRecord.ProductCode, cliOneOf.ProductCode)
 	assert.Equal(test_framework, publicSubnetRecord.Location, cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(publicSubnetRecord.YearMonth), cliOneOf.YearMonth)
@@ -117,7 +117,7 @@ func assertFullPublicSubnetRecordsEqual(test_framework *testing.T, publicSubnetR
 
 func assertFullServerRecordsEqual(test_framework *testing.T, serverRecord billingapi.ServerRecord, cliOneOf RatedUsageRecordTable) {
 	assert.Equal(test_framework, serverRecord.Id, cliOneOf.Id)
-	assert.Equal(test_framework, serverRecord.ProductCategory, string(cliOneOf.ProductCategory))
+	assert.Equal(test_framework, string(serverRecord.ProductCategory), cliOneOf.ProductCategory)
 	assert.Equal(test_framework, serverRecord.ProductCode, cliOneOf.ProductCode)
 	assert.Equal(test_framework, serverRecord.Location, cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(serverRecord.YearMonth), cliOneOf.YearMonth)
@@ -139,7 +139,7 @@ func assertFullServerRecordsEqual(test_framework *testing.T, serverRecord billin
 
 func assertFullStorageRecordsEqual(test_framework *testing.T, storageRecord billingapi.StorageRecord, cliOneOf RatedUsageRecordTable) {
 	assert.Equal(test_framework, storageRecord.Id, cliOneOf.Id)
-	assert.Equal(test_framework, storageRecord.ProductCategory, string(cliOneOf.ProductCategory))
+	assert.Equal(test_framework, string(storageRecord.ProductCategory), cliOneOf.ProductCategory)
 	assert.Equal(test_framework, storageRecord.ProductCode, cliOneOf.ProductCode)
 	assert.Equal(test_framework, storageRecord.Location, cliOneOf.Location)
 	assert.Equal(test_framework, DerefString(storageRecord.YearMonth), cliOneOf.YearMonth)

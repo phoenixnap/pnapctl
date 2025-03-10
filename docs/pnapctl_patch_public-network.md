@@ -6,7 +6,7 @@ Patch a public network.
 
 Patch a public network.
 
-Requires a file (yaml or json) containing the information needed to patch the server.
+Requires a file (yaml or json) containing the information needed to patch the public network.
 
 ```
 pnapctl patch public-network [ID] [flags]
@@ -15,12 +15,12 @@ pnapctl patch public-network [ID] [flags]
 ### Examples
 
 ```
-# Patch a server using the contents of serverPatch.yaml as request body. 
-pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
+# Patch a public network using the contents of publicNetworkPatch.yaml as request body. 
+pnapctl patch public-network <PUBLIC_NETWORK_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
-# serverPatch.yaml
-hostname: patched-server
-description: My custom server edit
+# publicNetworkPatch.yaml
+name: Network From CLI (Yaml)
+description: This network was updated from the CLI using YAML
 ```
 
 ### Options

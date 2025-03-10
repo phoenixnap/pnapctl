@@ -39,7 +39,7 @@ func BgpPeerGroupFromSdk(sdk networkapi.BgpPeerGroup) BgpPeerGroupTable {
 		PeeringLoopbacksV4:    sdk.PeeringLoopbacksV4,
 		KeepAliveTimerSeconds: sdk.KeepAliveTimerSeconds,
 		HoldTimerSeconds:      sdk.HoldTimerSeconds,
-		CreatedOn:             *sdk.CreatedOn,
-		LastUpdatedOn:         *sdk.LastUpdatedOn,
+		CreatedOn:             DerefString(sdk.CreatedOn),
+		LastUpdatedOn:         DerefString(sdk.LastUpdatedOn),
 	}
 }
