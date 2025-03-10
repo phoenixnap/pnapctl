@@ -1,4 +1,4 @@
 location: "PHX"
 asn: 98239
 password: "password"
-advertisedRoutes: "/route"
+advertisedRoutes: "DEFAULT"

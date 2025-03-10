@@ -35,7 +35,7 @@ pnapctl patch bgp-peer-group <BGP_PEER_GROUP_ID> --filename <FILE_PATH> [--full]
 # bgpPeerGroupPatch.yaml
 asn: 98239
 password: "password"
-advertisedRoutes: "/route"`,
+advertisedRoutes: "DEFAULT"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cmdname.SetCommandName(cmd)
 		return patchBgpPeerGroup(args[0])
