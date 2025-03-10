@@ -22,7 +22,7 @@ pnapctl create bgp-peer-group --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 location: "PHX"
 asn: 98239
 password: "password"
-advertisedRoutes: "/route"
+advertisedRoutes: "DEFAULT"
 ```
 
 ### Options
