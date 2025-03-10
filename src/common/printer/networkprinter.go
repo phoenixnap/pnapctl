@@ -84,7 +84,7 @@ func PrepareBgpPeerGroupForPrinting(bgpPeerGroup networksdk.BgpPeerGroup) interf
 
 	switch {
 	case table:
-		return tables.BgpPeerGroupTableFromSdk(bgpPeerGroup)
+		return tables.BgpPeerGroupFromSdk(bgpPeerGroup)
 	default:
 		return bgpPeerGroup
 	}

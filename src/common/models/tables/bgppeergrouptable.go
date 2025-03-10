@@ -24,7 +24,7 @@ type BgpPeerGroupTable struct {
 	LastUpdatedOn         string   `header: "Last Updated On"`
 }
 
-func BgpPeerGroupTableFromSdk(sdk networkapi.BgpPeerGroup) BgpPeerGroupTable {
+func BgpPeerGroupFromSdk(sdk networkapi.BgpPeerGroup) BgpPeerGroupTable {
 	return BgpPeerGroupTable{
 		Id:                    sdk.Id,
 		Status:                sdk.Status,

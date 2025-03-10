@@ -12,7 +12,7 @@ import (
 
 func TestBgpPeerGroupFromSdk(test_framework *testing.T) {
 	bgpPeerGroup := generators.Generate[networkapi.BgpPeerGroup]()
-	table := BgpPeerGroupTableFromSdk(bgpPeerGroup)
+	table := BgpPeerGroupFromSdk(bgpPeerGroup)
 
 	assertBgpPeerGroupsEqual(test_framework, bgpPeerGroup, table)
 }
