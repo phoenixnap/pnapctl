@@ -19,7 +19,10 @@ pnapctl create bgp-peer-group [flags]
 pnapctl create bgp-peer-group --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 # bgpPeerGroupCreate.yaml
-TODO: REPLACE
+location: "PHX"
+asn: 98239
+password: "password"
+advertisedRoutes: "/route"
 ```
 
 ### Options

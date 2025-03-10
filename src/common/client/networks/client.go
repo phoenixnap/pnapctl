@@ -73,6 +73,7 @@ func NewMainClient(clientId string, clientSecret string, customUrl string, custo
 	return MainClient{
 		PrivateNetworksClient: api_client.PrivateNetworksAPI,
 		PublicNetworksClient:  api_client.PublicNetworksAPI,
+		BgpPeerGroupsClient:   api_client.BGPPeerGroupsAPI,
 	}
 }
 

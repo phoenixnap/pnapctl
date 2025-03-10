@@ -33,7 +33,10 @@ Requires a file (yaml or json) containing the information needed to create the B
 pnapctl create bgp-peer-group --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
 
 # bgpPeerGroupCreate.yaml
-TODO: REPLACE`,
+location: "PHX"
+asn: 98239
+password: "password"
+advertisedRoutes: "/route"`,
 	RunE: func(cmd *cobra.Command, _ []string) error {
 		cmdname.SetCommandName(cmd)
 		return createBgpPeerGroup()

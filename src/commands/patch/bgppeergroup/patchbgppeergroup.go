@@ -33,7 +33,9 @@ Requires a file (yaml or json) containing the information needed to patch the BG
 pnapctl patch bgp-peer-group <BGP_PEER_GROUP_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
 # bgpPeerGroupPatch.yaml
-TODO: REPLACE`,
+asn: 98239
+password: "password"
+advertisedRoutes: "/route"`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cmdname.SetCommandName(cmd)
 		return patchBgpPeerGroup(args[0])
