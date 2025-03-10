@@ -30,7 +30,7 @@ jobs:
         run: make test-coverage
       - name: Upload Unit Test Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Unit Test Results
           path: 'out/unit-tests/*'
@@ -63,7 +63,7 @@ jobs:
         run: make component-tests
       - name: Upload Component Test Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Component Test Results
           path: 'out/component-tests/*'
@@ -103,7 +103,7 @@ jobs:
       - name: Build and Pack
         run: make build-and-pack
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: build/dist
