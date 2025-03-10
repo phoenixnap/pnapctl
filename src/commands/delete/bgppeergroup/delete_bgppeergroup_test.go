@@ -18,7 +18,7 @@ func TestDeleteBgpPeerGroupSuccess(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		BgpPeerGroupDeleteById(RESOURCEID).
-		Return(deletedBgpPeerGroup)
+		Return(&deletedBgpPeerGroup, nil)
 
 	// Run command
 	err := DeleteBgpPeerGroupCmd.RunE(DeleteBgpPeerGroupCmd, []string{RESOURCEID})
@@ -31,7 +31,7 @@ func TestDeleteBgpPeerGroupClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareNetworkMockClient(test_framework).
 		BgpPeerGroupDeleteById(RESOURCEID).
-		Return(testutil.TestError)
+		Return(nil, testutil.TestError)
 
 	// Run command
 	err := DeleteBgpPeerGroupCmd.RunE(DeleteBgpPeerGroupCmd, []string{RESOURCEID})

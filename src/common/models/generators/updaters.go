@@ -14,6 +14,11 @@ func UpdateLocation[T interface {
 func updatePricingPlan(sdk billingapi.PricingPlan) billingapi.PricingPlan {
 	sdk.PriceUnit = billingapi.PRICEUNITENUM_GB
 	sdk.PackageUnit = billingapi.PACKAGEUNITENUM_GB.Ptr()
+	sdk.ApplicableDiscounts.DiscountDetails = iterutils.Map(sdk.ApplicableDiscounts.DiscountDetails, func(item billingapi.DiscountDetails) billingapi.DiscountDetails {
+		item.SetType(billingapi.DISCOUNTTYPEENUM_GLOBAL_PERCENTAGE)
+		return item
+	})
+
 	return sdk
 }
 
