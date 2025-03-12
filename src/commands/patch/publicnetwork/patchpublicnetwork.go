@@ -1,7 +1,7 @@
 package publicnetwork
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v4"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
@@ -28,13 +28,13 @@ var PatchPublicNetworkCmd = &cobra.Command{
 	SilenceUsage: true,
 	Long: `Patch a public network.
 
-Requires a file (yaml or json) containing the information needed to patch the server.`,
-	Example: `# Patch a server using the contents of serverPatch.yaml as request body. 
-pnapctl patch server <SERVER_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
+Requires a file (yaml or json) containing the information needed to patch the public network.`,
+	Example: `# Patch a public network using the contents of publicNetworkPatch.yaml as request body. 
+pnapctl patch public-network <PUBLIC_NETWORK_ID> --filename <FILE_PATH> [--full] [--output <OUTPUT_TYPE>]
 
-# serverPatch.yaml
-hostname: patched-server
-description: My custom server edit`,
+# publicNetworkPatch.yaml
+name: Network From CLI (Yaml)
+description: This network was updated from the CLI using YAML`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cmdname.SetCommandName(cmd)
 		return patchPublicNetwork(args[0])

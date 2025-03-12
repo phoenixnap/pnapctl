@@ -26,6 +26,7 @@ pnapctl delete [flags]
 ### SEE ALSO
 
 * [pnapctl](pnapctl.md)	 - pnapctl creates new and manages existing bare metal servers.
+* [pnapctl delete bgp-peer-group](pnapctl_delete_bgp-peer-group.md)	 - Deletes a BGP peer group.
 * [pnapctl delete cluster](pnapctl_delete_cluster.md)	 - Deletes a specific cluster.
 * [pnapctl delete ip-block](pnapctl_delete_ip-block.md)	 - Deletes a specific ip-block.
 * [pnapctl delete private-network](pnapctl_delete_private-network.md)	 - Deletes a specific private network.

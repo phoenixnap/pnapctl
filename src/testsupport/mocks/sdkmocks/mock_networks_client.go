@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	networkapi "github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
+	networkapi "github.com/phoenixnap/go-sdk-bmc/networkapi/v4"
 )
 
 // MockNetworkSdkClient is a mock of NetworkSdkClient interface.
@@ -32,6 +32,81 @@ func NewMockNetworkSdkClient(ctrl *gomock.Controller) *MockNetworkSdkClient {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockNetworkSdkClient) EXPECT() *MockNetworkSdkClientMockRecorder {
 	return m.recorder
+}
+
+// BgpPeerGroupDeleteById mocks base method.
+func (m *MockNetworkSdkClient) BgpPeerGroupDeleteById(bgpPeerGroupId string) (*networkapi.BgpPeerGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BgpPeerGroupDeleteById", bgpPeerGroupId)
+	ret0, _ := ret[0].(*networkapi.BgpPeerGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BgpPeerGroupDeleteById indicates an expected call of BgpPeerGroupDeleteById.
+func (mr *MockNetworkSdkClientMockRecorder) BgpPeerGroupDeleteById(bgpPeerGroupId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BgpPeerGroupDeleteById", reflect.TypeOf((*MockNetworkSdkClient)(nil).BgpPeerGroupDeleteById), bgpPeerGroupId)
+}
+
+// BgpPeerGroupGetById mocks base method.
+func (m *MockNetworkSdkClient) BgpPeerGroupGetById(bgpPeerGroupId string) (*networkapi.BgpPeerGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BgpPeerGroupGetById", bgpPeerGroupId)
+	ret0, _ := ret[0].(*networkapi.BgpPeerGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BgpPeerGroupGetById indicates an expected call of BgpPeerGroupGetById.
+func (mr *MockNetworkSdkClientMockRecorder) BgpPeerGroupGetById(bgpPeerGroupId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BgpPeerGroupGetById", reflect.TypeOf((*MockNetworkSdkClient)(nil).BgpPeerGroupGetById), bgpPeerGroupId)
+}
+
+// BgpPeerGroupPatchById mocks base method.
+func (m *MockNetworkSdkClient) BgpPeerGroupPatchById(bgpPeerGroupId string, bgpPeerGroupPatch networkapi.BgpPeerGroupPatch) (*networkapi.BgpPeerGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BgpPeerGroupPatchById", bgpPeerGroupId, bgpPeerGroupPatch)
+	ret0, _ := ret[0].(*networkapi.BgpPeerGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BgpPeerGroupPatchById indicates an expected call of BgpPeerGroupPatchById.
+func (mr *MockNetworkSdkClientMockRecorder) BgpPeerGroupPatchById(bgpPeerGroupId, bgpPeerGroupPatch interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BgpPeerGroupPatchById", reflect.TypeOf((*MockNetworkSdkClient)(nil).BgpPeerGroupPatchById), bgpPeerGroupId, bgpPeerGroupPatch)
+}
+
+// BgpPeerGroupsGet mocks base method.
+func (m *MockNetworkSdkClient) BgpPeerGroupsGet(location string) ([]networkapi.BgpPeerGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BgpPeerGroupsGet", location)
+	ret0, _ := ret[0].([]networkapi.BgpPeerGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BgpPeerGroupsGet indicates an expected call of BgpPeerGroupsGet.
+func (mr *MockNetworkSdkClientMockRecorder) BgpPeerGroupsGet(location interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BgpPeerGroupsGet", reflect.TypeOf((*MockNetworkSdkClient)(nil).BgpPeerGroupsGet), location)
+}
+
+// BgpPeerGroupsPost mocks base method.
+func (m *MockNetworkSdkClient) BgpPeerGroupsPost(bgpPeerGroupCreate networkapi.BgpPeerGroupCreate) (*networkapi.BgpPeerGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "BgpPeerGroupsPost", bgpPeerGroupCreate)
+	ret0, _ := ret[0].(*networkapi.BgpPeerGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BgpPeerGroupsPost indicates an expected call of BgpPeerGroupsPost.
+func (mr *MockNetworkSdkClientMockRecorder) BgpPeerGroupsPost(bgpPeerGroupCreate interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BgpPeerGroupsPost", reflect.TypeOf((*MockNetworkSdkClient)(nil).BgpPeerGroupsPost), bgpPeerGroupCreate)
 }
 
 // PrivateNetworkDelete mocks base method.
@@ -153,7 +228,7 @@ func (mr *MockNetworkSdkClientMockRecorder) PublicNetworkIpBlockDelete(networkId
 }
 
 // PublicNetworkIpBlockPost mocks base method.
-func (m *MockNetworkSdkClient) PublicNetworkIpBlockPost(networkId string, idBlockCreate networkapi.PublicNetworkIpBlock) (*networkapi.PublicNetworkIpBlock, error) {
+func (m *MockNetworkSdkClient) PublicNetworkIpBlockPost(networkId string, idBlockCreate networkapi.PublicNetworkIpBlockCreate) (*networkapi.PublicNetworkIpBlock, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PublicNetworkIpBlockPost", networkId, idBlockCreate)
 	ret0, _ := ret[0].(*networkapi.PublicNetworkIpBlock)

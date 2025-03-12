@@ -26,6 +26,7 @@ pnapctl create [flags]
 ### SEE ALSO
 
 * [pnapctl](pnapctl.md)	 - pnapctl creates new and manages existing bare metal servers.
+* [pnapctl create bgp-peer-group](pnapctl_create_bgp-peer-group.md)	 - Create a new BGP peer group.
 * [pnapctl create cluster](pnapctl_create_cluster.md)	 - Create a new cluster.
 * [pnapctl create ip-block](pnapctl_create_ip-block.md)	 - Create a new ip-block.
 * [pnapctl create private-network](pnapctl_create_private-network.md)	 - Create a new private network.

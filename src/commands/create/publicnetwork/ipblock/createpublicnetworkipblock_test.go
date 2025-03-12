@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v4"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -16,7 +16,7 @@ import (
 
 func createPublicNetworkIpBlockSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
-	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
+	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlockCreate]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME
@@ -74,7 +74,7 @@ func TestCreatePublicNetworkIpBlockUnmarshallingFailure(test_framework *testing.
 
 func TestCreatePublicNetworkIpBlockClientFailure(test_framework *testing.T) {
 	// What the client should receive.
-	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlock]()
+	ipBlockCreate := generators.Generate[networkapi.PublicNetworkIpBlockCreate]()
 
 	// Assumed contents of the file.
 	Filename = FILENAME

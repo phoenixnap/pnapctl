@@ -8,5 +8,5 @@ expectedOutputWrongFile="Error: Command 'create server' has been performed, but 
 
 expectedOutputInvalidFilenameCommand="Error: accepts 0 arg(s), received 2"
 
-expectedOutputCredentialError="Error: Post \"https://api.phoenixnap.com/bmc/v1/servers?force=false\": oauth2: \"invalid_client\" \"Invalid client credentials\""
+expectedOutputCredentialError="Error: Post \"https://api.phoenixnap.com/bmc/v1/servers?force=false\": oauth2: \"invalid_client\" \"Invalid client or Invalid client credentials\""
 

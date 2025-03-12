@@ -1,7 +1,7 @@
 package publicnetwork
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v4"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 

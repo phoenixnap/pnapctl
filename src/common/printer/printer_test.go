@@ -11,7 +11,7 @@ import (
 	"github.com/phoenixnap/go-sdk-bmc/bmcapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/ipapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/locationapi/v3"
-	"github.com/phoenixnap/go-sdk-bmc/networkapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/networkapi/v4"
 	"github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v3"
 	"github.com/phoenixnap/go-sdk-bmc/tagapi/v3"

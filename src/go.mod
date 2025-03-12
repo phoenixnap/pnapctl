@@ -8,17 +8,17 @@ require (
 	github.com/influxdata/influxdb v1.11.4
 	github.com/landoop/tableprinter v0.0.0-20201125135848-89e81fc956e7
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/phoenixnap/go-sdk-bmc/auditapi/v3 v3.0.2
-	github.com/phoenixnap/go-sdk-bmc/billingapi/v3 v3.0.0
-	github.com/phoenixnap/go-sdk-bmc/bmcapi/v3 v3.1.0
-	github.com/phoenixnap/go-sdk-bmc/invoicingapi v1.0.2
-	github.com/phoenixnap/go-sdk-bmc/ipapi/v3 v3.0.2
-	github.com/phoenixnap/go-sdk-bmc/locationapi/v3 v3.0.0
-	github.com/phoenixnap/go-sdk-bmc/networkapi/v3 v3.0.2
-	github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v3 v3.0.0
-	github.com/phoenixnap/go-sdk-bmc/paymentsapi v1.0.2
-	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v3 v3.0.2
-	github.com/phoenixnap/go-sdk-bmc/tagapi/v3 v3.0.2
+	github.com/phoenixnap/go-sdk-bmc/auditapi/v3 v3.0.4
+	github.com/phoenixnap/go-sdk-bmc/billingapi/v3 v3.2.0
+	github.com/phoenixnap/go-sdk-bmc/bmcapi/v3 v3.3.0
+	github.com/phoenixnap/go-sdk-bmc/invoicingapi v1.0.4
+	github.com/phoenixnap/go-sdk-bmc/ipapi/v3 v3.1.0
+	github.com/phoenixnap/go-sdk-bmc/locationapi/v3 v3.0.2
+	github.com/phoenixnap/go-sdk-bmc/networkapi/v4 v4.0.0
+	github.com/phoenixnap/go-sdk-bmc/networkstorageapi/v3 v3.0.2
+	github.com/phoenixnap/go-sdk-bmc/paymentsapi v1.0.4
+	github.com/phoenixnap/go-sdk-bmc/ranchersolutionapi/v3 v3.1.1
+	github.com/phoenixnap/go-sdk-bmc/tagapi/v3 v3.0.4
 	github.com/rs/zerolog v1.32.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2

@@ -7,6 +7,14 @@ import (
 )
 
 /*
+	GENERATORS
+	Some types - like ones using AllOf and/or OneOf, are more complicated and
+		cannot be easily generated directly.
+	These methods assist with crafting these types -- usually they are wrappers
+		around generation utilities, using UPDATERS to ensure that the data is valid.
+*/
+
+/*
 	Billing API
 */
 
@@ -21,15 +29,20 @@ func GenerateRatedUsageRecordSdkList() []billingapi.RatedUsageGet200ResponseInne
 	}
 }
 
-var GenerateBandwidthRecordSdk = OneOfGenerator(ratedusage.BandwidthRecordToInner, UpdateLocation[*billingapi.BandwidthRecord])
+var GenerateBandwidthRecordSdk = OneOfGenerator(ratedusage.BandwidthRecordToInner,
+	UpdateRatedUsageRecord[*billingapi.BandwidthRecord])
 
-var GenerateOperatingSystemRecordSdk = OneOfGenerator(ratedusage.OperatingSystemRecordToInner, UpdateLocation[*billingapi.OperatingSystemRecord])
+var GenerateOperatingSystemRecordSdk = OneOfGenerator(ratedusage.OperatingSystemRecordToInner,
+	UpdateRatedUsageRecord[*billingapi.OperatingSystemRecord])
 
-var GeneratePublicSubnetRecordSdk = OneOfGenerator(ratedusage.PublicSubnetRecordToInner, UpdateLocation[*billingapi.PublicSubnetRecord])
+var GeneratePublicSubnetRecordSdk = OneOfGenerator(ratedusage.PublicSubnetRecordToInner,
+	UpdateRatedUsageRecord[*billingapi.PublicSubnetRecord])
 
-var GenerateServerRecordSdk = OneOfGenerator(ratedusage.ServerRecordToInner, UpdateLocation[*billingapi.ServerRecord])
+var GenerateServerRecordSdk = OneOfGenerator(ratedusage.ServerRecordToInner,
+	UpdateRatedUsageRecord[*billingapi.ServerRecord])
 
-var GenerateStorageRecordSdk = OneOfGenerator(ratedusage.StorageRecordToInner, UpdateLocation[*billingapi.StorageRecord])
+var GenerateStorageRecordSdk = OneOfGenerator(ratedusage.StorageRecordToInner,
+	UpdateRatedUsageRecord[*billingapi.StorageRecord])
 
 // Product One Of
 func GenerateProductSdkList() []billingapi.ProductsGet200ResponseInner {
@@ -41,10 +54,14 @@ func GenerateProductSdkList() []billingapi.ProductsGet200ResponseInner {
 	}
 }
 
-var GenerateBandwidthProduct = OneOfGenerator(product.BandwidthProductToInner, UpdatePricingPlans[*billingapi.Product])
+var GenerateBandwidthProduct = OneOfGenerator(product.BandwidthProductToInner,
+	UpdatePricingPlans[*billingapi.Product])
 
-var GenerateOperatingSystemProduct = OneOfGenerator(product.OperatingSystemProductToInner, UpdatePricingPlans[*billingapi.Product])
+var GenerateOperatingSystemProduct = OneOfGenerator(product.OperatingSystemProductToInner,
+	UpdatePricingPlans[*billingapi.Product])
 
-var GenerateStorageProduct = OneOfGenerator(product.StorageProductToInner, UpdatePricingPlans[*billingapi.Product])
+var GenerateStorageProduct = OneOfGenerator(product.StorageProductToInner,
+	UpdatePricingPlans[*billingapi.Product])
 
-var GenerateServerProduct = OneOfGenerator(product.ServerProductToInner, UpdatePricingPlans[*billingapi.ServerProduct])
+var GenerateServerProduct = OneOfGenerator(product.ServerProductToInner,
+	UpdatePricingPlans[*billingapi.ServerProduct])

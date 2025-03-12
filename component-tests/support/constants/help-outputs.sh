@@ -44,6 +44,7 @@ Usage:
 
 Available Commands:
   account-billing-configuration Retrieve your account billing configuration
+  bgp-peer-group                Retrieve one or all BGP peer groups.
   cluster                       Retrieve one or all clusters.
   event                         Retrieve all events relating to your account.
   invoice                       Retrieve one or all invoices for your account.
@@ -78,6 +79,7 @@ Usage:
   pnapctl create [command]
 
 Available Commands:
+  bgp-peer-group         Create a new BGP peer group.
   cluster                Create a new cluster.
   ip-block               Create a new ip-block.
   private-network        Create a new private network.
@@ -107,6 +109,7 @@ Usage:
   pnapctl delete [command]
 
 Available Commands:
+  bgp-peer-group         Deletes a BGP peer group.
   cluster                Deletes a specific cluster.
   ip-block               Deletes a specific ip-block.
   private-network        Deletes a specific private network.

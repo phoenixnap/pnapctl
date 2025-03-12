@@ -27,6 +27,7 @@ pnapctl get [flags]
 
 * [pnapctl](pnapctl.md)	 - pnapctl creates new and manages existing bare metal servers.
 * [pnapctl get account-billing-configuration](pnapctl_get_account-billing-configuration.md)	 - Retrieve your account billing configuration
+* [pnapctl get bgp-peer-group](pnapctl_get_bgp-peer-group.md)	 - Retrieve one or all BGP peer groups.
 * [pnapctl get cluster](pnapctl_get_cluster.md)	 - Retrieve one or all clusters.
 * [pnapctl get event](pnapctl_get_event.md)	 - Retrieve all events relating to your account.
 * [pnapctl get invoice](pnapctl_get_invoice.md)	 - Retrieve one or all invoices for your account.
