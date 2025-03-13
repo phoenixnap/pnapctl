@@ -1,5 +1,6 @@
 {
-  "cidrBlockSize": "/28",
+  "cidrBlockSize": "/64",
+  "ipVersion": "V6",
   "location": "PHX",
-  "description": "Created from PNAPCTL"
+  "description": "Created V6 from PNAPCTL"
 }

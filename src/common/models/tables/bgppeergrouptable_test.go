@@ -26,7 +26,7 @@ func assertBgpPeerGroupsEqual(test_framework *testing.T, bgpPeerGroup networkapi
 	assert.Equal(test_framework, models.AsnDetailsToTableString(bgpPeerGroup.ActiveAsnDetails), table.ActiveAsnDetails)
 	assert.Equal(test_framework, bgpPeerGroup.Password, table.Password)
 	assert.Equal(test_framework, bgpPeerGroup.AdvertisedRoutes, table.AdvertisedRoutes)
-	assert.Equal(test_framework, bgpPeerGroup.RpkiRoaOriginAsn, table.RpkiRoaOriginAsn)
+	assert.Equal(test_framework, int32(bgpPeerGroup.RpkiRoaOriginAsn), table.RpkiRoaOriginAsn)
 	assert.Equal(test_framework, bgpPeerGroup.EBgpMultiHop, table.EBgpMultiHop)
 	assert.Equal(test_framework, bgpPeerGroup.PeeringLoopbacksV4, table.PeeringLoopbacksV4)
 	assert.Equal(test_framework, bgpPeerGroup.KeepAliveTimerSeconds, table.KeepAliveTimerSeconds)

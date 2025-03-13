@@ -105,11 +105,11 @@ var PrivateNetworkServerToTableString = toTableString(func(sdk networkapi.Privat
 })
 
 var BgpIpv4PrefixToTableString = toTableString(func(sdk networkapi.BgpIPv4Prefix) string {
-	return fmt.Sprintf("IPv4 Allocation Id: %s\nCidr: %s\nStatus: %s\nIn Use: %s", sdk.Ipv4AllocationId, sdk.Cidr, sdk.Status, sdk.InUse)
+	return fmt.Sprintf("IPv4 Allocation Id: %s\nCidr: %s\nStatus: %s\nIn Use: %v", sdk.Ipv4AllocationId, sdk.Cidr, sdk.Status, sdk.InUse)
 })
 
 var AsnDetailsToTableString = toTableString(func(sdk networkapi.AsnDetails) string {
-	return fmt.Sprintf("Asn: %s\n, Verification Status: %s\nVerification Reason: %s", sdk.Asn, sdk.VerificationStatus, processNil(sdk.VerificationReason))
+	return fmt.Sprintf("Asn: %v\nVerification Status: %s\nVerification Reason: %s", sdk.Asn, sdk.VerificationStatus, processNil(sdk.VerificationReason))
 })
 
 // ranchersolutionapi
