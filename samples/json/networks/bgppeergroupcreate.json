@@ -1,6 +1,6 @@
 {
     "location": "PHX",
-    "asn": 98239,
+    "asn": 64000,
     "password": "password",
     "advertisedRoutes": "DEFAULT"
 }

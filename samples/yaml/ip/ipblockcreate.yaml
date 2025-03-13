@@ -1,2 +1,4 @@
 cidrBlockSize: /28
+ipVersion: V4
 location: PHX
+description: "Created V6 from PNAPCTL"
