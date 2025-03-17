@@ -6,8 +6,13 @@ import (
 
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/printer"
+	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
 )
+
+func init() {
+	utils.SetupOutputFlag(DeleteBgpPeerGroupCmd)
+}
 
 var DeleteBgpPeerGroupCmd = &cobra.Command{
 	Use:          "bgp-peer-group [ID]",

@@ -20,7 +20,8 @@ pnapctl delete BGP peer group <ID>
 ### Options
 
 ```
-  -h, --help   help for bgp-peer-group
+  -h, --help            help for bgp-peer-group
+  -o, --output string   Define the output format. Possible values: table, json, yaml (default "table")
 ```
 
 ### Options inherited from parent commands
