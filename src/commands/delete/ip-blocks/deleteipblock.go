@@ -29,7 +29,7 @@ func deleteIpBlock(id string) error {
 	if err != nil {
 		return err
 	} else {
-		fmt.Println(result.Result, result.IpBlockId)
+		fmt.Println(*result.Result, *result.IpBlockId)
 		return nil
 	}
 }
