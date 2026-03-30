@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
+	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v4"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -178,8 +178,8 @@ func (m MainClient) ProductAvailabilityGet(productCategory []string, productCode
 		request = request.MinQuantity(minQuantity)
 	}
 
-	locations := iterutils.Deref(iterutils.Map(location, func(str string) *billingapisdk.LocationEnum {
-		enum, err := billingapisdk.NewLocationEnumFromValue(str)
+	locations := iterutils.Deref(iterutils.Map(location, func(str string) *billingapisdk.ProductLocationEnum {
+		enum, err := billingapisdk.NewProductLocationEnumFromValue(str)
 		if err != nil {
 			fmt.Printf("Location passed (%s) isn't valid %v. Ignoring...\n", str, billingapisdk.AllowedLocationEnumEnumValues)
 		}

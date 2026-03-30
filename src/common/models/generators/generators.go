@@ -1,7 +1,7 @@
 package generators
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v4"
 	"phoenixnap.com/pnapctl/common/models/oneof/product"
 	"phoenixnap.com/pnapctl/common/models/oneof/ratedusage"
 )
@@ -43,6 +43,12 @@ var GenerateServerRecordSdk = OneOfGenerator(ratedusage.ServerRecordToInner,
 
 var GenerateStorageRecordSdk = OneOfGenerator(ratedusage.StorageRecordToInner,
 	UpdateRatedUsageRecord[*billingapi.StorageRecord])
+
+// func a() {
+// 	var r billingapi.RatedUsageRecord;
+
+// 	r.ReservationDetails.Quantity.Unit
+// }
 
 // Product One Of
 func GenerateProductSdkList() []billingapi.ProductsGet200ResponseInner {

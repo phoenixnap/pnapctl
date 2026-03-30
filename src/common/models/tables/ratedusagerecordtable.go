@@ -3,7 +3,7 @@ package tables
 import (
 	"time"
 
-	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
+	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v4"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/oneof/ratedusage"
 )
@@ -97,8 +97,8 @@ func parseCommonRatedUsage(sdk billingapisdk.RatedUsageGet200ResponseInner) *Rat
 		UnitPriceDescription: ratedUsage.UnitPriceDescription,
 		Quantity:             ratedUsage.Quantity,
 		Active:               ratedUsage.Active,
-		UsageSessionId:       ratedUsage.UsageSessionId,
-		CorrelationId:        ratedUsage.CorrelationId,
+		UsageSessionId:       DerefString(ratedUsage.UsageSessionId),
+		CorrelationId:        DerefString(ratedUsage.CorrelationId),
 		ReservationId:        DerefString(ratedUsage.ReservationId),
 	}
 }

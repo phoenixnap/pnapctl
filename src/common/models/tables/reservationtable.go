@@ -1,6 +1,6 @@
 package tables
 
-import "github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
+import "github.com/phoenixnap/go-sdk-bmc/billingapi/v4"
 
 type ReservationTable struct {
 	Id                  string  `header:"ID"`

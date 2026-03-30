@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	locationapi "github.com/phoenixnap/go-sdk-bmc/locationapi/v3"
+	locationapi "github.com/phoenixnap/go-sdk-bmc/locationapi/v4"
 )
 
 // MockLocationSdkClient is a mock of LocationSdkClient interface.

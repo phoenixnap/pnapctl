@@ -1,6 +1,6 @@
 package product
 
-import "github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
+import "github.com/phoenixnap/go-sdk-bmc/billingapi/v4"
 
 /*
 One of types

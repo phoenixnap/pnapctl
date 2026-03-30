@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v4"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/ctlerrors"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -17,6 +17,7 @@ import (
 func convertReservationSuccess(test_framework *testing.T, marshaller func(interface{}) ([]byte, error)) {
 	// What the client should receive.
 	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
+	reservationConvert.Quantity.Unit = billingapi.QUANTITYUNITENUM_TB
 
 	// Assumed contents of the file.
 	Filename = FILENAME
@@ -72,6 +73,7 @@ func TestConvertReservationUnmarshallingFailure(test_framework *testing.T) {
 func TestConvertReservationClientFailure(test_framework *testing.T) {
 	// What the client should receive.
 	reservationConvert := generators.Generate[billingapi.ReservationRequest]()
+	reservationConvert.Quantity.Unit = billingapi.QUANTITYUNITENUM_TB
 
 	// Assumed contents of the file.
 	Filename = FILENAME
