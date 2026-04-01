@@ -9,7 +9,7 @@ import (
 
 var TransferReservationCmd = &cobra.Command{
 	Use:   "transfer-reservation",
-	Short: "Transfer a reservation from one point to another(??)",
+	Short: "Transfer reservation(s) from one resource.",
 	Long:  "REPLACE",
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()

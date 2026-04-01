@@ -1,6 +1,6 @@
 ## pnapctl transfer-reservation
 
-Transfer a reservation from one point to another(??)
+Transfer reservation(s) from one resource.
 
 ### Synopsis
 

@@ -40,5 +40,5 @@ targetServerId: "<SERVER ID>"
 
 ### SEE ALSO
 
-* [pnapctl transfer-reservation](pnapctl_transfer-reservation.md)	 - Transfer a reservation from one point to another(??)
+* [pnapctl transfer-reservation](pnapctl_transfer-reservation.md)	 - Transfer reservation(s) from one resource.
 
