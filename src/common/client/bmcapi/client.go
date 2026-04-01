@@ -36,6 +36,7 @@ type BmcApiSdkClient interface {
 	ServerIpBlockPost(serverId string, serverIpBlock bmcapisdk.ServerIpBlock) (*bmcapisdk.ServerIpBlock, error)
 	ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, error)
 	ServerProvision(serverId string, serverProvision bmcapisdk.ServerProvision) (*bmcapisdk.Server, error)
+	ServerTransferReservation(serverId string, reservationTransferDetails bmcapisdk.ReservationTransferDetails) (*bmcapisdk.Server, error)
 
 	//Ssh Keys
 	SshKeyPost(sshkeyCreate bmcapisdk.SshKeyCreate) (*bmcapisdk.SshKey, error)
@@ -179,6 +180,10 @@ func (m MainClient) ServerIpBlockDelete(serverId string, ipBlockId string, relin
 
 func (m MainClient) ServerProvision(serverId string, serverProvision bmcapisdk.ServerProvision) (*bmcapisdk.Server, error) {
 	return client.HandleResponse(m.ServersApiClient.ServersServerIdActionsProvisionPost(context.Background(), serverId).ServerProvision(serverProvision).Execute())
+}
+
+func (m MainClient) ServerTransferReservation(serverId string, reservationTransferDetails bmcapisdk.ReservationTransferDetails) (*bmcapisdk.Server, error) {
+	return client.HandleResponse(m.ServersApiClient.ServersServerIdActionsTransferReservation(context.Background(), serverId).ReservationTransferDetails(reservationTransferDetails).Execute())
 }
 
 // SSH Key APIs

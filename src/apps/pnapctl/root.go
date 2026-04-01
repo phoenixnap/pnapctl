@@ -9,6 +9,7 @@ import (
 	autorenew "phoenixnap.com/pnapctl/commands/autorenew"
 	"phoenixnap.com/pnapctl/commands/convert"
 	"phoenixnap.com/pnapctl/commands/deprovision"
+	transferreservation "phoenixnap.com/pnapctl/commands/transfer-reservation"
 	"phoenixnap.com/pnapctl/common/client/billing"
 	"phoenixnap.com/pnapctl/common/client/ip"
 	"phoenixnap.com/pnapctl/common/client/locations"
@@ -23,9 +24,10 @@ import (
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/commands/create"
 	"phoenixnap.com/pnapctl/commands/delete"
+	"phoenixnap.com/pnapctl/commands/download"
 	"phoenixnap.com/pnapctl/commands/get"
-	"phoenixnap.com/pnapctl/commands/pay"
 	"phoenixnap.com/pnapctl/commands/patch"
+	"phoenixnap.com/pnapctl/commands/pay"
 	"phoenixnap.com/pnapctl/commands/poweroff"
 	"phoenixnap.com/pnapctl/commands/poweron"
 	"phoenixnap.com/pnapctl/commands/reboot"
@@ -36,13 +38,12 @@ import (
 	"phoenixnap.com/pnapctl/commands/tag"
 	"phoenixnap.com/pnapctl/commands/update"
 	"phoenixnap.com/pnapctl/commands/version"
-	"phoenixnap.com/pnapctl/commands/download"
 	"phoenixnap.com/pnapctl/common/client/audit"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
+	"phoenixnap.com/pnapctl/common/client/invoicing"
 	"phoenixnap.com/pnapctl/common/client/networks"
 	"phoenixnap.com/pnapctl/common/client/rancher"
 	"phoenixnap.com/pnapctl/common/client/tags"
-	"phoenixnap.com/pnapctl/common/client/invoicing"
 	"phoenixnap.com/pnapctl/common/fileprocessor"
 	configuration "phoenixnap.com/pnapctl/configs"
 )
@@ -97,6 +98,7 @@ func init() {
 	RootCmd.AddCommand(convert.ConvertCmd)
 	RootCmd.AddCommand(download.DownloadCmd)
 	RootCmd.AddCommand(pay.PayCmd)
+	RootCmd.AddCommand(transferreservation.TransferReservationCmd)
 
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.")
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "change log level from Warn (default) to Debug.")
