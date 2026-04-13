@@ -44,12 +44,6 @@ var GenerateServerRecordSdk = OneOfGenerator(ratedusage.ServerRecordToInner,
 var GenerateStorageRecordSdk = OneOfGenerator(ratedusage.StorageRecordToInner,
 	UpdateRatedUsageRecord[*billingapi.StorageRecord])
 
-// func a() {
-// 	var r billingapi.RatedUsageRecord;
-
-// 	r.ReservationDetails.Quantity.Unit
-// }
-
 // Product One Of
 func GenerateProductSdkList() []billingapi.ProductsGet200ResponseInner {
 	return []billingapi.ProductsGet200ResponseInner{
