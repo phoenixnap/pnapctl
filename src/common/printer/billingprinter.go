@@ -1,7 +1,7 @@
 package printer
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v4"
 	"phoenixnap.com/pnapctl/common/models/tables"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )

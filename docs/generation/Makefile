@@ -15,7 +15,8 @@ remove-outdated-docs: ; $(info $(M) removing outdated docs...) @
 	$Q rm -f ../*.md
 
 build-docgenerator: main.go go.mod go.sum; $(info $(M) building docgenerator executable docs…) @
-	$Q $(GO) build -o $(DOCS) main.go
+	$Q $(GO) mod tidy; \
+	   $(GO) build -o $(DOCS) main.go
 
 run-docgenerator: $(DOCS); $(info $(M) generating docs…) @
 	$Q ./$(DOCS)

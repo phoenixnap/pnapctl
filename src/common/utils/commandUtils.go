@@ -18,15 +18,16 @@ func SetupFullFlag(cmd *cobra.Command, full *bool, resource string) {
 type Action string
 
 const (
-	CREATION    Action = "creation"
-	UPDATING    Action = "updating"
-	RESERVATION Action = "reservation"
-	TAGGING     Action = "tagging"
-	CONVERSION  Action = "conversion"
-	DELETION    Action = "deletion"
-	DEPROVISION Action = "deprovisioning"
-	SUBMISSION  Action = "submission"
-	PROVISION   Action = "provisioning"
+	CREATION             Action = "creation"
+	UPDATING             Action = "updating"
+	RESERVATION          Action = "reservation"
+	RESERVATION_TRANSFER Action = "transfer reservation"
+	TAGGING              Action = "tagging"
+	CONVERSION           Action = "conversion"
+	DELETION             Action = "deletion"
+	DEPROVISION          Action = "deprovisioning"
+	SUBMISSION           Action = "submission"
+	PROVISION            Action = "provisioning"
 )
 
 func SetupFilenameFlag(cmd *cobra.Command, filename *string, action Action) {

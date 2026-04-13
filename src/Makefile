@@ -32,11 +32,22 @@ export GO111MODULE=on
 
 $(BIN):
 	@mkdir -p $@
+
+
+# Notes:
+# - GO111MODULE=on is required to work with modules.
+# - go install is used instead of go get, as the recommended way of building/installing packages.
+#		if you get errors regarding go.mod, then temporarily change this to (get).
+# - some systems make create temporary folders with unexpected permissions, so we need chmod -R.
 $(BIN)/%: | $(BIN) ; $(info $(M) building $(PACKAGE)…)
 	$Q tmp=$$(mktemp -d); \
-	   env GO111MODULE=off GOPATH=$$tmp GOBIN=$(BIN) $(GO) get $(PACKAGE) \
-		|| ret=$$?; \
-	   rm -rf $$tmp ; exit $$ret
+	   env GO111MODULE=on GOPATH=$$tmp GOBIN=$(BIN) $(GO) get $(PACKAGE) \
+		|| ret1=$$?; \
+	   env GO111MODULE=on GOPATH=$$tmp GOBIN=$(BIN) $(GO) install $(PACKAGE) \
+		|| ret2=$$?; \
+	   chmod -R 777 $$tmp; \
+	   rm -rf $$tmp ; \
+	   exit $$((ret1 * ret2))
 
 GOX = $(BIN)/gox
 $(BIN)/gox: PACKAGE = github.com/mitchellh/gox

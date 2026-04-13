@@ -1,7 +1,7 @@
 package generators
 
 import (
-	"github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v4"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
 )
 
@@ -20,14 +20,17 @@ import (
 
 func UpdateRatedUsageRecord[T interface {
 	SetLocation(billingapi.LocationEnum)
-	GetDiscountDetails() billingapi.DiscountDetails
-	SetDiscountDetails(billingapi.DiscountDetails)
+	GetDiscountDetails() billingapi.ApplicableDiscountDetails
+	SetDiscountDetails(billingapi.ApplicableDiscountDetails)
 	GetCreditDetails() []billingapi.CreditDetails
 	SetCreditDetails([]billingapi.CreditDetails)
+	GetReservationDetails() billingapi.ReservationDetails
+	SetReservationDetails(billingapi.ReservationDetails)
 }](item T) {
 	UpdateLocation(item)
 	UpdateDiscountDetails(item)
 	UpdateCreditDetailsList(item)
+	UpdateReservationDetails(item)
 }
 
 /*
@@ -60,16 +63,16 @@ func UpdateApplicableDiscounts[T interface {
 }
 
 func UpdateDiscountDetails[T interface {
-	GetDiscountDetails() billingapi.DiscountDetails
-	SetDiscountDetails(billingapi.DiscountDetails)
+	GetDiscountDetails() billingapi.ApplicableDiscountDetails
+	SetDiscountDetails(billingapi.ApplicableDiscountDetails)
 }](item T) {
 	discountDetails := updateDiscountDetails(item.GetDiscountDetails())
 	item.SetDiscountDetails(discountDetails)
 }
 
 func UpdateDiscountDetailsList[T interface {
-	GetDiscountDetails() []billingapi.DiscountDetails
-	SetDiscountDetails([]billingapi.DiscountDetails)
+	GetDiscountDetails() []billingapi.ApplicableDiscountDetails
+	SetDiscountDetails([]billingapi.ApplicableDiscountDetails)
 }](item T) {
 	item.SetDiscountDetails(iterutils.Map(item.GetDiscountDetails(), updateDiscountDetails))
 }
@@ -85,6 +88,15 @@ func UpdateCreditDetailsList[T interface {
 	}))
 }
 
+func UpdateReservationDetails[T interface {
+	GetReservationDetails() billingapi.ReservationDetails
+	SetReservationDetails(billingapi.ReservationDetails)
+}](item T) {
+	details := item.GetReservationDetails()
+	details.Quantity.SetUnit(billingapi.QUANTITYUNITENUM_COUNT)
+	item.SetReservationDetails(details)
+}
+
 /*
 	DIRECT UPDATERS
 	these are used privately, and work with SPECIFIC types.
@@ -94,12 +106,13 @@ func UpdateCreditDetailsList[T interface {
 func updatePricingPlan(sdk billingapi.PricingPlan) billingapi.PricingPlan {
 	sdk.PriceUnit = billingapi.PRICEUNITENUM_GB
 	sdk.PackageUnit = billingapi.PACKAGEUNITENUM_GB.Ptr()
+	sdk.PackageDetails.PackageUnit = billingapi.PACKAGEUNITENUM_GB.Ptr()
 	UpdateApplicableDiscounts(&sdk)
 
 	return sdk
 }
 
-func updateDiscountDetails(sdk billingapi.DiscountDetails) billingapi.DiscountDetails {
+func updateDiscountDetails(sdk billingapi.ApplicableDiscountDetails) billingapi.ApplicableDiscountDetails {
 	sdk.Type = billingapi.DISCOUNTTYPEENUM_GLOBAL_PERCENTAGE
 	return sdk
 }

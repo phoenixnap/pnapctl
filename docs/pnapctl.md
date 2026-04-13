@@ -39,6 +39,7 @@ pnapctl [flags]
 * [pnapctl reset](pnapctl_reset.md)	 - Reset the resource to original state.
 * [pnapctl shutdown](pnapctl_shutdown.md)	 - Perform a soft shutdown on the resource.
 * [pnapctl tag](pnapctl_tag.md)	 - Tag a resource.
+* [pnapctl transfer-reservation](pnapctl_transfer-reservation.md)	 - Transfer reservation(s) from one resource.
 * [pnapctl update](pnapctl_update.md)	 - Update a resource.
 * [pnapctl version](pnapctl_version.md)	 - Print version
 

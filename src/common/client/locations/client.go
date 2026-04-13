@@ -3,7 +3,7 @@ package locations
 import (
 	"context"
 
-	locationapisdk "github.com/phoenixnap/go-sdk-bmc/locationapi/v3"
+	locationapisdk "github.com/phoenixnap/go-sdk-bmc/locationapi/v4"
 	"golang.org/x/oauth2/clientcredentials"
 	"phoenixnap.com/pnapctl/commands/version"
 	"phoenixnap.com/pnapctl/common/client"
@@ -59,7 +59,7 @@ func (m MainClient) LocationsGet(location, productCategory string) ([]locationap
 	request := m.LocationsApiClient.GetLocations(context.Background())
 
 	if !client.IsZeroValue(location) {
-		request = request.Location(locationapisdk.LocationEnum(location))
+		request = request.Location(locationapisdk.ProductLocationEnum(location))
 	}
 	if !client.IsZeroValue(productCategory) {
 		request = request.ProductCategory(locationapisdk.ProductCategoryEnum(productCategory))

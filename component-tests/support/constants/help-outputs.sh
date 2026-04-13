@@ -7,27 +7,28 @@ Usage:
   pnapctl [command]
 
 Available Commands:
-  auto-renew   Modify auto-renew for a resource.
-  completion   Generate the autocompletion script for the specified shell
-  convert      Convert a resource.
-  create       Create a resource.
-  delete       Delete a resource.
-  deprovision  Deprovision a resource.
-  download     Download a resource.
-  get          Display one or many resources.
-  help         Help about any command
-  patch        Modify a resource.
-  pay          Pay a resource.
-  power-off    Perform a hard shutdown on the resource.
-  power-on     Power on a resource.
-  reboot       Perform a soft reboot on a resource.
-  request-edit Submit a modification request on a resource.
-  reserve      Reserve the resource for future use.
-  reset        Reset the resource to original state.
-  shutdown     Perform a soft shutdown on the resource.
-  tag          Tag a resource.
-  update       Update a resource.
-  version      Print version
+  auto-renew           Modify auto-renew for a resource.
+  completion           Generate the autocompletion script for the specified shell
+  convert              Convert a resource.
+  create               Create a resource.
+  delete               Delete a resource.
+  deprovision          Deprovision a resource.
+  download             Download a resource.
+  get                  Display one or many resources.
+  help                 Help about any command
+  patch                Modify a resource.
+  pay                  Pay a resource.
+  power-off            Perform a hard shutdown on the resource.
+  power-on             Power on a resource.
+  reboot               Perform a soft reboot on a resource.
+  request-edit         Submit a modification request on a resource.
+  reserve              Reserve the resource for future use.
+  reset                Reset the resource to original state.
+  shutdown             Perform a soft shutdown on the resource.
+  tag                  Tag a resource.
+  transfer-reservation Transfer reservation(s) from one resource.
+  update               Update a resource.
+  version              Print version
 
 Flags:
       --config string   config file defaults to the environment variable \"PNAPCTL_HOME\" or \"pnap.yaml\" in the home directory.

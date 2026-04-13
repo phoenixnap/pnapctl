@@ -10,7 +10,7 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
-    container: golang:1.21
+    container: golang:1.23
     steps:
       - name: Update git config
         run: git config --global --add safe.directory '*'
@@ -37,7 +37,7 @@ jobs:
   component-tests:
     name: Component Tests
     runs-on: ubuntu-latest
-    container: golang:1.21
+    container: golang:1.23
     steps:
       - name: Update git config
         run: git config --global --add safe.directory '*'
@@ -91,7 +91,7 @@ jobs:
       - unit-tests
       - component-tests
     runs-on: ubuntu-latest
-    container: golang:1.21
+    container: golang:1.23
     steps:
       - name: Update git config
         run: git config --global --add safe.directory '*'

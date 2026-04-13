@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v4"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models/generators"
 )
@@ -60,8 +60,8 @@ func assertFullBandwidthRecordsEqual(test_framework *testing.T, bandwidthRecord 
 	assert.Equal(test_framework, bandwidthRecord.UnitPriceDescription, cliOneOf.UnitPriceDescription)
 	assert.Equal(test_framework, bandwidthRecord.Quantity, cliOneOf.Quantity)
 	assert.Equal(test_framework, bandwidthRecord.Active, cliOneOf.Active)
-	assert.Equal(test_framework, bandwidthRecord.UsageSessionId, cliOneOf.UsageSessionId)
-	assert.Equal(test_framework, bandwidthRecord.CorrelationId, cliOneOf.CorrelationId)
+	assert.Equal(test_framework, DerefString(bandwidthRecord.UsageSessionId), cliOneOf.UsageSessionId)
+	assert.Equal(test_framework, DerefString(bandwidthRecord.CorrelationId), cliOneOf.CorrelationId)
 	assert.Equal(test_framework, DerefString(bandwidthRecord.ReservationId), cliOneOf.ReservationId)
 
 	assert.Equal(test_framework, bandwidthRecord.Metadata.IngressGb, cliOneOf.Metadata[INGRESS_GB])
@@ -84,8 +84,8 @@ func assertFullOperatingSystemRecordsEqual(test_framework *testing.T, operatingS
 	assert.Equal(test_framework, operatingSystemRecord.UnitPriceDescription, cliOneOf.UnitPriceDescription)
 	assert.Equal(test_framework, operatingSystemRecord.Quantity, cliOneOf.Quantity)
 	assert.Equal(test_framework, operatingSystemRecord.Active, cliOneOf.Active)
-	assert.Equal(test_framework, operatingSystemRecord.UsageSessionId, cliOneOf.UsageSessionId)
-	assert.Equal(test_framework, operatingSystemRecord.CorrelationId, cliOneOf.CorrelationId)
+	assert.Equal(test_framework, DerefString(operatingSystemRecord.UsageSessionId), cliOneOf.UsageSessionId)
+	assert.Equal(test_framework, DerefString(operatingSystemRecord.CorrelationId), cliOneOf.CorrelationId)
 	assert.Equal(test_framework, DerefString(operatingSystemRecord.ReservationId), cliOneOf.ReservationId)
 
 	assert.Equal(test_framework, operatingSystemRecord.Metadata.Cores, cliOneOf.Metadata[CORES])
@@ -106,8 +106,8 @@ func assertFullPublicSubnetRecordsEqual(test_framework *testing.T, publicSubnetR
 	assert.Equal(test_framework, publicSubnetRecord.UnitPriceDescription, cliOneOf.UnitPriceDescription)
 	assert.Equal(test_framework, publicSubnetRecord.Quantity, cliOneOf.Quantity)
 	assert.Equal(test_framework, publicSubnetRecord.Active, cliOneOf.Active)
-	assert.Equal(test_framework, publicSubnetRecord.UsageSessionId, cliOneOf.UsageSessionId)
-	assert.Equal(test_framework, publicSubnetRecord.CorrelationId, cliOneOf.CorrelationId)
+	assert.Equal(test_framework, DerefString(publicSubnetRecord.UsageSessionId), cliOneOf.UsageSessionId)
+	assert.Equal(test_framework, DerefString(publicSubnetRecord.CorrelationId), cliOneOf.CorrelationId)
 	assert.Equal(test_framework, DerefString(publicSubnetRecord.ReservationId), cliOneOf.ReservationId)
 
 	assert.Equal(test_framework, publicSubnetRecord.Metadata.Cidr, cliOneOf.Metadata[CIDR])
@@ -129,8 +129,8 @@ func assertFullServerRecordsEqual(test_framework *testing.T, serverRecord billin
 	assert.Equal(test_framework, serverRecord.UnitPriceDescription, cliOneOf.UnitPriceDescription)
 	assert.Equal(test_framework, serverRecord.Quantity, cliOneOf.Quantity)
 	assert.Equal(test_framework, serverRecord.Active, cliOneOf.Active)
-	assert.Equal(test_framework, serverRecord.UsageSessionId, cliOneOf.UsageSessionId)
-	assert.Equal(test_framework, serverRecord.CorrelationId, cliOneOf.CorrelationId)
+	assert.Equal(test_framework, DerefString(serverRecord.UsageSessionId), cliOneOf.UsageSessionId)
+	assert.Equal(test_framework, DerefString(serverRecord.CorrelationId), cliOneOf.CorrelationId)
 	assert.Equal(test_framework, DerefString(serverRecord.ReservationId), cliOneOf.ReservationId)
 
 	assert.Equal(test_framework, serverRecord.Metadata.Hostname, cliOneOf.Metadata[HOSTNAME])
@@ -151,8 +151,8 @@ func assertFullStorageRecordsEqual(test_framework *testing.T, storageRecord bill
 	assert.Equal(test_framework, storageRecord.UnitPriceDescription, cliOneOf.UnitPriceDescription)
 	assert.Equal(test_framework, storageRecord.Quantity, cliOneOf.Quantity)
 	assert.Equal(test_framework, storageRecord.Active, cliOneOf.Active)
-	assert.Equal(test_framework, storageRecord.UsageSessionId, cliOneOf.UsageSessionId)
-	assert.Equal(test_framework, storageRecord.CorrelationId, cliOneOf.CorrelationId)
+	assert.Equal(test_framework, DerefString(storageRecord.UsageSessionId), cliOneOf.UsageSessionId)
+	assert.Equal(test_framework, DerefString(storageRecord.CorrelationId), cliOneOf.CorrelationId)
 	assert.Equal(test_framework, DerefString(storageRecord.ReservationId), cliOneOf.ReservationId)
 
 	assert.Equal(test_framework, storageRecord.Metadata.NetworkStorageId, cliOneOf.Metadata[NETWORK_STORAGE_ID])

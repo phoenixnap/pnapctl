@@ -1,7 +1,7 @@
 package tables
 
 import (
-	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
+	billingapisdk "github.com/phoenixnap/go-sdk-bmc/billingapi/v4"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/oneof/product"
 	"phoenixnap.com/pnapctl/common/utils/iterutils"
@@ -40,6 +40,7 @@ func ProductTableFromSdk(sdk billingapisdk.ProductsGet200ResponseInner) *Product
 
 func parseCommonProduct(sdk billingapisdk.ProductsGet200ResponseInner) *ProductTable {
 	product := models.GetFromAllOf[billingapisdk.Product](sdk)
+
 	if product == nil {
 		return nil
 	}

@@ -3,7 +3,7 @@ package tables
 import (
 	"testing"
 
-	"github.com/phoenixnap/go-sdk-bmc/billingapi/v3"
+	"github.com/phoenixnap/go-sdk-bmc/billingapi/v4"
 	"github.com/stretchr/testify/assert"
 	"phoenixnap.com/pnapctl/common/models"
 	"phoenixnap.com/pnapctl/common/models/generators"
@@ -15,6 +15,7 @@ func TestProductActualFromSdk_BandwidthProduct(test_framework *testing.T) {
 	bandwidthProduct := generators.GenerateBandwidthProduct()
 
 	actual := ProductTableFromSdk(bandwidthProduct)
+
 	assertEqualAsProduct(test_framework, *bandwidthProduct.Product, *actual)
 }
 
