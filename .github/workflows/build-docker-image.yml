@@ -23,7 +23,7 @@ jobs:
 
       - name: Generate tag
         id: vars
-        run: echo "tag=$(date +%d%m%Y)" >> $GITHUB_OUTPUT
+        run: echo "tag=$(date +%d-%m-%Y)" >> $GITHUB_OUTPUT
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -39,9 +39,11 @@ jobs:
           push: true
           pull: true
           no-cache: true
+          build-args: |
+            PNAPCTL_VERSION=${{ github.event.release.tag_name }}
           tags: |
             ghcr.io/${{ github.repository_owner }}/pnapctl:latest
-            ghcr.io/${{ github.repository_owner }}/pnapctl:${{ steps.vars.outputs.tag }}
+            ghcr.io/${{ github.repository_owner }}/pnapctl:${{ github.event.release.tag_name }}
       - name: Delete old container versions
         uses: actions/delete-package-versions@v5
         with:
