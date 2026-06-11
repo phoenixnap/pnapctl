@@ -32,8 +32,4 @@ jobs:
           push: true
           pull: true
           no-cache: true
-          build-args: |
-            PNAPCTL_VERSION=${{ github.event.release.tag_name }}
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/pnapctl:latest
-            ghcr.io/${{ github.repository_owner }}/pnapctl:${{ github.event.release.tag_name }}
+          tags: ghcr.io/${{ github.repository_owner }}/pnapctl:latest
