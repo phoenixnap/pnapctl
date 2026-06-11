@@ -1,5 +1,6 @@
 package com.pnapctl.tests.tests;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 
@@ -15,14 +16,21 @@ public class PnapctlE2ETest {
     void pnapctl_help() throws Exception {
 
         String image = System.getenv("PNAPCTL_IMAGE");
+        String clientId = System.getenv("PNAP_CLIENT_ID");
+        String clientSecret = System.getenv("PNAP_CLIENT_SECRET");
+        String latestVersion = System.getenv("PNAPCTL_VERSION");
 
         LOGGER.info("Logging image {}", image);
         Process process = new ProcessBuilder(
                 "docker",
                 "run",
                 "--rm",
+                "-e",
+                "PNAP_CLIENT_ID=\"%s\"".formatted(clientId),
+                "-e",
+                "PNAP_CLIENT_SECRET=\"%s\"".formatted(clientSecret),
                 image,
-                "--help")
+                "version")
                 .redirectErrorStream(true)
                 .start();
 
@@ -33,6 +41,7 @@ public class PnapctlE2ETest {
 
         int exitCode = process.waitFor();
 
+        assertThat(output).contains(latestVersion);
         assertEquals(0, exitCode);
         assertFalse(output.isBlank());
     }
