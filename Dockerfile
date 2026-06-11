@@ -6,7 +6,7 @@ RUN apk add --no-cache curl tar
 WORKDIR /tmp
 
 RUN curl -L -o pnapctl.tar.gz \
-  https://github.com/phoenixnap/pnapctl/releases/download/${PNAPCTL_VERSION}/pnapctl-linux-amd64.tar.gz \
+  https://github.com/phoenixnap/pnapctl/releases/latest/download/pnapctl-linux-amd64.tar.gz \
   && tar xzf pnapctl.tar.gz \
   && chmod +x pnapctl
 
