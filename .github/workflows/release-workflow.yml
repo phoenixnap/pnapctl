@@ -161,6 +161,7 @@ jobs:
           context: .
           push: true
           build-args: |
+            GITHUB_OWNER=${{ github.repository_owner }}
             PNAPCTL_VERSION=${{ github.event.release.tag_name }}
           tags: |
             ghcr.io/${{ github.repository_owner }}/pnapctl:latest

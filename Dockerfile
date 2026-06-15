@@ -1,12 +1,13 @@
 FROM golang:1.22-alpine AS builder
 
+ARG GITHUB_OWNER
 ARG PNAPCTL_VERSION
 RUN apk add --no-cache curl tar
 
 WORKDIR /tmp
 
 RUN curl -L -o pnapctl.tar.gz \
-  https://github.com/phoenixnap/pnapctl/releases/latest/download/pnapctl-linux-amd64.tar.gz \
+  https://github.com/${GITHUB_OWNER}/pnapctl/releases/download/${PNAPCTL_VERSION}/pnapctl-linux-amd64.tar.gz \
   && tar xzf pnapctl.tar.gz \
   && chmod +x pnapctl
 
