@@ -67,24 +67,6 @@ jobs:
           name: Component Test Results
           path: 'out/component-tests/*'
 
-  publish-test-results:
-    name: Publish Test Results
-    needs:
-      - unit-tests
-      - component-tests
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: test-results
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        with:
-          files: test-results/**/*.xml
-          check_name: "Test Results"
-
   build-artifacts:
     name: Build Artifacts
     needs:
@@ -205,3 +187,33 @@ jobs:
           PNAPCTL_VERSION: ${{ github.event.release.tag_name }}
           PNAP_CLIENT_ID: ${{ secrets.PNAP_CLIENT_ID }}
           PNAP_CLIENT_SECRET: ${{ secrets.PNAP_CLIENT_SECRET }}
+
+      - name: Upload E2E Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: E2E Test Results
+          path: |
+            e2e-tests/target/failsafe-reports/*
+
+  publish-all-test-results:
+    name: Publish Test Results
+    needs:
+      - unit-tests
+      - component-tests
+      - run-e2e
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: test-results
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          files: |
+            test-results/**/*.xml
+        check_name: "Test Results"
