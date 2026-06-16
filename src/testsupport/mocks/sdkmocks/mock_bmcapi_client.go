@@ -153,6 +153,21 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerIpBlockPost(serverId, serverIpB
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerIpBlockPost", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerIpBlockPost), serverId, serverIpBlock)
 }
 
+// ServerOsConfigurationIpxePut mocks base method.
+func (m *MockBmcApiSdkClient) ServerOsConfigurationIpxePut(serverId string, osConfigurationIpxe bmcapi.OsConfigurationIPXE) (*bmcapi.OsConfigurationIPXE, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServerOsConfigurationIpxePut", serverId, osConfigurationIpxe)
+	ret0, _ := ret[0].(*bmcapi.OsConfigurationIPXE)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ServerOsConfigurationIpxePut indicates an expected call of ServerOsConfigurationIpxePut.
+func (mr *MockBmcApiSdkClientMockRecorder) ServerOsConfigurationIpxePut(serverId, osConfigurationIpxe interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServerOsConfigurationIpxePut", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServerOsConfigurationIpxePut), serverId, osConfigurationIpxe)
+}
+
 // ServerPatch mocks base method.
 func (m *MockBmcApiSdkClient) ServerPatch(serverId string, serverPatch bmcapi.ServerPatch) (*bmcapi.Server, error) {
 	m.ctrl.T.Helper()
@@ -394,18 +409,18 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerTransferReservation(serverId, r
 }
 
 // ServersGet mocks base method.
-func (m *MockBmcApiSdkClient) ServersGet(arg0 []string) ([]bmcapi.Server, error) {
+func (m *MockBmcApiSdkClient) ServersGet(tags, location []string) ([]bmcapi.Server, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServersGet", arg0)
+	ret := m.ctrl.Call(m, "ServersGet", tags, location)
 	ret0, _ := ret[0].([]bmcapi.Server)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ServersGet indicates an expected call of ServersGet.
-func (mr *MockBmcApiSdkClientMockRecorder) ServersGet(arg0 interface{}) *gomock.Call {
+func (mr *MockBmcApiSdkClientMockRecorder) ServersGet(tags, location interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersGet), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersGet), tags, location)
 }
 
 // ServersPost mocks base method.
