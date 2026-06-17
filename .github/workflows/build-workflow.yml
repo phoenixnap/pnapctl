@@ -12,12 +12,14 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    container: golang:1.23
+    container: golang:1.26
     steps:
       - name: Update git config
         run: git config --global --add safe.directory '*'
+
       - name: Checkout the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
       - name: Go Cache
         uses: actions/cache@v4
         with:
@@ -27,16 +29,18 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
+
       - name: Build
         run: make build
-  
+
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
-    container: golang:1.23
+    container: golang:1.26
     steps:
       - name: Checkout the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
       - name: Go Cache
         uses: actions/cache@v4
         with:
@@ -46,10 +50,13 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
+
       - name: Fix dubious ownership issue
         run: git config --global --add safe.directory /__w/pnapctl/pnapctl
+
       - name: Run tests
         run: make test-coverage
+
       - name: Upload Unit Test Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -60,18 +67,22 @@ jobs:
   component-tests:
     name: Component Tests
     runs-on: ubuntu-latest
-    container: golang:1.23
+    container: golang:1.26
     steps:
       - name: Update git config
         run: git config --global --add safe.directory '*'
+
       - name: Checkout the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
       - name: Install node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '20'
+
       - name: Install bats
         run: npm install -g bats
+
       - name: Go Cache
         uses: actions/cache@v4
         with:
@@ -81,8 +92,10 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
+
       - name: Run tests
         run: make component-tests
+
       - name: Upload Component Test Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -102,8 +115,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: test-results
+
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
+        uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           files: test-results/**/*.xml
           check_name: "Test Results"
