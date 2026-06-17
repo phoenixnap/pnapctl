@@ -16,47 +16,47 @@ import (
 var Filename string
 
 func init() {
-	utils.SetupOutputFlag(PutServerIpxeCmd)
-	utils.SetupFilenameFlag(PutServerIpxeCmd, &Filename, utils.UPDATING)
+	utils.SetupOutputFlag(UpdateServerOsConfigurationIpxeCmd)
+	utils.SetupFilenameFlag(UpdateServerOsConfigurationIpxeCmd, &Filename, utils.UPDATING)
 }
 
-// PutServerIpxeCmd is the command for updating a server's iPXE OS configuration.
-var PutServerIpxeCmd = &cobra.Command{
+// UpdateServerOsConfigurationIpxeCmd is the command for updating a server's iPXE OS configuration.
+var UpdateServerOsConfigurationIpxeCmd = &cobra.Command{
 	Use:          "ipxe SERVER_ID",
-	Short:        "Update a server's iPXE OS configuration.",
+	Short:        "Update the iPXE OS configuration of a server.",
 	Args:         cobra.ExactArgs(1),
 	SilenceUsage: true,
-	Long: `Update a server's iPXE OS configuration.
+	Long: `Update the iPXE OS configuration of a server.
 
 Requires a file (yaml or json) containing the information needed to modify the server's iPXE configuration.`,
-	Example: `# Update a server's iPXE configuration as per serverIpxeUpdate.yaml
-pnapctl update server os-configuration ipxe <SERVER_ID> --filename <FILE_PATH> [--output <OUTPUT_TYPE>]
+	Example: `# Update the iPXE OS configuration of a server as per serverOsConfigurationIpxeUpdate.yaml
+pnapctl update server os-configuration ipxe <SERVER_ID> --filename <FILENAME> [--output <OUTPUT_TYPE>]
 
-# serverIpxeUpdate.yaml
+# serverOsConfigurationIpxeUpdate.yaml
 url: https://example.com/boot.ipxe
 nativeVlanConfiguration:
   vlanId: 10
   staticDhcpAddressV4: 185.74.213.56`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cmdname.SetCommandName(cmd)
-		return updateServerIpxe(args[0])
+		return updateServerOsConfigurationIpxe(args[0])
 	},
 }
 
-func updateServerIpxe(id string) error {
+func updateServerOsConfigurationIpxe(id string) error {
 	log.Info().Msgf("Updating iPXE OS configuration for Server with ID [%s].", id)
 
-	serverIpxeUpdate, err := models.CreateRequestFromFile[bmcapisdk.OsConfigurationIPXE](Filename)
+	serverOsConfigurationIpxeUpdate, err := models.CreateRequestFromFile[bmcapisdk.OsConfigurationIPXE](Filename)
 
 	if err != nil {
 		return err
 	}
 
-	// update the server's iPXE configuration
-	response, err := bmcapi.Client.ServerOsConfigurationIpxePut(id, *serverIpxeUpdate)
+	// update the server's iPXE OS configuration
+	response, err := bmcapi.Client.ServerOsConfigurationIpxePut(id, *serverOsConfigurationIpxeUpdate)
 	if err != nil {
 		return err
 	} else {
-		return printer.PrintServerIpxe(response)
+		return printer.PrintServerOsConfigurationIpxe(response)
 	}
 }

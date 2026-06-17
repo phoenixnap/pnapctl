@@ -23,9 +23,9 @@ var UpdateCmd = &cobra.Command{
 }
 
 func init() {
-	UpdateCmd.AddCommand(sshkey.UpdateSshKeyCmd)
-	UpdateCmd.AddCommand(privatenetwork.UpdatePrivateNetworkCmd)
 	UpdateCmd.AddCommand(ip_blocks.UpdateIpBlockCmd)
-	UpdateCmd.AddCommand(storagenetworks.UpdateStorageNetworkCmd)
+	UpdateCmd.AddCommand(privatenetwork.UpdatePrivateNetworkCmd)
 	UpdateCmd.AddCommand(server.UpdateServerCmd)
+	UpdateCmd.AddCommand(sshkey.UpdateSshKeyCmd)
+	UpdateCmd.AddCommand(storagenetworks.UpdateStorageNetworkCmd)
 }

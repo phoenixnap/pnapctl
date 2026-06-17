@@ -1,4 +1,4 @@
-package os_configuration
+package osconfiguration
 
 import (
 	"os"
@@ -10,7 +10,7 @@ import (
 
 // UpdateServerOsConfigurationCmd is the parent command for server OS configuration updates.
 var UpdateServerOsConfigurationCmd = &cobra.Command{
-	Use:   "osconfiguration",
+	Use:   "os-configuration",
 	Short: "Update a server's OS configuration.",
 	Long:  `Update a server's OS configuration.`,
 	Run: func(cmd *cobra.Command, _ []string) {
@@ -20,5 +20,5 @@ var UpdateServerOsConfigurationCmd = &cobra.Command{
 }
 
 func init() {
-	UpdateServerOsConfigurationCmd.AddCommand(ipxe.PutServerIpxeCmd)
+	UpdateServerOsConfigurationCmd.AddCommand(ipxe.UpdateServerOsConfigurationIpxeCmd)
 }

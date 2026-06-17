@@ -15,7 +15,7 @@ var Client BmcApiSdkClient
 type BmcApiSdkClient interface {
 	//Servers
 	ServersPost(serverCreate bmcapisdk.ServerCreate, force bool) (*bmcapisdk.Server, error)
-	ServersGet(tags []string, location []string) ([]bmcapisdk.Server, error)
+	ServersGet(tags []string, locations []string) ([]bmcapisdk.Server, error)
 	ServerGetById(serverId string) (*bmcapisdk.Server, error)
 	ServerDelete(serverId string) (*bmcapisdk.DeleteResult, error)
 	ServerPowerOff(serverId string) (*bmcapisdk.ActionResult, error)

@@ -409,18 +409,18 @@ func (mr *MockBmcApiSdkClientMockRecorder) ServerTransferReservation(serverId, r
 }
 
 // ServersGet mocks base method.
-func (m *MockBmcApiSdkClient) ServersGet(tags, location []string) ([]bmcapi.Server, error) {
+func (m *MockBmcApiSdkClient) ServersGet(tags, locations []string) ([]bmcapi.Server, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ServersGet", tags, location)
+	ret := m.ctrl.Call(m, "ServersGet", tags, locations)
 	ret0, _ := ret[0].([]bmcapi.Server)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ServersGet indicates an expected call of ServersGet.
-func (mr *MockBmcApiSdkClientMockRecorder) ServersGet(tags, location interface{}) *gomock.Call {
+func (mr *MockBmcApiSdkClientMockRecorder) ServersGet(tags, locations interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersGet), tags, location)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServersGet", reflect.TypeOf((*MockBmcApiSdkClient)(nil).ServersGet), tags, locations)
 }
 
 // ServersPost mocks base method.

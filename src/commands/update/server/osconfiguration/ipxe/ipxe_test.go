@@ -30,7 +30,7 @@ func updateServerIpxeSuccess(test_framework *testing.T, marshaller func(interfac
 		Return(&serverIpxeResponse, nil)
 
 	// Run command
-	err := PutServerIpxeCmd.RunE(PutServerIpxeCmd, []string{RESOURCEID})
+	err := UpdateServerOsConfigurationIpxeCmd.RunE(UpdateServerOsConfigurationIpxeCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.NoError(test_framework, err)
@@ -52,7 +52,7 @@ func TestUpdateServerIpxeFileProcessorFailure(test_framework *testing.T) {
 	expectedErr := ExpectFromFileFailure(test_framework)
 
 	// Run command
-	err := PutServerIpxeCmd.RunE(PutServerIpxeCmd, []string{RESOURCEID})
+	err := UpdateServerOsConfigurationIpxeCmd.RunE(UpdateServerOsConfigurationIpxeCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.EqualError(test_framework, err, expectedErr.Error())
@@ -66,7 +66,7 @@ func TestUpdateServerIpxeUnmarshallingFailure(test_framework *testing.T) {
 	ExpectFromFileUnmarshalFailure(test_framework)
 
 	// Run command
-	err := PutServerIpxeCmd.RunE(PutServerIpxeCmd, []string{RESOURCEID})
+	err := UpdateServerOsConfigurationIpxeCmd.RunE(UpdateServerOsConfigurationIpxeCmd, []string{RESOURCEID})
 
 	// Assertions
 	assert.Contains(test_framework, err.Error(), ctlerrors.UnmarshallingInFileProcessor)
@@ -86,7 +86,7 @@ func TestUpdateServerIpxeClientFailure(test_framework *testing.T) {
 		Return(nil, testutil.TestError)
 
 	// Run command
-	err := PutServerIpxeCmd.RunE(PutServerIpxeCmd, []string{RESOURCEID})
+	err := UpdateServerOsConfigurationIpxeCmd.RunE(UpdateServerOsConfigurationIpxeCmd, []string{RESOURCEID})
 
 	// Expected error
 	expectedErr := ctlerrors.GenericFailedRequestError(testutil.TestError, ctlerrors.ErrorSendingRequest)

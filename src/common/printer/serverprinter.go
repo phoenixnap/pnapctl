@@ -46,10 +46,10 @@ func PrintServerIpBlock(serverIpBlock *bmcapisdk.ServerIpBlock) error {
 	}
 }
 
-func PrintServerIpxe(ipxe *bmcapisdk.OsConfigurationIPXE) error {
+func PrintServerOsConfigurationIpxe(ipxe *bmcapisdk.OsConfigurationIPXE) error {
 	table := OutputIsTable()
 	if table {
-		return MainPrinter.PrintOutput(tables.ToServerIpxeTable(*ipxe))
+		return MainPrinter.PrintOutput(tables.ToServerOsConfigurationIpxeTable(*ipxe))
 	} else {
 		return MainPrinter.PrintOutput(ipxe)
 	}
