@@ -346,6 +346,7 @@ Usage:
 Available Commands:
   ip-block        Update an ip-block.
   private-network Update a private network.
+  server          Update a server.
   ssh-key         Update an ssh-key.
   storage-network Update a storage network.
 

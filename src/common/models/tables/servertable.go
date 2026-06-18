@@ -63,6 +63,13 @@ type ServerIpBlockTable struct {
 	VlanId int32  `header:"Vlan ID"`
 }
 
+type ServerOsConfigurationIpxeTable struct {
+	Url                 string `header:"URL"`
+	VlanId              int32  `header:"VLAN ID"`
+	StaticDhcpAddressV4 string `header:"Static DHCP Address V4"`
+	Status              string `header:"Status"`
+}
+
 func ToShortServerTable(server bmcapisdk.Server) ShortServerTable {
 	return ShortServerTable{
 		ID:                 server.Id,
@@ -132,5 +139,21 @@ func ToServerIpBlockTable(serverIpBlock bmcapisdk.ServerIpBlock) ServerIpBlockTa
 	return ServerIpBlockTable{
 		Id:     serverIpBlock.Id,
 		VlanId: *serverIpBlock.VlanId,
+	}
+}
+
+func ToServerOsConfigurationIpxeTable(ipxe bmcapisdk.OsConfigurationIPXE) ServerOsConfigurationIpxeTable {
+	nativeVlanConfiguration, ok := ipxe.GetNativeVlanConfigurationOk()
+	if ok && nativeVlanConfiguration != nil {
+		return ServerOsConfigurationIpxeTable{
+			Url:                 ipxe.GetUrl(),
+			VlanId:              nativeVlanConfiguration.GetVlanId(),
+			StaticDhcpAddressV4: nativeVlanConfiguration.GetStaticDhcpAddressV4(),
+			Status:              nativeVlanConfiguration.GetStatus(),
+		}
+	}
+
+	return ServerOsConfigurationIpxeTable{
+		Url: ipxe.GetUrl(),
 	}
 }
