@@ -29,10 +29,11 @@ pnapctl get servers <SERVER_ID> [--full] [--output <OUTPUT_TYPE>]
 ### Options
 
 ```
-      --full              Shows all server details
-  -h, --help              help for server
-  -o, --output string     Define the output format. Possible values: table, json, yaml (default "table")
-      --tag stringArray   Filter by tag
+      --full                    Shows all server details
+  -h, --help                    help for server
+      --locations stringArray   Filter by location
+  -o, --output string           Define the output format. Possible values: table, json, yaml (default "table")
+      --tag stringArray         Filter by tag
 ```
 
 ### Options inherited from parent commands
