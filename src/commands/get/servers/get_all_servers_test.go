@@ -19,7 +19,7 @@ func TestGetAllServersShortSuccess(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersGet(tags).
+		ServersGet(tags, locations).
 		Return(serverlist, nil)
 
 	ExpectToPrintSuccess(test_framework, shortServers)
@@ -36,7 +36,7 @@ func TestGetAllServersLongSuccess(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersGet(tags).
+		ServersGet(tags, locations).
 		Return(serverlist, nil)
 
 	ExpectToPrintSuccess(test_framework, longServers)
@@ -60,7 +60,7 @@ func TestFilteredServersLongSuccess(test_framework *testing.T) {
 
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersGet(tags).
+		ServersGet(tags, locations).
 		Return(serverlist, nil)
 
 	ExpectToPrintSuccess(test_framework, longServers)
@@ -74,7 +74,7 @@ func TestFilteredServersLongSuccess(test_framework *testing.T) {
 func TestGetAllServersClientFailure(test_framework *testing.T) {
 	// Mocking
 	PrepareBmcApiMockClient(test_framework).
-		ServersGet(tags).
+		ServersGet(tags, locations).
 		Return(nil, testutil.TestError)
 
 	err := GetServersCmd.RunE(GetServersCmd, []string{})
@@ -91,7 +91,7 @@ func TestGetAllServersPrinterFailure(test_framework *testing.T) {
 	shortServers := iterutils.MapInterface(serverlist, tables.ToShortServerTable)
 
 	PrepareBmcApiMockClient(test_framework).
-		ServersGet(tags).
+		ServersGet(tags, locations).
 		Return(serverlist, nil)
 
 	expectedErr := ExpectToPrintFailure(test_framework, shortServers)

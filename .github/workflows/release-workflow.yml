@@ -10,12 +10,14 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
-    container: golang:1.23
+    container: golang:1.26
     steps:
       - name: Update git config
         run: git config --global --add safe.directory '*'
+
       - name: Checkout the repo
         uses: actions/checkout@v6
+
       - name: Go Cache
         uses: actions/cache@v5
         with:
@@ -25,8 +27,10 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
+
       - name: Run tests
         run: make test-coverage
+
       - name: Upload Unit Test Results
         if: always()
         uses: actions/upload-artifact@v7
@@ -37,18 +41,22 @@ jobs:
   component-tests:
     name: Component Tests
     runs-on: ubuntu-latest
-    container: golang:1.23
+    container: golang:1.26
     steps:
       - name: Update git config
         run: git config --global --add safe.directory '*'
+
       - name: Checkout the repo
         uses: actions/checkout@v6
+
       - name: Install node
         uses: actions/setup-node@v6
         with:
           node-version: '24'
+
       - name: Install bats
         run: npm install -g bats
+
       - name: Go Cache
         uses: actions/cache@v5
         with:
@@ -58,8 +66,10 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
+
       - name: Run tests
         run: make component-tests
+
       - name: Upload Component Test Results
         if: always()
         uses: actions/upload-artifact@v7
@@ -79,6 +89,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           path: test-results
+
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
@@ -91,16 +102,20 @@ jobs:
       - unit-tests
       - component-tests
     runs-on: ubuntu-latest
-    container: golang:1.23
+    container: golang:1.26
     steps:
       - name: Update git config
         run: git config --global --add safe.directory '*'
+
       - name: Install zip
         run: apt-get update && apt-get install -y zip
+
       - name: Checkout the repo
         uses: actions/checkout@v6
+
       - name: Build and Pack
         run: make build-and-pack
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7
         with:
@@ -115,6 +130,7 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v8
+
       - name: Release Assets
         uses: softprops/action-gh-release@v3
         with:
@@ -124,13 +140,14 @@ jobs:
             dist/pnapctl-windows-amd64.zip
 
   updateLatestTag:
-    name: Update Latest Tag Test
+    name: Update Latest Tag
     needs:
       - publish-release-assets
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v6
+
       - name: Update Latest Tag
         uses: Actions-R-Us/actions-tagger@latest
         with:

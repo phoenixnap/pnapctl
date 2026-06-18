@@ -28,6 +28,7 @@ pnapctl update [flags]
 * [pnapctl](pnapctl.md)	 - pnapctl creates new and manages existing bare metal servers.
 * [pnapctl update ip-block](pnapctl_update_ip-block.md)	 - Update an ip-block.
 * [pnapctl update private-network](pnapctl_update_private-network.md)	 - Update a private network.
+* [pnapctl update server](pnapctl_update_server.md)	 - Update a server.
 * [pnapctl update ssh-key](pnapctl_update_ssh-key.md)	 - Update an ssh-key.
 * [pnapctl update storage-network](pnapctl_update_storage-network.md)	 - Update a storage network.
 

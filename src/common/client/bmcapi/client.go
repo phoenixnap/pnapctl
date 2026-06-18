@@ -15,7 +15,7 @@ var Client BmcApiSdkClient
 type BmcApiSdkClient interface {
 	//Servers
 	ServersPost(serverCreate bmcapisdk.ServerCreate, force bool) (*bmcapisdk.Server, error)
-	ServersGet([]string) ([]bmcapisdk.Server, error)
+	ServersGet(tags []string, locations []string) ([]bmcapisdk.Server, error)
 	ServerGetById(serverId string) (*bmcapisdk.Server, error)
 	ServerDelete(serverId string) (*bmcapisdk.DeleteResult, error)
 	ServerPowerOff(serverId string) (*bmcapisdk.ActionResult, error)
@@ -37,6 +37,7 @@ type BmcApiSdkClient interface {
 	ServerIpBlockDelete(serverId string, ipBlockId string, relinquishIpBlock bmcapisdk.RelinquishIpBlock) (string, error)
 	ServerProvision(serverId string, serverProvision bmcapisdk.ServerProvision) (*bmcapisdk.Server, error)
 	ServerTransferReservation(serverId string, reservationTransferDetails bmcapisdk.ReservationTransferDetails) (*bmcapisdk.Server, error)
+	ServerOsConfigurationIpxePut(serverId string, osConfigurationIpxe bmcapisdk.OsConfigurationIPXE) (*bmcapisdk.OsConfigurationIPXE, error)
 
 	//Ssh Keys
 	SshKeyPost(sshkeyCreate bmcapisdk.SshKeyCreate) (*bmcapisdk.SshKey, error)
@@ -98,8 +99,8 @@ func (m MainClient) ServersPost(serverCreate bmcapisdk.ServerCreate, force bool)
 	return client.HandleResponse(m.ServersApiClient.ServersPost(context.Background()).ServerCreate(serverCreate).Force(force).Execute())
 }
 
-func (m MainClient) ServersGet(tags []string) ([]bmcapisdk.Server, error) {
-	return client.HandleResponse(m.ServersApiClient.ServersGet(context.Background()).Tag(tags).Execute())
+func (m MainClient) ServersGet(tags []string, locations []string) ([]bmcapisdk.Server, error) {
+	return client.HandleResponse(m.ServersApiClient.ServersGet(context.Background()).Tag(tags).Location(locations).Execute())
 }
 
 func (m MainClient) ServerGetById(serverId string) (*bmcapisdk.Server, error) {
@@ -184,6 +185,10 @@ func (m MainClient) ServerProvision(serverId string, serverProvision bmcapisdk.S
 
 func (m MainClient) ServerTransferReservation(serverId string, reservationTransferDetails bmcapisdk.ReservationTransferDetails) (*bmcapisdk.Server, error) {
 	return client.HandleResponse(m.ServersApiClient.ServersServerIdActionsTransferReservation(context.Background(), serverId).ReservationTransferDetails(reservationTransferDetails).Execute())
+}
+
+func (m MainClient) ServerOsConfigurationIpxePut(serverId string, osConfigurationIpxe bmcapisdk.OsConfigurationIPXE) (*bmcapisdk.OsConfigurationIPXE, error) {
+	return client.HandleResponse(m.ServersApiClient.ServersServerIdOsConfigurationIpxePut(context.Background(), serverId).OsConfigurationIPXE(osConfigurationIpxe).Execute())
 }
 
 // SSH Key APIs

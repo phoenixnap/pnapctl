@@ -1,22 +1,24 @@
 package servers
 
 import (
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"phoenixnap.com/pnapctl/common/client/bmcapi"
 	"phoenixnap.com/pnapctl/common/printer"
 	"phoenixnap.com/pnapctl/common/utils"
 	"phoenixnap.com/pnapctl/common/utils/cmdname"
-    "github.com/rs/zerolog/log"
 )
 
 var Full bool
 var tags []string
+var locations []string
 
 func init() {
 	utils.SetupOutputFlag(GetServersCmd)
 	utils.SetupFullFlag(GetServersCmd, &Full, "server")
 
 	GetServersCmd.PersistentFlags().StringArrayVar(&tags, "tag", nil, "Filter by tag")
+	GetServersCmd.PersistentFlags().StringArrayVar(&locations, "locations", nil, "Filter by location")
 }
 
 var GetServersCmd = &cobra.Command{
@@ -49,7 +51,7 @@ pnapctl get servers <SERVER_ID> [--full] [--output <OUTPUT_TYPE>]`,
 func getServers() error {
 	log.Info().Msg("Retrieving list of Servers ...")
 
-	servers, err := bmcapi.Client.ServersGet(tags)
+	servers, err := bmcapi.Client.ServersGet(tags, locations)
 
 	if err != nil {
 		return err
