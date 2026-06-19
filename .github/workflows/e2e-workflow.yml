@@ -1,8 +1,8 @@
 name: Scheduled E2E
 
 on:
-  schedule:
-    - cron: '0 3 * * MON'
+  #schedule:
+  #  - cron: '0 3 * * MON' # disabled for now
 
   workflow_dispatch:
 
