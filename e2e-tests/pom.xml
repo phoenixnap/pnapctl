@@ -15,6 +15,8 @@
         <commons-exec.version>1.4.0</commons-exec.version>
         <jackson.version>2.21.2</jackson.version>
         <surefire.testng.version>3.5.0</surefire.testng.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -95,6 +97,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
             </plugin>
             <!-- Use Failsafe for running tests and handling failures gracefully -->
 
@@ -131,6 +134,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <release>25</release>
                 </configuration>
