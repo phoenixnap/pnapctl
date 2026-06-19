@@ -82,6 +82,7 @@ jobs:
     needs:
       - unit-tests
       - component-tests
+      - run-e2e
     runs-on: ubuntu-latest
     if: always()
     steps:
@@ -222,3 +223,10 @@ jobs:
           PNAPCTL_VERSION: ${{ github.event.release.tag_name }}
           PNAP_CLIENT_ID: ${{ secrets.PNAP_CLIENT_ID }}
           PNAP_CLIENT_SECRET: ${{ secrets.PNAP_CLIENT_SECRET }}
+
+      - name: Upload E2E Test Results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: E2E Test Results
+          path: e2e-tests/target/failsafe-reports/TEST-*.xml
