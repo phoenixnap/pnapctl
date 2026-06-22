@@ -69,8 +69,7 @@ Run `pnapctl` without installing the binary locally by using the published Docke
 **Resources**
 
 * Container Image: [`ghcr.io/phoenixnap/pnapctl`](https://github.com/phoenixnap/pnapctl/pkgs/container/pnapctl)
-* Documentation: [
-  `github.com/phoenixnap/pnapctl/blob/master/docs/pnapctl.md`](https://github.com/phoenixnap/pnapctl/blob/master/docs/pnapctl.md)
+* Documentation: [`github.com/phoenixnap/pnapctl/blob/master/docs/pnapctl.md`](https://github.com/phoenixnap/pnapctl/blob/master/docs/pnapctl.md)
 * Source Code: [`github.com/phoenixnap/pnapctl`](https://github.com/phoenixnap/pnapctl)
 1. Pull the image:
 
