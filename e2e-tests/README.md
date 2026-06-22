@@ -26,16 +26,16 @@ alias pnapctl='docker run --rm -it \
   -e PNAP_CLIENT_SECRET="YOUR_CLIENT_SECRET" \
   ghcr.io/phoenixnap/pnapctl:latest'
 ```
-
+> Note: This alias is available only for the current shell session. Add it to your shell profile (for example, `.bashrc` or `.zshrc`) to make it persistent.
 > Replace `YOUR_CLIENT_ID` and `YOUR_CLIENT_SECRET` with your PhoenixNAP API credentials.
 
-## 3. Verify the installation
+## 3. Verify the setup
 
 ```bash
 pnapctl version
 ```
 
-## 4. Run commands
+## 4. Run `pnapctl` commands
 
 ```bash
 pnapctl get servers
@@ -45,7 +45,7 @@ For additional examples and supported commands, refer to the official documentat
 
 ## Running E2E Tests
 
-E2E tests validate the published `pnapctl` Docker image against real PhoenixNAP APIs.
+E2E tests validate the published `pnapctl` Docker image with GO SDK against real PhoenixNAP APIs.
 
 ### Prerequisites
 
