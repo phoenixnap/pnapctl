@@ -62,7 +62,10 @@ Export the required environment variables:
 export PNAP_CLIENT_ID=<your-client-id>
 export PNAP_CLIENT_SECRET=<your-client-secret>
 export PNAPCTL_IMAGE=ghcr.io/phoenixnap/pnapctl:latest
+export PNAPCTL_VERSION=1.13.0
 ```
+
+Note: `PNAPCTL_VERSION` should be updated accordingly over time as new versions are released.
 
 Run the E2E test suite:
 
