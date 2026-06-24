@@ -70,11 +70,12 @@ public class PnapctlCommand {
     public CommandResult executeSuccessfully() {
         CommandResult result = execute();
         if (!result.isSuccessful()) {
-            throw new AssertionError(
-                    "Command failed\n" +
-                            "Exit code: " + result.exitCode() + "\n" +
-                            "STDERR:\n" + result.stderr()
-            );
+            throw new AssertionError("""
+                            Command failed
+                            Exit code: [%s]
+                            STDERR:
+                            [%s]
+                            """.formatted(result.exitCode(), result.stderr()));
         }
         return result;
     }
