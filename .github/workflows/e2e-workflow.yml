@@ -1,0 +1,50 @@
+name: Scheduled E2E
+
+on:
+  #schedule:
+  #  - cron: '0 3 * * MON' # disabled for now
+
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+          cache: maven
+
+      - name: Login to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull image
+        run: docker pull ghcr.io/${{ github.repository_owner }}/pnapctl:latest
+
+      - name: Get latest release tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "LATEST_TAG=$(gh release view --repo ${{ github.repository }} --json tagName -q .tagName)" >> $GITHUB_ENV
+
+      - name: Run E2E tests
+        working-directory: e2e-tests
+        run: mvn test
+        env:
+          PNAPCTL_IMAGE: ghcr.io/${{ github.repository_owner }}/pnapctl:latest
+          PNAPCTL_VERSION: ${{ env.LATEST_TAG }}
+          PNAP_CLIENT_ID: ${{ secrets.PNAP_CLIENT_ID }}
+          PNAP_CLIENT_SECRET: ${{ secrets.PNAP_CLIENT_SECRET }}

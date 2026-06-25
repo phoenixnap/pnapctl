@@ -18,6 +18,9 @@ This CLI allows you to interact with Bare Metal Cloud APIs to deploy new and man
   <a href="https://developers.phoenixnap.com/support">Support</a>
 </p>
 
+[![Release](https://img.shields.io/github/v/release/phoenixnap/pnapctl)](https://github.com/phoenixnap/pnapctl/releases)
+[![Container Image](https://img.shields.io/badge/GHCR-pnapctl-blue)](https://github.com/phoenixnap/pnapctl/pkgs/container/pnapctl)
+
 ## Requirements
 
 - [Bare Metal Cloud](https://bmc.phoenixnap.com) account
@@ -39,7 +42,6 @@ This CLI allows you to interact with Bare Metal Cloud APIs to deploy new and man
 The CLI can be either used manually or as part of automation scripts.
 
 You can use pnapctl on Linux, OS X, and Windows-based AMD64 systems. The binary is available for download through the following links:
-
 * Linux: [pnapctl-linux-amd64.tar.gz](https://github.com/phoenixnap/pnapctl/releases/latest/download/pnapctl-linux-amd64.tar.gz)
 * OS X: [pnapctl-darwin-amd64.tar.gz](https://github.com/phoenixnap/pnapctl/releases/latest/download/pnapctl-darwin-amd64.tar.gz)
 * Windows: [pnapctl-windows-amd64.zip](https://github.com/phoenixnap/pnapctl/releases/latest/download/pnapctl-windows-amd64.zip)
@@ -49,8 +51,8 @@ You can use pnapctl on Linux, OS X, and Windows-based AMD64 systems. The binary 
 ## CTL Setup Steps
 
 1. Get [`go`](https://golang.org/) and install.
-2. Install `make`<br> using the following command: 
-    `sudo apt-get install build-essential`
+2. Install `make`<br> using the following command:
+   `sudo apt-get install build-essential`
 3. Clone this repository.
 4. Go into the `pnapctl` folder.
 5. Move the `sample-config.yaml` file to `$HOME/.pnap/config.yaml` and add your client credentials (ID and secret)
@@ -58,7 +60,42 @@ You can use pnapctl on Linux, OS X, and Windows-based AMD64 systems. The binary 
 
 The executable will be generated in the `bin` folder. This is an example of command execution:
 
-   `./bin/pnapctl get servers`
+`./bin/pnapctl get servers`
+
+## Using the `pnapctl` Docker Image
+
+Run `pnapctl` without installing the binary locally by using the published Docker image.
+
+**Resources**
+
+* Container Image: [`ghcr.io/phoenixnap/pnapctl`](https://github.com/phoenixnap/pnapctl/pkgs/container/pnapctl)
+
+1. Pull the image:
+
+   ```bash
+   docker pull ghcr.io/phoenixnap/pnapctl:latest
+   ```
+2. Configure a shell alias (replace `YOUR_CLIENT_ID` and `YOUR_CLIENT_SECRET` with your PhoenixNAP API credentials):
+
+   ```bash
+   alias pnapctl='docker run --rm -it \
+     -e PNAP_CLIENT_ID="YOUR_CLIENT_ID" \
+     -e PNAP_CLIENT_SECRET="YOUR_CLIENT_SECRET" \
+     ghcr.io/phoenixnap/pnapctl:latest'
+   ```
+   > Note: This alias is available only for the current shell session. Add it to your shell profile (for example, `.bashrc` or `.zshrc`) to make it persistent.
+3. Verify the setup:
+
+   ```bash
+   pnapctl version
+   ```
+4. Run `pnapctl` commands:
+
+    ```bash
+    pnapctl get servers
+    ```
+
+For additional examples and supported commands, refer to the official documentation.
 
 ## Commands
 
@@ -87,12 +124,12 @@ Usage:
 
 ### Running Tests with TParse
 
-TParse is a command line tool used to summarize a Go test output. It is also useful when analysing test coverage. 
+TParse is a command line tool used to summarize a Go test output. It is also useful when analysing test coverage.
 
-#### Installation and Usage: 
+#### Installation and Usage:
 1. Verify that the bin directory for GO is included in `$PATH`
 2. Install [`tparse`](https://github.com/mfridman/tparse) by running `go install github.com/mfridman/tparse@latest`
-3. Use `go test -json -cover ./... | tparse -all` to run all tests or `go test -json -cover ./commands/get | tparse -all` to run specific tests. 
+3. Use `go test -json -cover ./... | tparse -all` to run all tests or `go test -json -cover ./commands/get | tparse -all` to run specific tests.
 
 :grey_exclamation: **NOTE:** You can also run `make test-tparse` as a shortcut, which also works with `PKG`.
 
@@ -116,11 +153,52 @@ $ npm install -g bats
 Usage:
 * `make component-tests` to fetch and verify versions of required libraries and run the component tests (will output junit report in out/component-tests/).
 
-## Debugging 
+## Running E2E Tests
 
-Our preferred IDE for developemnt in Go is VSCode. To debug Go we make use of [Delve](https://github.com/go-delve/delve), which is a debugger for the Go programming language. 
+E2E tests validate the published `pnapctl` Docker image with GO SDK against real PhoenixNAP APIs.
 
-Setup: 
+### Prerequisites
+
+* Java 25+
+* Maven 3.9+
+* Docker
+* Valid `PNAP_CLIENT_ID` and `PNAP_CLIENT_SECRET` credentials
+
+### Usage
+
+Export the required environment variables:
+
+```bash
+export PNAP_CLIENT_ID=<your-client-id>
+export PNAP_CLIENT_SECRET=<your-client-secret>
+export PNAPCTL_IMAGE=ghcr.io/phoenixnap/pnapctl:latest
+export PNAPCTL_VERSION=1.13.0
+```
+
+Note: `PNAPCTL_VERSION` should be updated accordingly over time as new versions are released.
+
+Run the E2E test suite:
+
+```bash
+cd e2e-tests
+mvn clean verify 
+```
+
+To run specific test group/s use `mvn clean verify -Dgroups=testGroup1,testGroup2` command.
+
+### Notes
+
+* Tests interact with real PhoenixNAP resources and APIs.
+    * Anything that is created will be tied to the account owner of the defined PNAP client credentials.
+* The Docker image specified by `PNAPCTL_IMAGE` will be used for all CLI operations.
+* Ensure the configured credentials have sufficient permissions to perform the tested operations.
+
+
+## Debugging
+
+Our preferred IDE for developemnt in Go is VSCode. To debug Go we make use of [Delve](https://github.com/go-delve/delve), which is a debugger for the Go programming language.
+
+Setup:
 1. Clone and install Delve
   ```
   $ git clone https://github.com/go-delve/delve
@@ -128,10 +206,10 @@ Setup:
   $ go install github.com/go-delve/delve/cmd/dlv
 
   ```
-2. In VSCode, create a new debug configuration 
-  * Select the `Run and Debug` button from the Run view or hit the `F5` button to start the debugging mode. 
-  * From the drop down menu next to `Run and Debug` select `Add Configuration...`. A new configuration `.vscode/launch.json` will be created.
-  * Paste the following configuration in `launch.json`:
+2. In VSCode, create a new debug configuration
+* Select the `Run and Debug` button from the Run view or hit the `F5` button to start the debugging mode.
+* From the drop down menu next to `Run and Debug` select `Add Configuration...`. A new configuration `.vscode/launch.json` will be created.
+* Paste the following configuration in `launch.json`:
   ```
   {
     // Use IntelliSense to learn about possible attributes.
